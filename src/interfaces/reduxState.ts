@@ -1,7 +1,7 @@
 import { IOnline } from './online';
-import { IUser } from './user';
+import { IOutlets } from './outlets';
 
 export interface IReduxState {
   online: IOnline.StateToProps;
-  user: IUser.StateToProps;
+  outlets: IOutlets.StateToProps;
 }

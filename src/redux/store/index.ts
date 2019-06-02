@@ -1,15 +1,14 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import thunk from 'redux-thunk';
 import { persistStore, persistReducer, createTransform } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import sagas from '../sagas';
 import omit from 'lodash/omit';
 
 // reducers
 import {
   online,
-  user,
+  outlets,
 } from '../reducers';
 
 const blacklist = ['user.error', 'online'];
@@ -41,12 +40,10 @@ const rootPersistConfig = {
 
 const rootReducer = combineReducers({
   online,
-  user,
+  outlets,
 });
 
-const sagaMiddleware = createSagaMiddleware();
-
-const middleware = [sagaMiddleware];
+const middleware = [thunk];
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
@@ -59,7 +56,7 @@ const store = createStore(
   persistedReducer,
   composeEnhancers(applyMiddleware(...middleware))
 );
-sagaMiddleware.run(sagas);
+
 let persistor = persistStore(store);
 
 export { store, persistor };

@@ -1,42 +1,37 @@
 import { Types } from '@types';
-import { IUser } from '@interfaces/user';
+import { IOutlets } from '@interfaces/outlets';
 import { AnyAction } from 'redux';
 
-const initialState: IUser.StateToProps = {
+const initialState: IOutlets.StateToProps = {
   error: false,
   loading: false,
-  user: undefined
+  outlets: undefined
 };
 
-export function user(
-  state: IUser.StateToProps = initialState,
+export function outlets(
+  state: IOutlets.StateToProps = initialState,
   action: AnyAction
 ) {
   switch (action.type) {
-    //login feature
-    case Types.USER_LOGIN:
+    // FETCH OUTLETS
+    case Types.FETCH_OUTLETS:
       return {
         ...state,
         error: false,
         loading: true
       };
-    case Types.USER_LOGIN_SUCCESS:
+    case Types.FETCH_OUTLETS_SUCCESS:
       return {
         error: false,
         loading: false,
-        user: action.payload.data
+        outlets: action.payload.data
       };
-    case Types.USER_LOGIN_FAILED:
+    case Types.FETCH_OUTLETS_FAILED:
       return {
         error: action.payload.message || true,
         loading: false,
-        user: undefined
+        outlets: []
       };
-
-    //logout feature
-    case Types.USER_LOGOUT:
-      return initialState;
-
     default:
       return state;
   }

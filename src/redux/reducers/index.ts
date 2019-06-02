@@ -1,2 +1,2 @@
-export * from './Online';
-export * from './User';
+export * from './online';
+export * from './outlets';
