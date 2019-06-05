@@ -11,7 +11,7 @@ import {
   outlets,
 } from '../reducers';
 
-const blacklist = ['user.error', 'online'];
+const blacklist = ['online'];
 const rootPersistConfig = {
   key: 'root',
   // when importing storage the interface type definitions are lost

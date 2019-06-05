@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { Events } from '@services';
 
 // ui
 import { Asset, Font, AppLoading } from 'expo';
@@ -98,6 +97,7 @@ export default class App extends React.Component<Props, State> {
           <PersistGate persistor={persistor}>
             <View style={{ flex: 1 }}>
               <AppNavigator />
+              {/*TODO: Set Overlay screen here*/}
             </View>
           </PersistGate>
         </Provider>
