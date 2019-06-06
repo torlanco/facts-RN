@@ -3,7 +3,6 @@ import { ActionButton, HeaderBar } from '@components';
 
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
-import { responsive } from '@styles';
 
 import { OutletCard } from './components/OutletCard';
 

@@ -1,15 +1,15 @@
 import { Types } from '@types';
-import { IOutlets } from '@interfaces/outlets';
+import { IOutlet } from '@interfaces/outlet';
 import { AnyAction } from 'redux';
 
-const initialState: IOutlets.StateToProps = {
+const initialState: IOutlet.StateToProps = {
   error: false,
   loading: false,
   outlets: undefined
 };
 
-export function outlets(
-  state: IOutlets.StateToProps = initialState,
+export function outlet(
+  state: IOutlet.StateToProps = initialState,
   action: AnyAction
 ) {
   switch (action.type) {

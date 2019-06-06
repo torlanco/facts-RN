@@ -8,7 +8,7 @@ import omit from 'lodash/omit';
 // reducers
 import {
   online,
-  outlets,
+  outlet,
 } from '../reducers';
 
 const blacklist = ['online'];
@@ -40,7 +40,7 @@ const rootPersistConfig = {
 
 const rootReducer = combineReducers({
   online,
-  outlets,
+  outlet,
 });
 
 const middleware = [thunk];

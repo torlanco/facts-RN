@@ -1,2 +1,2 @@
-export * from './HomeScreen/HomeScreen';
 export * from './OutletScreen/OutletScreen';
+export * from './ShopperScreen/ShoppersScreen';

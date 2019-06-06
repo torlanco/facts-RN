@@ -4,17 +4,19 @@ import {
 } from 'react-navigation';
 
 import {
-    OutletScreen
+  OutletScreen,
+  ShoppersScreen
 } from '@screens';
 import { colors } from '@styles';
 
 const AppNavigator = createAppContainer(
     createStackNavigator(
         {
-            Outlet: {screen: OutletScreen},
+            OutletScreen: {screen: OutletScreen},
+            ShopperScreen: {screen: ShoppersScreen},
         },
         {
-            initialRouteName: 'Outlet',
+            initialRouteName: 'ShopperScreen', // 'OutletScreen',
             defaultNavigationOptions: {
                 headerBackTitle: null,
                 headerTransparent: true,

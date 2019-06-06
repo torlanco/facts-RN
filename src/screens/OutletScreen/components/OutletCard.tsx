@@ -14,10 +14,11 @@ interface IOutletCard {
 
 const OutletCard: React.SFC<IOutletCard> = (props: IOutletCard) => {
     const {imageUrl, category, name, date, shoppers, isNew} = props;
+    const imageSource = require('@assets/images/placeholder.png');
     return (
-        <View elevation={1} style={styles.cardContainer}>
+        <View style={styles.cardContainer}>
             <View style={styles.outletImage}>
-                {imageUrl ? <Image source={{uri: imageUrl}}/> : <Image source={require('@assets/images/placeholder.png')}/>}
+                {imageUrl ? <Image source={{uri: imageUrl}}/> : <Image source={imageSource}/>}
             </View>
             <View style={styles.mainContent}>
                 <Text style={[styles.subHeading, styles.category]}>{category}</Text>
@@ -25,7 +26,7 @@ const OutletCard: React.SFC<IOutletCard> = (props: IOutletCard) => {
                 <Text style={styles.subHeading}>Latest: {date}</Text>
                 <View style={styles.shopperAndNew}>
                     <Text style={styles.subHeading}>
-                        <Text style={styles.shoppersCount}>{shoppers.length}</Text> Shoppers
+                        <Text style={styles.shoppersCount}>{shoppers ? shoppers.length : 0}</Text> Shoppers
                     </Text>
                     {isNew && <Text style={styles.isNew}>New</Text>}
                 </View>
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
         shadowColor: colors.LIGHT_BLUE,
         color: colors.MID_GRAY,
         backgroundColor: colors.PRIMARY_LIGHT,
+        elevation: 1
     },
     outletImage: {
         marginLeft: responsive(-60),

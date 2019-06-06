@@ -1,7 +1,9 @@
 import { IOnline } from './online';
-import { IOutlets } from './outlets';
+import { IOutlet } from './outlet';
+import { IShoppers } from './shopper';
 
 export interface IReduxState {
   online: IOnline.StateToProps;
-  outlets: IOutlets.StateToProps;
+  outlets: IOutlet.StateToProps;
+  shoppers: IShoppers.StateToProps;
 }

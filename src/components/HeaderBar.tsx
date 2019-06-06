@@ -10,7 +10,6 @@ import { responsive, typos, colors } from '@styles';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Divider } from 'react-native-elements';
 
-
 interface IOwnProps {
     title: string;
     style?: StyleProp<ViewStyle>;
@@ -19,29 +18,24 @@ interface IOwnProps {
 type IProps = IOwnProps & NavigationInjectedProps;
 const HeaderBar: React.SFC<IProps> = (props: IProps) => {
     return (
-        <View style={[styles.container, props.style]}>
+        <View style={[props.style]}>
             <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
             <Divider style={styles.divider} />
         </View>
     );
 };
 const styles = StyleSheet.create({
-    container: {
-        height: responsive(40),
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: responsive(15)
-    },
     title: {
         ...typos.SUBHEADLINE,
-        flex: 2,
         textAlign: 'center',
-        color: colors.TEXT_PRIMARY
+        color: colors.TEXT_PRIMARY,
+        paddingHorizontal: responsive(15),
+        paddingVertical: 20
     },
     divider: {
         backgroundColor: colors.LIGHTER_GRAY,
-        height: 5
+        height: 2,
+        marginHorizontal: -10,
     }
 });
 const wrapper = withNavigation(HeaderBar);

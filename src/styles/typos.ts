@@ -9,7 +9,7 @@ export const typos = {
   FOOTNOTE: { fontSize: responsive(13), fontFamily: 'SFProText-Regular' },
   CAPTION: { fontSize: responsive(12), fontFamily: 'SFProText-Regular' },
   SMALL: { fontSize: responsive(12), fontFamily: 'SFProText-Regular' },
-  TINY: { fontSize: responsive(10), fontFamily: 'SFProText-Regular' },
+  TINY: { fontSize: responsive(12), fontFamily: 'SFProText-Regular' },
   TITLE1: { fontSize: responsive(42), fontFamily: 'Roboto-Medium' },
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Roboto-Medium' },
   SUBHEADLINE: { fontSize: responsive(20), fontFamily: 'Roboto-Medium' },

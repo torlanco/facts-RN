@@ -1,5 +1,4 @@
-import { PARSE_CONFIG, HTTP } from '../http';
-import qs from 'qs';
+import { HTTP } from '../http';
 
 export const fetchOutlets = () => {
   return HTTP.get('http://www.outlets.com');

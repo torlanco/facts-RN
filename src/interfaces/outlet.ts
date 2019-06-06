@@ -1,6 +1,6 @@
-export namespace IOutlets {
+export namespace IOutlet {
 
-  export interface IOutlet {
+  export interface IOutletData {
     objectId?: string;
     name?: string;
   }
@@ -8,7 +8,7 @@ export namespace IOutlets {
   export interface StateToProps {
     error: string | boolean;
     loading: boolean;
-    outlets: IOutlet[] | undefined;
+    outlets: IOutletData[] | undefined;
   }
   export interface DispatchFromProps {
     fetchOutlets(): void;

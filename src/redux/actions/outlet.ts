@@ -1,8 +1,8 @@
 import { Types } from '@types';
-import { IOutlets } from '@interfaces/outlets';
+import { IOutlet } from '@interfaces/outlet';
 import { fetchOutlets } from '@services';
 
-export const Creators: IOutlets.DispatchFromProps = {
+export const Creators: IOutlet.DispatchFromProps = {
   fetchOutlets: () => {
     return dispatch => {
       dispatch({
