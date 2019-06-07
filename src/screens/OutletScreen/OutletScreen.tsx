@@ -1,35 +1,76 @@
 import * as React from 'react';
+
+// UI
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+
+// Components
 import { ActionButton, HeaderBar } from '@components';
-
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
-
 import { OutletCard } from './components/OutletCard';
 
 // Interfaces
+import IOutlet from '@interfaces';
+
 interface IOwnProps {
 }
 
-type IProps = IOwnProps &
-    // ILocation.StateToProps &
-    // ILocation.DispatchFromProps &
-    NavigationInjectedProps;
+type IProps = IOwnProps;
 
 interface IState {
+    outletList: Array<IOutlet.IOutletData>
 }
 
-class OutletScreen extends React.Component<IState> {
-    static navigationOptions = {
-        title: 'Outlets'
-    };
-
+class OutletScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            outletList: this.loadData()
+        };
     }
 
-    public render() {
-        const outlets = [{
+    private loadData(): Array<IOutlet.IOutletData> {
+        const outletList: Array<IOutlet.IOutletData> = [{
+            imageUrl: '',
+            name: 'Econo',
+            category: 'Supermarket',
+            date: '24 May',
+            shoppers: ['Shopper1', 'shopper2'],
+            isNew: true
+        }, {
+            imageUrl: '',
+            name: 'Sample',
+            category: 'Flea Market',
+            date: '25 May',
+            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
+            isNew: false
+        }, {
+            imageUrl: '',
+            name: 'Econo',
+            category: 'Supermarket',
+            date: '24 May',
+            shoppers: ['Shopper1', 'shopper2'],
+            isNew: true
+        }, {
+            imageUrl: '',
+            name: 'Sample',
+            category: 'Flea Market',
+            date: '25 May',
+            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
+            isNew: false
+        }, {
+            imageUrl: '',
+            name: 'Econo',
+            category: 'Supermarket',
+            date: '24 May',
+            shoppers: ['Shopper1', 'shopper2'],
+            isNew: true
+        }, {
+            imageUrl: '',
+            name: 'Sample',
+            category: 'Flea Market',
+            date: '25 May',
+            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
+            isNew: false
+        }, {
             imageUrl: '',
             name: 'Econo',
             category: 'Supermarket',
@@ -44,6 +85,11 @@ class OutletScreen extends React.Component<IState> {
             shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
             isNew: false
         }];
+
+        return outletList;
+    }
+
+    public render() {
         return (
             <SafeAreaView style={{flex: 1}}>
                 <HeaderBar title={'Outlets'}/>
@@ -57,19 +103,11 @@ class OutletScreen extends React.Component<IState> {
                         <Text style={styles.itemCount}>385 </Text>
                         <Text> ITEM</Text>
                     </View>
-                    {
-                        outlets.map((outlet, key) => {
-                            return (
-                                <OutletCard category={outlet.category}
-                                            isNew={outlet.isNew}
-                                            name={outlet.name}
-                                            date={outlet.date}
-                                            shoppers={outlet.shoppers}
-                                            key={key}>
-                                </OutletCard>
-                            );
-                        })
-                    }
+                    <FlatList
+                        data={this.state.outletList}
+                        keyExtractor={( item, index ) => index.toString()}
+                        renderItem={({ item }) => <OutletCard data={item}/>
+                        }/>
                 </View>
             </SafeAreaView>
         )

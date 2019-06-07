@@ -2,18 +2,14 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
 import { colors, typos, responsive } from '@styles';
+import { IOutlet } from '@interfaces/outlet';
 
-interface IOutletCard {
-    imageUrl?: string,
-    name?: string;
-    category?: string;
-    date?: string;
-    shoppers?: any[],
-    isNew?: boolean
+interface IOwnProps {
+    data: IOutlet.IOutletData
 };
 
-const OutletCard: React.SFC<IOutletCard> = (props: IOutletCard) => {
-    const {imageUrl, category, name, date, shoppers, isNew} = props;
+const OutletCard: React.SFC<IOwnProps> = (props: IOwnProps) => {
+    const {imageUrl, category, name, date, shoppers, isNew} = props.data;
     const imageSource = require('@assets/images/placeholder.png');
     return (
         <View style={styles.cardContainer}>
@@ -43,15 +39,15 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 20,
         flexDirection: 'row',
-        // shadowOpacity: 1.0,
+        shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
             height: 5
         },
         shadowColor: colors.LIGHT_BLUE,
         color: colors.MID_GRAY,
-        backgroundColor: colors.PRIMARY_LIGHT,
-        elevation: 1
+        backgroundColor: colors.WHITE,
+        elevation: 3
     },
     outletImage: {
         marginLeft: responsive(-60),
@@ -60,12 +56,12 @@ const styles = StyleSheet.create({
       flexDirection: 'column'
     },
     mainHeading: {
-        ...typos.LARGE_TITLE,
+        ...typos.TITLE,
         color: colors.TEXT_PRIMARY,
-        paddingBottom: responsive(25)
+        paddingBottom: responsive(25),
     },
     subHeading: {
-        ...typos.BODY,
+        ...typos.SECONDARY,
         textTransform: 'uppercase',
         paddingTop: responsive(10),
         color: colors.TEXT_SECONDARY
