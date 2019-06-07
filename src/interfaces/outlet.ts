@@ -1,8 +1,15 @@
+import { IShopper } from '@interfaces/shopper';
+
 export namespace IOutlet {
 
-  export interface IOutletData {
+    export interface IOutletData {
     objectId?: string;
     name?: string;
+    imageUrl?: string;
+    category?: string;
+    date?: string;
+    shoppers?: IShopper.IShopperData[];
+    isNew?: boolean;
   }
 
   export interface StateToProps {
