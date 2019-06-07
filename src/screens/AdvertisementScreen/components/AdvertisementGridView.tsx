@@ -3,22 +3,22 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
-import { IShopper } from '@interfaces/shopper';
-import { ShoppersGridItem } from './ShoppersGridItem';
+import { IAdvertisement } from '@interfaces/advertisement';
+import { AdvertisementGridItem } from './AdvertisementGridItem';
 import { FlatGrid } from 'react-native-super-grid';
 
 interface IOwnProps {
-  shopperList: Array<IShopper.IShopperData>
+  advertisementList: Array<IAdvertisement.IAdvertisementData>
 }
 type IProps = IOwnProps;
-const ShoppersGridView: React.SFC<IProps> = (props: IProps) => {
+const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
   const width = (Dimensions.get('window').width >> 1) - 12;
   return (
     <FlatGrid
       itemDimension={width}
       spacing={1}
-      items={props.shopperList}
-      renderItem={({ item, index }) => (<ShoppersGridItem shopper={item} key={index}></ShoppersGridItem>)}
+      items={props.advertisementList}
+      renderItem={({ item, index }) => (<AdvertisementGridItem advertisement={item} key={index}></AdvertisementGridItem>)}
       itemContainerStyle={styles.itemContainerStyle} />
   );
 };
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { ShoppersGridView };
+export { AdvertisementGridView };

@@ -18,14 +18,17 @@ interface IOwnProps {
 }
 type IProps = IOwnProps;
 
-const ShoppersFilter: React.SFC<IProps> = (props: IProps) => {
-
-    const toggleViewType = () => {
-        props.handleViewTypeChange(props.viewType === ViewType.Grid ? ViewType.List : ViewType.Grid);
-    }
+const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
 
     const gridIconColor = props.viewType === ViewType.Grid ? colors.LIGHT_ORANGE : colors.LIGHT_GRAY; 
     const listIconColor = props.viewType === ViewType.List ? colors.LIGHT_ORANGE : colors.LIGHT_GRAY; 
+
+
+    const toggleViewType = (type: ViewType) => {
+        if (props.viewType !== type) {
+            props.handleViewTypeChange(type);
+        }
+    }
 
     const onTypeChange = (type: string) => {
         props.handleTypeChange(type);
@@ -40,13 +43,13 @@ const ShoppersFilter: React.SFC<IProps> = (props: IProps) => {
                 name='grid'
                 type='feather'
                 color={gridIconColor}
-                onPress={toggleViewType}
+                onPress={() => toggleViewType(ViewType.Grid)}
                 containerStyle={styles.iconContainer} />
             <Icon
                 name='list'
                 type='feather'
                 color={listIconColor}
-                onPress={toggleViewType}
+                onPress={() => toggleViewType(ViewType.List)}
                 containerStyle={styles.iconContainer} />
         </View>
     );
@@ -65,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { ShoppersFilter };
+export { AdvertisementFilter };

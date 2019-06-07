@@ -6,12 +6,12 @@ import { typos } from '@styles';
 
 // Component
 import { HeaderBar } from '@components';
-import { ShoppersGridView } from './components/ShoppersGridView';
-import { ShoppersListView } from './components/ShoppersListView';
-import { ShoppersFilter } from './components/ShoppersFilter';
+import { AdvertisementGridView } from './components/AdvertisementGridView';
+import { AdvertisementListView } from './components/AdvertisementListView';
+import { AdvertisementFilter } from './components/AdvertisementFilter';
 
 // Models
-import { IShopper } from '@interfaces/shopper';
+import { IAdvertisement } from '@interfaces/advertisement';
 import { ViewType } from './enums/ViewType';
 
 // props 
@@ -19,31 +19,29 @@ interface IOwnProps {}
 type IProps = IOwnProps;
 
 // state
-interface State {
-  shopperList: Array<IShopper.IShopperData>,
+interface IState {
+  advertisementList: Array<IAdvertisement.IAdvertisementData>,
   viewType: ViewType,
   typeList: string[],
   type: string,
 }
 
-class ShoppersScreen extends React.Component<IProps, State> {
+class AdvertisementScreen extends React.Component<IProps, IState> {
   _isMounted = false;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      shopperList: this.loadData(),
+      advertisementList: this.loadData(),
       viewType: ViewType.Grid,
       typeList: ['Beer', 'Vodka', 'Visky'],
       type: 'Beer'
     };
 
-    this.onViewTypeChange = this.onViewTypeChange.bind(this);
-    this.onTypeChange = this.onTypeChange.bind(this);
   }
 
-  loadData(): Array<IShopper.IShopperData> {
-    const shopperList: Array<IShopper.IShopperData> = [
+  loadData(): Array<IAdvertisement.IAdvertisementData> {
+    const shopperList: Array<IAdvertisement.IAdvertisementData> = [
       { 
         type: 'Beer',
         name: 'Corona',
@@ -115,18 +113,18 @@ class ShoppersScreen extends React.Component<IProps, State> {
 
   getView() {
     return this.state.viewType === ViewType.Grid 
-      ? <ShoppersGridView shopperList={this.state.shopperList}></ShoppersGridView>
-      : <ShoppersListView shopperList={this.state.shopperList}></ShoppersListView>
+      ? <AdvertisementGridView advertisementList={this.state.advertisementList}></AdvertisementGridView>
+      : <AdvertisementListView advertisementList={this.state.advertisementList}></AdvertisementListView>
   }
  
   public render() {
     return (
       <SafeAreaView style={styles.container}>
           <HeaderBar title={'Econo'}></HeaderBar>
-          <ShoppersFilter viewType={this.state.viewType}
+          <AdvertisementFilter viewType={this.state.viewType}
             handleViewTypeChange={this.onViewTypeChange}
             typeList={this.state.typeList} type={this.state.type}
-            handleTypeChange={this.onTypeChange}></ShoppersFilter>
+            handleTypeChange={this.onTypeChange}></AdvertisementFilter>
           { this.getView() }
       </SafeAreaView>
     );
@@ -146,4 +144,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { ShoppersScreen };
+export { AdvertisementScreen };

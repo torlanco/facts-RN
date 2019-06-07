@@ -7,26 +7,26 @@ import {
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
-import { IShopper } from '@interfaces/shopper';
+import { IAdvertisement } from '@interfaces/advertisement';
 
 interface IOwnProps {
-  shopper: IShopper.IShopperData
+  advertisement: IAdvertisement.IAdvertisementData
 }
 type IProps = IOwnProps;
-const ShoppersGridItem: React.SFC<IProps> = (props: IProps) => {
+const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
   return (
     <Card containerStyle={styles.container}>
       <Card containerStyle={[styles.container, styles.imageContainer]}>
-        <FullWidthImage style={styles.image} source={{ uri: props.shopper.itemUrl }} />
+        <FullWidthImage style={styles.image} source={{ uri: props.advertisement.itemUrl }} />
       </Card>
-      <Text style={[styles.type, styles.padding]}>{ props.shopper.type }</Text>
-      <Text style={[styles.name, styles.padding]}>{ props.shopper.name }</Text>
-      <Text style={[styles.pieces, styles.padding]}>{ props.shopper.piecePerKg }</Text>
+      <Text style={[styles.type, styles.padding]}>{ props.advertisement.type }</Text>
+      <Text style={[styles.name, styles.padding]}>{ props.advertisement.name }</Text>
+      <Text style={[styles.pieces, styles.padding]}>{ props.advertisement.piecePerKg }</Text>
       <View style={styles.priceContainer}>
-        <Text style={[styles.price, styles.padding]}>{ props.shopper.price }</Text>
-        <Text style={[styles.originalPrice, styles.padding]}>{ props.shopper.originalPrice }</Text>  
+        <Text style={[styles.price, styles.padding]}>{ props.advertisement.price }</Text>
+        <Text style={[styles.originalPrice, styles.padding]}>{ props.advertisement.originalPrice }</Text>  
       </View>
-      <Text style={[styles.quantity, styles.padding]}>{ props.shopper.minQuantity }</Text>
+      <Text style={[styles.quantity, styles.padding]}>{ props.advertisement.minQuantity }</Text>
     </Card>
   );
 };
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { ShoppersGridItem };
+export { AdvertisementGridItem };

@@ -2,12 +2,8 @@ export namespace IShopper {
 
     export interface IShopperData {
         objectId?: string;
-        type: string;
-        name: string;
-        piecePerKg?: string;
-        price: string;
-        originalPrice?: string;
-        minQuantity?: string;
+        date: string;
+        features: number;
         itemUrl: string;
     }
 

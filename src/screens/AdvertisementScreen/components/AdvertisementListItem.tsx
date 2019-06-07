@@ -2,36 +2,34 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import FullWidthImage from 'react-native-fullwidth-image';
-import { IShopper } from '@interfaces/shopper';
+import { IAdvertisement } from '@interfaces/advertisement';
 import { Card } from 'react-native-elements';
 
 interface IOwnProps {
-  shopper: IShopper.IShopperData
+  advertisement: IAdvertisement.IAdvertisementData
 }
-interface IOwnProps {
-    shopper: IShopper.IShopperData
-}
+
 type IProps = IOwnProps;
 
-const ShoppersListItem: React.SFC<IProps> = (props: IProps) => {
+const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
     const imageSource = require('@assets/images/placeholder.png');
     return (
         <View style={styles.mainContainer}>
             <View style={styles.cardContainer}>
                 <View style={styles.outletImageWrapper}>
                     <Card containerStyle={styles.outletImage}>
-                        {props.shopper.itemUrl ? <FullWidthImage style={ styles.image } source={{ uri: props.shopper.itemUrl }} /> 
+                        {props.advertisement.itemUrl ? <FullWidthImage style={ styles.image } source={{ uri: props.advertisement.itemUrl }} /> 
                             : <FullWidthImage style={ styles.image } source={imageSource} /> }
                     </Card>
                 </View>
                 <View style={styles.mainContent}>
-                    <Text style={[styles.type, styles.padding]}>{ props.shopper.type }</Text>
-                    <Text style={[styles.name, styles.padding]}>{ props.shopper.name }</Text>
-                    <Text style={[styles.pieces, styles.padding]}>{ props.shopper.piecePerKg }</Text>
-                    <Text style={[styles.quantity, styles.padding]}>{ props.shopper.minQuantity }</Text>
+                    <Text style={[styles.type, styles.padding]}>{ props.advertisement.type }</Text>
+                    <Text style={[styles.name, styles.padding]}>{ props.advertisement.name }</Text>
+                    <Text style={[styles.pieces, styles.padding]}>{ props.advertisement.piecePerKg }</Text>
+                    <Text style={[styles.quantity, styles.padding]}>{ props.advertisement.minQuantity }</Text>
                     <View style={styles.priceContainer}>
-                        <Text style={[styles.price, styles.padding]}>{ props.shopper.price }</Text>
-                        <Text style={[styles.originalPrice, styles.padding]}>{ props.shopper.originalPrice }</Text>  
+                        <Text style={[styles.price, styles.padding]}>{ props.advertisement.price }</Text>
+                        <Text style={[styles.originalPrice, styles.padding]}>{ props.advertisement.originalPrice }</Text>  
                     </View>
                 </View>
             </View>
@@ -125,4 +123,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export { ShoppersListItem };
+export { AdvertisementListItem };

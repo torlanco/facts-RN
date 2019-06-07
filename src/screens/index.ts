@@ -1,2 +1,3 @@
 export * from './OutletScreen/OutletScreen';
-export * from './ShopperScreen/ShoppersScreen';
+export * from './AdvertisementScreen/AdvertisementScreen';
+export * from './ShoppersScreen/ShoppersScreen';

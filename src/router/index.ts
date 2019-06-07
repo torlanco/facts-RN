@@ -5,6 +5,7 @@ import {
 
 import {
   OutletScreen,
+  AdvertisementScreen,
   ShoppersScreen
 } from '@screens';
 import { colors } from '@styles';
@@ -13,6 +14,7 @@ const AppNavigator = createAppContainer(
     createStackNavigator(
         {
             OutletScreen: {screen: OutletScreen},
+            AdvertisementScreen: {screen: AdvertisementScreen},
             ShopperScreen: {screen: ShoppersScreen},
         },
         {
