@@ -41,7 +41,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   }
 
   loadData(): Array<IAdvertisement.IAdvertisementData> {
-    const shopperList: Array<IAdvertisement.IAdvertisementData> = [
+    const advertisementList: Array<IAdvertisement.IAdvertisementData> = [
       { 
         type: 'Beer',
         name: 'Corona',
@@ -88,7 +88,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
       }
     ];
 
-    return shopperList;
+    return advertisementList;
   }
 
   componentDidMount() {

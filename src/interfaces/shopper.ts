@@ -2,9 +2,10 @@ export namespace IShopper {
 
     export interface IShopperData {
         objectId?: string;
-        date: string;
+        startDate: string;
+        endDate: string;
         features: number;
-        itemUrl: string;
+        imageUrl?: string;
     }
 
     export interface StateToProps {

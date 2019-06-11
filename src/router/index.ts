@@ -18,7 +18,7 @@ const AppNavigator = createAppContainer(
             ShopperScreen: {screen: ShoppersScreen},
         },
         {
-            initialRouteName: 'OutletScreen', // 'OutletScreen',
+            initialRouteName: 'ShopperScreen', // 'OutletScreen',
             defaultNavigationOptions: {
                 headerBackTitle: null,
                 headerTransparent: true,

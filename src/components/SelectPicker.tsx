@@ -4,7 +4,7 @@ import {
     StyleSheet,
     Picker,
 } from 'react-native';
-import { colors } from '@styles';
+import { colors, typos } from '@styles';
 
 interface IOwnProps {
     options: string[],
@@ -33,7 +33,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 const styles = StyleSheet.create({
   picker: {
     height: 50, 
-    width: 200
+    width: 200,
   },
 });
 
