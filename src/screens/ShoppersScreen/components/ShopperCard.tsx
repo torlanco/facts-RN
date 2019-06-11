@@ -1,30 +1,39 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import { Card } from 'react-native-elements';
 import { IShopper } from '@interfaces/shopper';
 
 interface IOwnProps {
-  shopper: IShopper.IShopperData
+  shopper: IShopper.IShopperData,
+  onItemPress?: Function
 }
 
 type IProps = IOwnProps;
 
 const ShopperCard: React.SFC<IProps> = (props: IProps) => {
     const imageSource = require('@assets/images/placeholder.png');
+    
+    const onItemPress = () => {
+        if (props.onItemPress) 
+            props.onItemPress();
+    }
+    
     return (
-        <View style={styles.mainContainer}>
-            <Card containerStyle={styles.outletImage}>
-                { props.shopper.imageUrl ? <Image style={ styles.image } source={{ uri: props.shopper.imageUrl }}/> 
-                    : <Image style={ styles.image } source={imageSource} /> }
-            </Card>
-            <View style={styles.cardContainer}>
-                <View style={styles.mainContent}>
-                    <Text style={[styles.highlight, styles.padding]}>{ props.shopper.startDate } - {props.shopper.endDate}</Text>
-                    <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{ props.shopper.features }</Text> FEATURES</Text>
+        <TouchableOpacity onPress={onItemPress}>
+            <View style={styles.mainContainer}>
+                <Card containerStyle={styles.outletImage}>
+                    { props.shopper.imageUrl ? <Image style={ styles.image } source={{ uri: props.shopper.imageUrl }}/> 
+                        : <Image style={ styles.image } source={imageSource} /> }
+                </Card>
+                <View style={styles.cardContainer}>
+                    <View style={styles.mainContent}>
+                        <Text style={[styles.highlight, styles.padding]}>{ props.shopper.startDate } - {props.shopper.endDate}</Text>
+                        <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{ props.shopper.features }</Text> FEATURES</Text>
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -34,16 +43,15 @@ const styles = StyleSheet.create({
     },
     outletImage: {
         borderRadius: 10,
+        shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
             height: 5
         },
-        shadowOpacity: 0.5,
         shadowColor: colors.LIGHT_BLUE,
+        elevation: 3,
         shadowRadius: 10,
-        elevation: 5,
         padding: 0,
-        margin: 0,
         maxWidth: '80%',
         height: '80%',
         marginVertical: '5%',

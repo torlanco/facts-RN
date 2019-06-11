@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: colors.WHITE,
     borderWidth: 0,
-    elevation: 5,
-    shadowRadius: 5,
-    shadowColor: colors.LIGHT_GRAY,
+    shadowOpacity: 0.1,
     shadowOffset: {
-      width: 2,
-      height: 5
+        width: 0,
+        height: 5
     },
-    shadowOpacity: 0.5,
+    shadowColor: colors.LIGHT_BLUE,
+    elevation: 3,
+    shadowRadius: 10,
   },
   imageContainer: {
     padding: 0,

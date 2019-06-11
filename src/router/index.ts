@@ -14,11 +14,11 @@ const AppNavigator = createAppContainer(
     createStackNavigator(
         {
             OutletScreen: {screen: OutletScreen},
-            AdvertisementScreen: {screen: AdvertisementScreen},
             ShopperScreen: {screen: ShoppersScreen},
+            AdvertisementScreen: {screen: AdvertisementScreen},
         },
         {
-            initialRouteName: 'ShopperScreen', // 'OutletScreen',
+            initialRouteName: 'OutletScreen',
             defaultNavigationOptions: {
                 headerBackTitle: null,
                 headerTransparent: true,

@@ -8,13 +8,15 @@ import { typos, colors } from '@styles';
 import { HeaderBar, SelectPicker } from '@components';
 import { IShopper } from '@interfaces/shopper';
 import { ShopperCard } from './components/ShopperCard';
-import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
+import { NavigationInjectedProps } from 'react-navigation';
 
 // Models
 
 // props 
 interface IOwnProps {}
-type IProps = IOwnProps;
+type IProps = IOwnProps &
+  NavigationInjectedProps;
 
 // state
 interface IState {
@@ -69,6 +71,11 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     return <PagerDotIndicator pageCount={this.state.shoppers.length} 
         dotStyle={styles.dotStyle} selectedDotStyle={styles.selectedDotStyle}/>;
   }
+
+  
+  onItemPress = () => {
+    this.props.navigation.navigate('AdvertisementScreen');
+  }
  
   public render() {
     return (
@@ -83,7 +90,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
                 indicator={this._renderDotIndicator()}>
                 {
                     this.state.shoppers.map((shopper, index) => {
-                        return <ShopperCard shopper={shopper} key={index}></ShopperCard>;
+                        return <ShopperCard shopper={shopper} key={index} onItemPress={this.onItemPress}></ShopperCard>;
                     })
                 }
             </IndicatorViewPager>

@@ -19,14 +19,21 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
       spacing={1}
       items={props.advertisementList}
       renderItem={({ item, index }) => (<AdvertisementGridItem advertisement={item} key={index}></AdvertisementGridItem>)}
+      style={styles.gridView}
       itemContainerStyle={styles.itemContainerStyle} />
   );
 };
 
 const styles = StyleSheet.create({
+  gridView: {
+    marginTop: 20,
+    flex: 1,
+  },
   itemContainerStyle: {
-    paddingBottom: 10
-  }
+    justifyContent: 'flex-start',
+    paddingBottom: 10,
+    borderRadius: 10,
+  },
 });
 
 export { AdvertisementGridView };

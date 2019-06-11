@@ -18,8 +18,8 @@ const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
             <View style={styles.cardContainer}>
                 <View style={styles.outletImageWrapper}>
                     <Card containerStyle={styles.outletImage}>
-                        {props.advertisement.itemUrl ? <FullWidthImage style={ styles.image } source={{ uri: props.advertisement.itemUrl }} /> 
-                            : <FullWidthImage style={ styles.image } source={imageSource} /> }
+                        {props.advertisement.itemUrl ? <Image style={ styles.image } source={{ uri: props.advertisement.itemUrl }} /> 
+                            : <Image style={ styles.image } source={imageSource} /> }
                     </Card>
                 </View>
                 <View style={styles.mainContent}>
@@ -51,15 +51,15 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 20,
         flexDirection: 'row',
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
             height: 5
         },
         shadowColor: colors.LIGHT_BLUE,
-        color: colors.MID_GRAY,
+        elevation: 3,
+        shadowRadius: 10,
         backgroundColor: colors.WHITE,
-        elevation: 5
     },
     outletImageWrapper: {
         width: '50%',
@@ -67,21 +67,23 @@ const styles = StyleSheet.create({
         marginRight: '10%',
     },
     outletImage: {
+        height: 110,
         borderRadius: 10,
+        shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
             height: 5
         },
-        shadowOpacity: 0.5,
         shadowColor: colors.LIGHT_BLUE,
+        elevation: 3,
         shadowRadius: 10,
-        elevation: 5,
         padding: 0,
         margin: 0
     },
     image: {
         borderRadius: 10,
         width: '100%',
+        height: '100%',
     },
     mainContent: {
       flexDirection: 'column'

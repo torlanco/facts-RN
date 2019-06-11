@@ -6,7 +6,7 @@ import { Button } from 'react-native-elements';
 interface IActionButtonProps {
     title: string;
     inverted?: boolean;
-    onPress?(): void,
+    onPress?(buttonText: string): void,
     disabled?: boolean;
 }
 
@@ -44,9 +44,15 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         { color }
     ];
 
+    const onButtonPress = () => {
+        if (props.onPress) {
+            props.onPress(props.title);
+        }
+    }
+
     return (
         <Button title={ title }
-                onPress={ onPress }
+                onPress={ onButtonPress }
                 disabled={ disabled }
                 containerStyle={ containerStyle }
                 buttonStyle={ buttonStyle }

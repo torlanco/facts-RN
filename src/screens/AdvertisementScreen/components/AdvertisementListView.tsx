@@ -14,7 +14,8 @@ const AdvertisementListView: React.SFC<IProps> = (props: IProps) => {
     <FlatList
       data={props.advertisementList}
       renderItem={({ item }) => <AdvertisementListItem advertisement={item}></AdvertisementListItem>} 
-      keyExtractor={(item, index) => index.toString()}/>
+      keyExtractor={(item, index) => index.toString()}
+      showsVerticalScrollIndicator={false}/>
   );
 };
 

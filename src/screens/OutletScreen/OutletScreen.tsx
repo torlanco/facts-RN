@@ -8,14 +8,16 @@ import { ActionButton, HeaderBar } from '@components';
 import { OutletCard } from './components/OutletCard';
 
 // Interfaces
-import IOutlet from '@interfaces';
-
+import { IOutlet } from '@interfaces/outlet';
+import { NavigationInjectedProps } from 'react-navigation';
 interface IOwnProps {
 }
 
-type IProps = IOwnProps;
+type IProps = IOwnProps &
+    NavigationInjectedProps;
 
 interface IState {
+    selectedTab: string,
     outletList: Array<IOutlet.IOutletData>
 }
 
@@ -23,7 +25,8 @@ class OutletScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            outletList: this.loadData()
+            selectedTab: 'CLUB SM',
+            outletList: this.loadData(),
         };
     }
 
@@ -89,15 +92,26 @@ class OutletScreen extends React.Component<IProps, IState> {
         return outletList;
     }
 
+    onItemPress = () => {
+        this.props.navigation.navigate('ShopperScreen');
+    }
+
+    onActionButtonPress = (buttonText: string) => {
+        console.log(buttonText)
+        this.setState({
+            selectedTab: buttonText
+        });
+    }
+
     public render() {
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, marginTop: 50,}}>
                 <HeaderBar title={'Outlets'}/>
                 <View style={styles.container}>
                     <View style={styles.headerButtonBar}>
-                        <ActionButton title='CLUB'/>
-                        <ActionButton title='CLUB SM' inverted={true}/>
-                        <ActionButton title='OTHER'/>
+                        <ActionButton title='CLUB' inverted={this.state.selectedTab == 'CLUB'} onPress={this.onActionButtonPress}/>
+                        <ActionButton title='CLUB SM' inverted={this.state.selectedTab == 'CLUB SM'} onPress={this.onActionButtonPress}/>
+                        <ActionButton title='OTHER' inverted={this.state.selectedTab == 'OTHER'} onPress={this.onActionButtonPress}/>
                     </View>
                     <View style={styles.itemCountContainer}>
                         <Text style={styles.itemCount}>385 </Text>
@@ -106,8 +120,8 @@ class OutletScreen extends React.Component<IProps, IState> {
                     <FlatList
                         data={this.state.outletList}
                         keyExtractor={( item, index ) => index.toString()}
-                        renderItem={({ item }) => <OutletCard data={item}/>
-                        }/>
+                        renderItem={({ item }) => <OutletCard data={item} onItemPress={this.onItemPress}/>} 
+                        showsVerticalScrollIndicator={false}/>
                 </View>
             </SafeAreaView>
         )
@@ -121,7 +135,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     container: {
-        paddingHorizontal: '4%'
+        paddingHorizontal: '4%',
+        paddingTop: 10
     },
     itemCountContainer: {
         flexDirection: 'row',
