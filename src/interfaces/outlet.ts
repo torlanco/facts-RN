@@ -18,6 +18,6 @@ export namespace IOutlet {
     outlets: IOutletData[] | undefined;
   }
   export interface DispatchFromProps {
-    fetchOutlets(): void;
+    fetchOutlets(): Function;
   }
 }

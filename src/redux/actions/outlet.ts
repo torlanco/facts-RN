@@ -2,24 +2,27 @@ import { Types } from '@types';
 import { IOutlet } from '@interfaces/outlet';
 import { fetchOutlets } from '@services';
 
-export const Creators: IOutlet.DispatchFromProps = {
+const IOutletAction: IOutlet.DispatchFromProps = {
   fetchOutlets: () => {
-    return dispatch => {
+    return async function (dispatch: any) {
       dispatch({
         type: Types.FETCH_OUTLETS,
       });    
-      fetchOutlets()
-        .then(res => {
-          dispatch({
-            type: Types.FETCH_OUTLETS_SUCCESS,
-            payload: res.data
-          });
-        })
-        .catch(err => {
-          dispatch({
-            type: Types.FETCH_OUTLETS_FAILED,
-          });
+      try {
+        const response =  await fetchOutlets();        
+        dispatch({
+          type: Types.FETCH_OUTLETS_SUCCESS,
+          payload: response.data
         });
+        return response;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_OUTLETS_FAILED,
+        });
+        return null;
+      }  
     };
   }
 };
+
+export { IOutletAction as mapDispatchToProps}

@@ -3,8 +3,10 @@ import {
     createAppContainer
 } from 'react-navigation';
 
+import OutletScreen from '../screens/OutletScreen/OutletScreen';
+
 import {
-  OutletScreen,
+//   OutletScreen,
   AdvertisementScreen,
   ShoppersScreen
 } from '@screens';

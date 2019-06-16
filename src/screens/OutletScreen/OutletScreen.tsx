@@ -10,11 +10,16 @@ import { OutletCard } from './components/OutletCard';
 // Interfaces
 import { IOutlet } from '@interfaces/outlet';
 import { NavigationInjectedProps } from 'react-navigation';
+
+import { connect } from "react-redux";
+
+import { mapDispatchToProps } from '@actions/outlet';
 interface IOwnProps {
 }
 
 type IProps = IOwnProps &
-    NavigationInjectedProps;
+    NavigationInjectedProps & 
+    IOutlet.DispatchFromProps;
 
 interface IState {
     selectedTab: string,
@@ -28,6 +33,18 @@ class OutletScreen extends React.Component<IProps, IState> {
             selectedTab: 'CLUB SM',
             outletList: this.loadData(),
         };
+
+        this.fetchOutLets();
+        console.log(mapDispatchToProps);
+    }
+
+    async fetchOutLets() {
+        // try {
+            const response = await this.props.fetchOutlets();
+            console.log(response);
+        // } catch(e) {
+        //     console.log(e);    
+        // }
     }
 
     private loadData(): Array<IOutlet.IOutletData> {
@@ -147,4 +164,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export { OutletScreen };
+export default connect(null, mapDispatchToProps)(OutletScreen);
+// export { OutletScreen };
