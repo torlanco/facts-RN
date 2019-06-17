@@ -18,7 +18,7 @@ interface IOwnProps {
 }
 
 type IProps = IOwnProps &
-    NavigationInjectedProps & 
+    NavigationInjectedProps &
     IOutlet.DispatchFromProps;
 
 interface IState {
@@ -39,12 +39,12 @@ class OutletScreen extends React.Component<IProps, IState> {
     }
 
     async fetchOutLets() {
-        // try {
+        try {
             const response = await this.props.fetchOutlets();
             console.log(response);
-        // } catch(e) {
-        //     console.log(e);    
-        // }
+        } catch(e) {
+            console.log(e);
+        }
     }
 
     private loadData(): Array<IOutlet.IOutletData> {
@@ -137,7 +137,7 @@ class OutletScreen extends React.Component<IProps, IState> {
                     <FlatList
                         data={this.state.outletList}
                         keyExtractor={( item, index ) => index.toString()}
-                        renderItem={({ item }) => <OutletCard data={item} onItemPress={this.onItemPress}/>} 
+                        renderItem={({ item }) => <OutletCard data={item} onItemPress={this.onItemPress}/>}
                         showsVerticalScrollIndicator={false}/>
                 </View>
             </SafeAreaView>

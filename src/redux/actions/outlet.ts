@@ -7,9 +7,10 @@ const IOutletAction: IOutlet.DispatchFromProps = {
     return async function (dispatch: any) {
       dispatch({
         type: Types.FETCH_OUTLETS,
-      });    
+      });
       try {
-        const response =  await fetchOutlets();        
+        console.log('coming here');
+        const response =  await fetchOutlets();
         dispatch({
           type: Types.FETCH_OUTLETS_SUCCESS,
           payload: response.data
@@ -20,7 +21,7 @@ const IOutletAction: IOutlet.DispatchFromProps = {
           type: Types.FETCH_OUTLETS_FAILED,
         });
         return null;
-      }  
+      }
     };
   }
 };
