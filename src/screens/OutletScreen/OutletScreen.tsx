@@ -41,7 +41,7 @@ class OutletScreen extends React.Component<IProps, IState> {
     async fetchOutLets() {
         try {
             const response = await this.props.fetchOutlets();
-            console.log(response);
+            console.log(response.data.data.outlets[0]);
         } catch(e) {
             console.log(e);
         }
