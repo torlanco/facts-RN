@@ -22,7 +22,7 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
 
     const onItemPress = () => {
         if (props.onItemPress) 
-            props.onItemPress();
+            props.onItemPress(props.data);
     }
 
     return (
@@ -55,9 +55,9 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        width: '90%',
-        marginLeft: '5%',
-        marginRight: '5%',
+        width: '95%',
+        marginLeft: '2.5%',
+        marginRight: '2.5%',
     },
     cardContainer: {
         borderRadius: responsive(24),
@@ -79,11 +79,11 @@ const styles = StyleSheet.create({
     },
     outletImageWrapper: {
         width: '50%',
-        marginLeft: '-20%',
+        marginLeft: '-22.5%',
         marginRight: '10%',
     },
     outletImage: {
-        height: 110,
+        height: 100,
         borderRadius: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     date: {
         ...typos.SECONDARY,
         color: colors.TEXT_SECONDARY,
-        marginTop: 20,
+        marginTop: 30,
     },
     flexDiv: {
         display: 'flex',

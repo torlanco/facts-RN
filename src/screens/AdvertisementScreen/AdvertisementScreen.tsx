@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { typos } from '@styles';
 
 // Component
@@ -18,9 +18,21 @@ import { ViewType } from './enums/ViewType';
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
+import { Text } from 'react-native-elements';
+
 // props 
-interface IOwnProps {}
+interface ParamType {
+  shopperId: string | undefined;
+}
+interface StateParams extends NavigationState {
+  params: ParamType;
+}
+interface IOwnProps {
+  navigation: NavigationScreenProp<StateParams>;
+}
 type IProps = IOwnProps &
+  NavigationInjectedProps &
   IAdvertisement.DispatchFromProps;
 
 // state
@@ -47,7 +59,8 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   }
 
   async fetchAdvertisements() {
-      const advertisements: any = await this.props.fetchAdvertisements();
+      const { shopperId } = this.props.navigation.state.params;
+      const advertisements: any = await this.props.fetchAdvertisements(shopperId);
       this.setState({
           advertisementList: advertisements
       })
@@ -87,6 +100,10 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
             handleViewTypeChange={this.onViewTypeChange}
             typeList={this.state.typeList} type={this.state.type}
             handleTypeChange={this.onTypeChange}></AdvertisementFilter>
+          <View style={styles.itemCountContainer}>
+            <Text style={styles.itemCount}>{this.state.advertisementList.length} </Text>
+            <Text> ITEM</Text>
+          </View>
           { this.getView() }
       </SafeAreaView>
     );
@@ -103,7 +120,15 @@ const styles = StyleSheet.create({
   text: {
     ...typos.TITLE,
     textAlign: 'center'
-  }
+  },
+  itemCountContainer: {
+    flexDirection: 'row',
+    marginTop: 15,
+    marginLeft: 20
+  },
+  itemCount: {
+    fontWeight: 'bold',
+  },
 });
 
 export default connect(null, mapDispatchToProps)(AdvertisementScreen);

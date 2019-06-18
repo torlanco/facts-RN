@@ -3,13 +3,13 @@ import { IAdvertisement } from '@interfaces/advertisement';
 import { fetchAdvertisements } from '@services';
 
 const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
-  fetchAdvertisements: () => {
+  fetchAdvertisements: (shopperId?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.FETCH_ADVERTISEMENTS,
       });
       try {
-        const response =  await fetchAdvertisements();
+        const response =  await fetchAdvertisements(shopperId);
         dispatch({
           type: Types.FETCH_ADVERTISEMENTS_SUCCESS,
           payload: {

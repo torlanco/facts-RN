@@ -20,7 +20,7 @@ export namespace IAdvertisement {
     }
     
     export interface DispatchFromProps {
-        fetchAdvertisements(): Function;
+        fetchAdvertisements(shopperId?: string): Function;
     }
 
 }

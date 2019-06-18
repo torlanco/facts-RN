@@ -18,7 +18,7 @@ export namespace IShopper {
     }
     
     export interface DispatchFromProps {
-        fetchShoppers(): Function;
+        fetchShoppers(startRange?: string, endRange?: string, outletName?: string): Function;
     }
 
 }

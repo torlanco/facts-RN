@@ -9,14 +9,23 @@ import { HeaderBar, SelectPicker } from '@components';
 import { IShopper } from '@interfaces/shopper';
 import { ShopperCard } from './components/ShopperCard';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/shopper';
+import { IOutlet } from '@interfaces/outlet';
 
 // props 
-interface IOwnProps {}
+interface ParamType {
+  outlet: IOutlet.IOutletData;
+}
+interface StateParams extends NavigationState {
+  params: ParamType;
+}
+interface IOwnProps {
+  navigation: NavigationScreenProp<StateParams>;
+}
 type IProps = IOwnProps &
   NavigationInjectedProps &
   IShopper.DispatchFromProps;
@@ -43,10 +52,11 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   }
 
   async fetchShoppers() {
-      const shoppers: any = await this.props.fetchShoppers();
+      const { outlet } = this.props.navigation.state.params;
+      const shoppers: any = await this.props.fetchShoppers(outlet.latestStartDate, outlet.latestEndDate, outlet.outlet);
       this.setState({
         shoppersList: shoppers
-      })
+      });
   }
 
   onShopperChange = (shopperType: any) => {
@@ -61,8 +71,8 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   }
 
   
-  onItemPress = (outletId: string) => {
-    this.props.navigation.navigate('AdvertisementScreen', { outletId: outletId});
+  onItemPress = (shopperId: string) => {
+    this.props.navigation.navigate('AdvertisementScreen', { shopperId: shopperId});
   }
  
   public render() {

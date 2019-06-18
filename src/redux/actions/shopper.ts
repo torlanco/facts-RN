@@ -3,13 +3,13 @@ import { IShopper } from '@interfaces/shopper';
 import { fetchShoppers } from '@services';
 
 const IShopperAction: IShopper.DispatchFromProps = {
-  fetchShoppers: () => {
+  fetchShoppers: (startRange?: string, endRange?: string, outletName?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.FETCH_SHOPPERS,
       });
       try {
-        const response =  await fetchShoppers();
+        const response =  await fetchShoppers(startRange, endRange, outletName);
         dispatch({
           type: Types.FETCH_SHOPPERS_SUCCESS,
           payload: response.data.data,

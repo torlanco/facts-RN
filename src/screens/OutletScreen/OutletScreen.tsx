@@ -14,43 +14,71 @@ import { NavigationInjectedProps } from 'react-navigation';
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
-interface IOwnProps {
-}
 
+interface IOwnProps {}
 type IProps = IOwnProps &
     NavigationInjectedProps &
+    IOutlet.StateToProps &
     IOutlet.DispatchFromProps;
 
 interface IState {
     selectedTab: string,
-    outletList: Array<IOutlet.IOutletData>
+    outletList: Array<IOutlet.IOutletData>,
+    channels: string[],
+}
+
+const mapStateToProps = function(state: any){
+    return {
+        outlets: state.outlet.outlets,
+        channels: state.outlet.channels,
+    }
 }
 
 class OutletScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            selectedTab: 'CLUB SM',
+            selectedTab: '',
             outletList: [],
+            channels: [],
         };
 
         this.fetchOutLets();
     }
 
     async fetchOutLets() {
-        const outlets: any = await this.props.fetchOutlets();
+        await this.props.fetchOutlets();
         this.setState({
-            outletList: outlets
-        })
+            channels: (this.props.channels ? this.props.channels : []),
+            selectedTab: (this.props.channels ? this.props.channels[0] : ''),
+            outletList: this.filterOutlets(this.props.channels ? this.props.channels[0] : ''),
+        });
     }
 
-    onItemPress = () => {
-        this.props.navigation.navigate('ShopperScreen');
+    filterOutlets(channel: string) {
+        let outlets: Array<IOutlet.IOutletData>;
+        if (!this.props.outlets) {
+            outlets = [];
+        } else if (channel == '') {
+            outlets = this.props.outlets;
+        } else {
+            outlets = this.props.outlets.filter((outlet) => {
+                return outlet.channelName == channel;
+            });
+        }
+        return outlets;
+    } 
+
+    onItemPress = (outlet: IOutlet.IOutletData) => {
+        this.props.navigation.navigate('ShopperScreen', {
+            outlet
+        });
     }
 
     onActionButtonPress = (buttonText: string) => {
         this.setState({
-            selectedTab: buttonText
+            selectedTab: buttonText,
+            outletList: this.filterOutlets(buttonText)
         });
     }
 
@@ -59,19 +87,22 @@ class OutletScreen extends React.Component<IProps, IState> {
             <SafeAreaView style={{flex: 1, marginTop: 50,}}>
                 <HeaderBar title={'Outlets'}/>
                 <View style={styles.container}>
-                    <View style={styles.headerButtonBar}>
-                        <ActionButton title='CLUB' inverted={this.state.selectedTab == 'CLUB'} onPress={this.onActionButtonPress}/>
-                        <ActionButton title='CLUB SM' inverted={this.state.selectedTab == 'CLUB SM'} onPress={this.onActionButtonPress}/>
-                        <ActionButton title='OTHER' inverted={this.state.selectedTab == 'OTHER'} onPress={this.onActionButtonPress}/>
-                    </View>
+                    <FlatList
+                        data={this.state.channels}
+                        renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item} 
+                            onPress={this.onActionButtonPress}/>}
+                        extraData={this.state.selectedTab}
+                        keyExtractor={(item, index) => index.toString()}
+                        horizontal={true}/>
+
                     <View style={styles.itemCountContainer}>
                         <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
                         <Text> ITEM</Text>
                     </View>
                     <FlatList
                         data={this.state.outletList}
-                        keyExtractor={( item, index ) => index.toString()}
-                        renderItem={({ item }) => <OutletCard data={item} onItemPress={this.onItemPress}/>}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({item}) => <OutletCard data={item} onItemPress={this.onItemPress}/>}
                         showsVerticalScrollIndicator={false}/>
                 </View>
             </SafeAreaView>
@@ -80,11 +111,6 @@ class OutletScreen extends React.Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-    headerButtonBar: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     container: {
         paddingHorizontal: '4%',
         paddingTop: 10
@@ -95,7 +121,8 @@ const styles = StyleSheet.create({
     },
     itemCount: {
         fontWeight: 'bold',
+        paddingLeft: 5
     },
 });
 
-export default connect(null, mapDispatchToProps)(OutletScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(OutletScreen);

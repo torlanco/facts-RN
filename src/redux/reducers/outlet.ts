@@ -5,7 +5,8 @@ import { AnyAction } from 'redux';
 const initialState: IOutlet.StateToProps = {
   error: false,
   loading: false,
-  outlets: undefined
+  outlets: undefined,
+  channels: undefined,
 };
 
 export function outlet(
@@ -24,15 +25,21 @@ export function outlet(
       return {
         error: false,
         loading: false,
-        outlets: action.payload.outlets
+        outlets: action.payload.outlets,
+        channels: fetchChannels(action.payload.outlets),
       };
     case Types.FETCH_OUTLETS_FAILED:
       return {
         error: action.payload.message || true,
         loading: false,
-        outlets: []
+        outlets: [],
+        channels: [],
       };
     default:
       return state;
   }
+}
+
+function fetchChannels(outlets: any) {
+  return [...new Set<string>(outlets.map((x: any) => x.channelName))];
 }

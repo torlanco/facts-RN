@@ -18,7 +18,7 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
     const color = !inverted ? colors.MID_GRAY : colors.DARK_GRAY;
     const borderColor = !inverted ? colors.LIGHTER_GRAY : colors.PRIMARY;
     const opacity = disabled ? 0.7 : 1;
-    let boxShadow = {};
+    const boxShadow: any = {};
 
     if (inverted) {
         boxShadow.shadowColor = colors.LIGHT_GREEN;
@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         height: responsive(44),
         justifyContent: 'center',
-        margin: 5,
-        minWidth: '30%',
+        marginVertical: 5,
+        marginHorizontal: 2.5,
+        paddingHorizontal: 5,
     },
     button: {
         borderWidth: 2,
