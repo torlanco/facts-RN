@@ -12,24 +12,26 @@ interface IOwnProps {
 type IProps = IOwnProps;
 
 const ShopperCard: React.SFC<IProps> = (props: IProps) => {
+    
+    const {id, outlet, startDate, endDate, count, path} = props.shopper;
     const imageSource = require('@assets/images/placeholder.png');
     
     const onItemPress = () => {
         if (props.onItemPress) 
-            props.onItemPress();
+            props.onItemPress(id);
     }
     
     return (
         <TouchableOpacity onPress={onItemPress}>
             <View style={styles.mainContainer}>
                 <Card containerStyle={styles.outletImage}>
-                    { props.shopper.imageUrl ? <Image style={ styles.image } source={{ uri: props.shopper.imageUrl }}/> 
+                    { props.shopper.path ? <Image style={ styles.image } source={{ uri: path }}/> 
                         : <Image style={ styles.image } source={imageSource} /> }
                 </Card>
                 <View style={styles.cardContainer}>
                     <View style={styles.mainContent}>
-                        <Text style={[styles.highlight, styles.padding]}>{ props.shopper.startDate } - {props.shopper.endDate}</Text>
-                        <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{ props.shopper.features }</Text> FEATURES</Text>
+                        <Text style={[styles.highlight, styles.padding]}>{startDate} - {endDate}</Text>
+                        <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> FEATURES</Text>
                     </View>
                 </View>
             </View>

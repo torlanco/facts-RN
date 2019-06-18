@@ -1,21 +1,24 @@
 export namespace IShopper {
 
     export interface IShopperData {
-        objectId?: string;
-        startDate: string;
-        endDate: string;
-        features: number;
-        imageUrl?: string;
+        id?: string;
+        outlet?: string;
+        startDate?: string;
+        endDate?: string;
+        pathThumb?: number;
+        path?: string;
+        count?: number,
+        pages?: string
     }
 
     export interface StateToProps {
         error: string | boolean;
         loading: boolean;
-        econoList: IShopperData[] | undefined;
+        shoppers: IShopperData[] | undefined;
     }
     
     export interface DispatchFromProps {
-    
+        fetchShoppers(): Function;
     }
 
 }

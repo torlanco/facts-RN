@@ -14,11 +14,11 @@ export namespace IAdvertisement {
     export interface StateToProps {
         error: string | boolean;
         loading: boolean;
-        econoList: IAdvertisementData[] | undefined;
+        advertisements: IAdvertisementData[] | undefined;
     }
     
     export interface DispatchFromProps {
-    
+        fetchAdvertisements(): Function;
     }
 
 }

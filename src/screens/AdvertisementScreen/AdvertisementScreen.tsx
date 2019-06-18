@@ -14,9 +14,14 @@ import { AdvertisementFilter } from './components/AdvertisementFilter';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { ViewType } from './enums/ViewType';
 
+import { connect } from "react-redux";
+import { mapDispatchToProps } from '@actions/outlet';
+
+
 // props 
 interface IOwnProps {}
-type IProps = IOwnProps;
+type IProps = IOwnProps &
+  IAdvertisement.DispatchFromProps;
 
 // state
 interface IState {
@@ -144,4 +149,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { AdvertisementScreen };
+export default connect(null, mapDispatchToProps)(AdvertisementScreen);

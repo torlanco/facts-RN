@@ -12,7 +12,6 @@ import { IOutlet } from '@interfaces/outlet';
 import { NavigationInjectedProps } from 'react-navigation';
 
 import { connect } from "react-redux";
-
 import { mapDispatchToProps } from '@actions/outlet';
 interface IOwnProps {
 }
@@ -39,7 +38,6 @@ class OutletScreen extends React.Component<IProps, IState> {
 
     async fetchOutLets() {
         const outlets: any = await this.props.fetchOutlets();
-        console.log(outlets[0].outletImage);
         this.setState({
             outletList: outlets
         })
@@ -66,7 +64,7 @@ class OutletScreen extends React.Component<IProps, IState> {
                         <ActionButton title='OTHER' inverted={this.state.selectedTab == 'OTHER'} onPress={this.onActionButtonPress}/>
                     </View>
                     <View style={styles.itemCountContainer}>
-                        <Text style={styles.itemCount}>385 </Text>
+                        <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
                         <Text> ITEM</Text>
                     </View>
                     <FlatList
@@ -100,4 +98,3 @@ const styles = StyleSheet.create({
 });
 
 export default connect(null, mapDispatchToProps)(OutletScreen);
-// export { OutletScreen };

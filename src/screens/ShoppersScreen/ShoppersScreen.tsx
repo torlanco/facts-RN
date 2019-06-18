@@ -11,18 +11,20 @@ import { ShopperCard } from './components/ShopperCard';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import { NavigationInjectedProps } from 'react-navigation';
 
-// Models
+import { connect } from "react-redux";
+import { mapDispatchToProps } from '@actions/shopper';
 
 // props 
 interface IOwnProps {}
 type IProps = IOwnProps &
-  NavigationInjectedProps;
+  NavigationInjectedProps &
+  IShopper.DispatchFromProps;
 
 // state
 interface IState {
     shoppersTypeList: string[],
     shoppersType: string,
-    shoppers: Array<IShopper.IShopperData>
+    shoppersList: Array<IShopper.IShopperData>
 }
 
 class ShoppersScreen extends React.Component<IProps, IState> {
@@ -33,32 +35,18 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     this.state = {
         shoppersTypeList: ['Econo', 'Econo1', 'Econo2'],
         shoppersType: 'Econo',
-        shoppers: this.loadShoppers()
+        shoppersList: []
     };
+
+    this.fetchOutLets();
   }
 
-  loadShoppers(): Array<IShopper.IShopperData> {
-    const shoppersList: Array<IShopper.IShopperData> = [
-        {
-            startDate: '25 May',
-            endDate: '30 May',
-            features: 10,
-            imageUrl: 'https://www.ericnisall.com/wp-content/uploads/3-Reasons-I-Wont-Use-Instacart-For-Grocery-Delivery.jpg',
-        },
-        {
-            startDate: '25 May',
-            endDate: '30 May',
-            features: 10,
-            imageUrl: 'https://www.marketforce.com/sites/default/files/grocery.jpg',
-        },
-        {
-            startDate: '25 May',
-            endDate: '30 May',
-            features: 10,
-            imageUrl: 'https://www.ericnisall.com/wp-content/uploads/3-Reasons-I-Wont-Use-Instacart-For-Grocery-Delivery.jpg',
-        },
-    ];
-    return shoppersList;
+  async fetchOutLets() {
+      const shoppers: any = await this.props.fetchShoppers();
+      console.log(shoppers[0].outlet);
+      this.setState({
+        shoppersList: shoppers
+      })
   }
 
   onShopperChange = (shopperType: any) => {
@@ -68,13 +56,13 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   }
   
   _renderDotIndicator() {
-    return <PagerDotIndicator pageCount={this.state.shoppers.length} 
+    return <PagerDotIndicator pageCount={this.state.shoppersList.length} 
         dotStyle={styles.dotStyle} selectedDotStyle={styles.selectedDotStyle}/>;
   }
 
   
-  onItemPress = () => {
-    this.props.navigation.navigate('AdvertisementScreen');
+  onItemPress = (outletId: string) => {
+    this.props.navigation.navigate('AdvertisementScreen', { outletId: outletId});
   }
  
   public render() {
@@ -83,13 +71,13 @@ class ShoppersScreen extends React.Component<IProps, IState> {
             <HeaderBar title={'Shoppers'}></HeaderBar>
             <SelectPicker options={this.state.shoppersTypeList} value={this.state.shoppersType} 
                 handleValueChange={this.onShopperChange}></SelectPicker>
-            <Text style={styles.text}><Text style={styles.textBold}>10 </Text>SHOPPERS</Text>
+            <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
 
             <IndicatorViewPager
                 style={{ height: 550 }}
                 indicator={this._renderDotIndicator()}>
                 {
-                    this.state.shoppers.map((shopper, index) => {
+                    this.state.shoppersList.map((shopper, index) => {
                         return <ShopperCard shopper={shopper} key={index} onItemPress={this.onItemPress}></ShopperCard>;
                     })
                 }
@@ -130,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { ShoppersScreen };
+export default connect(null, mapDispatchToProps)(ShoppersScreen);

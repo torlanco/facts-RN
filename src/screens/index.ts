@@ -1,3 +1,8 @@
-// export * from './OutletScreen/OutletScreen';
-export * from './AdvertisementScreen/AdvertisementScreen';
-export * from './ShoppersScreen/ShoppersScreen';
+import OutletScreen from './OutletScreen/OutletScreen';
+import ShoppersScreen from './ShoppersScreen/ShoppersScreen';
+import AdvertisementScreen from './AdvertisementScreen/AdvertisementScreen';
+
+export { OutletScreen };
+export { ShoppersScreen };
+export { AdvertisementScreen };
+
