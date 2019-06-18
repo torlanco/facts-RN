@@ -24,7 +24,7 @@ export function outlet(
       return {
         error: false,
         loading: false,
-        outlets: action.payload.data
+        outlets: action.payload.outlets
       };
     case Types.FETCH_OUTLETS_FAILED:
       return {

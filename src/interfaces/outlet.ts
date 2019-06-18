@@ -1,15 +1,13 @@
-import { IShopper } from '@interfaces/shopper';
-
 export namespace IOutlet {
 
   export interface IOutletData {
-    objectId?: string;
-    name?: string;
-    imageUrl?: string;
-    category?: string;
-    date?: string;
-    shoppers?: string[];
-    isNew?: boolean;
+    outlet?: string,
+    shopperCount?: number,
+    channelName?: string,
+    tag?: string,
+    outletImage?: string,
+    latestStartDate?: string,
+    latestEndDate?: string,
   }
 
   export interface StateToProps {

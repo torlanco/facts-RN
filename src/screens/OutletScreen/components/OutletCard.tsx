@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 
 import { IOutlet } from '@interfaces/outlet';
+import { Card } from 'react-native-elements';
 
 interface IOwnProps {
     data: IOutlet.IOutletData,
@@ -13,7 +14,8 @@ interface IOwnProps {
 type IProps = IOwnProps; 
 
 const OutletCard: React.SFC<IProps> = (props: IProps) => {
-    const {imageUrl, category, name, date, shoppers, isNew} = props.data;
+
+    const {outlet, shopperCount, channelName, tag, outletImage, latestStartDate, latestEndDate} = props.data;
     const imageSource = require('@assets/images/placeholder.png');
 
     const onItemPress = () => {
@@ -23,19 +25,25 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
 
     return (
         <TouchableOpacity onPress={onItemPress}>
-            <View style={styles.cardContainer}>
-                <View style={styles.outletImage}>
-                    {imageUrl ? <Image source={{uri: imageUrl}}/> : <Image source={imageSource}/>}
-                </View>
-                <View style={styles.mainContent}>
-                    <Text style={[styles.subHeading, styles.category]}>{category}</Text>
-                    <Text style={styles.mainHeading}>{name}</Text>
-                    <Text style={styles.subHeading}>Latest: {date}</Text>
-                    <View style={styles.shopperAndNew}>
-                        <Text style={styles.subHeading}>
-                            <Text style={styles.shoppersCount}>{shoppers ? shoppers.length : 0}</Text> Shoppers
-                        </Text>
-                        {isNew && <Text style={styles.isNew}>New</Text>}
+            <View style={styles.mainContainer}>
+                <View style={styles.cardContainer}>
+                    <View style={styles.outletImageWrapper}>
+                        <Card containerStyle={styles.outletImage}>
+                            {outletImage ? <Image source={{uri: outletImage}}/> : <Image source={imageSource}/>}
+                        </Card>
+                    </View>
+                    <View style={styles.mainContent}>
+                        <Text style={[styles.type, styles.padding]}>{channelName}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={[styles.name, styles.padding]}>{outlet}</Text>
+                        </View>
+                        <Text style={[styles.date, styles.padding]}>Latest: {latestStartDate}</Text>
+                        <View style={styles.flexDiv}>
+                            <Text style={[styles.shoppers, styles.padding]}>
+                                <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS
+                            </Text>
+                            <Text style={[styles.isNew, styles.padding]}>New</Text>  
+                        </View>
                     </View>
                 </View>
             </View>
@@ -44,11 +52,16 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
 }
 
 const styles = StyleSheet.create({
+    mainContainer: {
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%',
+    },
     cardContainer: {
         borderRadius: responsive(24),
-        marginTop: responsive(20),
-        marginLeft: responsive(40),
-        marginRight: responsive(15),
+        marginTop: responsive(15),
+        marginBottom: responsive(15),
+        marginLeft: '10%',
         paddingVertical: 20,
         paddingHorizontal: 20,
         flexDirection: 'row',
@@ -58,49 +71,76 @@ const styles = StyleSheet.create({
             height: 5
         },
         shadowColor: colors.LIGHT_BLUE,
-        color: colors.MID_GRAY,
-        backgroundColor: colors.WHITE,
         elevation: 3,
         shadowRadius: 10,
+        backgroundColor: colors.WHITE,
+    },
+    outletImageWrapper: {
+        width: '50%',
+        marginLeft: '-20%',
+        marginRight: '10%',
     },
     outletImage: {
-        marginLeft: responsive(-60),
+        height: 110,
+        borderRadius: 10,
+        shadowOpacity: 0.1,
+        shadowOffset: {
+            width: 0,
+            height: 5
+        },
+        shadowColor: colors.LIGHT_BLUE,
+        elevation: 3,
+        shadowRadius: 10,
+        padding: 0,
+        margin: 0
+    },
+    image: {
+        borderRadius: 10,
+        width: '100%',
+        height: '100%',
     },
     mainContent: {
       flexDirection: 'column'
     },
-    mainHeading: {
-        ...typos.TITLE,
-        color: colors.TEXT_PRIMARY,
-        paddingBottom: responsive(25),
+    padding: {
+        padding: 2,
     },
-    subHeading: {
+    type: {
         ...typos.SECONDARY,
-        textTransform: 'uppercase',
-        paddingTop: responsive(10),
-        color: colors.TEXT_SECONDARY
+        color: colors.TEXT_SECONDARY,
     },
-    category: {
-        textTransform: 'none'
+    name: {
+        ...typos.HEADLINE,
+        color: colors.TEXT_PRIMARY,
+        flex: 1,
+        flexWrap: 'wrap',
+    },
+    date: {
+        ...typos.SECONDARY,
+        color: colors.TEXT_SECONDARY,
+        marginTop: 20,
+    },
+    flexDiv: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    shoppers: {
+        ...typos.PRIMARY_BOLD,
+        color: colors.TEXT_SECONDARY  
     },
     shoppersCount: {
         flexDirection: 'row',
         color: colors.BLACK
     },
-    image: {
-      borderRadius: responsive(16)
-    },
     isNew: {
-        paddingTop: responsive(8),
         paddingLeft: responsive(20),
         ...typos.FOOTNOTE,
         textTransform: 'uppercase',
         color: colors.LIGHT_ORANGE
     },
-    shopperAndNew: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    }
 });
 
 export { OutletCard };

@@ -9,18 +9,18 @@ const IOutletAction: IOutlet.DispatchFromProps = {
         type: Types.FETCH_OUTLETS,
       });
       try {
-        console.log('coming here');
         const response =  await fetchOutlets();
         dispatch({
           type: Types.FETCH_OUTLETS_SUCCESS,
-          payload: response.data
+          payload: response.data.data,
         });
-        return response;
+        return response.data.data.outlets;
       } catch(e) {
         dispatch({
           type: Types.FETCH_OUTLETS_FAILED,
+          payload: e,
         });
-        return null;
+        return [];
       }
     };
   }

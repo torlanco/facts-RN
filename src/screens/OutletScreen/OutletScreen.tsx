@@ -31,82 +31,18 @@ class OutletScreen extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             selectedTab: 'CLUB SM',
-            outletList: this.loadData(),
+            outletList: [],
         };
 
         this.fetchOutLets();
-        console.log(mapDispatchToProps);
     }
 
     async fetchOutLets() {
-        try {
-            const response = await this.props.fetchOutlets();
-            console.log(response.data.data.outlets[0]);
-        } catch(e) {
-            console.log(e);
-        }
-    }
-
-    private loadData(): Array<IOutlet.IOutletData> {
-        const outletList: Array<IOutlet.IOutletData> = [{
-            imageUrl: '',
-            name: 'Econo',
-            category: 'Supermarket',
-            date: '24 May',
-            shoppers: ['Shopper1', 'shopper2'],
-            isNew: true
-        }, {
-            imageUrl: '',
-            name: 'Sample',
-            category: 'Flea Market',
-            date: '25 May',
-            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
-            isNew: false
-        }, {
-            imageUrl: '',
-            name: 'Econo',
-            category: 'Supermarket',
-            date: '24 May',
-            shoppers: ['Shopper1', 'shopper2'],
-            isNew: true
-        }, {
-            imageUrl: '',
-            name: 'Sample',
-            category: 'Flea Market',
-            date: '25 May',
-            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
-            isNew: false
-        }, {
-            imageUrl: '',
-            name: 'Econo',
-            category: 'Supermarket',
-            date: '24 May',
-            shoppers: ['Shopper1', 'shopper2'],
-            isNew: true
-        }, {
-            imageUrl: '',
-            name: 'Sample',
-            category: 'Flea Market',
-            date: '25 May',
-            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
-            isNew: false
-        }, {
-            imageUrl: '',
-            name: 'Econo',
-            category: 'Supermarket',
-            date: '24 May',
-            shoppers: ['Shopper1', 'shopper2'],
-            isNew: true
-        }, {
-            imageUrl: '',
-            name: 'Sample',
-            category: 'Flea Market',
-            date: '25 May',
-            shoppers: ['shopper1', 'shopper2', 'shopper3', 'shopper4'],
-            isNew: false
-        }];
-
-        return outletList;
+        const outlets: any = await this.props.fetchOutlets();
+        console.log(outlets[0].outletImage);
+        this.setState({
+            outletList: outlets
+        })
     }
 
     onItemPress = () => {
@@ -114,7 +50,6 @@ class OutletScreen extends React.Component<IProps, IState> {
     }
 
     onActionButtonPress = (buttonText: string) => {
-        console.log(buttonText)
         this.setState({
             selectedTab: buttonText
         });
