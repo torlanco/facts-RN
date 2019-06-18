@@ -4,6 +4,9 @@ import { colors, typos, responsive } from '@styles';
 import { Card } from 'react-native-elements';
 import { IShopper } from '@interfaces/shopper';
 
+// Utils
+import { formatDate } from '@utils';
+
 interface IOwnProps {
   shopper: IShopper.IShopperData,
   onItemPress?: Function
@@ -30,7 +33,7 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
                 </Card>
                 <View style={styles.cardContainer}>
                     <View style={styles.mainContent}>
-                        <Text style={[styles.highlight, styles.padding]}>{startDate} - {endDate}</Text>
+                        <Text style={[styles.highlight, styles.padding]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
                         <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> FEATURES</Text>
                     </View>
                 </View>

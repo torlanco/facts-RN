@@ -11,6 +11,7 @@ import { ShopperCard } from './components/ShopperCard';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import { NavigationInjectedProps } from 'react-navigation';
 
+// Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/shopper';
 
@@ -38,12 +39,11 @@ class ShoppersScreen extends React.Component<IProps, IState> {
         shoppersList: []
     };
 
-    this.fetchOutLets();
+    this.fetchShoppers();
   }
 
-  async fetchOutLets() {
+  async fetchShoppers() {
       const shoppers: any = await this.props.fetchShoppers();
-      console.log(shoppers[0].outlet);
       this.setState({
         shoppersList: shoppers
       })

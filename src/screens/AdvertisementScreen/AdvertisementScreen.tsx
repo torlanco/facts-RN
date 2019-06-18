@@ -14,9 +14,9 @@ import { AdvertisementFilter } from './components/AdvertisementFilter';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { ViewType } from './enums/ViewType';
 
+// Props Action
 import { connect } from "react-redux";
-import { mapDispatchToProps } from '@actions/outlet';
-
+import { mapDispatchToProps } from '@actions/advertisement';
 
 // props 
 interface IOwnProps {}
@@ -37,63 +37,20 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      advertisementList: this.loadData(),
+      advertisementList: [],
       viewType: ViewType.Grid,
       typeList: ['Beer', 'Vodka', 'Visky'],
       type: 'Beer'
     };
 
+    this.fetchAdvertisements();
   }
 
-  loadData(): Array<IAdvertisement.IAdvertisementData> {
-    const advertisementList: Array<IAdvertisement.IAdvertisementData> = [
-      { 
-        type: 'Beer',
-        name: 'Corona',
-        piecePerKg: '1-2 pcs/kg',
-        price: '$ 17.94',
-        originalPrice: '$ 17.94',
-        minQuantity: 'MIN. 2KG',
-        itemUrl: 'https://www.ericnisall.com/wp-content/uploads/3-Reasons-I-Wont-Use-Instacart-For-Grocery-Delivery.jpg',
-      },
-      { 
-        type: 'Beer',
-        name: 'Corona',
-        piecePerKg: '1-2 pcs/kg',
-        price: '$ 17.94',
-        originalPrice: '$ 17.94',
-        minQuantity: 'MIN. 2KG',
-        itemUrl: 'https://www.marketforce.com/sites/default/files/grocery.jpg',
-      },
-      { 
-        type: 'Beer',
-        name: 'Corona',
-        piecePerKg: '1-2 pcs/kg',
-        price: '$ 17.94',
-        originalPrice: '$ 17.94',
-        minQuantity: 'MIN. 2KG',
-        itemUrl: 'https://www.marketforce.com/sites/default/files/grocery.jpg',
-      },
-      { 
-        type: 'Beer',
-        name: 'Corona',
-        piecePerKg: '1-2 pcs/kg',
-        price: '$ 17.94',
-        originalPrice: '$ 17.94',
-        minQuantity: 'MIN. 2KG',
-        itemUrl: 'https://www.ericnisall.com/wp-content/uploads/3-Reasons-I-Wont-Use-Instacart-For-Grocery-Delivery.jpg',
-      },{ 
-        type: 'Beer',
-        name: 'Corona',
-        piecePerKg: '1-2 pcs/kg',
-        price: '$ 17.94',
-        originalPrice: '$ 17.94',
-        minQuantity: 'MIN. 2KG',
-        itemUrl: 'https://www.ericnisall.com/wp-content/uploads/3-Reasons-I-Wont-Use-Instacart-For-Grocery-Delivery.jpg',
-      }
-    ];
-
-    return advertisementList;
+  async fetchAdvertisements() {
+      const advertisements: any = await this.props.fetchAdvertisements();
+      this.setState({
+          advertisementList: advertisements
+      })
   }
 
   componentDidMount() {

@@ -6,6 +6,8 @@ import { colors, typos, responsive } from '@styles';
 import { IOutlet } from '@interfaces/outlet';
 import { Card } from 'react-native-elements';
 
+// Utils
+import { formatDate } from '@utils';
 interface IOwnProps {
     data: IOutlet.IOutletData,
     onItemPress?: Function
@@ -37,7 +39,7 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
                         <View style={{flexDirection: 'row'}}>
                             <Text style={[styles.name, styles.padding]}>{outlet}</Text>
                         </View>
-                        <Text style={[styles.date, styles.padding]}>Latest: {latestStartDate}</Text>
+                        <Text style={[styles.date, styles.padding]}>Latest: {formatDate(latestStartDate)}</Text>
                         <View style={styles.flexDiv}>
                             <Text style={[styles.shoppers, styles.padding]}>
                                 <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS

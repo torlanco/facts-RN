@@ -14,19 +14,22 @@ interface IOwnProps {
 }
 type IProps = IOwnProps;
 const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
+
+  const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
+  
   return (
     <Card containerStyle={styles.container}>
       <Card containerStyle={[styles.container, styles.imageContainer]}>
-        <FullWidthImage style={styles.image} source={{ uri: props.advertisement.itemUrl }} />
+        <FullWidthImage style={styles.image} source={{ uri: image }} />
       </Card>
-      <Text style={[styles.type, styles.padding]}>{ props.advertisement.type }</Text>
-      <Text style={[styles.name, styles.padding]}>{ props.advertisement.name }</Text>
-      <Text style={[styles.pieces, styles.padding]}>{ props.advertisement.piecePerKg }</Text>
+      <Text style={[styles.type, styles.padding]}>{type}</Text>
+      <Text style={[styles.name, styles.padding]}>{brand}</Text>
+      <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
       <View style={styles.priceContainer}>
-        <Text style={[styles.price, styles.padding]}>{ props.advertisement.price }</Text>
-        <Text style={[styles.originalPrice, styles.padding]}>{ props.advertisement.originalPrice }</Text>  
+        <Text style={[styles.price, styles.padding]}>${sprice}</Text>
+        <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
       </View>
-      <Text style={[styles.quantity, styles.padding]}>{ props.advertisement.minQuantity }</Text>
+      <Text style={[styles.quantity, styles.padding]}>MIN. 1KG</Text>
     </Card>
   );
 };

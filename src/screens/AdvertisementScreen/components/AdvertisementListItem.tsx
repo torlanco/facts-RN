@@ -12,24 +12,26 @@ interface IOwnProps {
 type IProps = IOwnProps;
 
 const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
+    const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
     const imageSource = require('@assets/images/placeholder.png');
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.cardContainer}>
                 <View style={styles.outletImageWrapper}>
                     <Card containerStyle={styles.outletImage}>
-                        {props.advertisement.itemUrl ? <Image style={ styles.image } source={{ uri: props.advertisement.itemUrl }} /> 
+                        {image ? <Image style={ styles.image } source={{ uri: image }} /> 
                             : <Image style={ styles.image } source={imageSource} /> }
                     </Card>
                 </View>
                 <View style={styles.mainContent}>
-                    <Text style={[styles.type, styles.padding]}>{ props.advertisement.type }</Text>
-                    <Text style={[styles.name, styles.padding]}>{ props.advertisement.name }</Text>
-                    <Text style={[styles.pieces, styles.padding]}>{ props.advertisement.piecePerKg }</Text>
-                    <Text style={[styles.quantity, styles.padding]}>{ props.advertisement.minQuantity }</Text>
+                    <Text style={[styles.type, styles.padding]}>{type}</Text>
+                    <Text style={[styles.name, styles.padding]}>{brand}</Text>
+                    <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
+                    <Text style={[styles.quantity, styles.padding]}>MIN. 1KG</Text>
                     <View style={styles.priceContainer}>
-                        <Text style={[styles.price, styles.padding]}>{ props.advertisement.price }</Text>
-                        <Text style={[styles.originalPrice, styles.padding]}>{ props.advertisement.originalPrice }</Text>  
+                        <Text style={[styles.price, styles.padding]}>${sprice}</Text>
+                        <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
                     </View>
                 </View>
             </View>

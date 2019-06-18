@@ -14,6 +14,6 @@ export const typos = {
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Roboto-Medium' },
   SUBHEADLINE: { fontSize: responsive(20), fontFamily: 'Roboto-Medium' },
   PRIMARY: { fontSize: responsive(16), fontFamily: 'Roboto-Regular' },
-  SECONDARY: { fontSize: responsive(13), fontFamily: 'Roboto-Regular' },
+  SECONDARY: { fontSize: responsive(14), fontFamily: 'Roboto-Regular' },
   PRIMARY_BOLD: { fontSize: responsive(16), fontFamily: 'Roboto-Medium' }
 };

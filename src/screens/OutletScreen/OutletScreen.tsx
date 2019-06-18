@@ -11,6 +11,7 @@ import { OutletCard } from './components/OutletCard';
 import { IOutlet } from '@interfaces/outlet';
 import { NavigationInjectedProps } from 'react-navigation';
 
+// Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
 interface IOwnProps {

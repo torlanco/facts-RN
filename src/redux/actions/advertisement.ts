@@ -12,9 +12,11 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
         const response =  await fetchAdvertisements();
         dispatch({
           type: Types.FETCH_ADVERTISEMENTS_SUCCESS,
-          payload: response.data.data,
+          payload: {
+            advertisements: response.data.data.features,
+          }
         });
-        return response.data.data.advertisements;
+        return response.data.data.features;
       } catch(e) {
         dispatch({
           type: Types.FETCH_ADVERTISEMENTS_FAILED,

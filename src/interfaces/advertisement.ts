@@ -1,14 +1,16 @@
 export namespace IAdvertisement {
 
     export interface IAdvertisementData {
-        objectId?: string;
-        type: string;
-        name: string;
-        piecePerKg?: string;
-        price: string;
-        originalPrice?: string;
-        minQuantity?: string;
-        itemUrl: string;
+        id?: number;
+        copypage?: number;
+        category?: string;
+        type?: string;
+        brand?: string;
+        sprice?: string;
+        rprice?: string;
+        position?: string;
+        sizeMeasure?: string;
+        image?: string;
     }
 
     export interface StateToProps {
