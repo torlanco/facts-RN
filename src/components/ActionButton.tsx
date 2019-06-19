@@ -46,7 +46,7 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
 
     const onButtonPress = () => {
         if (props.onPress) {
-            props.onPress(props.title);
+            props.onPress(inverted ? '' : props.title);
         }
     }
 

@@ -7,7 +7,7 @@ import {
 import { colors, typos } from '@styles';
 
 interface IOwnProps {
-    options: string[],
+    options: string[] | undefined,
     value: string,
     handleValueChange: Function
 }
@@ -22,7 +22,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             style={styles.picker}
             onValueChange={(itemValue, itemIndex) => props.handleValueChange(itemValue)}>
             {
-                props.options.map((type, index) => {
+                props.options && props.options.map((type, index) => {
                     return  <Picker.Item label={type} value={type} key={index}/>;
                 })
             }    

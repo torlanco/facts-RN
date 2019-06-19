@@ -5,7 +5,8 @@ import { AnyAction } from 'redux';
 const initialState: IAdvertisement.StateToProps = {
   error: false,
   loading: false,
-  advertisements: undefined
+  advertisements: undefined,
+  categories: undefined
 };
 
 export function advertisement(
@@ -24,15 +25,21 @@ export function advertisement(
       return {
         error: false,
         loading: false,
-        advertisements: action.payload.advertisements
+        advertisements: action.payload.advertisements,
+        categories: fetchCategories(action.payload.advertisements)
       };
     case Types.FETCH_ADVERTISEMENTS_FAILED:
       return {
         error: action.payload.message || true,
         loading: false,
-        advertisements: []
+        advertisements: [],
+        categories: [],
       };
     default:
       return state;
   }
+}
+
+function fetchCategories(advertisements: IAdvertisement.IAdvertisementData[]) {
+  return [...new Set<string>(advertisements.map((x: any) => x.category))];
 }

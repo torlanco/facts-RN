@@ -17,6 +17,7 @@ export namespace IAdvertisement {
         error: string | boolean;
         loading: boolean;
         advertisements: IAdvertisementData[] | undefined;
+        categories: string[] | undefined;
     }
     
     export interface DispatchFromProps {

@@ -7,6 +7,7 @@ const initialState: IOutlet.StateToProps = {
   loading: false,
   outlets: undefined,
   channels: undefined,
+  outletNames: undefined
 };
 
 export function outlet(
@@ -27,6 +28,7 @@ export function outlet(
         loading: false,
         outlets: action.payload.outlets,
         channels: fetchChannels(action.payload.outlets),
+        outletNames: fetchOutletNames(action.payload.outlets),
       };
     case Types.FETCH_OUTLETS_FAILED:
       return {
@@ -34,12 +36,17 @@ export function outlet(
         loading: false,
         outlets: [],
         channels: [],
+        outletNames: [],
       };
     default:
       return state;
   }
 }
 
-function fetchChannels(outlets: any) {
+function fetchChannels(outlets: IOutlet.IOutletData[]) {
   return [...new Set<string>(outlets.map((x: any) => x.channelName))];
+}
+
+function fetchOutletNames(outlets: any) {
+  return outlets.map((outlet: IOutlet.IOutletData) => outlet.outlet);
 }

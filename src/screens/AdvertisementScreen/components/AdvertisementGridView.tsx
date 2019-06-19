@@ -50,14 +50,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   container: {
-      flexDirection: 'row',
-      paddingHorizontal: 5
+    flexDirection: 'row',
   },
   list: {
-      flex: 1,
-      flexDirection: 'column',
-      paddingVertical: 10,
-      paddingHorizontal: 2.5
+    flex: 1,
+    flexDirection: 'column',
+    paddingVertical: 10,
   }
 });
 

@@ -3,6 +3,7 @@ import {
     StyleSheet,
     Text,
     View,
+    Dimensions,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
@@ -16,9 +17,10 @@ type IProps = IOwnProps;
 const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
 
   const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
-  
+  const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
+
   return (
-    <Card containerStyle={styles.container}>
+    <Card containerStyle={[styles.container, {width: itemWidth}]}>
       <Card containerStyle={[styles.container, styles.imageContainer]}>
         <FullWidthImage style={styles.image} source={{ uri: image }} />
       </Card>
@@ -29,7 +31,6 @@ const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
         <Text style={[styles.price, styles.padding]}>${sprice}</Text>
         <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
       </View>
-      <Text style={[styles.quantity, styles.padding]}>MIN. 1KG</Text>
     </Card>
   );
 };
@@ -88,10 +89,6 @@ const styles = StyleSheet.create({
     ...typos.SMALL,
     color: colors.LIGHT_ORANGE  
   },
-  quantity: {
-    ...typos.SECONDARY,
-    color: colors.TEXT_SECONDARY
-  }
 });
 
 export { AdvertisementGridItem };

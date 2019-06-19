@@ -15,6 +15,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/shopper';
 import { IOutlet } from '@interfaces/outlet';
+import { fetchShoppers } from '@services';
 
 // props 
 interface ParamType {
@@ -25,6 +26,7 @@ interface StateParams extends NavigationState {
 }
 interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
+  outlets: string[] | undefined;
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -32,9 +34,14 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-    shoppersTypeList: string[],
-    shoppersType: string,
-    shoppersList: Array<IShopper.IShopperData>
+  outlet: string,
+  shoppersList: Array<IShopper.IShopperData>
+}
+
+const mapStateToProps = function(state: any){
+  return {
+    outlets: state.outlet.outletNames,
+  }
 }
 
 class ShoppersScreen extends React.Component<IProps, IState> {
@@ -42,10 +49,11 @@ class ShoppersScreen extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+
+    const { outlet } = this.props.navigation.state.params;
     this.state = {
-        shoppersTypeList: ['Econo', 'Econo1', 'Econo2'],
-        shoppersType: 'Econo',
-        shoppersList: []
+      outlet: outlet.outlet || '',
+      shoppersList: [],
     };
 
     this.fetchShoppers();
@@ -53,16 +61,17 @@ class ShoppersScreen extends React.Component<IProps, IState> {
 
   async fetchShoppers() {
       const { outlet } = this.props.navigation.state.params;
-      const shoppers: any = await this.props.fetchShoppers(outlet.latestStartDate, outlet.latestEndDate, outlet.outlet);
+      const shoppers: any = await this.props.fetchShoppers(outlet.latestStartDate, outlet.latestEndDate, this.state.outlet);
       this.setState({
         shoppersList: shoppers
       });
   }
 
-  onShopperChange = (shopperType: any) => {
+  onShopperChange = (outlet: any) => {
     this.setState({
-        shoppersType: shopperType
-    })
+      outlet: outlet
+    });
+    this.fetchShoppers();
   }
   
   _renderDotIndicator() {
@@ -79,7 +88,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     return (
         <SafeAreaView style={styles.container}>
             <HeaderBar title={'Shoppers'}></HeaderBar>
-            <SelectPicker options={this.state.shoppersTypeList} value={this.state.shoppersType} 
+            <SelectPicker options={this.props.outlets} value={this.state.outlet} 
                 handleValueChange={this.onShopperChange}></SelectPicker>
             <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
 
@@ -100,7 +109,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 30,
     marginLeft: 5,
     marginRight: 5,
   },
@@ -128,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, mapDispatchToProps)(ShoppersScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppersScreen);

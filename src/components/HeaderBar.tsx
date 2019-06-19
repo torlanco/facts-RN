@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     iconContainer: {
-        width: responsive(60)
+        width: responsive(40)
     },
     divider: {
         backgroundColor: colors.LIGHTER_GRAY,

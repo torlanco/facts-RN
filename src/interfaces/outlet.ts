@@ -15,6 +15,7 @@ export namespace IOutlet {
     loading: boolean;
     outlets: IOutletData[] | undefined;
     channels: string[] | undefined;
+    outletNames: string[] | undefined;
   }
   export interface DispatchFromProps {
     fetchOutlets(): Function;

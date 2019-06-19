@@ -20,6 +20,7 @@ import { mapDispatchToProps } from '@actions/advertisement';
 
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 import { Text } from 'react-native-elements';
+import { stat } from 'fs';
 
 // props 
 interface ParamType {
@@ -33,14 +34,21 @@ interface IOwnProps {
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
+  IAdvertisement.StateToProps &
   IAdvertisement.DispatchFromProps;
 
 // state
 interface IState {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
   viewType: ViewType,
-  typeList: string[],
-  type: string,
+  category: string,
+}
+
+const mapStateToProps = function(state: any){
+  return {
+    advertisements: state.advertisement.advertisements,
+    categories: state.advertisement.categories,
+  }
 }
 
 class AdvertisementScreen extends React.Component<IProps, IState> {
@@ -51,19 +59,34 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     this.state = {
       advertisementList: [],
       viewType: ViewType.Grid,
-      typeList: ['Beer', 'Vodka', 'Visky'],
-      type: 'Beer'
+      category: ''
     };
 
     this.fetchAdvertisements();
   }
 
   async fetchAdvertisements() {
-      const { shopperId } = this.props.navigation.state.params;
-      const advertisements: any = await this.props.fetchAdvertisements(shopperId);
-      this.setState({
-          advertisementList: advertisements
-      })
+    const { shopperId } = this.props.navigation.state.params;
+    await this.props.fetchAdvertisements(shopperId);
+    const category = this.props.categories ? this.props.categories[0] : '';
+    this.setState({
+      category: category,
+      advertisementList: this.filterAdvertisements(category),
+    });
+  }
+
+  filterAdvertisements(category: string) {
+    let advertisements: Array<IAdvertisement.IAdvertisementData>;
+    if (!this.props.advertisements) {
+      advertisements = [];
+    } else if (category == '') {
+      advertisements = this.props.advertisements;
+    } else {
+      advertisements = this.props.advertisements.filter((advertisement) => {
+          return advertisement.category == category;
+      });
+    }
+    return advertisements;
   }
 
   componentDidMount() {
@@ -80,9 +103,10 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     });
   }
 
-  onTypeChange = (type: string) => {
+  onTypeChange = (category: string) => {
     this._isMounted && this.setState({
-      type: type
+      category: category,
+      advertisementList: this.filterAdvertisements(category)
     });
   }
 
@@ -98,7 +122,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
           <HeaderBar title={'Econo'}></HeaderBar>
           <AdvertisementFilter viewType={this.state.viewType}
             handleViewTypeChange={this.onViewTypeChange}
-            typeList={this.state.typeList} type={this.state.type}
+            typeList={this.props.categories || []} type={this.state.category}
             handleTypeChange={this.onTypeChange}></AdvertisementFilter>
           <View style={styles.itemCountContainer}>
             <Text style={styles.itemCount}>{this.state.advertisementList.length} </Text>
@@ -113,7 +137,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 30,
     marginLeft: 5,
     marginRight: 5,
   },
@@ -124,11 +148,11 @@ const styles = StyleSheet.create({
   itemCountContainer: {
     flexDirection: 'row',
     marginTop: 15,
-    marginLeft: 20
+    marginLeft: 10
   },
   itemCount: {
     fontWeight: 'bold',
   },
 });
 
-export default connect(null, mapDispatchToProps)(AdvertisementScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AdvertisementScreen);

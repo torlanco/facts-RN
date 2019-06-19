@@ -84,7 +84,7 @@ class OutletScreen extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <SafeAreaView style={{flex: 1, marginTop: 50,}}>
+            <SafeAreaView style={{flex: 1, marginTop: 30}}>
                 <HeaderBar title={'Outlets'}/>
                 <View style={styles.container}>
                     <FlatList
@@ -113,7 +113,8 @@ class OutletScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: '4%',
-        paddingTop: 10
+        paddingTop: 10,
+        flex: 1
     },
     itemCountContainer: {
         flexDirection: 'row',

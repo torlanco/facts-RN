@@ -28,7 +28,6 @@ const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
                     <Text style={[styles.type, styles.padding]}>{type}</Text>
                     <Text style={[styles.name, styles.padding]}>{brand}</Text>
                     <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-                    <Text style={[styles.quantity, styles.padding]}>MIN. 1KG</Text>
                     <View style={styles.priceContainer}>
                         <Text style={[styles.price, styles.padding]}>${sprice}</Text>
                         <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
@@ -41,9 +40,9 @@ const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        width: '90%',
-        marginLeft: '5%',
-        marginRight: '5%',
+        width: '95%',
+        marginLeft: '2.5%',
+        marginRight: '2.5%',
     },
     cardContainer: {
         borderRadius: responsive(24),
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
         marginRight: '10%',
     },
     outletImage: {
-        height: 110,
+        height: 100,
         borderRadius: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 25
     },
     price: {
         ...typos.PRIMARY_BOLD,
@@ -119,12 +118,7 @@ const styles = StyleSheet.create({
     originalPrice: {
         ...typos.SMALL,
         color: colors.LIGHT_ORANGE  
-    },
-    quantity: {
-        ...typos.SECONDARY,
-        color: colors.TEXT_SECONDARY,
-        marginTop: 25
-    },
+    }
 });
 
 export { AdvertisementListItem };
