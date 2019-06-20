@@ -31,11 +31,11 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
                     { props.shopper.path ? <Image style={ styles.image } source={{ uri: path }}/> 
                         : <Image style={ styles.image } source={imageSource} /> }
                 </Card>
-                <View style={styles.cardContainer}>
-                    <View style={styles.mainContent}>
+                <View style={styles.mainContent}>
+                    <Card containerStyle={styles.cardContainer}>
                         <Text style={[styles.highlight, styles.padding]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
                         <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> FEATURES</Text>
-                    </View>
+                    </Card>
                 </View>
             </View>
         </TouchableOpacity>
@@ -44,7 +44,7 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: colors.WHITE,
+        paddingHorizontal: '10%',
     },
     outletImage: {
         borderRadius: 10,
@@ -57,33 +57,28 @@ const styles = StyleSheet.create({
         elevation: 3,
         shadowRadius: 10,
         padding: 0,
-        maxWidth: '80%',
-        height: '80%',
-        marginVertical: '5%',
-        marginHorizontal: '10%',
+        height: '80%'
     },
     image: {
         borderRadius: 10,
         height: '100%',
     },
+    mainContent: {
+        paddingHorizontal: '5%',
+        marginTop: -50,
+    },
     cardContainer: {
-        borderRadius: responsive(12),
-        marginLeft: '15%',
-        marginTop: '-12.5%',
-        width: '70%',
         padding: 20,
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
             height: 5
         },
         shadowColor: colors.LIGHT_BLUE,
-        color: colors.MID_GRAY,
         backgroundColor: colors.WHITE,
-        elevation: 5
-    },
-    mainContent: {
-      flexDirection: 'column'
+        elevation: 3,
+        flexDirection: 'column',
+        borderRadius: responsive(12),
     },
     padding: {
         padding: 2,

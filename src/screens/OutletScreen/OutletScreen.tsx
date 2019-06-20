@@ -95,10 +95,11 @@ class OutletScreen extends React.Component<IProps, IState> {
                         keyExtractor={(item, index) => index.toString()}
                         horizontal={true}/>
 
-                    <View style={styles.itemCountContainer}>
-                        <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
-                        <Text> ITEM</Text>
-                    </View>
+                    { this.state.outletList.length ? 
+                        <View style={styles.itemCountContainer}>
+                            <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
+                            <Text> ITEM</Text>
+                        </View> : null }
                     <FlatList
                         data={this.state.outletList}
                         keyExtractor={(item, index) => index.toString()}
