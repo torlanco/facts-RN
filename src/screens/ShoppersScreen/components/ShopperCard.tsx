@@ -28,7 +28,7 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
         <TouchableOpacity onPress={onItemPress}>
             <View style={styles.mainContainer}>
                 <Card containerStyle={styles.outletImage}>
-                    { props.shopper.path ? <Image style={ styles.image } source={{ uri: path }}/> 
+                    { props.shopper.path ? <Image style={ styles.image } source={{ uri: path }} resizeMode="contain"/>
                         : <Image style={ styles.image } source={imageSource} /> }
                 </Card>
                 <View style={styles.mainContent}>
@@ -44,7 +44,8 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        paddingHorizontal: '10%',
+        paddingHorizontal: responsive(10),
+        maxWidth: responsive(1000)
     },
     outletImage: {
         borderRadius: 10,

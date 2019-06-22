@@ -75,7 +75,9 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   }
   
   _renderDotIndicator() {
-    return <PagerDotIndicator pageCount={this.state.shoppersList.length} 
+    // const length = this.state.shoppersList.length;
+    const length = 5;
+    return <PagerDotIndicator pageCount={length}
         dotStyle={styles.dotStyle} selectedDotStyle={styles.selectedDotStyle}/>;
   }
 
@@ -93,7 +95,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
             <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
 
             <IndicatorViewPager
-                style={{ height: 550 }}
+                style={{ height: 500 }}
                 indicator={this._renderDotIndicator()}>
                 {
                     this.state.shoppersList.map((shopper, index) => {
