@@ -43,10 +43,10 @@ class OutletScreen extends React.Component<IProps, IState> {
             channels: [],
         };
 
-        this.fetchOutLets();
+        this.fetchOutlets();
     }
 
-    async fetchOutLets() {
+    async fetchOutlets() {
         await this.props.fetchOutlets();
         this.setState({
             channels: (this.props.channels ? this.props.channels : []),

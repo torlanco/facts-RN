@@ -31,7 +31,7 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
                 <View style={styles.cardContainer}>
                     <View style={styles.outletImageWrapper}>
                         <Card containerStyle={styles.outletImage}>
-                            {outletImage ? <Image source={{uri: outletImage}}/> : <Image source={imageSource}/>}
+                            {outletImage ? <Image  style={ styles.image } source={{uri: outletImage}} resizeMode="contain"/> : <Image style={ styles.image } source={imageSource}/>}
                         </Card>
                     </View>
                     <View style={styles.mainContent}>
@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     },
     image: {
         borderRadius: 10,
-        width: '100%',
         height: '100%',
     },
     mainContent: {
