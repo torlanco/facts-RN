@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "facts-RN",
-    "slug": "facts-RN",
-    "privacy": "public",
+    "name": "Facts Mobile App",
+    "slug": "facts-mobile-app",
+    "privacy": "unlisted",
     "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
@@ -22,8 +22,13 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.factscloud.factsapp"
+    },
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.factscloud.factsapp"
+    },
+    "description": ""
   }
 }
