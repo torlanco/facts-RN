@@ -22,7 +22,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { Text } from 'react-native-elements';
 import { stat } from 'fs';
 
-// props 
+// props
 interface ParamType {
   shopperId: string | undefined;
 }
@@ -101,25 +101,25 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     this._isMounted && this.setState({
       viewType: viewType
     });
-  }
+  };
 
   onTypeChange = (category: string) => {
     this._isMounted && this.setState({
       category: category,
       advertisementList: this.filterAdvertisements(category)
     });
-  }
+  };
 
   getView() {
-    return this.state.viewType === ViewType.Grid 
+    return this.state.viewType === ViewType.Grid
       ? <AdvertisementGridView advertisementList={this.state.advertisementList}></AdvertisementGridView>
       : <AdvertisementListView advertisementList={this.state.advertisementList}></AdvertisementListView>
   }
- 
+
   public render() {
     return (
       <SafeAreaView style={styles.container}>
-          <HeaderBar title={'Econo'}></HeaderBar>
+          <HeaderBar title={'Features'}></HeaderBar>
           <AdvertisementFilter viewType={this.state.viewType}
             handleViewTypeChange={this.onViewTypeChange}
             typeList={this.props.categories || []} type={this.state.category}

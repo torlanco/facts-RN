@@ -20,8 +20,8 @@ type IProps = IOwnProps;
 
 const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
 
-    const gridIconColor = props.viewType === ViewType.Grid ? colors.LIGHT_ORANGE : colors.LIGHT_GRAY; 
-    const listIconColor = props.viewType === ViewType.List ? colors.LIGHT_ORANGE : colors.LIGHT_GRAY; 
+    const gridIconColor = props.viewType === ViewType.Grid ? colors.LIGHT_ORANGE : colors.LIGHT_GRAY;
+    const listIconColor = props.viewType === ViewType.List ? colors.LIGHT_ORANGE : colors.LIGHT_GRAY;
 
 
     const toggleViewType = (type: ViewType) => {
@@ -37,7 +37,9 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
     return (
         <View style={styles.container}>
             <SelectPicker options={props.typeList} value={props.type}
-            handleValueChange={onTypeChange}></SelectPicker>
+                          placeholder={'Select an shopper'}
+                          handleValueChange={onTypeChange}>
+            </SelectPicker>
             <View style={{ flex: 1 }}></View>
             <Icon
                 name='grid'
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   iconContainer: {
-    padding: 10 
+    padding: 10
   },
 });
 

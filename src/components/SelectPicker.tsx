@@ -11,6 +11,7 @@ import ModalSelector from 'react-native-modal-selector';
 interface IOwnProps {
     options: string[] | undefined,
     value: string,
+    placeholder: string,
     handleValueChange: Function
 }
 type IProps = IOwnProps;
@@ -18,6 +19,7 @@ type IProps = IOwnProps;
 const SelectPicker: React.SFC<IProps> = (props: IProps) => {
     return (
         <ModalSelector
+            style={styles.picker}
             data={props.options}
             keyExtractor= {(item: string) => item}
             labelExtractor= {(item: string) => item}
@@ -25,9 +27,9 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             onChange={(itemValue: object)=> props.handleValueChange(itemValue)}>
 
             <TextInput
-                style={{borderWidth:1, borderColor:'#ccc', padding:20, height:20}}
+                style={{borderWidth:1, borderColor:'#ccc', padding:10, height:40}}
                 editable={false}
-                placeholder="Select an outlet"
+                placeholder={props.placeholder}
                 value={props.value} />
 
         </ModalSelector>

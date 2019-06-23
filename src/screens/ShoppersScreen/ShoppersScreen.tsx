@@ -17,7 +17,7 @@ import { mapDispatchToProps } from '@actions/shopper';
 import { IOutlet } from '@interfaces/outlet';
 import { fetchShoppers } from '@services';
 
-// props 
+// props
 interface ParamType {
   outlet: IOutlet.IOutletData;
 }
@@ -73,7 +73,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     });
     this.fetchShoppers();
   }
-  
+
   _renderDotIndicator() {
     // const length = this.state.shoppersList.length;
     const length = 5;
@@ -81,17 +81,19 @@ class ShoppersScreen extends React.Component<IProps, IState> {
         dotStyle={styles.dotStyle} selectedDotStyle={styles.selectedDotStyle}/>;
   }
 
-  
+
   onItemPress = (shopperId: string) => {
     this.props.navigation.navigate('AdvertisementScreen', { shopperId: shopperId});
   }
- 
+
   public render() {
     return (
         <SafeAreaView style={styles.container}>
             <HeaderBar title={'Shoppers'}></HeaderBar>
-            <SelectPicker options={this.props.outlets} value={this.state.outlet} 
-                handleValueChange={this.onShopperChange}></SelectPicker>
+            <SelectPicker options={this.props.outlets} value={this.state.outlet}
+                          placeholder={'Select an outlet'}
+                          handleValueChange={this.onShopperChange}>
+            </SelectPicker>
             <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
 
             <IndicatorViewPager
@@ -117,11 +119,11 @@ const styles = StyleSheet.create({
   },
   text: {
     ...typos.PRIMARY,
-    padding: 10,  
+    padding: 10,
   },
   textBold: {
     ...typos.PRIMARY,
-    fontWeight: 'bold'  
+    fontWeight: 'bold'
   },
   dotStyle: {
     backgroundColor: colors.LIGHT_ORANGE,
