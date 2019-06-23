@@ -26,7 +26,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             keyExtractor= {(item: string) => item}
             labelExtractor= {(item: string) => item}
             initValue={props.value}
-            onChange={(itemValue: object)=> props.handleValueChange(itemValue)}>
+            onChange={props.handleValueChange}>
 
             <View style={styles.selector}>
                 <TextInput
@@ -38,9 +38,9 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                 <Icon
                     name='chevron-down'
                     type='feather'
-                    color={colors.BLACK} 
+                    color={colors.BLACK}
                     containerStyle={styles.icon}/>
-            </View>    
+            </View>
 
         </ModalSelector>
     );
@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
     width: 200,
   },
   selector: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
-    padding:10 
+    padding:10
   },
   icon: {
-    paddingVertical: 8 
+    paddingVertical: 8
   }
 });
 

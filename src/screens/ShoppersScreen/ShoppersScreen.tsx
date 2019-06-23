@@ -45,7 +45,7 @@ const mapStateToProps = function(state: any){
       state.shopper.loading ||
       state.advertisement.loading
   }
-}
+};
 
 class ShoppersScreen extends React.Component<IProps, IState> {
   _isMounted = false;
@@ -73,9 +73,8 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   onShopperChange = (outlet: any) => {
     this.setState({
       outlet: outlet
-    });
-    this.fetchShoppers();
-  }
+    }, this.fetchShoppers);
+  };
 
   _renderDotIndicator() {
     // const length = this.state.shoppersList.length;
@@ -87,7 +86,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
 
   onItemPress = (shopperId: string) => {
     this.props.navigation.navigate('AdvertisementScreen', { shopperId: shopperId});
-  }
+  };
 
   public render() {
     return (
@@ -109,8 +108,8 @@ class ShoppersScreen extends React.Component<IProps, IState> {
                       })
                   }
               </IndicatorViewPager>
-          </View> 
-          {this.props.loading && <LoadingScreen />}  
+          </View>
+          {this.props.loading && <LoadingScreen />}
         </SafeAreaView>
     );
   }

@@ -28,11 +28,11 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
         if (props.viewType !== type) {
             props.handleViewTypeChange(type);
         }
-    }
+    };
 
     const onTypeChange = (type: string) => {
         props.handleTypeChange(type);
-    }
+    };
 
     return (
         <View style={styles.container}>
