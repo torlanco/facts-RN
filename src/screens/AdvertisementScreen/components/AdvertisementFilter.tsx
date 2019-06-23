@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   iconContainer: {
-    padding: 10
+    padding: 5
   },
 });
 

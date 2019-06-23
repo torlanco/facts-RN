@@ -33,11 +33,11 @@ const HeaderBar: React.SFC<IProps> = (props: IProps) => {
             <View style={styles.header}>
                 { gesturesEnabled ? 
                     <Icon
-                    name='arrow-left'
-                    type='feather'
-                    color={colors.BLACK}
-                    onPress={() => onBackClick()}
-                containerStyle={styles.iconContainer} /> : null }
+                        name='arrow-left'
+                        type='feather'
+                        color={colors.BLACK}
+                        onPress={() => onBackClick()}
+                        containerStyle={styles.iconContainer} /> : null }
                 <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
                 { gesturesEnabled ? <Text style={styles.iconContainer}></Text> : null }
             </View>

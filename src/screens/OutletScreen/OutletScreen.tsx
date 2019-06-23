@@ -14,6 +14,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 interface IOwnProps {}
 type IProps = IOwnProps &
@@ -31,6 +32,9 @@ const mapStateToProps = function(state: any){
     return {
         outlets: state.outlet.outlets,
         channels: state.outlet.channels,
+        loading: state.outlet.loading ||
+            state.shopper.loading ||
+            state.advertisement.loading
     }
 }
 
@@ -84,28 +88,31 @@ class OutletScreen extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <SafeAreaView style={{flex: 1, marginTop: 30}}>
-                <HeaderBar title={'Outlets'}/>
-                <View style={styles.container}>
-                    <FlatList
-                        data={this.state.channels}
-                        renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item} 
-                            onPress={this.onActionButtonPress}/>}
-                        extraData={this.state.selectedTab}
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal={true}/>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={{flex: 1, marginTop: 30}}>
+                    <HeaderBar title={'Outlets'}/>
+                    <View style={styles.container}>
+                        <FlatList
+                            data={this.state.channels}
+                            renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item} 
+                                onPress={this.onActionButtonPress}/>}
+                            extraData={this.state.selectedTab}
+                            keyExtractor={(item, index) => index.toString()}
+                            horizontal={true}/>
 
-                    { this.state.outletList.length ? 
-                        <View style={styles.itemCountContainer}>
-                            <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
-                            <Text> ITEM</Text>
-                        </View> : null }
-                    <FlatList
-                        data={this.state.outletList}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({item}) => <OutletCard data={item} onItemPress={this.onItemPress}/>}
-                        showsVerticalScrollIndicator={false}/>
+                        { this.state.outletList.length ? 
+                            <View style={styles.itemCountContainer}>
+                                <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
+                                <Text> ITEM</Text>
+                            </View> : null }
+                        <FlatList
+                            data={this.state.outletList}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({item}) => <OutletCard data={item} onItemPress={this.onItemPress}/>}
+                            showsVerticalScrollIndicator={false}/>
+                    </View>
                 </View>
+                {this.props.loading && <LoadingScreen />}
             </SafeAreaView>
         )
     }

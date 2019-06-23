@@ -21,6 +21,7 @@ import { mapDispatchToProps } from '@actions/advertisement';
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 import { Text } from 'react-native-elements';
 import { stat } from 'fs';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 // props
 interface ParamType {
@@ -48,6 +49,9 @@ const mapStateToProps = function(state: any){
   return {
     advertisements: state.advertisement.advertisements,
     categories: state.advertisement.categories,
+    loading: state.outlet.loading ||
+      state.shopper.loading ||
+      state.advertisement.loading
   }
 }
 
@@ -118,17 +122,20 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <SafeAreaView style={styles.container}>
-          <HeaderBar title={'Features'}></HeaderBar>
-          <AdvertisementFilter viewType={this.state.viewType}
-            handleViewTypeChange={this.onViewTypeChange}
-            typeList={this.props.categories || []} type={this.state.category}
-            handleTypeChange={this.onTypeChange}></AdvertisementFilter>
-          <View style={styles.itemCountContainer}>
-            <Text style={styles.itemCount}>{this.state.advertisementList.length} </Text>
-            <Text> ITEM</Text>
+      <SafeAreaView style={{flex: 1}}>
+          <View style={styles.container}>
+            <HeaderBar title={'Features'}></HeaderBar>
+            <AdvertisementFilter viewType={this.state.viewType}
+              handleViewTypeChange={this.onViewTypeChange}
+              typeList={this.props.categories || []} type={this.state.category}
+              handleTypeChange={this.onTypeChange}></AdvertisementFilter>
+            <View style={styles.itemCountContainer}>
+              <Text style={styles.itemCount}>{this.state.advertisementList.length} </Text>
+              <Text> ITEM</Text>
+            </View>
+            { this.getView() }
           </View>
-          { this.getView() }
+          {this.props.loading && <LoadingScreen />}  
       </SafeAreaView>
     );
   }

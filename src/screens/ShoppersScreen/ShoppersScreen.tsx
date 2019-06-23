@@ -15,7 +15,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/shopper';
 import { IOutlet } from '@interfaces/outlet';
-import { fetchShoppers } from '@services';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 // props
 interface ParamType {
@@ -41,6 +41,9 @@ interface IState {
 const mapStateToProps = function(state: any){
   return {
     outlets: state.outlet.outletNames,
+    loading: state.outlet.loading ||
+      state.shopper.loading ||
+      state.advertisement.loading
   }
 }
 
@@ -88,23 +91,26 @@ class ShoppersScreen extends React.Component<IProps, IState> {
 
   public render() {
     return (
-        <SafeAreaView style={styles.container}>
-            <HeaderBar title={'Shoppers'}></HeaderBar>
-            <SelectPicker options={this.props.outlets} value={this.state.outlet}
-                          placeholder={'Select an outlet'}
-                          handleValueChange={this.onShopperChange}>
-            </SelectPicker>
-            <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
+        <SafeAreaView style={{flex: 1}}>
+          <View style={styles.container}>
+              <HeaderBar title={'Shoppers'}></HeaderBar>
+              <SelectPicker options={this.props.outlets} value={this.state.outlet}
+                            placeholder={'Select an outlet'}
+                            handleValueChange={this.onShopperChange}>
+              </SelectPicker>
+              <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
 
-            <IndicatorViewPager
-                style={{ height: 500 }}
-                indicator={this._renderDotIndicator()}>
-                {
-                    this.state.shoppersList.map((shopper, index) => {
-                        return <ShopperCard shopper={shopper} key={index} onItemPress={this.onItemPress}></ShopperCard>;
-                    })
-                }
-            </IndicatorViewPager>
+              <IndicatorViewPager
+                  style={{ height: 500 }}
+                  indicator={this._renderDotIndicator()}>
+                  {
+                      this.state.shoppersList.map((shopper, index) => {
+                          return <ShopperCard shopper={shopper} key={index} onItemPress={this.onItemPress}></ShopperCard>;
+                      })
+                  }
+              </IndicatorViewPager>
+          </View> 
+          {this.props.loading && <LoadingScreen />}  
         </SafeAreaView>
     );
   }
