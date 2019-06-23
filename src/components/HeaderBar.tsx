@@ -17,33 +17,47 @@ interface IOwnProps {
 }
 type IProps = IOwnProps & NavigationInjectedProps;
 
-const HeaderBar: React.SFC<IProps> = (props: IProps) => {
+interface IState {
+    backEnabled: boolean | undefined,
+}
+class HeaderBar extends React.Component<IProps, IState> {
 
-    const parent = props.navigation.dangerouslyGetParent();
-    const gesturesEnabled = parent && parent.state && parent.state.index > 0;            
-    
-    const onBackClick = () => {
-        if (gesturesEnabled) {
-            props.navigation.goBack();
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            backEnabled: this.isBackEnabled()
+        };
+    }
+
+    isBackEnabled() {
+        const parent = this.props.navigation.dangerouslyGetParent();
+        return parent && parent.state && parent.state.index > 0;    
+    }
+
+    onBackClick = () => {
+        if (this.state.backEnabled) {
+            this.props.navigation.goBack();
         }
     }
 
-    return (
-        <View style={[props.style]}>
-            <View style={styles.header}>
-                { gesturesEnabled ? 
-                    <Icon
-                        name='arrow-left'
-                        type='feather'
-                        color={colors.BLACK}
-                        onPress={() => onBackClick()}
-                        containerStyle={styles.iconContainer} /> : null }
-                <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
-                { gesturesEnabled ? <Text style={styles.iconContainer}></Text> : null }
+    public render() {
+        return (
+            <View style={[this.props.style]}>
+                <View style={styles.header}>
+                    { this.state.backEnabled ? 
+                        <Icon
+                            name='arrow-left'
+                            type='feather'
+                            color={colors.BLACK}
+                            onPress={() => this.onBackClick()}
+                            containerStyle={styles.iconContainer} /> : null }
+                    <Text style={[styles.title, this.props.titleStyle]}>{this.props.title}</Text>
+                    { this.state.backEnabled ? <Text style={styles.iconContainer}></Text> : null }
+                </View>
+                <Divider style={styles.divider} />
             </View>
-            <Divider style={styles.divider} />
-        </View>
-    );
+        );
+    }
 };
 const styles = StyleSheet.create({
     header: {

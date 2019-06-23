@@ -20,6 +20,7 @@ const AppNavigator = createAppContainer(
         {
             initialRouteName: 'OutletScreen',
             defaultNavigationOptions: {
+                headerLeft: null,
                 headerBackTitle: null,
                 headerTransparent: true,
                 headerStyle: {
