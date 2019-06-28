@@ -7,9 +7,9 @@ import { typos, colors } from '@styles';
 // Component
 import { HeaderBar, SelectPicker } from '@components';
 import { IShopper } from '@interfaces/shopper';
-import { ShopperCard } from './components/ShopperCard';
+import { ShopperCard } from './ShopperCard';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
-import { NavigationInjectedProps, NavigationScreenProp, NavigationState, FlatList } from "react-navigation";
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
 // Props Action
 import { connect } from "react-redux";
@@ -47,7 +47,7 @@ const mapStateToProps = function(state: any){
   }
 };
 
-class ShoppersScreen extends React.Component<IProps, IState> {
+class ShopperViewPager extends React.Component<IProps, IState> {
   _isMounted = false;
 
   constructor(props: IProps) {
@@ -76,6 +76,14 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     }, this.fetchShoppers);
   };
 
+  _renderDotIndicator() {
+    // const length = this.state.shoppersList.length;
+    const length = 5;
+    return <PagerDotIndicator pageCount={length}
+        dotStyle={styles.dotStyle} selectedDotStyle={styles.selectedDotStyle}/>;
+  }
+
+
   onItemPress = (shopperId: string) => {
     this.props.navigation.navigate('AdvertisementScreen', { shopperId: shopperId});
   };
@@ -90,11 +98,16 @@ class ShoppersScreen extends React.Component<IProps, IState> {
                             handleValueChange={this.onShopperChange}>
               </SelectPicker>
               <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
-              <FlatList
-                data={this.state.shoppersList}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress}></ShopperCard>}
-                showsVerticalScrollIndicator={false}/>
+
+              <IndicatorViewPager
+                  style={{ height: 500 }}
+                  indicator={this._renderDotIndicator()}>
+                  {
+                      this.state.shoppersList.map((shopper, index) => {
+                          return <ShopperCard shopper={shopper} key={index} onItemPress={this.onItemPress}></ShopperCard>;
+                      })
+                  }
+              </IndicatorViewPager>
           </View>
           {this.props.loading && <LoadingScreen />}
         </SafeAreaView>
@@ -133,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppersScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ShopperViewPager);

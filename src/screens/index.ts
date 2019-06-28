@@ -5,4 +5,5 @@ import AdvertisementScreen from './AdvertisementScreen/AdvertisementScreen';
 export { OutletScreen };
 export { ShoppersScreen };
 export { AdvertisementScreen };
+export * from './LoadingScreen/LoadingScreen';
 

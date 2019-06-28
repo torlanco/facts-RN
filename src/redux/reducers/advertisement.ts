@@ -1,6 +1,7 @@
 import { Types } from '@types';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { AnyAction } from 'redux';
+import { CONSTANTS } from '@utils';
 
 const initialState: IAdvertisement.StateToProps = {
   error: false,
@@ -41,5 +42,7 @@ export function advertisement(
 }
 
 function fetchCategories(advertisements: IAdvertisement.IAdvertisementData[]) {
-  return [...new Set<string>(advertisements.map((x: any) => x.category))];
+  const categories = [...new Set<string>(advertisements.map((x: any) => x.category))].sort();
+  categories.push(CONSTANTS.SHOW_ALL);
+  return categories;
 }

@@ -44,9 +44,9 @@ export function outlet(
 }
 
 function fetchChannels(outlets: IOutlet.IOutletData[]) {
-  return [...new Set<string>(outlets.map((x: any) => x.channelName))];
+  return [...new Set<string>(outlets.map((x: any) => x.channelName))].sort();
 }
 
 function fetchOutletNames(outlets: any) {
-  return outlets.map((outlet: IOutlet.IOutletData) => outlet.outlet);
+  return outlets.map((outlet: IOutlet.IOutletData) => outlet.outlet).sort();
 }

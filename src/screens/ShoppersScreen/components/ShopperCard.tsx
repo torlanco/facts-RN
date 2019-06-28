@@ -6,6 +6,7 @@ import { IShopper } from '@interfaces/shopper';
 
 // Utils
 import { formatDate } from '@utils';
+import FullWidthImage from 'react-native-fullwidth-image';
 
 interface IOwnProps {
   shopper: IShopper.IShopperData,
@@ -28,8 +29,8 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
         <TouchableOpacity onPress={onItemPress}>
             <View style={styles.mainContainer}>
                 <Card containerStyle={styles.outletImage}>
-                    { props.shopper.path ? <Image style={ styles.image } source={{ uri: path }} resizeMode="contain"/>
-                        : <Image style={ styles.image } source={imageSource} /> }
+                    { props.shopper.path ? <FullWidthImage style={ styles.image } source={{ uri: path }}/>
+                        : <FullWidthImage style={ styles.image } source={imageSource} /> }
                 </Card>
                 <View style={styles.mainContent}>
                     <Card containerStyle={styles.cardContainer}>
@@ -44,8 +45,9 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        paddingHorizontal: responsive(10),
-        maxWidth: responsive(1000)
+        paddingHorizontal: '5%',
+        paddingBottom: 20,
+        width: '100%'
     },
     outletImage: {
         borderRadius: 10,
@@ -58,11 +60,15 @@ const styles = StyleSheet.create({
         elevation: 3,
         shadowRadius: 10,
         padding: 0,
-        height: '80%'
+        margin: 0,
+        width: '100%',
+        minHeight: 100,
     },
     image: {
         borderRadius: 10,
-        height: '100%',
+        width: '100%',
+        padding: 0,
+        margin: 0,
     },
     mainContent: {
         paddingHorizontal: '5%',

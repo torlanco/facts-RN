@@ -20,8 +20,8 @@ import { mapDispatchToProps } from '@actions/advertisement';
 
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 import { Text } from 'react-native-elements';
-import { stat } from 'fs';
-import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+import { LoadingScreen } from '@screens';
+import { CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
@@ -83,7 +83,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     let advertisements: Array<IAdvertisement.IAdvertisementData>;
     if (!this.props.advertisements) {
       advertisements = [];
-    } else if (category == '') {
+    } else if (category == '' || category == CONSTANTS.SHOW_ALL) {
       advertisements = this.props.advertisements;
     } else {
       advertisements = this.props.advertisements.filter((advertisement) => {
