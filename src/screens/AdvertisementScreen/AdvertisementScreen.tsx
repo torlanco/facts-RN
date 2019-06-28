@@ -80,6 +80,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   }
 
   filterAdvertisements(category: string) {
+    category = category.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim();
     let advertisements: Array<IAdvertisement.IAdvertisementData>;
     if (!this.props.advertisements) {
       advertisements = [];

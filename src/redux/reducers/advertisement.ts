@@ -41,8 +41,15 @@ export function advertisement(
   }
 }
 
+function getAdvertisementCountByCategory(advertisements: IAdvertisement.IAdvertisementData[], category: string) {
+  return advertisements.filter((advertisement) => {
+    return advertisement.category == category;
+  }).length;
+}
+
 function fetchCategories(advertisements: IAdvertisement.IAdvertisementData[]) {
-  const categories = [...new Set<string>(advertisements.map((x: any) => x.category))].sort();
-  categories.push(CONSTANTS.SHOW_ALL);
+  const categories = [...new Set<string>(advertisements.
+    map((advertisement: any) => `${advertisement.category} (${getAdvertisementCountByCategory(advertisements, advertisement.category)})`))].sort();
+  categories.splice(0, 0, `${CONSTANTS.SHOW_ALL} (${advertisements.length})`);
   return categories;
 }

@@ -9,6 +9,7 @@ import {
 import { colors, typos } from '@styles';
 import ModalSelector from 'react-native-modal-selector';
 import { Icon } from 'react-native-elements';
+import { CONSTANTS } from '@utils';
 
 interface IOwnProps {
     options: string[] | undefined,
@@ -33,7 +34,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                     style={styles.input}
                     editable={false}
                     placeholder={props.placeholder}
-                    value={props.value} />
+                    value={props.value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()} />
 
                 <Icon
                     name='chevron-down'
