@@ -6,6 +6,7 @@ import { typos } from '@styles';
 
 // Component
 import { HeaderBar } from '@components';
+import { StatusBar, Platform } from "react-native";
 import { AdvertisementGridView } from './components/AdvertisementGridView';
 import { AdvertisementListView } from './components/AdvertisementListView';
 import { AdvertisementFilter } from './components/AdvertisementFilter';
@@ -136,7 +137,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
             </View>
             { this.getView() }
           </View>
-          {this.props.loading && <LoadingScreen />}  
+          {this.props.loading && <LoadingScreen />}
       </SafeAreaView>
     );
   }
@@ -145,7 +146,8 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 30,
+    marginTop: Platform.OS === "android" ? 0 : -5,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     marginLeft: 5,
     marginRight: 5,
   },

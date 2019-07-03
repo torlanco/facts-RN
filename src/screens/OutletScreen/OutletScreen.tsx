@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 
 // Components
 import { ActionButton, HeaderBar } from '@components';
@@ -71,7 +71,7 @@ class OutletScreen extends React.Component<IProps, IState> {
             });
         }
         return outlets;
-    } 
+    }
 
     onItemPress = (outlet: IOutlet.IOutletData) => {
         this.props.navigation.navigate('ShopperScreen', {
@@ -89,18 +89,18 @@ class OutletScreen extends React.Component<IProps, IState> {
     public render() {
         return (
             <SafeAreaView style={{flex: 1}}>
-                <View style={{flex: 1, marginTop: 30}}>
+                <View style={styles.container}>
                     <HeaderBar title={'Outlets'}/>
-                    <View style={styles.container}>
+                    <View style={{marginTop: 10}}>
                         <FlatList
                             data={this.state.channels}
-                            renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item} 
+                            renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item}
                                 onPress={this.onActionButtonPress}/>}
                             extraData={this.state.selectedTab}
                             keyExtractor={(item, index) => index.toString()}
                             horizontal={true}/>
 
-                        { this.state.outletList.length ? 
+                        { this.state.outletList.length ?
                             <View style={styles.itemCountContainer}>
                                 <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
                                 <Text> ITEM</Text>
@@ -121,7 +121,8 @@ class OutletScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: '4%',
-        paddingTop: 10,
+        marginTop: Platform.OS === "android" ? 0 : -5,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         flex: 1
     },
     itemCountContainer: {

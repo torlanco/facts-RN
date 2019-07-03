@@ -9,6 +9,7 @@ import { HeaderBar, SelectPicker } from '@components';
 import { IShopper } from '@interfaces/shopper';
 import { ShopperCard } from './components/ShopperCard';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
+import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState, FlatList } from "react-navigation";
 
 // Props Action
@@ -27,6 +28,7 @@ interface StateParams extends NavigationState {
 interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
   outlets: string[] | undefined;
+  loading: string
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -105,7 +107,8 @@ class ShoppersScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 30,
+    marginTop: Platform.OS === "android" ? 0 : -5,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     marginLeft: 5,
     marginRight: 5,
   },
