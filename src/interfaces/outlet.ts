@@ -6,7 +6,7 @@ export namespace IOutlet {
     channelName?: string,
     tag?: string,
     outletImage?: string,
-    latestStartDate?: string,
+    earliestStartDate?: string,
     latestEndDate?: string,
   }
 

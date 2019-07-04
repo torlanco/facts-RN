@@ -64,7 +64,7 @@ class ShopperViewPager extends React.Component<IProps, IState> {
 
   async fetchShoppers() {
       const { outlet } = this.props.navigation.state.params;
-      const shoppers: any = await this.props.fetchShoppers(outlet.latestStartDate, outlet.latestEndDate, this.state.outlet);
+      const shoppers: any = await this.props.fetchShoppers(outlet.earliestStartDate, outlet.latestEndDate, this.state.outlet);
       this.setState({
         shoppersList: shoppers
       });

@@ -13,17 +13,17 @@ interface IOwnProps {
     onItemPress?: Function
 };
 
-type IProps = IOwnProps; 
+type IProps = IOwnProps;
 
 const OutletCard: React.SFC<IProps> = (props: IProps) => {
 
-    const {outlet, shopperCount, channelName, tag, outletImage, latestStartDate, latestEndDate} = props.data;
+    const {outlet, shopperCount, channelName, tag, outletImage, earliestStartDate, latestEndDate} = props.data;
     const imageSource = require('@assets/images/placeholder.png');
 
     const onItemPress = () => {
-        if (props.onItemPress) 
+        if (props.onItemPress)
             props.onItemPress(props.data);
-    }
+    };
 
     return (
         <TouchableOpacity onPress={onItemPress}>
@@ -39,12 +39,12 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
                         <View style={{flexDirection: 'row'}}>
                             <Text style={[styles.name, styles.padding]}>{outlet}</Text>
                         </View>
-                        <Text style={[styles.date, styles.padding]}>Latest: {formatDate(latestStartDate)}</Text>
+                        <Text style={[styles.date, styles.padding]}>Latest: {formatDate(earliestStartDate)}</Text>
                         <View style={styles.flexDiv}>
                             <Text style={[styles.shoppers, styles.padding]}>
                                 <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS
                             </Text>
-                            <Text style={[styles.isNew, styles.padding]}>New</Text>  
+                            <Text style={[styles.isNew, styles.padding]}>New</Text>
                         </View>
                     </View>
                 </View>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     },
     shoppers: {
         ...typos.PRIMARY_BOLD,
-        color: colors.TEXT_SECONDARY  
+        color: colors.TEXT_SECONDARY
     },
     shoppersCount: {
         flexDirection: 'row',
