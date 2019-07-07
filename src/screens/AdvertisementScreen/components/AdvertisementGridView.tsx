@@ -10,7 +10,8 @@ import { IAdvertisement } from '@interfaces/advertisement';
 import { AdvertisementGridItem } from './AdvertisementGridItem';
 
 interface IOwnProps {
-  advertisementList: Array<IAdvertisement.IAdvertisementData>
+  advertisementList: Array<IAdvertisement.IAdvertisementData>,
+  onItemPress?: Function
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
@@ -29,17 +30,22 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
 
   const datasource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+  const onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
+    if (props.onItemPress) 
+        props.onItemPress(advertisement);
+  }
+
   return (
     <View style={styles.wrapper}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <ListView 
             contentContainerStyle={styles.list} 
             dataSource={datasource.cloneWithRows(sectionOneAdvertisement)} 
-            renderRow={(item) => <AdvertisementGridItem advertisement={item}/>}/>
+            renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}/>
         <ListView 
             contentContainerStyle={styles.list} 
             dataSource={datasource.cloneWithRows(sectionTwoAdvertisement)}
-            renderRow={(item) => <AdvertisementGridItem advertisement={item}/>}/>
+            renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}/>
       </ScrollView>
     </View>
   );

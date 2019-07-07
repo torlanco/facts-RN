@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { Card } from 'react-native-elements';
 
 interface IOwnProps {
-  advertisement: IAdvertisement.IAdvertisementData
+  advertisement: IAdvertisement.IAdvertisementData,
+  onItemPress?: Function
 }
 
 type IProps = IOwnProps;
@@ -15,26 +16,33 @@ const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
     const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
     const imageSource = require('@assets/images/placeholder.png');
 
+    const onItemPress = () => {
+        if (props.onItemPress) 
+            props.onItemPress(props.advertisement);
+    }
+
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.cardContainer}>
-                <View style={styles.outletImageWrapper}>
-                    <Card containerStyle={styles.outletImage}>
-                        {image ? <Image style={ styles.image } source={{ uri: image }} /> 
-                            : <Image style={ styles.image } source={imageSource} /> }
-                    </Card>
-                </View>
-                <View style={styles.mainContent}>
-                    <Text style={[styles.type, styles.padding]}>{type}</Text>
-                    <Text style={[styles.name, styles.padding]}>{brand}</Text>
-                    <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-                    <View style={styles.priceContainer}>
-                        <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-                        <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+        <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
+            <View style={styles.mainContainer}>
+                <View style={styles.cardContainer}>
+                    <View style={styles.outletImageWrapper}>
+                        <Card containerStyle={styles.outletImage}>
+                            {image ? <Image style={ styles.image } source={{ uri: image }} /> 
+                                : <Image style={ styles.image } source={imageSource} /> }
+                        </Card>
+                    </View>
+                    <View style={styles.mainContent}>
+                        <Text style={[styles.type, styles.padding]}>{type}</Text>
+                        <Text style={[styles.name, styles.padding]}>{brand}</Text>
+                        <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
+                        <View style={styles.priceContainer}>
+                            <Text style={[styles.price, styles.padding]}>${sprice}</Text>
+                            <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

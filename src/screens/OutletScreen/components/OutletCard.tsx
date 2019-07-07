@@ -26,7 +26,7 @@ const OutletCard: React.SFC<IProps> = (props: IProps) => {
     };
 
     return (
-        <TouchableOpacity onPress={onItemPress}>
+        <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
             <View style={styles.mainContainer}>
                 <View style={styles.cardContainer}>
                     <View style={styles.outletImageWrapper}>

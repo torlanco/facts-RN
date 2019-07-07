@@ -22,11 +22,11 @@ const ShopperCard: React.SFC<IProps> = (props: IProps) => {
     
     const onItemPress = () => {
         if (props.onItemPress) 
-            props.onItemPress(id);
+            props.onItemPress(props.shopper);
     }
     
     return (
-        <TouchableOpacity onPress={onItemPress}>
+        <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
             <View style={styles.mainContainer}>
                 <Card containerStyle={styles.outletImage}>
                     { props.shopper.path ? <FullWidthImage style={ styles.image } source={{ uri: path }}/>

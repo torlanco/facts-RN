@@ -4,6 +4,7 @@ import {
     Text,
     View,
     Dimensions,
+    TouchableOpacity,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
@@ -11,7 +12,8 @@ import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
 
 interface IOwnProps {
-  advertisement: IAdvertisement.IAdvertisementData
+  advertisement: IAdvertisement.IAdvertisementData,
+  onItemPress?: Function
 }
 type IProps = IOwnProps;
 const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
@@ -19,19 +21,26 @@ const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
   const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
   const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
 
+  const onItemPress = () => {
+    if (props.onItemPress) 
+        props.onItemPress(props.advertisement);
+  }
+
   return (
-    <Card containerStyle={[styles.container, {width: itemWidth}]}>
-      <Card containerStyle={[styles.container, styles.imageContainer]}>
-        <FullWidthImage style={styles.image} source={{ uri: image }} />
+    <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
+      <Card containerStyle={[styles.container, {width: itemWidth}]}>
+        <Card containerStyle={[styles.container, styles.imageContainer]}>
+          <FullWidthImage style={styles.image} source={{ uri: image }} />
+        </Card>
+        <Text style={[styles.type, styles.padding]}>{type}</Text>
+        <Text style={[styles.name, styles.padding]}>{brand}</Text>
+        <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
+        <View style={styles.priceContainer}>
+          <Text style={[styles.price, styles.padding]}>${sprice}</Text>
+          <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+        </View>
       </Card>
-      <Text style={[styles.type, styles.padding]}>{type}</Text>
-      <Text style={[styles.name, styles.padding]}>{brand}</Text>
-      <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-      <View style={styles.priceContainer}>
-        <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-        <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
-      </View>
-    </Card>
+    </TouchableOpacity>
   );
 };
 

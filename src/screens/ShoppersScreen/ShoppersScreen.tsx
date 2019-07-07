@@ -78,8 +78,8 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     }, this.fetchShoppers);
   };
 
-  onItemPress = (shopperId: string) => {
-    this.props.navigation.navigate('AdvertisementScreen', { shopperId: shopperId});
+  onItemPress = (shopper: IShopper.IShopperData) => {
+    this.props.navigation.navigate('AdvertisementScreen', { shopper: shopper});
   };
 
   public render() {

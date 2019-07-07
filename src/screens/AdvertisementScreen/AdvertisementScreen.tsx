@@ -13,6 +13,7 @@ import { AdvertisementFilter } from './components/AdvertisementFilter';
 
 // Models
 import { IAdvertisement } from '@interfaces/advertisement';
+import { IShopper } from '@interfaces/shopper';
 import { ViewType } from './enums/ViewType';
 
 // Props Action
@@ -26,7 +27,7 @@ import { CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
-  shopperId: string | undefined;
+  shopper: IShopper.IShopperData;
 }
 interface StateParams extends NavigationState {
   params: ParamType;
@@ -71,8 +72,8 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   }
 
   async fetchAdvertisements() {
-    const { shopperId } = this.props.navigation.state.params;
-    await this.props.fetchAdvertisements(shopperId);
+    const { shopper } = this.props.navigation.state.params;
+    await this.props.fetchAdvertisements(shopper.id);
     const category = this.props.categories ? this.props.categories[0] : '';
     this.setState({
       category: category,
@@ -116,10 +117,15 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     });
   };
 
+  onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
+    const { shopper } = this.props.navigation.state.params;
+    this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement, shopper: shopper });
+  };
+
   getView() {
     return this.state.viewType === ViewType.Grid
-      ? <AdvertisementGridView advertisementList={this.state.advertisementList}></AdvertisementGridView>
-      : <AdvertisementListView advertisementList={this.state.advertisementList}></AdvertisementListView>
+      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress}></AdvertisementGridView>
+      : <AdvertisementListView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress}></AdvertisementListView>
   }
 
   public render() {
