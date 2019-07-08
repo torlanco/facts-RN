@@ -79,7 +79,8 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   };
 
   onItemPress = (shopper: IShopper.IShopperData) => {
-    this.props.navigation.navigate('AdvertisementScreen', { shopper: shopper});
+    const { outlet } = this.props.navigation.state.params;
+    this.props.navigation.navigate('AdvertisementScreen', { outlet: outlet, shopper: shopper });
   };
 
   public render() {

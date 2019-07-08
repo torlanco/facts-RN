@@ -4,34 +4,45 @@ import {
     StyleSheet,
     Text,
     StyleProp,
-    ViewStyle
+    ViewStyle,
+    TextStyle
 } from 'react-native';
 import { responsive, typos, colors } from '@styles';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Divider, Icon } from 'react-native-elements';
+import { formatDate } from '@utils';
 
 interface IOwnProps {
     title: string;
     style?: StyleProp<ViewStyle>;
-    titleStyle?: StyleProp<ViewStyle>;
+    titleStyle?: TextStyle;
+    dateRange?: DateRange;
 }
 type IProps = IOwnProps & NavigationInjectedProps;
 
 interface IState {
     backEnabled: boolean | undefined,
+    isDateRangeValid: boolean | undefined
 }
 class HeaderBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
         this.state = {
-            backEnabled: this.isBackEnabled()
+            backEnabled: this.isBackEnabled(),
+            isDateRangeValid: this.isDateRangeValid()
         };
     }
 
     isBackEnabled() {
         const parent = this.props.navigation.dangerouslyGetParent();
         return parent && parent.state && parent.state.index > 0;    
+    }
+
+    isDateRangeValid() {
+        if (this.props.dateRange && this.props.dateRange.startDate && this.props.dateRange.endDate)
+            return true;
+        return false;    
     }
 
     onBackClick = () => {
@@ -53,6 +64,7 @@ class HeaderBar extends React.Component<IProps, IState> {
                             containerStyle={styles.iconContainer} /> : null }
                     <Text style={[styles.title, this.props.titleStyle]}>{this.props.title}</Text>
                     { this.state.backEnabled ? <Text style={styles.iconContainer}></Text> : null }
+                    { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange.startDate)} - {formatDate(this.props.dateRange.endDate)}</Text> : null }
                 </View>
                 <Divider style={styles.divider} />
             </View>
@@ -63,6 +75,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         paddingVertical: 20,
     },
     title: {
@@ -81,6 +94,22 @@ const styles = StyleSheet.create({
         height: 2,
         marginHorizontal: -10,
     },
+    dateRange: {
+        ...typos.PRIMARY,
+        color: colors.TEXT_NOTE,
+        paddingRight: responsive(10),
+        lineHeight: 16,
+        paddingVertical: 0
+    }
 });
 const wrapper = withNavigation(HeaderBar);
 export { wrapper as HeaderBar };
+export class DateRange {
+    startDate?: string
+    endDate?: string
+
+    constructor(startDate?: string, endDate?: string) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+} 

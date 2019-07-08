@@ -39,13 +39,15 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
     <View style={styles.wrapper}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <ListView 
-            contentContainerStyle={styles.list} 
-            dataSource={datasource.cloneWithRows(sectionOneAdvertisement)} 
-            renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}/>
+          contentContainerStyle={styles.list} 
+          dataSource={datasource.cloneWithRows(sectionOneAdvertisement)} 
+          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}
+          enableEmptySections={true}/>
         <ListView 
-            contentContainerStyle={styles.list} 
-            dataSource={datasource.cloneWithRows(sectionTwoAdvertisement)}
-            renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}/>
+          contentContainerStyle={styles.list} 
+          dataSource={datasource.cloneWithRows(sectionTwoAdvertisement)}
+          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}
+          enableEmptySections={true}/>
       </ScrollView>
     </View>
   );

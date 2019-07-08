@@ -5,7 +5,7 @@ import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { typos } from '@styles';
 
 // Component
-import { HeaderBar } from '@components';
+import { HeaderBar, DateRange } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { AdvertisementGridView } from './components/AdvertisementGridView';
 import { AdvertisementListView } from './components/AdvertisementListView';
@@ -14,6 +14,7 @@ import { AdvertisementFilter } from './components/AdvertisementFilter';
 // Models
 import { IAdvertisement } from '@interfaces/advertisement';
 import { IShopper } from '@interfaces/shopper';
+import { IOutlet } from '@interfaces/outlet';
 import { ViewType } from './enums/ViewType';
 
 // Props Action
@@ -27,6 +28,7 @@ import { CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
+  outlet: IOutlet.IOutletData;
   shopper: IShopper.IShopperData;
 }
 interface StateParams extends NavigationState {
@@ -118,8 +120,8 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   };
 
   onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
-    const { shopper } = this.props.navigation.state.params;
-    this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement, shopper: shopper });
+    const { outlet, shopper } = this.props.navigation.state.params;
+    this.props.navigation.navigate('AdvertisementDetailScreen', { outlet: outlet, shopper: shopper, advertisement: advertisement });
   };
 
   getView() {
@@ -129,10 +131,13 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
+    const { outlet } = this.props.navigation.state.params;
+    const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
+
     return (
       <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
-            <HeaderBar title={'Features'}></HeaderBar>
+            <HeaderBar title={'Features'} dateRange={dateRange} titleStyle={{textAlign: 'left'}}></HeaderBar>
             <AdvertisementFilter viewType={this.state.viewType}
               handleViewTypeChange={this.onViewTypeChange}
               typeList={this.props.categories || []} type={this.state.category}

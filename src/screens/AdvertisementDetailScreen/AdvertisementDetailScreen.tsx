@@ -5,11 +5,13 @@ import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import { typos, colors, responsive } from '@styles';
 
 // Component
-import { HeaderBar } from '@components';
+import { HeaderBar, DateRange } from '@components';
 import { StatusBar, Platform } from "react-native";
 
 // Models
 import { IAdvertisement } from '@interfaces/advertisement';
+import { IShopper } from '@interfaces/shopper';
+import { IOutlet } from '@interfaces/outlet';
 
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 import { Text, Divider, Icon } from 'react-native-elements';
@@ -19,6 +21,8 @@ import { formatDate } from '@utils';
 
 // props
 interface ParamType {
+  outlet: IOutlet.IOutletData;
+  shopper: IShopper.IShopperData;
   advertisement: IAdvertisement.IAdvertisementData;
 }
 interface StateParams extends NavigationState {
@@ -53,14 +57,15 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { advertisement, shopper } = this.props.navigation.state.params;
-    const {id, type, brand, category, sprice, rprice, sizeMeasure, image } = advertisement;
+    const { outlet, shopper, advertisement } = this.props.navigation.state.params;
+    const { type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
     const imageSource = require('@assets/images/placeholder.png');
+    const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
 
     return (
       <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
-            <HeaderBar title={''}></HeaderBar>
+            <HeaderBar title={'Features'} dateRange={dateRange} titleStyle={{textAlign: 'left'}}></HeaderBar>
             <Text style={[styles.name, styles.padding]}>{brand}</Text>
             <View style={[styles.detail, styles.flexContainer]}>
               <Text style={[styles.pieces, styles.flex]}>{sizeMeasure}</Text>
@@ -82,10 +87,10 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                   color={colors.LIGHT_ORANGE}
                   size={14}
                   containerStyle={styles.iconContainer} />
-                <Text style={[styles.category]}>{category}</Text>
+                <Text style={[styles.outlet]}>{outlet.outlet}</Text>
               </View>
             </View>
-            <Text style={[styles.note]}>* Valid {formatDate(shopper.startDate)} - {formatDate(shopper.endDate)}</Text>
+            <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text>
           </View>
           {this.props.loading && <LoadingScreen />}
       </SafeAreaView>
@@ -158,7 +163,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20
   },
-  category: {
+  outlet: {
     ...typos.SECONDARY,
   },
   divider: {
