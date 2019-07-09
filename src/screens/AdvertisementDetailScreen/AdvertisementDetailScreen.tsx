@@ -58,7 +58,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
 
   public render() {
     const { outlet, shopper, advertisement } = this.props.navigation.state.params;
-    const { type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
+    const { category, type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
     const imageSource = require('@assets/images/placeholder.png');
     const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
 
@@ -80,7 +80,10 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 : <FullWidthImage style={ styles.image } source={imageSource} /> }          
               <Divider style={[styles.divider, styles.categoryDividerPadding]} />
               <View style={styles.flexContainer}>
-                <Text style={[styles.flex, styles.type]}>{type}</Text>
+                <View style={styles.flex}>
+                  <Text style={styles.category}>{category}</Text>
+                  <Text style={styles.type}>{type}</Text>
+                </View>
                 <Icon
                   name='map-pin'
                   type='feather'
@@ -147,14 +150,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   flexContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   flex: {
     flex: 1
   },
-  type: {
+  category: {
     ...typos.SECONDARY,
     fontWeight: 'bold',  
+  },
+  type: {
+    ...typos.SECONDARY,
+    color: colors.TEXT_SECONDARY
   }, 
   iconContainer: {
     width: responsive(30),
