@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
         color: colors.TEXT_NOTE,
         paddingRight: responsive(10),
         lineHeight: 16,
-        paddingVertical: 0
     }
 });
 const wrapper = withNavigation(HeaderBar);
