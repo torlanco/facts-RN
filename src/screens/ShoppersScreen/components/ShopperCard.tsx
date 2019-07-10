@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import { Card } from 'react-native-elements';
 import { IShopper } from '@interfaces/shopper';
@@ -15,32 +15,55 @@ interface IOwnProps {
 
 type IProps = IOwnProps;
 
-const ShopperCard: React.SFC<IProps> = (props: IProps) => {
+interface IState {
+    shopperImage: any,
+}
+class ShopperCard extends React.Component<IProps, IState> {
     
-    const {id, outlet, startDate, endDate, count, path} = props.shopper;
-    const imageSource = require('@assets/images/placeholder.png');
-    
-    const onItemPress = () => {
-        if (props.onItemPress) 
-            props.onItemPress(props.shopper);
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            shopperImage: require('@assets/images/placeholder.png')
+        };
+    }
+
+    componentDidMount() {
+        if (this.props.shopper.pathThumb) {
+            Image.getSize(this.props.shopper.pathThumb, (width: number, height: number) => {
+                this.setState({ 
+                    shopperImage: this.props.shopper.pathThumb
+                });
+            }, err => {});
+        }
     }
     
-    return (
-        <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
-            <View style={styles.mainContainer}>
-                <Card containerStyle={styles.outletImage}>
-                    { props.shopper.path ? <FullWidthImage style={ styles.image } source={{ uri: path }}/>
-                        : <FullWidthImage style={ styles.image } source={imageSource} /> }
-                </Card>
-                <View style={styles.mainContent}>
-                    <Card containerStyle={styles.cardContainer}>
-                        <Text style={[styles.highlight, styles.padding]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
-                        <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> FEATURES</Text>
+    onItemPress = () => {
+        if (this.props.onItemPress) 
+            this.props.onItemPress(this.props.shopper);
+    }
+
+    public render() {
+        const { id, outlet, startDate, endDate, count } = this.props.shopper;
+        const width = Dimensions.get('window').width * 0.87;
+
+        return (
+            <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
+                <View style={styles.mainContainer}>
+                    <Card containerStyle={styles.outletImage}>
+                    { this.state.shopperImage == this.props.shopper.pathThumb ?
+                        <FullWidthImage style={ styles.image } source={{ uri: this.state.shopperImage }}/> : 
+                        <Image style={[styles.image, { height: 200 }]} source={ this.state.shopperImage } resizeMode="stretch"/> }  
                     </Card>
+                    <View style={styles.mainContent}>
+                        <Card containerStyle={styles.cardContainer}>
+                            <Text style={[styles.highlight, styles.padding]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
+                            <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> FEATURES</Text>
+                        </Card>
+                    </View>
                 </View>
-            </View>
-        </TouchableOpacity>
-    );
+            </TouchableOpacity>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -67,8 +90,6 @@ const styles = StyleSheet.create({
     image: {
         borderRadius: 10,
         width: '100%',
-        padding: 0,
-        margin: 0,
     },
     mainContent: {
         paddingHorizontal: '5%',

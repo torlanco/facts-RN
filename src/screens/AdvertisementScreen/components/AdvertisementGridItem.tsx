@@ -5,6 +5,7 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
+    Image,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
@@ -16,32 +17,57 @@ interface IOwnProps {
   onItemPress?: Function
 }
 type IProps = IOwnProps;
-const AdvertisementGridItem: React.SFC<IProps> = (props: IProps) => {
 
-  const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
-  const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
-
-  const onItemPress = () => {
-    if (props.onItemPress) 
-        props.onItemPress(props.advertisement);
+interface IState {
+  featureImage: any,
+}
+class AdvertisementGridItem extends React.Component<IProps, IState> {
+ 
+  constructor(props: IProps) {
+      super(props);
+      this.state = {
+          featureImage: require('@assets/images/placeholder.png')
+      };
+  }
+  
+  componentDidMount() {
+    if (this.props.advertisement.image) {
+        Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
+            this.setState({ 
+                featureImage: this.props.advertisement.image
+            });
+        }, err => {});
+    }
   }
 
-  return (
-    <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
-      <Card containerStyle={[styles.container, {width: itemWidth}]}>
-        <Card containerStyle={[styles.container, styles.imageContainer]}>
-          <FullWidthImage style={styles.image} source={{ uri: image }} />
+  onItemPress = () => {
+    if (this.props.onItemPress) 
+      this.props.onItemPress(this.props.advertisement);
+  }
+
+  public render() {
+    const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
+    const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
+    const imageWidth = (itemWidth - 10) * 0.85;
+    return (
+      <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
+        <Card containerStyle={[styles.container, {width: itemWidth}]}>
+          <Card containerStyle={[styles.container, styles.imageContainer]}>
+            { this.state.featureImage == this.props.advertisement.image ?
+              <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
+              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
+          </Card>
+          <Text style={[styles.type, styles.padding]}>{type}</Text>
+          <Text style={[styles.name, styles.padding]}>{brand}</Text>
+          <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
+          <View style={styles.priceContainer}>
+            <Text style={[styles.price, styles.padding]}>${sprice}</Text>
+            <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+          </View>
         </Card>
-        <Text style={[styles.type, styles.padding]}>{type}</Text>
-        <Text style={[styles.name, styles.padding]}>{brand}</Text>
-        <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-        <View style={styles.priceContainer}>
-          <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-          <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
-        </View>
-      </Card>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

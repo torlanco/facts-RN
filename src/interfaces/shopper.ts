@@ -5,7 +5,7 @@ export namespace IShopper {
         outlet?: string;
         startDate?: string;
         endDate?: string;
-        pathThumb?: number;
+        pathThumb?: string;
         path?: string;
         count?: number,
         pages?: string

@@ -91,7 +91,7 @@ class OutletScreen extends React.Component<IProps, IState> {
             <SafeAreaView style={{flex: 1}}>
                 <View style={styles.container}>
                     <HeaderBar title={'Outlets'}/>
-                    <View style={{marginTop: 10}}>
+                    <View style={{marginTop: 10, flex: 1}}>
                         <FlatList
                             data={this.state.channels}
                             renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item}
@@ -108,7 +108,7 @@ class OutletScreen extends React.Component<IProps, IState> {
                         <FlatList
                             data={this.state.outletList}
                             keyExtractor={(item, index) => index.toString()}
-                            renderItem={({item}) => <OutletCard data={item} onItemPress={this.onItemPress}/>}
+                            renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
                             showsVerticalScrollIndicator={false}/>
                     </View>
                 </View>

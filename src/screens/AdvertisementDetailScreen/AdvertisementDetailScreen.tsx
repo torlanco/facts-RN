@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image, Dimensions } from 'react-native';
 import { typos, colors, responsive } from '@styles';
 
 // Component
@@ -37,7 +37,7 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-
+  featureImage: any,
 }
 
 class AdvertisementDetailScreen extends React.Component<IProps, IState> {
@@ -45,11 +45,21 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-
+    this.state = {
+      featureImage: require('@assets/images/placeholder.png')
+    };
   }
 
   componentDidMount() {
     this._isMounted = true;
+    const { advertisement } = this.props.navigation.state.params;
+    if (advertisement.image) {
+      Image.getSize(advertisement.image, (width: number, height: number) => {
+          this.setState({ 
+              featureImage: advertisement.image
+          });
+      }, err => {});
+    }
   }
 
   componentWillUnmount() {
@@ -61,6 +71,8 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     const { category, type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
     const imageSource = require('@assets/images/placeholder.png');
     const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
+    
+    const imageWidth = Dimensions.get('window').width * 0.87;
 
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -76,8 +88,9 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
             </View>
             <Divider style={styles.divider} />
             <View style={styles.imageContainer}>
-              {image ? <FullWidthImage style={ styles.image } source={{ uri: image }} /> 
-                : <FullWidthImage style={ styles.image } source={imageSource} /> }          
+              { this.state.featureImage == advertisement.image ?
+                <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
+                <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }            
               <Divider style={[styles.divider, styles.categoryDividerPadding]} />
               <View style={styles.flexContainer}>
                 <View style={styles.flex}>

@@ -8,49 +8,74 @@ import { Card } from 'react-native-elements';
 
 // Utils
 import { formatDate } from '@utils';
+import FullWidthImage from 'react-native-fullwidth-image';
 interface IOwnProps {
-    data: IOutlet.IOutletData,
+    outlet: IOutlet.IOutletData,
     onItemPress?: Function
 };
 
 type IProps = IOwnProps;
 
-const OutletCard: React.SFC<IProps> = (props: IProps) => {
+interface IState {
+    outletImage: any,
+}
 
-    const {outlet, shopperCount, channelName, tag, outletImage, earliestStartDate, latestEndDate} = props.data;
-    const imageSource = require('@assets/images/placeholder.png');
+class OutletCard extends React.Component<IProps, IState> {
+   
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            outletImage: require('@assets/images/placeholder.png'),
+        };
+    }
 
-    const onItemPress = () => {
-        if (props.onItemPress)
-            props.onItemPress(props.data);
+    componentDidMount() {
+        if (this.props.outlet.outletImage) {
+            Image.getSize(this.props.outlet.outletImage, (width: number, height: number) => {
+                this.setState({ 
+                    outletImage: {uri: this.props.outlet.outletImage},
+                });
+            }, err => {});
+        }
+    }
+
+    onItemPress = () => {
+        if (this.props.onItemPress)
+            this.props.onItemPress(this.props.outlet);
     };
 
-    return (
-        <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
-            <View style={styles.mainContainer}>
-                <View style={styles.cardContainer}>
-                    <View style={styles.outletImageWrapper}>
-                        <Card containerStyle={styles.outletImage}>
-                            {outletImage ? <Image  style={ styles.image } source={{uri: outletImage}} resizeMode="contain"/> : <Image style={ styles.image } source={imageSource}/>}
-                        </Card>
-                    </View>
-                    <View style={styles.mainContent}>
-                        <Text style={[styles.type, styles.padding]}>{channelName}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={[styles.name, styles.padding]}>{outlet}</Text>
+    public render() {
+        const { outlet, shopperCount, channelName, tag, earliestStartDate, latestEndDate } = this.props.outlet;
+        
+        return (
+            <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
+                <View style={styles.mainContainer}>
+                    <View style={styles.cardContainer}>
+                        <View style={styles.outletImageWrapper}>
+                            <Card containerStyle={styles.outletImage}>
+                            { this.state.outletImage == this.props.outlet.outletImage ?
+                                <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> : 
+                                <Image style={[styles.image, { height: 100 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+                            </Card>
                         </View>
-                        <Text style={[styles.date, styles.padding]}>Latest: {formatDate(earliestStartDate)}</Text>
-                        <View style={styles.flexDiv}>
-                            <Text style={[styles.shoppers, styles.padding]}>
-                                <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS
-                            </Text>
-                            <Text style={[styles.isNew, styles.padding]}>New</Text>
+                        <View style={styles.mainContent}>
+                            <Text style={[styles.type, styles.padding]}>{channelName}</Text>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={[styles.name, styles.padding]}>{outlet}</Text>
+                            </View>
+                            <Text style={[styles.date, styles.padding]}>Latest: {formatDate(earliestStartDate)}</Text>
+                            <View style={styles.flexDiv}>
+                                <Text style={[styles.shoppers, styles.padding]}>
+                                    <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS
+                                </Text>
+                                <Text style={[styles.isNew, styles.padding]}>New</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
-        </TouchableOpacity>
-    );
+            </TouchableOpacity>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -83,7 +108,7 @@ const styles = StyleSheet.create({
         marginRight: '10%',
     },
     outletImage: {
-        height: 100,
+        maxHeight: 100,
         borderRadius: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
@@ -98,7 +123,8 @@ const styles = StyleSheet.create({
     },
     image: {
         borderRadius: 10,
-        height: '100%',
+        width: '100%',
+        maxHeight: 100
     },
     mainContent: {
       flexDirection: 'column'

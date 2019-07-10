@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
@@ -12,40 +12,63 @@ interface IOwnProps {
 
 type IProps = IOwnProps;
 
-const AdvertisementListItem: React.SFC<IProps> = (props: IProps) => {
-    const {id, type, brand, sprice, rprice, sizeMeasure, image } = props.advertisement;
-    const imageSource = require('@assets/images/placeholder.png');
+interface IState {
+    featureImage: any,
+}
 
-    const onItemPress = () => {
-        if (props.onItemPress) 
-            props.onItemPress(props.advertisement);
+class AdvertisementListItem extends React.Component<IProps, IState> {
+   
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            featureImage: require('@assets/images/placeholder.png'),
+        };
+    }
+    
+    componentDidMount() {
+        if (this.props.advertisement.image) {
+            Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
+                this.setState({ 
+                    featureImage: {uri: this.props.advertisement.image},
+                });
+            }, err => {});
+        }
     }
 
-    return (
-        <TouchableOpacity onPress={onItemPress} activeOpacity={.9}>
-            <View style={styles.mainContainer}>
-                <View style={styles.cardContainer}>
-                    <View style={styles.outletImageWrapper}>
-                        <Card containerStyle={styles.outletImage}>
-                            {image ? <Image style={ styles.image } source={{ uri: image }} /> 
-                                : <Image style={ styles.image } source={imageSource} /> }
-                        </Card>
-                    </View>
-                    <View style={styles.mainContent}>
-                        <Text style={[styles.type, styles.padding]}>{type}</Text>
-                        <Text style={[styles.name, styles.padding]}>{brand}</Text>
-                        <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-                        <View style={styles.priceContainer}>
-                            <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-                            <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+    onItemPress = () => {
+        if (this.props.onItemPress) 
+        this.props.onItemPress(this.props.advertisement);
+    }
+    public render() {
+        const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
+        const imageWidth = (Dimensions.get('window').width) * 0.40;
+    
+        return (
+            <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
+                <View style={styles.mainContainer}>
+                    <View style={styles.cardContainer}>
+                        <View style={styles.outletImageWrapper}>
+                            <Card containerStyle={styles.outletImage}>
+                            { this.state.featureImage == this.props.advertisement.image ?
+                                <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
+                                <Image style={[styles.image, { height: 100 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
+                            </Card>
+                        </View>
+                        <View style={styles.mainContent}>
+                            <Text style={[styles.type, styles.padding]}>{type}</Text>
+                            <Text style={[styles.name, styles.padding]}>{brand}</Text>
+                            <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
+                            <View style={styles.priceContainer}>
+                                <Text style={[styles.price, styles.padding]}>${sprice}</Text>
+                                <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
-        </TouchableOpacity>
-    );
+            </TouchableOpacity>
+        );
+    }
 }
-
 const styles = StyleSheet.create({
     mainContainer: {
         width: '95%',
@@ -76,7 +99,7 @@ const styles = StyleSheet.create({
         marginRight: '10%',
     },
     outletImage: {
-        height: 100,
+        maxHeight: 100,
         borderRadius: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
@@ -92,7 +115,7 @@ const styles = StyleSheet.create({
     image: {
         borderRadius: 10,
         width: '100%',
-        height: '100%',
+        maxHeight: 100
     },
     mainContent: {
       flexDirection: 'column'
