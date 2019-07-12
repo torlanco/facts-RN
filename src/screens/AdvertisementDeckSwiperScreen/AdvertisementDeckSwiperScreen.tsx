@@ -47,7 +47,7 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   _isMounted = false;
 
   constructor(props: IProps) {
-    super(props);    
+    super(props);
   }
 
   componentWillUnmount() {
@@ -65,7 +65,7 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   public render() {
     const { outlet } = this.props.navigation.state.params;
     const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
-    
+
     return (
       <SafeAreaView style={styles.flex}>
           <View style={styles.container}>
@@ -76,16 +76,17 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                   cards={this.props.advertisements}
                   renderCard={(card: any) => {
                       return (
-                        <AdvertisementDeckSwiperCard advertisement={card}></AdvertisementDeckSwiperCard> 
+                        <AdvertisementDeckSwiperCard advertisement={card}></AdvertisementDeckSwiperCard>
                       )
                   }}
                   onSwipedLeft={this.onSwipedLeft}
                   onSwipedRight={this.onSwipedRight}
                   cardIndex={0}
-                  stackSize= {1}
+                  stackSize= {2}
                   verticalSwipe={false}
                   disableTopSwipe={true}
                   disableBottomSwipe={true}
+                  showSecondCard={true}
                   backgroundColor={colors.WHITE}
                   cardVerticalMargin={30}
                   cardHorizontalMargin={10}>
