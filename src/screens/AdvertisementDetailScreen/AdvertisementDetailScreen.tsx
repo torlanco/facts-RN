@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { typos, colors, responsive } from '@styles';
 
 // Component
@@ -15,7 +15,6 @@ import { IOutlet } from '@interfaces/outlet';
 
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 import { Text, Divider, Icon } from 'react-native-elements';
-import { LoadingScreen } from '@screens';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { formatDate } from '@utils';
 
@@ -66,14 +65,16 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     this._isMounted = false;
   }
 
+  onPress = () => {
+    const { outlet } = this.props.navigation.state.params;
+    this.props.navigation.navigate('AdvertisementDeckSwiperScreen', {outlet: outlet});
+  }
+
   public render() {
     const { outlet, shopper, advertisement } = this.props.navigation.state.params;
     const { category, type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
-    const imageSource = require('@assets/images/placeholder.png');
     const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
     
-    const imageWidth = Dimensions.get('window').width * 0.87;
-
     return (
       <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
@@ -106,9 +107,10 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 <Text style={[styles.outlet]}>{outlet.outlet}</Text>
               </View>
             </View>
-            <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text>
+            <TouchableOpacity activeOpacity={0.9} onPress={this.onPress}>
+              <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text>
+            </TouchableOpacity>
           </View>
-          {this.props.loading && <LoadingScreen />}
       </SafeAreaView>
     );
   }
@@ -161,6 +163,7 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 10,
+    width: '100%'
   },
   flexContainer: {
     flexDirection: 'row',

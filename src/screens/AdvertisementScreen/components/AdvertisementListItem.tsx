@@ -41,8 +41,7 @@ class AdvertisementListItem extends React.Component<IProps, IState> {
     }
     public render() {
         const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
-        const imageWidth = (Dimensions.get('window').width) * 0.40;
-    
+        
         return (
             <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
                 <View style={styles.mainContainer}>

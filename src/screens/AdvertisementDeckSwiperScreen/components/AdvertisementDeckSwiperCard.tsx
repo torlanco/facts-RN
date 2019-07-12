@@ -3,14 +3,13 @@ import {
     StyleSheet,
     Text,
     View,
-    Dimensions,
-    TouchableOpacity,
     Image,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
+import { SafeAreaView } from 'react-navigation';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
@@ -21,7 +20,7 @@ type IProps = IOwnProps;
 interface IState {
   featureImage: any,
 }
-class AdvertisementGridItem extends React.Component<IProps, IState> {
+class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
  
   constructor(props: IProps) {
       super(props);
@@ -47,14 +46,13 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
 
   public render() {
     const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
-    const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
     return (
-      <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
-        <Card containerStyle={[styles.container, {width: itemWidth}]}>
+      <SafeAreaView>
+        <Card containerStyle={[styles.container]}>
           <Card containerStyle={[styles.container, styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
-              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
+              <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
           </Card>
           <Text style={[styles.type, styles.padding]}>{type}</Text>
           <Text style={[styles.name, styles.padding]}>{brand}</Text>
@@ -64,7 +62,7 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
             <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
           </View>
         </Card>
-      </TouchableOpacity>
+      </SafeAreaView>
     );
   }
 };
@@ -113,7 +111,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 30
+    marginTop: 20
   },
   price: {
     ...typos.PRIMARY_BOLD,
@@ -125,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { AdvertisementGridItem };
+export { AdvertisementDeckSwiperCard };

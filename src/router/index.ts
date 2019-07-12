@@ -7,7 +7,8 @@ import {
   OutletScreen,
   AdvertisementScreen,
   ShoppersScreen,
-  AdvertisementDetailScreen
+  AdvertisementDetailScreen,
+  AdvertisementDeckSwiperScreen
 } from '@screens';
 import { colors } from '@styles';
 
@@ -18,6 +19,7 @@ const AppNavigator = createAppContainer(
             ShopperScreen: {screen: ShoppersScreen},
             AdvertisementScreen: {screen: AdvertisementScreen},
             AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
+            AdvertisementDeckSwiperScreen: {screen: AdvertisementDeckSwiperScreen},
         },
         {
             initialRouteName: 'OutletScreen',
