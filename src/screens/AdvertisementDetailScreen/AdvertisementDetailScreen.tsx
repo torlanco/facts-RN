@@ -65,11 +65,6 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     this._isMounted = false;
   }
 
-  onPress = () => {
-    const { outlet } = this.props.navigation.state.params;
-    this.props.navigation.navigate('AdvertisementDeckSwiperScreen', {outlet: outlet});
-  }
-
   public render() {
     const { outlet, shopper, advertisement } = this.props.navigation.state.params;
     const { category, type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
@@ -107,9 +102,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 <Text style={[styles.outlet]}>{outlet.outlet}</Text>
               </View>
             </View>
-            <TouchableOpacity activeOpacity={0.9} onPress={this.onPress}>
-              <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text>
-            </TouchableOpacity>
+            <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text>
           </View>
       </SafeAreaView>
     );

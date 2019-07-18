@@ -17,6 +17,8 @@ interface IOwnProps {
     style?: StyleProp<ViewStyle>;
     titleStyle?: TextStyle;
     dateRange?: DateRange;
+    rightIcon?: string,
+    onRightIconClick?: Function
 }
 type IProps = IOwnProps & NavigationInjectedProps;
 
@@ -51,6 +53,12 @@ class HeaderBar extends React.Component<IProps, IState> {
         }
     }
 
+    onRightIconClick = () => {
+        if (this.props.onRightIconClick) {
+            this.props.onRightIconClick();
+        }
+    }
+
     public render() {
         return (
             <View style={[this.props.style]}>
@@ -65,6 +73,13 @@ class HeaderBar extends React.Component<IProps, IState> {
                     <Text style={[styles.title, this.props.titleStyle]}>{this.props.title}</Text>
                     { this.state.backEnabled ? <Text style={styles.iconContainer}></Text> : null }
                     { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange.startDate)} - {formatDate(this.props.dateRange.endDate)}</Text> : null }
+                    { this.props.rightIcon ? 
+                        <Icon
+                            name={this.props.rightIcon}
+                            type='feather'
+                            color={colors.BLACK}
+                            onPress={this.onRightIconClick}
+                            containerStyle={[styles.iconContainer, styles.rightIconContainer]} /> : null }
                 </View>
                 <Divider style={styles.divider} />
             </View>
@@ -88,6 +103,9 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         width: responsive(40)
+    },
+    rightIconContainer: {
+        marginRight: 5
     },
     divider: {
         backgroundColor: colors.LIGHTER_GRAY,

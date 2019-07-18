@@ -8,7 +8,6 @@ import { typos, colors } from '@styles';
 import { HeaderBar, SelectPicker } from '@components';
 import { IShopper } from '@interfaces/shopper';
 import { ShopperCard } from './components/ShopperCard';
-import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState, FlatList } from "react-navigation";
 

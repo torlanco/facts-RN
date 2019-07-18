@@ -45,23 +45,51 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
+    const { image, brand, type, units, capacity, size, rprice, sprice } = this.props.advertisement;
+ 
     return (
-      <SafeAreaView>
+      <SafeAreaView> 
         <Card containerStyle={[styles.container]}>
           <Card containerStyle={[styles.container, styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
               <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
           </Card>
-          <Text style={[styles.type, styles.padding]}>{type}</Text>
-          <Text style={[styles.name, styles.padding]}>{brand}</Text>
-          <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-          <View style={styles.priceContainer}>
-            <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-            <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+          <Text style={styles.label}>Brand</Text>
+          <Text style={[styles.text]}>{brand}</Text>
+
+          <Text style={styles.label}>Classification</Text>
+          <Text style={[styles.text]}>{type}</Text>
+
+          <View style={styles.row}>  
+            <View style={styles.flex}>
+              <Text style={styles.label}>Units</Text>
+              <Text style={[styles.text]}>{units}</Text>
+            </View>
+            <View style={styles.empty}></View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Capacity</Text>
+              <Text style={[styles.text]}>{capacity}</Text>
+            </View>
+            <View style={styles.empty}></View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Size</Text>
+              <Text style={[styles.text]}>{size}</Text>
+            </View>
           </View>
-        </Card>
+
+          <View style={styles.row}>  
+            <View style={styles.flex}>
+              <Text style={styles.label}>Regular Price</Text>
+              <Text style={[styles.text]}>{rprice}</Text>
+            </View>
+            <View style={styles.empty}></View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Special Price</Text>
+              <Text style={[styles.text]}>{sprice}</Text>
+            </View>
+          </View>
+        </Card> 
       </SafeAreaView>
     );
   }
@@ -93,34 +121,31 @@ const styles = StyleSheet.create({
     height: 'auto',
     borderRadius: 10,
   },
-  type: {
-    ...typos.SECONDARY,
-    color: colors.TEXT_SECONDARY,
-    paddingTop: 10
+  text: {
+    ...typos.PRIMARY,
+    borderRadius: 2,
+    borderColor: colors.LIGHT_GRAY,
+    height: 30,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 5
   },
-  name: {
-    ...typos.HEADLINE,
-    color: colors.TEXT_PRIMARY
+  label: {
+    ...typos.PRIMARY,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 2
   },
-  pieces: {
-    ...typos.SECONDARY,
-    color: colors.TEXT_SECONDARY
+  row: {
+    flexDirection: 'row'
   },
-  priceContainer: {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20
+  flex: {
+    flex: 1,
   },
-  price: {
-    ...typos.PRIMARY_BOLD,
-    color: colors.TEXT_SECONDARY  
-  },
-  originalPrice: {
-    ...typos.SMALL,
-    color: colors.LIGHT_ORANGE  
-  },
+  empty: {
+    width: 20,
+    height: 20,
+  }
 });
 
 export { AdvertisementDeckSwiperCard };

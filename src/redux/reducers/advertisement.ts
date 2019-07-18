@@ -7,7 +7,9 @@ const initialState: IAdvertisement.StateToProps = {
   error: false,
   loading: false,
   advertisements: undefined,
-  categories: undefined
+  categories: undefined,
+  advertisementsForReview: undefined,
+  categoriesForReview: undefined
 };
 
 export function advertisement(
@@ -24,6 +26,7 @@ export function advertisement(
       };
     case Types.FETCH_ADVERTISEMENTS_SUCCESS:
       return {
+        ...state,
         error: false,
         loading: false,
         advertisements: action.payload.advertisements,
@@ -31,10 +34,54 @@ export function advertisement(
       };
     case Types.FETCH_ADVERTISEMENTS_FAILED:
       return {
+        ...state,
         error: action.payload.message || true,
         loading: false,
         advertisements: [],
         categories: [],
+      };
+    // FETCH CATEGORIES PENDING FOR REVIEW 
+    case Types.FETCH_CATEGORIES_FOR_REVIEW:
+      return {
+          ...state,
+          error: false,
+          loading: true
+      };
+    case Types.FETCH_CATEGORIES_FOR_REVIEW_SUCCESS:
+      return {
+          ...state,
+          error: false,
+          loading: false,
+          categoriesForReview: action.payload.categories,
+      };
+    case Types.FETCH_CATEGORIES_FOR_REVIEW_FAILED:
+      return {
+          ...state,
+          error: action.payload.message || true,
+          loading: false,
+          categoriesForReview: [],
+      };
+
+    // FETCH ADVERTISEMENTS PENDING FOR REVIEW 
+    case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW:
+      return {
+          ...state,
+          error: false,
+          loading: true
+      };
+    case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW_SUCCESS:
+      return {
+          ...state,
+          error: false,
+          loading: false,
+          advertisementsForReview: action.payload.advertisements,
+      };
+    case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW_FAILED:
+      return {
+          ...state,
+          error: action.payload.message || true,
+          loading: false,
+          advertisementsForReview: [],
       };
     default:
       return state;
