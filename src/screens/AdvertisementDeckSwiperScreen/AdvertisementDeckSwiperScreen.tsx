@@ -13,7 +13,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 
 import { connect } from "react-redux";
 import { Button, Text } from 'react-native-elements';
-import Swiper  from 'react-native-deck-swiper';
+  import Swiper  from 'react-native-deck-swiper';
 import { AdvertisementDeckSwiperCard } from './components/AdvertisementDeckSwiperCard';
 import { colors } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
@@ -31,14 +31,15 @@ interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
 }
 type IProps = IOwnProps &
-  NavigationInjectedProps & 
+  NavigationInjectedProps &
   IAdvertisement.DispatchFromProps;
 
 // state
 interface IState {
   page: number,
   limit: number,
-  advertisements: IAdvertisement.IAdvertisementData[]
+  advertisements: IAdvertisement.IAdvertisementData[],
+  currentCard: IAdvertisement.IAdvertisementData,
 }
 
 class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
@@ -49,7 +50,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     this.state = {
       page: 1,
       limit: 5,
-      advertisements: []
+      advertisements: [],
+      currentCard: {}
     };
 
     this.fetchAdvertisementsForReview();
@@ -59,43 +61,58 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     const { category } = this.props.navigation.state.params;
     const advertisements: any = await this.props.fetchAdvertisementsForReview(category, this.state.page, this.state.limit);
     this.setState({
-      advertisements: advertisements
+      advertisements: advertisements,
+      currentCard: advertisements[0]
     });
   }
 
+  onSwiped (prevCardIndex: number) {
+    // When a new card is loaded in the front of the deck. Use onSwiped event and set the next card index
+    this.setState({
+      currentCard: this.state.advertisements[prevCardIndex+1]
+    });
+  }
+
+  onUpdateCurrentCardData (updatedData: IAdvertisement.IAdvertisementData) {
+    this.setState({
+      currentCard: updatedData
+    })
+  }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   onSwipedLeft = () => {
-    console.log('Left Swipe');
+    // console.log('Left Swipe');
   };
 
   onSwipedRight = () => {
-    console.log('Right Swipe');
+    // console.log('Right Swipe');
+    // update feature API
   };
 
   onHeaderRightIconClick = () => {
     this.props.navigation.navigate('SelectCategoryScreen', { isExternalCall: true });
-  }
+  };
 
   public render() {
     return (
       <SafeAreaView style={styles.flex}>
           <View style={styles.container}>
-            <HeaderBar title={'Review Features'} titleStyle={{textAlign: 'left'}} 
+            <HeaderBar title={'Review Features'} titleStyle={{textAlign: 'left'}}
                   rightIcon="filter" onRightIconClick={this.onHeaderRightIconClick}></HeaderBar>
-            { this.state.advertisements.length ? 
+            { this.state.advertisements.length ?
               <View style={styles.flex}>
                 <Swiper
                     useViewOverflow={Platform.OS === 'ios'}
                     cards={this.state.advertisements}
-                    renderCard={(card: any) => {
+                    renderCard={(card: any, cardIndex: number) => {
                         return (
-                          <AdvertisementDeckSwiperCard advertisement={card}></AdvertisementDeckSwiperCard>
+                          <AdvertisementDeckSwiperCard advertisement={card} onDataChange={this.onUpdateCurrentCardData}></AdvertisementDeckSwiperCard>
                         )
                     }}
+                    onSwiped={this.onSwiped}
                     onSwipedLeft={this.onSwipedLeft}
                     onSwipedRight={this.onSwipedRight}
                     cardIndex={0}

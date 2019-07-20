@@ -13,7 +13,8 @@ import { SafeAreaView } from 'react-navigation';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
-  onItemPress?: Function
+  cardIndex: number,
+  onDataChange: Function
 }
 type IProps = IOwnProps;
 
@@ -21,18 +22,18 @@ interface IState {
   featureImage: any,
 }
 class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
- 
+
   constructor(props: IProps) {
       super(props);
       this.state = {
           featureImage: require('@assets/images/placeholder.png')
       };
   }
-  
+
   componentDidMount() {
     if (this.props.advertisement.image) {
         Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
-            this.setState({ 
+            this.setState({
                 featureImage: this.props.advertisement.image
             });
         }, err => {});
@@ -40,20 +41,20 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
   }
 
   onItemPress = () => {
-    if (this.props.onItemPress) 
-      this.props.onItemPress(this.props.advertisement);
-  }
+    // TODO: Trigger this function for each update in the property. I don't know how will we do this.
+      this.props.onDataChange(this.props.advertisement);
+  };
 
   public render() {
     const { image, brand, type, units, capacity, size, rprice, sprice } = this.props.advertisement;
- 
+
     return (
-      <SafeAreaView> 
+      <SafeAreaView>
         <Card containerStyle={[styles.container]}>
           <Card containerStyle={[styles.container, styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
-              <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
-              <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
+              <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
+              <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
           </Card>
           <Text style={styles.label}>Brand</Text>
           <Text style={[styles.text]}>{brand}</Text>
@@ -61,7 +62,7 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
           <Text style={styles.label}>Classification</Text>
           <Text style={[styles.text]}>{type}</Text>
 
-          <View style={styles.row}>  
+          <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={styles.label}>Units</Text>
               <Text style={[styles.text]}>{units}</Text>
@@ -78,7 +79,7 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
             </View>
           </View>
 
-          <View style={styles.row}>  
+          <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={styles.label}>Regular Price</Text>
               <Text style={[styles.text]}>{rprice}</Text>
@@ -89,11 +90,11 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
               <Text style={[styles.text]}>{sprice}</Text>
             </View>
           </View>
-        </Card> 
+        </Card>
       </SafeAreaView>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   container: {
