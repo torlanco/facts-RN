@@ -4,6 +4,7 @@ import {
     Text,
     View,
     Image,
+    TextInput,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
@@ -13,20 +14,21 @@ import { SafeAreaView } from 'react-navigation';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
-  cardIndex: number,
   onDataChange: Function
 }
 type IProps = IOwnProps;
 
 interface IState {
   featureImage: any,
+  advertisement: any
 }
 class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
       super(props);
       this.state = {
-          featureImage: require('@assets/images/placeholder.png')
+          featureImage: require('@assets/images/placeholder.png'),
+          advertisement: this.props.advertisement || {}
       };
   }
 
@@ -40,14 +42,18 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
     }
   }
 
-  onItemPress = () => {
-    // TODO: Trigger this function for each update in the property. I don't know how will we do this.
-      this.props.onDataChange(this.props.advertisement);
-  };
+  onChangeField = (field: string, text: any) => {
+    const advertisement = this.state.advertisement;
+    advertisement[field] = text;
+    this.setState({
+      advertisement: advertisement
+    });
+    this.props.onDataChange(this.state.advertisement);
+  }
 
   public render() {
-    const { image, brand, type, units, capacity, size, rprice, sprice } = this.props.advertisement;
-
+    const { image, brand, type, units, capacity, size, rprice, sprice } = this.state.advertisement;
+ 
     return (
       <SafeAreaView>
         <Card containerStyle={[styles.container]}>
@@ -57,37 +63,42 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
               <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
           </Card>
           <Text style={styles.label}>Brand</Text>
-          <Text style={[styles.text]}>{brand}</Text>
+          <TextInput style={[styles.text]} value={`${brand}`} onChangeText={(text) => this.onChangeField('brand', text)}/>
 
           <Text style={styles.label}>Classification</Text>
-          <Text style={[styles.text]}>{type}</Text>
+          <TextInput style={[styles.text]} value={`${type}`} onChangeText={(text) => this.onChangeField('type', text)}/>
 
           <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={styles.label}>Units</Text>
-              <Text style={[styles.text]}>{units}</Text>
+              <TextInput style={[styles.text]} value={`${units}`} onChangeText={(text) => this.onChangeField('units', text)}
+                keyboardType="numeric"/>
             </View>
             <View style={styles.empty}></View>
             <View style={styles.flex}>
               <Text style={styles.label}>Capacity</Text>
-              <Text style={[styles.text]}>{capacity}</Text>
+              <TextInput style={[styles.text]} value={`${capacity}`} onChangeText={(text) => this.onChangeField('capacity', text)}
+                keyboardType="numeric"/>
             </View>
             <View style={styles.empty}></View>
             <View style={styles.flex}>
               <Text style={styles.label}>Size</Text>
-              <Text style={[styles.text]}>{size}</Text>
+              <TextInput style={[styles.text]} value={`${size}`} onChangeText={(text) => this.onChangeField('size', text)}
+                keyboardType="numeric"/>
             </View>
           </View>
 
           <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={styles.label}>Regular Price</Text>
-              <Text style={[styles.text]}>{rprice}</Text>
+              <TextInput style={[styles.text]} value={`${rprice}`} onChangeText={(text) => this.onChangeField('rprice', text)}
+                keyboardType="numeric"/>
             </View>
             <View style={styles.empty}></View>
             <View style={styles.flex}>
               <Text style={styles.label}>Special Price</Text>
-              <Text style={[styles.text]}>{sprice}</Text>
+              <TextInput style={[styles.text]} value={`${sprice}`} onChangeText={(text) => this.onChangeField('sprice', text)}
+                keyboardType="numeric"/>
             </View>
           </View>
         </Card>
@@ -120,6 +131,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
+    maxHeight: 200,
     borderRadius: 10,
   },
   text: {

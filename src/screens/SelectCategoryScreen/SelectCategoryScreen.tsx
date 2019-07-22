@@ -130,11 +130,17 @@ class SelectCategoryScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
+    let buttonStyle: any;
+    if (!this.state.category || this.state.category.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0] == this.state.localStorageCategory) {
+      buttonStyle = [styles.button, styles.disable];
+    } else {
+      buttonStyle = [styles.button];
+    }
     return (
         <SafeAreaView style={{flex: 1}}>
           { this.state.showPage ? 
             <View style={styles.container}>
-                <HeaderBar title={'Shoppers'}></HeaderBar>
+                <HeaderBar title={'Select Category'}></HeaderBar>
                 { this.state.localStorageCategory ? 
                   <View>
                   <Text style={styles.textBold}>Selected Category</Text>
@@ -150,7 +156,7 @@ class SelectCategoryScreen extends React.Component<IProps, IState> {
                   onPress={ this.onCategorySave }
                   disabled={ !this.state.category || this.state.category.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0] == this.state.localStorageCategory}
                   containerStyle={ styles.buttonContainer }
-                  buttonStyle={ styles.button }
+                  buttonStyle={ buttonStyle }
                   titleStyle={ styles.buttonTextStyle }/>
             </View> : null }
           {(this.props.loading || !this.state.showPage)&& <LoadingScreen />}
@@ -188,12 +194,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   button: {
-      borderWidth: 2,
-      borderRadius: 40,
-      height: responsive(44),
+    borderWidth: 2,
+    borderRadius: 40,
+    height: responsive(44),
   },
   buttonTextStyle: {
-      textTransform: 'uppercase'
+    textTransform: 'uppercase'
+  },
+  disable: {
+    borderColor: colors.DISABLED_GRAY,
   }
 });
 

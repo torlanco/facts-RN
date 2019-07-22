@@ -32,6 +32,7 @@ export namespace IAdvertisement {
         fetchAdvertisements(shopperId?: string): Function;
         fetchCategoriesForReview(): Function;
         fetchAdvertisementsForReview(category: string, page: number, limit: number): Function;
+        updateAdvertisementsForReview(advertisement: IAdvertisement.IAdvertisementData): Function;
     }
 
 }

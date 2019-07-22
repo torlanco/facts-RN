@@ -83,6 +83,26 @@ export function advertisement(
           loading: false,
           advertisementsForReview: [],
       };
+
+    // UPDATE ADVERTISEMENT PENDING FOR REVIEW 
+    case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW:
+      return {
+          ...state,
+          error: false,
+          loading: true
+      };
+    case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_FAILED:
+      return {
+          ...state,
+          error: false,
+          loading: false,
+      };
+    case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_SUCCESS:
+      return {
+          ...state,
+          error: action.payload.message || true,
+          loading: false,
+      };  
     default:
       return state;
   }

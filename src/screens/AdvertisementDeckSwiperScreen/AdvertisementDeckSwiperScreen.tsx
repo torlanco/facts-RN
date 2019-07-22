@@ -12,13 +12,12 @@ import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
 import { connect } from "react-redux";
-import { Button, Text } from 'react-native-elements';
-  import Swiper  from 'react-native-deck-swiper';
+import Swiper  from 'react-native-deck-swiper';
 import { AdvertisementDeckSwiperCard } from './components/AdvertisementDeckSwiperCard';
 import { colors } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { IAdvertisement } from '@interfaces/advertisement';
-import { advertisement } from 'src/redux/reducers';
+import { LoadingScreen } from '@screens';
 
 // props
 interface ParamType {
@@ -41,6 +40,12 @@ interface IState {
   advertisements: IAdvertisement.IAdvertisementData[],
   currentCard: IAdvertisement.IAdvertisementData,
 }
+
+const mapStateToProps = function(state: any) {
+  return {
+    loading: state.advertisement.loading,
+  }
+};
 
 class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   _isMounted = false;
@@ -66,31 +71,44 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     });
   }
 
-  onSwiped (prevCardIndex: number) {
-    // When a new card is loaded in the front of the deck. Use onSwiped event and set the next card index
-    this.setState({
-      currentCard: this.state.advertisements[prevCardIndex+1]
-    });
+  async updateAdvertisementsForReview(prevCardIndex: number) {
+    const advertisement = this.state.currentCard;
+    this.onSwipedChangeCurrentData(prevCardIndex);
+    await this.props.updateAdvertisementsForReview(advertisement);
   }
 
-  onUpdateCurrentCardData (updatedData: IAdvertisement.IAdvertisementData) {
+  onSwipedChangeCurrentData (prevCardIndex: number) {
+    // When a new card is loaded in the front of the deck. Use onSwiped event and set the next card index
+    if (prevCardIndex + 1 < this.state.advertisements.length) {
+      this.onUpdateCurrentCardData(this.state.advertisements[prevCardIndex+1]);  
+    }
+  }
+
+  onUpdateCurrentCardData = (updatedData: IAdvertisement.IAdvertisementData) => {
     this.setState({
       currentCard: updatedData
-    })
+    });
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
 
-  onSwipedLeft = () => {
-    // console.log('Left Swipe');
+  onSwipedLeft = (prevCardIndex: number) => {
+    this.onSwipedChangeCurrentData(prevCardIndex);
   };
 
-  onSwipedRight = () => {
-    // console.log('Right Swipe');
-    // update feature API
+  onSwipedRight = (prevCardIndex: number) => {
+    this.updateAdvertisementsForReview(prevCardIndex);
   };
+
+  dragStart = (event : any) => {
+    console.log(event);  
+  }
+
+  dragEnd = (event: any) => {
+    console.log(event);    
+  }
 
   onHeaderRightIconClick = () => {
     this.props.navigation.navigate('SelectCategoryScreen', { isExternalCall: true });
@@ -102,12 +120,12 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
           <View style={styles.container}>
             <HeaderBar title={'Review Features'} titleStyle={{textAlign: 'left'}}
                   rightIcon="filter" onRightIconClick={this.onHeaderRightIconClick}></HeaderBar>
-            { this.state.advertisements.length ?
+            { this.state.advertisements && this.state.advertisements.length ?
               <View style={styles.flex}>
                 <Swiper
                     useViewOverflow={Platform.OS === 'ios'}
                     cards={this.state.advertisements}
-                    renderCard={(card: any, cardIndex: number) => {
+                    renderCard={(card: any) => {
                         return (
                           <AdvertisementDeckSwiperCard advertisement={card} onDataChange={this.onUpdateCurrentCardData}></AdvertisementDeckSwiperCard>
                         )
@@ -115,6 +133,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     onSwiped={this.onSwiped}
                     onSwipedLeft={this.onSwipedLeft}
                     onSwipedRight={this.onSwipedRight}
+                    dragStart={(event) => this.dragStart(event)}
+                    dragEnd={this.dragEnd}
                     cardIndex={0}
                     stackSize= {2}
                     verticalSwipe={false}
@@ -126,7 +146,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     cardHorizontalMargin={0}>
                 </Swiper>
               </View> : null }
-        </View>
+          </View>
+          {(this.props.loading) && <LoadingScreen />}
       </SafeAreaView>
     );
   }
@@ -143,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, mapDispatchToProps)(AdvertisementDeckSwiperScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AdvertisementDeckSwiperScreen);

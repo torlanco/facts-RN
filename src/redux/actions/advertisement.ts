@@ -1,6 +1,6 @@
 import { Types } from '@types';
 import { IAdvertisement } from '@interfaces/advertisement';
-import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview } from '@services';
+import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview, updateAdvertisementsForReview } from '@services';
 
 const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
   fetchAdvertisements: (shopperId?: string) => {
@@ -66,6 +66,28 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.FETCH_ADVERTISEMENTS_FOR_REVIEW_FAILED,
+          payload: e,
+        });
+        return [];
+      }
+    };
+  },
+  updateAdvertisementsForReview: (advertisement: IAdvertisement.IAdvertisementData) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.UPDATE_ADVERTISEMENT_FOR_REVIEW,
+      });
+      try {
+        const response = await updateAdvertisementsForReview(advertisement);
+        dispatch({
+          type: Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_SUCCESS,
+          payload: {
+           
+          }
+        });
+      } catch(e) {
+        dispatch({
+          type: Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_FAILED,
           payload: e,
         });
         return [];

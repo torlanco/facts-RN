@@ -14,5 +14,6 @@ export const colors = {
     MID_GRAY: '#7A7F83',
     LIGHT_GREEN: '#84D157',
     LIGHT_BLUE: '#7E849C',
-    LIGHT_ORANGE: '#FE9870'
+    LIGHT_ORANGE: '#FE9870',
+    DISABLED_GRAY: '#E3E6E8',
 };
