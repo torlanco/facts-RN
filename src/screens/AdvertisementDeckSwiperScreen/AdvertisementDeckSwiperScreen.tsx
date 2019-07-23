@@ -18,6 +18,7 @@ import { colors } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { LoadingScreen } from '@screens';
+import { CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
@@ -39,6 +40,7 @@ interface IState {
   limit: number,
   advertisements: IAdvertisement.IAdvertisementData[],
   currentCard: IAdvertisement.IAdvertisementData,
+  swipeOperation: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -56,7 +58,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
       page: 1,
       limit: 5,
       advertisements: [],
-      currentCard: {}
+      currentCard: {},
+      swipeOperation: CONSTANTS.NONE,
     };
 
     this.fetchAdvertisementsForReview();
@@ -86,7 +89,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
 
   onUpdateCurrentCardData = (updatedData: IAdvertisement.IAdvertisementData) => {
     this.setState({
-      currentCard: updatedData
+      swipeOperation: CONSTANTS.NONE,
+      currentCard: updatedData,
     });
   }
 
@@ -102,12 +106,24 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     this.updateAdvertisementsForReview(prevCardIndex);
   };
 
-  dragStart = (event : any) => {
-    console.log(event);  
+  onSwiping = (x : any) => {
+    if (this.state.swipeOperation != CONSTANTS.LEFT_OPERATION && x < 0) {
+      this.setOperation(CONSTANTS.LEFT_OPERATION)
+    } else if (this.state.swipeOperation != CONSTANTS.RIGHT_OPERATION && x > 0) {
+      this.setOperation(CONSTANTS.RIGHT_OPERATION)
+    }
   }
 
-  dragEnd = (event: any) => {
-    console.log(event);    
+  onSwipedAborted = () => {
+    if (this.state.swipeOperation != CONSTANTS.NONE) {
+      this.setOperation(CONSTANTS.NONE);
+    }
+  }
+
+  setOperation(swipeOperation: string) {
+    this.setState({
+      swipeOperation: swipeOperation,
+    });
   }
 
   onHeaderRightIconClick = () => {
@@ -127,14 +143,15 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     cards={this.state.advertisements}
                     renderCard={(card: any) => {
                         return (
-                          <AdvertisementDeckSwiperCard advertisement={card} onDataChange={this.onUpdateCurrentCardData}></AdvertisementDeckSwiperCard>
+                          <AdvertisementDeckSwiperCard advertisement={card} swipeOperation={this.state.swipeOperation}
+                            currentAdvertisementId={this.state.currentCard.id} 
+                            onDataChange={this.onUpdateCurrentCardData}></AdvertisementDeckSwiperCard>
                         )
                     }}
-                    onSwiped={this.onSwiped}
                     onSwipedLeft={this.onSwipedLeft}
                     onSwipedRight={this.onSwipedRight}
-                    dragStart={(event) => this.dragStart(event)}
-                    dragEnd={this.dragEnd}
+                    onSwiping={this.onSwiping}
+                    onSwipedAborted={this.onSwipedAborted}
                     cardIndex={0}
                     stackSize= {2}
                     verticalSwipe={false}
