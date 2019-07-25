@@ -11,13 +11,10 @@ import { Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { SafeAreaView } from 'react-navigation';
-import { CONSTANTS } from '@utils';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
-  currentAdvertisementId: number | undefined,
   onDataChange: Function,
-  swipeOperation: string
 }
 type IProps = IOwnProps;
 
@@ -56,28 +53,9 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
 
   public render() {
     const { image, brand, type, units, capacity, size, rprice, sprice } = this.state.advertisement;
-    const swiperOperationView: any = {};
-    const swiperOperation: any = {};
-    if (this.props.swipeOperation == CONSTANTS.LEFT_OPERATION) {
-      swiperOperationView.alignSelf = 'flex-end';
-      swiperOperation.borderColor = colors.ERROR;
-      swiperOperation.color = colors.ERROR;
-    } else if (this.props.swipeOperation == CONSTANTS.RIGHT_OPERATION) {
-      swiperOperationView.alignSelf = 'flex-start';
-      swiperOperation.borderColor = colors.SUCCESS;
-      swiperOperation.color = colors.SUCCESS;
-    }
-
-    console.log(this.props.swipeOperation);
-
     return (
       <SafeAreaView>
         <Card containerStyle={[styles.container]}>
-          { this.props.advertisement.id == this.props.currentAdvertisementId 
-            && this.props.swipeOperation != CONSTANTS.NONE ?
-            <View style={[styles.swipeOperationView, swiperOperationView]}>
-              <Text style={[styles.swipeOperation, swiperOperation]}>{this.props.swipeOperation}</Text>
-            </View> : null }
           <Card containerStyle={[styles.container, styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
@@ -180,29 +158,6 @@ const styles = StyleSheet.create({
   empty: {
     width: 20,
     height: 20,
-  },
-  swipeOperationView: {
-    position: 'absolute',
-    top: 0,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    elevation: 3,
-    zIndex: 2,
-    shadowOffset:{ width: 0,  height: 0, },
-    opacity: 1,
-  },
-  swipeOperation: {
-    textAlign: 'center',
-    ...typos.SUBHEADLINE,
-    fontWeight: 'bold',
-    margin: 0,
-    paddingHorizontal: 10,
-    paddingTop: 7,
-    paddingBottom: 5,
-    borderWidth: 3,
-    borderRadius: 5,
   }
 });
 

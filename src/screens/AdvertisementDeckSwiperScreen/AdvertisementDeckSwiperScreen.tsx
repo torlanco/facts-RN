@@ -18,7 +18,6 @@ import { colors } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { LoadingScreen } from '@screens';
-import { CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
@@ -36,11 +35,7 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-  page: number,
-  limit: number,
   advertisements: IAdvertisement.IAdvertisementData[],
-  currentCard: IAdvertisement.IAdvertisementData,
-  swipeOperation: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -51,31 +46,38 @@ const mapStateToProps = function(state: any) {
 
 class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   _isMounted = false;
+  page: number = 1;
+  limit: number = 5;
+  nextAdvertisements: IAdvertisement.IAdvertisementData[] = [];
+  totalAdvertisments: number =  0;
+  currentCard: any = {};
 
   constructor(props: IProps) {
     super(props);
+    this.nextAdvertisements = [];
     this.state = {
-      page: 1,
-      limit: 5,
       advertisements: [],
-      currentCard: {},
-      swipeOperation: CONSTANTS.NONE,
     };
+  }
 
+  componentDidMount() {
     this.fetchAdvertisementsForReview();
   }
 
   async fetchAdvertisementsForReview() {
     const { category } = this.props.navigation.state.params;
-    const advertisements: any = await this.props.fetchAdvertisementsForReview(category, this.state.page, this.state.limit);
+    const data: any = await this.props.fetchAdvertisementsForReview(category, this.page, this.limit);
+    this.totalAdvertisments=  data.total;
+    if (data.features.length) {
+      this.currentCard = data.features[0]
+    }
     this.setState({
-      advertisements: advertisements,
-      currentCard: advertisements[0]
+      advertisements: data.features,
     });
   }
 
   async updateAdvertisementsForReview(prevCardIndex: number) {
-    const advertisement = this.state.currentCard;
+    const advertisement = this.currentCard;
     this.onSwipedChangeCurrentData(prevCardIndex);
     await this.props.updateAdvertisementsForReview(advertisement);
   }
@@ -84,14 +86,32 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     // When a new card is loaded in the front of the deck. Use onSwiped event and set the next card index
     if (prevCardIndex + 1 < this.state.advertisements.length) {
       this.onUpdateCurrentCardData(this.state.advertisements[prevCardIndex+1]);  
+    } 
+    if (prevCardIndex == (((this.page -1) * this.limit) + (this.limit >> 1)) 
+      && this.page * this.limit < this.totalAdvertisments) {
+      this.page++;
+      this.fetchNextPageAdvertisementsForReview();
     }
   }
 
+  onSwipedAll = () => {
+    if (this.nextAdvertisements.length) {
+      this.nextAdvertisements.forEach(advertisement => {
+        this.state.advertisements.push(advertisement);
+      });
+      this.currentCard = this.nextAdvertisements[0]
+      this.nextAdvertisements = [];
+    }
+  }
+
+  async fetchNextPageAdvertisementsForReview() {
+    const { category } = this.props.navigation.state.params;
+    const data: any = await this.props.fetchAdvertisementsForReview(category, this.page, this.limit, true);
+    this.nextAdvertisements = data.features;
+  }
+
   onUpdateCurrentCardData = (updatedData: IAdvertisement.IAdvertisementData) => {
-    this.setState({
-      swipeOperation: CONSTANTS.NONE,
-      currentCard: updatedData,
-    });
+    this.currentCard = updatedData;
   }
 
   componentWillUnmount() {
@@ -105,26 +125,6 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   onSwipedRight = (prevCardIndex: number) => {
     this.updateAdvertisementsForReview(prevCardIndex);
   };
-
-  onSwiping = (x : any) => {
-    if (this.state.swipeOperation != CONSTANTS.LEFT_OPERATION && x < 0) {
-      this.setOperation(CONSTANTS.LEFT_OPERATION)
-    } else if (this.state.swipeOperation != CONSTANTS.RIGHT_OPERATION && x > 0) {
-      this.setOperation(CONSTANTS.RIGHT_OPERATION)
-    }
-  }
-
-  onSwipedAborted = () => {
-    if (this.state.swipeOperation != CONSTANTS.NONE) {
-      this.setOperation(CONSTANTS.NONE);
-    }
-  }
-
-  setOperation(swipeOperation: string) {
-    this.setState({
-      swipeOperation: swipeOperation,
-    });
-  }
 
   onHeaderRightIconClick = () => {
     this.props.navigation.navigate('SelectCategoryScreen', { isExternalCall: true });
@@ -143,15 +143,13 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     cards={this.state.advertisements}
                     renderCard={(card: any) => {
                         return (
-                          <AdvertisementDeckSwiperCard advertisement={card} swipeOperation={this.state.swipeOperation}
-                            currentAdvertisementId={this.state.currentCard.id} 
+                          <AdvertisementDeckSwiperCard advertisement={card}
                             onDataChange={this.onUpdateCurrentCardData}></AdvertisementDeckSwiperCard>
                         )
                     }}
                     onSwipedLeft={this.onSwipedLeft}
                     onSwipedRight={this.onSwipedRight}
-                    onSwiping={this.onSwiping}
-                    onSwipedAborted={this.onSwipedAborted}
+                    onSwipedAll={this.onSwipedAll}                  
                     cardIndex={0}
                     stackSize= {2}
                     verticalSwipe={false}
@@ -160,7 +158,50 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     showSecondCard={true}
                     backgroundColor={colors.WHITE}
                     cardVerticalMargin={30}
-                    cardHorizontalMargin={0}>
+                    cardHorizontalMargin={0} 
+                    overlayLabels={{
+                      left: {
+                        title: 'SKIP',
+                        style: {
+                          label: {
+                            backgroundColor: 'transparent',
+                            borderColor: colors.ERROR,
+                            color: colors.ERROR,
+                            borderWidth: 3,
+                            fontSize: 17,
+                            textAlign: 'center'
+                          },
+                          wrapper: {
+                            flexDirection: 'column',
+                            alignItems: 'flex-end',
+                            justifyContent: 'flex-start',
+                            marginTop: 40,
+                            marginLeft: -40
+                          }
+                        }
+                      },
+                      right: {
+                        title: 'APPROVE',
+                        style: {
+                          label: {
+                            backgroundColor: 'transparent',
+                            borderColor: colors.SUCCESS,
+                            color: colors.SUCCESS,
+                            borderWidth: 3,
+                            fontSize: 17,
+                            textAlign: 'center'
+                          },
+                          wrapper: {
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            marginTop: 40,
+                            marginLeft: 40
+                          }
+                        }
+                      }
+                  }}
+                  animateOverlayLabelsOpacity>
                 </Swiper>
               </View> : null }
           </View>

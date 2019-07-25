@@ -49,10 +49,13 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       }
     };
   },
-  fetchAdvertisementsForReview: (category: string, page: number, limit?: number) => {
+  fetchAdvertisementsForReview: (category: string, page: number, limit?: number, isBackground?: boolean) => {
     return async function (dispatch: any) {
       dispatch({
-        type: Types.FETCH_ADVERTISEMENTS_FOR_REVIEW,
+        type: Types.FETCH_ADVERTISEMENTS_FOR_REVIEW, 
+        payload: {
+          isBackground: isBackground,
+        }
       });
       try {
         const response = await fetchAdvertisementsForReview(category, page, limit ? limit : 5);
@@ -62,7 +65,7 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
             advertisements: response.data.data.features,
           }
         });
-        return response.data.data.features;
+        return response.data.data;
       } catch(e) {
         dispatch({
           type: Types.FETCH_ADVERTISEMENTS_FOR_REVIEW_FAILED,
@@ -78,12 +81,10 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
         type: Types.UPDATE_ADVERTISEMENT_FOR_REVIEW,
       });
       try {
-        const response = await updateAdvertisementsForReview(advertisement);
+        await updateAdvertisementsForReview(advertisement);
         dispatch({
           type: Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_SUCCESS,
-          payload: {
-           
-          }
+          payload: { }
         });
       } catch(e) {
         dispatch({

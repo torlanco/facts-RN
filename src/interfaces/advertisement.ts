@@ -31,7 +31,7 @@ export namespace IAdvertisement {
     export interface DispatchFromProps {
         fetchAdvertisements(shopperId?: string): Function;
         fetchCategoriesForReview(): Function;
-        fetchAdvertisementsForReview(category: string, page: number, limit: number): Function;
+        fetchAdvertisementsForReview(category: string, page: number, limit?: number, isBackground?: boolean): Function;
         updateAdvertisementsForReview(advertisement: IAdvertisement.IAdvertisementData): Function;
     }
 

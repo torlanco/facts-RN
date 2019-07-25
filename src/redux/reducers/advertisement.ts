@@ -43,65 +43,65 @@ export function advertisement(
     // FETCH CATEGORIES PENDING FOR REVIEW 
     case Types.FETCH_CATEGORIES_FOR_REVIEW:
       return {
-          ...state,
-          error: false,
-          loading: true
+        ...state,
+        error: false,
+        loading: true
       };
     case Types.FETCH_CATEGORIES_FOR_REVIEW_SUCCESS:
       return {
-          ...state,
-          error: false,
-          loading: false,
-          categoriesForReview: action.payload.categories,
+        ...state,
+        error: false,
+        loading: false,
+        categoriesForReview: action.payload.categories,
       };
     case Types.FETCH_CATEGORIES_FOR_REVIEW_FAILED:
       return {
-          ...state,
-          error: action.payload.message || true,
-          loading: false,
-          categoriesForReview: [],
+        ...state,
+        error: action.payload.message || true,
+        loading: false,
+        categoriesForReview: [],
       };
 
     // FETCH ADVERTISEMENTS PENDING FOR REVIEW 
     case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW:
       return {
-          ...state,
-          error: false,
-          loading: true
+        ...state,
+        error: false,
+        loading: action.payload.isBackground ? false : true
       };
     case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW_SUCCESS:
       return {
-          ...state,
-          error: false,
-          loading: false,
-          advertisementsForReview: action.payload.advertisements,
+        ...state,
+        error: false,
+        loading: false,
+        advertisementsForReview: action.payload.advertisements,
       };
     case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW_FAILED:
       return {
-          ...state,
-          error: action.payload.message || true,
-          loading: false,
-          advertisementsForReview: [],
+        ...state,
+        error: action.payload.message || true,
+        loading: false,
+        advertisementsForReview: [],
       };
 
     // UPDATE ADVERTISEMENT PENDING FOR REVIEW 
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW:
       return {
-          ...state,
-          error: false,
-          loading: true
+        ...state,
+        error: false,
+        loading: true
       };
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_FAILED:
       return {
-          ...state,
-          error: false,
-          loading: false,
+        ...state,
+        error: false,
+        loading: false,
       };
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_SUCCESS:
       return {
-          ...state,
-          error: action.payload.message || true,
-          loading: false,
+        ...state,
+        error: action.payload.message || true,
+        loading: false,
       };  
     default:
       return state;
