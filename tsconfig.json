@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+      "allowJs": false,
+      "allowSyntheticDefaultImports": true,
+      "noFallthroughCasesInSwitch": true,
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "isolatedModules": true,
+      "jsx": "react-native",
+      "lib": [
+        "es6"
+      ],
+      "moduleResolution": "node",
+      "noEmit": true,
+      "strict": true,
+      "target": "esnext",
+      "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
+      "paths": {
+        "@assets": ["assets"],
+        "@images/*": ["assets/images/*"],
+        "@screens": ["src/screens"],
+        "@styles": ["src/styles"],
+        "@components": ["src/components"],
+        "@router": ["src/router"],
+        "@constants": ["src/constants"],
+        "@store": ["src/redux/store"],
+        "@services": ["src/services"],
+        "@types": ["src/redux/actions/types"],
+        "@actions/*": ["src/redux/actions/*"],
+        "@interfaces/*": ["src/interfaces/*"],
+        "@utils": ["src/utils"],
+      } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
+    },
+    // "exclude": [
+    //   "node_modules"
+    // ]
+}
