@@ -66,7 +66,10 @@ const AppNavigator = createAppContainer(
           Work: { screen: WorkNavigator },
         },
         {
-          contentComponent: SideMenu
+          contentComponent: SideMenu,
+          defaultNavigationOptions: {
+            drawerLockMode: 'locked-closed'
+          },
         }
     )
 );
