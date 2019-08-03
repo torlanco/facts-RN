@@ -14,7 +14,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import Swiper  from 'react-native-deck-swiper';
 import { AdvertisementDeckSwiperCard } from './components/AdvertisementDeckSwiperCard';
-import { colors } from '@styles';
+import { responsive, colors } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { LoadingScreen } from '@screens';
@@ -58,9 +58,11 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     this.state = {
       advertisements: [],
     };
+    console.log('Hel1');
   }
 
   componentDidMount() {
+    console.log('Helo');
     this.fetchAdvertisementsForReview();
   }
 
@@ -134,8 +136,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={styles.flex}>
           <View style={styles.container}>
-            <HeaderBar title={'Review Features'} titleStyle={{textAlign: 'left'}}
-                  rightIcon="filter" onRightIconClick={this.onHeaderRightIconClick}></HeaderBar>
+            <HeaderBar title={'Review Features'} style={{paddingHorizontal: '4%'}}
+              rightIcon="filter" onRightIconClick={this.onHeaderRightIconClick}></HeaderBar>
             { this.state.advertisements && this.state.advertisements.length ?
               <View style={styles.flex}>
                 <Swiper
