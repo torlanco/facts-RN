@@ -14,14 +14,5 @@ export const fetchAdvertisementsForReview = (category: string, page: number, lim
 };
 
 export const updateAdvertisementsForReview = (advertisement: IAdvertisement.IAdvertisementData) => {
-    return HTTP.put(`https://facts-cloud.herokuapp.com/features/${advertisement.id}`, {
-        "sprice": advertisement.sprice,
-        "rprice": advertisement.rprice,
-        "brand": advertisement.brand,
-        "category": advertisement.category,
-        "type": advertisement.type,
-        "unit": advertisement.units,
-        "mesaure": advertisement.measure,
-        "capacity": advertisement.capacity,
-    });
+    return HTTP.put(`https://facts-cloud.herokuapp.com/features/${advertisement.id}`, advertisement);
 };
