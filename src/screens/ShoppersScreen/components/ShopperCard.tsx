@@ -57,7 +57,7 @@ class ShopperCard extends React.Component<IProps, IState> {
                     <View style={styles.mainContent}>
                         <Card containerStyle={styles.cardContainer}>
                             <Text style={[styles.highlight, styles.padding]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
-                            <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> FEATURES</Text>
+                            <Text style={[styles.text, styles.padding]}><Text style={styles.highlight}>{count} </Text> PAGES</Text>
                         </Card>
                     </View>
                 </View>

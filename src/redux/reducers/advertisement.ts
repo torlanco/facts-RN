@@ -87,21 +87,16 @@ export function advertisement(
     // UPDATE ADVERTISEMENT PENDING FOR REVIEW 
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW:
       return {
-        ...state,
-        error: false,
-        loading: true
+        ...state
       };
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_FAILED:
       return {
-        ...state,
-        error: false,
-        loading: false,
+        ...state
       };
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_SUCCESS:
       return {
         ...state,
-        error: action.payload.message || true,
-        loading: false,
+        error: action.payload.message || true
       };  
     default:
       return state;

@@ -10,3 +10,10 @@ export const formatDate = (date: string | undefined) => {
     return `${MONTHS[parseInt(dateArray[1]) - 1]} ${parseInt(dateArray[2])}`;
 };
   
+export const capitalize = (text: string) => {
+    const textArr = text.split(" ");
+    for (let i = 0; i < textArr.length; i++) {
+        textArr[i] = textArr[i].substr(0,1).toUpperCase() + textArr[i].substr(1).toLowerCase();
+    }
+    return textArr.join(" ");
+}

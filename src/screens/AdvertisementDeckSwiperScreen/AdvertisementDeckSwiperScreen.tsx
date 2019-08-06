@@ -14,10 +14,12 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import Swiper  from 'react-native-deck-swiper';
 import { AdvertisementDeckSwiperCard } from './components/AdvertisementDeckSwiperCard';
-import { responsive, colors } from '@styles';
+import { responsive, colors, typos } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { LoadingScreen } from '@screens';
+import { Text } from 'react-native-elements';
+import { capitalize } from '@utils';
 
 // props
 interface ParamType {
@@ -36,6 +38,7 @@ type IProps = IOwnProps &
 // state
 interface IState {
   advertisements: IAdvertisement.IAdvertisementData[],
+  currentIndex: number
 }
 
 const mapStateToProps = function(state: any) {
@@ -49,7 +52,7 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   page: number = 1;
   limit: number = 5;
   nextAdvertisements: IAdvertisement.IAdvertisementData[] = [];
-  totalAdvertisments: number =  0;
+  totalAdvertisments: number =  -1;
   currentCard: any = {};
 
   constructor(props: IProps) {
@@ -57,12 +60,11 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     this.nextAdvertisements = [];
     this.state = {
       advertisements: [],
+      currentIndex: 0
     };
-    console.log('Hel1');
   }
 
   componentDidMount() {
-    console.log('Helo');
     this.fetchAdvertisementsForReview();
   }
 
@@ -86,6 +88,9 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
 
   onSwipedChangeCurrentData (prevCardIndex: number) {
     // When a new card is loaded in the front of the deck. Use onSwiped event and set the next card index
+    this.setState({
+      currentIndex: prevCardIndex + 1
+    });;
     if (prevCardIndex + 1 < this.state.advertisements.length) {
       this.onUpdateCurrentCardData(this.state.advertisements[prevCardIndex+1]);  
     } 
@@ -103,6 +108,9 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
       });
       this.currentCard = this.nextAdvertisements[0]
       this.nextAdvertisements = [];
+      this.setState({
+        currentIndex: 0
+      })
     }
   }
 
@@ -132,13 +140,22 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     this.props.navigation.navigate('SelectCategoryScreen', { isExternalCall: true });
   };
 
+  getCurrentIndex = () => {
+    return (this.page-1)*this.limit + this.state.currentIndex + 1;
+  }
+
+  getNoReviewMessage = () => {
+    let {category} = this.props.navigation.state.params;
+    return `No more review for \ncategory "${capitalize(category)}"`;
+  }
+
   public render() {
     return (
       <SafeAreaView style={styles.flex}>
           <View style={styles.container}>
             <HeaderBar title={'Review Features'} style={{paddingHorizontal: '4%'}}
               rightIcon="filter" onRightIconClick={this.onHeaderRightIconClick}></HeaderBar>
-            { this.state.advertisements && this.state.advertisements.length ?
+            { this.state.advertisements && this.state.advertisements.length && this.getCurrentIndex() != this.totalAdvertisments + 1 ? 
               <View style={styles.flex}>
                 <Swiper
                     useViewOverflow={Platform.OS === 'ios'}
@@ -159,14 +176,14 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     disableBottomSwipe={true}
                     showSecondCard={true}
                     backgroundColor={colors.WHITE}
-                    cardVerticalMargin={30}
+                    cardVerticalMargin={5}
                     cardHorizontalMargin={0} 
                     overlayLabels={{
                       left: {
                         title: 'SKIP',
                         style: {
                           label: {
-                            backgroundColor: 'transparent',
+                            backgroundColor: 'white',
                             borderColor: colors.ERROR,
                             color: colors.ERROR,
                             borderWidth: 3,
@@ -186,7 +203,7 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                         title: 'APPROVE',
                         style: {
                           label: {
-                            backgroundColor: 'transparent',
+                            backgroundColor: 'white',
                             borderColor: colors.SUCCESS,
                             color: colors.SUCCESS,
                             borderWidth: 3,
@@ -205,7 +222,11 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                   }}
                   animateOverlayLabelsOpacity>
                 </Swiper>
-              </View> : null }
+                <Text style={styles.text}>{`${this.getCurrentIndex()} of ${this.totalAdvertisments}`}</Text>
+              </View> : 
+              <View style={styles.noMoreReviewView}> 
+                <Text style={styles.noMoreReview}>{this.getNoReviewMessage()}</Text>
+              </View> }
           </View>
           {(this.props.loading) && <LoadingScreen />}
       </SafeAreaView>
@@ -222,6 +243,28 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1
   },
+  text: {
+    ...typos.HEADLINE,
+    color: colors.LIGHT_ORANGE,
+    textAlign: 'center',
+    padding: 10,
+    fontWeight: 'bold',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  noMoreReviewView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  noMoreReview: {
+    ...typos.HEADLINE,
+    color: colors.TEXT_SECONDARY,
+    textAlign: 'center',
+    padding: 25,
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvertisementDeckSwiperScreen);

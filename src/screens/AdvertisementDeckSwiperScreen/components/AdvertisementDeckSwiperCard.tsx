@@ -52,7 +52,7 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { image, brand, type, units, capacity, size, rprice, sprice } = this.state.advertisement;
+    const { image, category, brand, type, units, capacity, size, rprice, sprice } = this.state.advertisement;
     return (
       <SafeAreaView>
         <Card containerStyle={[styles.container]}>
@@ -65,6 +65,9 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
           <TextInput style={[styles.text]} value={`${brand}`} onChangeText={(text) => this.onChangeField('brand', text)}/>
 
           <Text style={styles.label}>Classification</Text>
+          <TextInput style={[styles.text]} value={`${category}`} onChangeText={(text) => this.onChangeField('category', text)}/>
+
+          <Text style={styles.label}>Type</Text>
           <TextInput style={[styles.text]} value={`${type}`} onChangeText={(text) => this.onChangeField('type', text)}/>
 
           <View style={styles.row}>
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     padding: 0,
     margin: 0,
-    maxHeight: 200,
+    maxHeight: 250,
   },
   padding: {
     padding: 2,
@@ -131,7 +134,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
-    maxHeight: 200,
+    maxHeight: 250,
     borderRadius: 10,
   },
   text: {
