@@ -171,9 +171,10 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     onSwipedAll={this.onSwipedAll}                  
                     cardIndex={0}
                     stackSize= {2}
-                    verticalSwipe={false}
-                    disableTopSwipe={true}
-                    disableBottomSwipe={true}
+                    // verticalSwipe={false}
+                    // disableTopSwipe={true}
+                    // disableBottomSwipe={true}
+                    verticalThreshold={100000}
                     showSecondCard={true}
                     backgroundColor={colors.WHITE}
                     cardVerticalMargin={5}
