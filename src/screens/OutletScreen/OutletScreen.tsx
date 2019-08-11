@@ -108,7 +108,7 @@ class OutletScreen extends React.Component<IProps, IState> {
                     <View style={{marginTop: 10, flex: 1}}>
                         <FlatList
                             data={this.state.outletList}
-                            keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
                             renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
                             showsVerticalScrollIndicator={false}/>
                     </View>

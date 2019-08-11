@@ -94,7 +94,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
               <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
               <FlatList
                 data={this.state.shoppersList}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item: IShopper.IShopperData) => item.id}
                 renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress}></ShopperCard>}
                 showsVerticalScrollIndicator={false}/>
           </View>

@@ -13,15 +13,15 @@ type IProps = IOwnProps;
 const AdvertisementListView: React.SFC<IProps> = (props: IProps) => {
 
   const onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
-    if (props.onItemPress) 
+    if (props.onItemPress)
         props.onItemPress(advertisement);
   }
 
   return (
     <FlatList
       data={props.advertisementList}
-      renderItem={({ item }) => <AdvertisementListItem advertisement={item} onItemPress={onItemPress}></AdvertisementListItem>} 
-      keyExtractor={(item, index) => index.toString()}
+      renderItem={({ item }) => <AdvertisementListItem advertisement={item} onItemPress={onItemPress}></AdvertisementListItem>}
+      keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id}
       showsVerticalScrollIndicator={false}/>
   );
 };
