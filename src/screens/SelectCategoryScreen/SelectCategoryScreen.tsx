@@ -186,17 +186,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   buttonContainer: {
-    borderRadius: 40,
+    borderRadius: 5,
     height: responsive(44),
     justifyContent: 'center',
     marginTop: 20,
-    marginHorizontal: 2.5,
-    paddingHorizontal: 5,
+    marginHorizontal: 10,
+    paddingHorizontal: 0,
+    backgroundColor: colors.PRIMARY
   },
   button: {
     borderWidth: 2,
-    borderRadius: 40,
+    borderRadius: 5,
     height: responsive(44),
+    borderColor: colors.PRIMARY,
+    backgroundColor: colors.PRIMARY
   },
   buttonTextStyle: {
     textTransform: 'uppercase'

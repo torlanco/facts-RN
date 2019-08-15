@@ -1,6 +1,6 @@
 import { responsive, colors, typos } from '@styles';
 import * as React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import { Button } from 'react-native-elements';
 
 interface IActionButtonProps {
@@ -8,6 +8,8 @@ interface IActionButtonProps {
     inverted?: boolean;
     onPress?(buttonText: string): void,
     disabled?: boolean;
+    style?: ViewStyle;
+    titleStyle?: TextStyle;
 }
 
 type IProps = IActionButtonProps;
@@ -33,6 +35,9 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         { backgroundColor },
         boxShadow,
     ];
+    if (props.style) {
+        containerStyle.push(props.style);
+    }
     const buttonStyle = [
         styles.button,
         { borderColor },
@@ -43,6 +48,9 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         styles.textStyle,
         { color }
     ];
+    if (props.titleStyle) {
+        containerStyle.push(props.titleStyle);
+    }
 
     const onButtonPress = () => {
         if (props.onPress) {
@@ -52,11 +60,11 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
 
     return (
         <Button title={ title }
-                onPress={ onButtonPress }
-                disabled={ disabled }
-                containerStyle={ containerStyle }
-                buttonStyle={ buttonStyle }
-                titleStyle={textStyle}/>
+            onPress={ onButtonPress }
+            disabled={ disabled }
+            containerStyle={ containerStyle }
+            buttonStyle={ buttonStyle }
+            titleStyle={textStyle}/>
     )
 }
 

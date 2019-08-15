@@ -1,6 +1,7 @@
 import {
     createStackNavigator,
-    createAppContainer
+    createAppContainer,
+    createSwitchNavigator
 } from 'react-navigation';
 
 import {
@@ -9,7 +10,10 @@ import {
   ShoppersScreen,
   AdvertisementDetailScreen,
   AdvertisementDeckSwiperScreen,
-  SelectCategoryScreen
+  SelectCategoryScreen,
+  LoginScreen,
+  ForgetPasswordScreen,
+  RegisterScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -59,18 +63,48 @@ const WorkNavigator = createStackNavigator(
     }
 )
 
-const AppNavigator = createAppContainer(
-    createDrawerNavigator(
-        {
-          Outlet: { screen: OutletNavigator },
-          Work: { screen: WorkNavigator },
-        },
-        {
-          contentComponent: SideMenu,
-          defaultNavigationOptions: {
-            drawerLockMode: 'locked-closed'
-          },
+const MainNavigator = createDrawerNavigator(
+    {
+      Outlet: { screen: OutletNavigator },
+      Work: { screen: WorkNavigator },
+    },
+    {
+      contentComponent: SideMenu,
+      defaultNavigationOptions: {
+        drawerLockMode: 'locked-closed'
+      },
+    }
+)
+
+const AuthNavigator = createStackNavigator(
+    {
+        LoginScreen: {screen: LoginScreen},
+        RegisterScreen: {screen: RegisterScreen},
+        ForgetPasswordScreen: {screen: ForgetPasswordScreen},
+    },
+    {
+        initialRouteName: 'LoginScreen',
+        defaultNavigationOptions: {
+            headerLeft: null,
+            headerBackTitle: null,
+            headerTransparent: true,
+            headerStyle: {
+                borderBottomWidth: 0, // remove the bottom line
+                height: 0,
+                elevation: 0
+            },
+            headerTintColor: colors.WHITE
         }
+    }
+)
+
+const AppNavigator = createAppContainer(
+    createSwitchNavigator(
+        {
+            Auth: {screen: AuthNavigator},
+            Main: {screen: MainNavigator},
+        },
+        {   initialRouteName: 'Auth', }
     )
 );
 
