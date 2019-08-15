@@ -141,23 +141,25 @@ class SelectCategoryScreen extends React.Component<IProps, IState> {
           { this.state.showPage ? 
             <View style={styles.container}>
                 <HeaderBar title={'Select Category'}></HeaderBar>
-                { this.state.localStorageCategory ? 
-                  <View>
-                  <Text style={styles.textBold}>Selected Category</Text>
-                  <Text style={styles.text}>{this.state.localStorageCategory}</Text>
-                  </View> : null }
-                <Text style={styles.textBold}>{ this.state.localStorageCategory ? 'Change a category' :'Select a category'}</Text>
-                <SelectPicker options={this.state.categories} value={this.state.category}
-                    placeholder={''}
-                    handleValueChange={this.onCategoryChange}>
-                </SelectPicker>
+                <View style={styles.mainContainer}>
+                  { this.state.localStorageCategory ? 
+                    <View>
+                    <Text style={styles.label}>Selected Category</Text>
+                    <Text style={styles.text}>{this.state.localStorageCategory}</Text>
+                    </View> : null }
+                  <Text style={[styles.label, {marginBottom: -10}]}>{ this.state.localStorageCategory ? 'Change a category' :'Select a category'}</Text>
+                  <SelectPicker options={this.state.categories} value={this.state.category}
+                      placeholder={''}
+                      handleValueChange={this.onCategoryChange}>
+                  </SelectPicker>
 
-                <Button title="Save"
-                  onPress={ this.onCategorySave }
-                  disabled={ !this.state.category || this.state.category.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0] == this.state.localStorageCategory}
-                  containerStyle={ styles.buttonContainer }
-                  buttonStyle={ buttonStyle }
-                  titleStyle={ styles.buttonTextStyle }/>
+                  <Button title="Save"
+                    onPress={ this.onCategorySave }
+                    disabled={ !this.state.category || this.state.category.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0] == this.state.localStorageCategory}
+                    containerStyle={ styles.buttonContainer }
+                    buttonStyle={ buttonStyle }
+                    titleStyle={ styles.buttonTextStyle }/>
+                </View>
             </View> : null }
           {(this.props.loading || !this.state.showPage)&& <LoadingScreen />}
         </SafeAreaView>
@@ -173,23 +175,28 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  mainContainer: {
+    flex: 1,
+    paddingHorizontal: 5, 
+  },
   text: {
     ...typos.PRIMARY,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    marginBottom: 20
+    color: colors.TEXT_PRIMARY,
   },
-  textBold: {
+  label: {
     ...typos.PRIMARY,
-    fontWeight: 'bold',
+    color: colors.TEXT_NOTE,
     paddingTop: 5,
     paddingHorizontal: 10,
+    marginTop: 15,
   },
   buttonContainer: {
     borderRadius: 5,
     height: responsive(44),
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 30,
     marginHorizontal: 10,
     paddingHorizontal: 0,
     backgroundColor: colors.PRIMARY
@@ -202,7 +209,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY
   },
   buttonTextStyle: {
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    color: colors.TEXT_PRIMARY
   },
   disable: {
     borderColor: colors.DISABLED_GRAY,
