@@ -6,6 +6,7 @@ import AdvertisementDeckSwiperScreen from './AdvertisementDeckSwiperScreen/Adver
 import LoginScreen from './LoginScreen/LoginScreen';
 import ForgetPasswordScreen from './ForgetPasswordScreen/ForgetPasswordScreen';
 import RegisterScreen from './RegisterScreen/RegisterScreen';
+import ResetPasswordScreen from './ResetPasswordScreen/ResetPasswordScreen';
 
 export { OutletScreen };
 export { ShoppersScreen };
@@ -15,6 +16,7 @@ export { AdvertisementDeckSwiperScreen };
 export { LoginScreen };
 export { ForgetPasswordScreen };
 export { RegisterScreen };
+export { ResetPasswordScreen };
 
 export * from './LoadingScreen/LoadingScreen';
 export * from './AdvertisementDetailScreen/AdvertisementDetailScreen';

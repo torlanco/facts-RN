@@ -13,7 +13,8 @@ import {
   SelectCategoryScreen,
   LoginScreen,
   ForgetPasswordScreen,
-  RegisterScreen
+  RegisterScreen,
+  ResetPasswordScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -81,6 +82,7 @@ const AuthNavigator = createStackNavigator(
         LoginScreen: {screen: LoginScreen},
         RegisterScreen: {screen: RegisterScreen},
         ForgetPasswordScreen: {screen: ForgetPasswordScreen},
+        ResetPasswordScreen: {screen: ResetPasswordScreen},
     },
     {
         initialRouteName: 'LoginScreen',

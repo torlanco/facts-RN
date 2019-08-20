@@ -15,15 +15,27 @@ import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 //interfaces
+import { IUser } from '@interfaces/user';
 import { DrawerItemsProps } from 'react-navigation';
 import { Icon } from 'react-native-elements';
+import { mapDispatchToProps } from '@actions/user';
+
 interface IOwnProps {}
-type IProps = IOwnProps & DrawerItemsProps;
+type IProps = IOwnProps & 
+  DrawerItemsProps &
+  IUser.StateToProps & 
+  IUser.DispatchFromProps;
 
 const data = [
   { iconName: 'book', title: 'Outlet', routeName: 'Outlet' },
-  { iconName: 'briefcase', title: 'Work', routeName: 'Work' },
+  { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
 ];
+
+const mapStateToProps = function(state: any) {
+  return {
+    token: state.user.token,
+  }
+};
 
 const SideMenu: React.SFC<IProps> = (props: IProps) => {
   const { navigation } = props;
@@ -34,7 +46,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
           onPress={() => {
             navigation.closeDrawer();
             requestAnimationFrame(() =>
-              navigation.navigate(`${item.routeName}`)
+              navigation.navigate(!props.token && item.requiredAuth ? 'LoginScreen' : `${item.routeName}`)
             );
           }}>
           <View style={styles.wrapper}>
@@ -50,13 +62,44 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
       </View>
     );
   };
+  
+  const onLogout = async () => {
+    navigation.closeDrawer();
+    const logout = await props.logout();
+    if (logout) {
+      requestAnimationFrame(() =>
+        navigation.navigate('LoginScreen')
+      );
+    }
+  }
+  const renderLogout = () => {
+    return (
+      <View style={styles.listItem}>
+        <View style={[styles.separator, {top: 0}]}/>
+        <TouchableOpacity
+          onPress={onLogout}>
+          <View style={styles.wrapper}>
+            <Icon
+              name='power'
+              type='feather'
+              color={colors.TEXT_PRIMARY}
+              containerStyle={styles.iconContainer} />
+            <Text style={styles.title}>Logout</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(_, index) => index.toString()}
-      />
+      <View style={{height: '100%'}}>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(_, index) => index.toString()}
+          contentContainerStyle= {{flex: 1}}/>
+        { props.token && renderLogout() }  
+      </View>        
     </SafeAreaView>
   );
 };
@@ -90,5 +133,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const SideMenuConnected = connect(null, null)(SideMenu);
+const SideMenuConnected = connect(mapStateToProps, mapDispatchToProps)(SideMenu);
 export { SideMenuConnected as SideMenu };

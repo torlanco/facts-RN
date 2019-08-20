@@ -5,7 +5,7 @@ import { AnyAction } from 'redux';
 const initialState: IUser.StateToProps = {
   error: false,
   loading: false,
-  user: undefined,
+  token: undefined
 };
 
 export function user(
@@ -24,13 +24,13 @@ export function user(
       return {
         error: false,
         loading: false,
-        user: action.payload.user,
+        token: action.payload.token,
       };
     case Types.LOGIN_FAILED:
       return {
         error: action.payload.message || true,
         loading: false,
-        user: undefined,
+        token: undefined,
       };
 
     // FORGET PASSWORD
@@ -53,6 +53,26 @@ export function user(
           loading: false,
         };
 
+    // RESET PASSWORD
+    case Types.RESET_PASSWORD:
+        return {
+          ...state,
+          error: false,
+          loading: true
+        };
+    case Types.RESET_PASSWORD_SUCCESS:
+        return {
+          ...state,  
+          error: false,
+          loading: false,
+        };
+    case Types.RESET_PASSWORD_FAILED:
+        return {
+          ...state,  
+          error: action.payload.message || true,
+          loading: false,
+        };    
+
     // REGISTER
     case Types.REGISTER:
         return {
@@ -72,7 +92,28 @@ export function user(
             error: action.payload.message || true,
             loading: false,
         };
- 
+
+    // LOGOUT
+    case Types.LOGOUT:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        token: undefined
+      };
+    case Types.LOGOUT_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
+  
     default:
         return state;
   }

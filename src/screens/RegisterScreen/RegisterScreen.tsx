@@ -4,27 +4,44 @@ import * as React from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import { typos, colors } from '@styles';
 
+// Interfaces
+import { IUser } from '@interfaces/user';
+
 // Component
-import { ActionButton, HeaderBar } from '@components';
+import { ActionButton, HeaderBar, TextField } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
 import { connect } from "react-redux";
 import { LoadingScreen } from '@screens';
 import { mapDispatchToProps } from '@actions/user';
+import { ScrollView } from 'react-native-gesture-handler';
+import { validate } from '@utils';
+import { CheckBox } from 'react-native-elements';
 
 // props
 interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
 }
 type IProps = IOwnProps &
-  NavigationInjectedProps;
+  NavigationInjectedProps &
+  IUser.StateToProps &
+  IUser.DispatchFromProps;
 
 // state
 interface IState {
-  name: string;
+  userName: string,
   email: string;
   password: string;
+  firstName: string,
+  lastName: string,
+  showPassword: boolean,
+  // Errors
+  userNameError: string,
+  emailError: string,
+  passwordError: string,
+  firstNameError: string,
+  lastNameError: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -40,60 +57,155 @@ class RegisterScreen extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      name: '',  
+      userName: '',
       email: '',
-      password: ''
+      password: '',
+      firstName: '',
+      lastName: '',
+      showPassword: false,
+      // Errors
+      userNameError: '',
+      emailError: '',
+      passwordError: '',
+      firstNameError: '',
+      lastNameError: '',
     };
   }
 
-  onNameChange = (text: any) => {
-    this.setState({
-      name: text
-    });
+  setAsyncState = (newState: any) => {
+    return new Promise((resolve) => this.setState(newState, () => resolve()));
   }
 
-  onEmailChange = (text: any) => {
-    this.setState({
-      email: text
+  validate = async () => {
+    await this.setAsyncState({
+      userNameError: validate('required', this.state.userName, 'Username'),
+      emailError: validate('email', this.state.email),
+      passwordError: validate('password', this.state.password),
+      firstNameError: validate('required', this.state.firstName, 'First name'),
+      lastNameError: validate('required', this.state.lastName, 'Last name')
     });
+    return !(this.state.userNameError || this.state.emailError || this.state.passwordError 
+      || this.state.firstNameError || this.state.lastNameError);
   }
 
-  onPasswordChange = (text: any) => {
-    this.setState({
-      password: text
-    });
-  }
-
-  onSignUp = () => {
-    this.props.navigation.navigate('Main');
+  onSignUp = async () => {
+    if (!(await this.validate())) {
+      return;
+    }
+    const userData: IUser.IUserData = {
+      username: this.state.userName,
+      email: this.state.email,
+      password: this.state.password,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+    }
+    const response: any = await this.props.register(userData);
+    if (response.success) {
+      this.props.navigation.goBack();
+    }
   }
 
   onLogin = () => {
     this.props.navigation.goBack();
   }
 
+  redirectToMain = () => {
+    this.props.navigation.navigate('Main');
+  }
+
   public render() {
-    const { name, email, password } = this.state;
     return (
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
-          <HeaderBar title=""></HeaderBar>
-          <View style={[styles.flex, styles.container]}>
-            <View style={[styles.row, styles.imageContainer]}>
-                <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
+          <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={[styles.flex, styles.container]}>
+              <View style={[styles.row, styles.imageContainer]}>
+                  <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
+              </View>
+              <Text style={styles.heading}>Create your account</Text>
+              <Text style={styles.label}>User name</Text>
+              <TextField
+                onChangeText={(value: any) => {
+                  this.setState({
+                    userName: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    userNameError: validate('required', this.state.userName, 'Username')
+                  })
+                }}
+                error={this.state.userNameError}/>
+
+              <Text style={styles.label}>Email</Text>
+              <TextField
+                onChangeText={(value: any) => {
+                  this.setState({
+                    email: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    emailError: validate('email', this.state.email)
+                  })
+                }}
+                error={this.state.emailError}/>
+
+              <Text style={styles.label}>First name</Text>
+              <TextField
+                onChangeText={(value: any) => {
+                  this.setState({
+                    firstName: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    firstNameError: validate('required', this.state.firstName, 'First name')
+                  })
+                }}
+                error={this.state.firstNameError}/>
+
+              <Text style={styles.label}>Last name</Text>
+              <TextField
+                onChangeText={(value: any) => {
+                  this.setState({
+                    lastName: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    lastNameError: validate('required', this.state.lastName, 'Last name')
+                  })
+                }}
+                error={this.state.lastNameError}/>
+              
+              <Text style={styles.label}>Password</Text>
+              <TextField
+                onChangeText={(value: any) => {
+                  this.setState({
+                    password: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    passwordError: validate('password', this.state.password)
+                  })
+                }}
+                secureTextEntry={!this.state.showPassword}
+                error={this.state.passwordError}/>
+              <CheckBox title='Show password' 
+                containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
+                checked={this.state.showPassword} onPress={() => this.setState({
+                  showPassword: !this.state.showPassword
+                })}/>
+                
+              <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
+              <TouchableOpacity onPress={this.onLogin} activeOpacity={.9}>
+                <Text style={[styles.label, styles.signin]}>Already a user? <Text style={styles.link}> Login here</Text></Text>
+              </TouchableOpacity>
             </View>
-            <Text style={styles.heading}>Create your account</Text>
-            <Text style={styles.label}>Name</Text>
-            <TextInput style={[styles.text]} value={`${name}`} onChangeText={(text) => this.onNameChange(text)}/>
-            <Text style={styles.label}>Email</Text>
-            <TextInput style={[styles.text]} value={`${email}`} onChangeText={(text) => this.onEmailChange(text)}/>
-            <Text style={styles.label}>Password</Text>
-            <TextInput style={[styles.text]} value={`${password}`} onChangeText={(text) => this.onPasswordChange(text)}/>
-            <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
-            <TouchableOpacity onPress={this.onLogin} activeOpacity={.9}>
-              <Text style={[styles.label, styles.signin]}>Already a user? <Text style={styles.link}>Login here</Text></Text>
-            </TouchableOpacity>
-          </View>
+          </ScrollView>
         </View>
         {(this.props.loading) && <LoadingScreen />}
       </SafeAreaView>
@@ -112,10 +224,10 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 5,
     marginRight: 5,
-    padding: 20
+    paddingHorizontal: 20,
   },
   imageContainer: {
-    marginVertical: 10,
+    marginVertical: 5,
     justifyContent: 'center',
   },
   image: {
@@ -155,7 +267,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     borderRadius: 5,
-    marginTop: 30,
+    marginTop: 20,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },
@@ -169,7 +281,19 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'solid',
     textDecorationColor: colors.LIGHT_ORANGE
   },
-  
+  checkBoxContainer: {
+    backgroundColor: colors.WHITE,
+    marginVertical: 10,
+    marginLeft: 0,
+    padding: 0,
+    width: 140,
+    borderWidth: 0,
+  },
+  checkBoxLabel: {
+    ...typos.PRIMARY,
+    color: colors.TEXT_NOTE,
+    fontWeight: 'normal'
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

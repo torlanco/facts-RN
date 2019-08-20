@@ -91,26 +91,28 @@ class OutletScreen extends React.Component<IProps, IState> {
             <SafeAreaView style={{flex: 1}}>
                 <View style={styles.container}>
                     <HeaderBar title={'Outlets'}/>
-                    <View style={{marginTop: 10}}>
-                        <FlatList
-                            data={this.state.channels}
-                            renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item}
-                            onPress={this.onActionButtonPress}/>}
-                            extraData={this.state.selectedTab}
-                            keyExtractor={(item, index) => index.toString()}
-                            horizontal={true}/>
-                            { this.state.outletList.length ?
-                                <View style={styles.itemCountContainer}>
-                                    <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
-                                    <Text> ITEM</Text>
-                                </View> : null }
-                    </View>
-                    <View style={{marginTop: 10, flex: 1}}>
-                        <FlatList
-                            data={this.state.outletList}
-                            keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
-                            renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
-                            showsVerticalScrollIndicator={false}/>
+                    <View style={styles.mainContainer}>
+                        <View style={{marginTop: 10}}>
+                            <FlatList
+                                data={this.state.channels}
+                                renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item}
+                                onPress={this.onActionButtonPress}/>}
+                                extraData={this.state.selectedTab}
+                                keyExtractor={(item, index) => index.toString()}
+                                horizontal={true}/>
+                                { this.state.outletList.length ?
+                                    <View style={styles.itemCountContainer}>
+                                        <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
+                                        <Text> ITEM</Text>
+                                    </View> : null }
+                        </View>
+                        <View style={{marginTop: 10, flex: 1}}>
+                            <FlatList
+                                data={this.state.outletList}
+                                keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
+                                renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
+                                showsVerticalScrollIndicator={false}/>
+                        </View>
                     </View>
                 </View>
                 {this.props.loading && <LoadingScreen />}
@@ -121,9 +123,13 @@ class OutletScreen extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: '4%',
+        paddingHorizontal: '2%',
         marginTop: Platform.OS === "android" ? 0 : -5,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        flex: 1
+    },
+    mainContainer: {
+        paddingHorizontal: '4%',
         flex: 1
     },
     itemCountContainer: {

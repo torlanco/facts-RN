@@ -4,9 +4,6 @@ import * as React from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TextInput, Image } from 'react-native';
 import { typos, colors } from '@styles';
 
-// Interfaces
-import { IUser } from '@interfaces/user';
-
 // Component
 import { ActionButton, HeaderBar, TextField } from '@components';
 import { StatusBar, Platform } from "react-native";
@@ -23,15 +20,17 @@ interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
 }
 type IProps = IOwnProps &
-  NavigationInjectedProps &
-  IUser.StateToProps &
-  IUser.DispatchFromProps;
+  NavigationInjectedProps;
 
 // state
 interface IState {
-  username: string;
+  password: string;
+  confirmPassword: string;
+  showPassword: boolean,
+  token: string
   // Errors
-  usernameError: string
+  passwordError: string
+  confirmPasswordError: string  
 }
 
 const mapStateToProps = function(state: any) {
@@ -40,16 +39,20 @@ const mapStateToProps = function(state: any) {
   }
 };
 
-class ForgetPasswordScreen extends React.Component<IProps, IState> {
+class ResetPasswordScreen extends React.Component<IProps, IState> {
   _isMounted = false;
 
   constructor(props: IProps) {
     super(props);
 
     this.state = {
-        username: '',   
+        password: '',
+        confirmPassword: '',
+        showPassword: false,
+        token: '',
         // Errors
-        usernameError: '',
+        passwordError: '',
+        confirmPasswordError: '',   
     };
   }
 
@@ -59,20 +62,19 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
 
   validate = async () => {
     await this.setAsyncState({
-      usernameError: validate('required', this.state.username, 'Username'),
+      passwordError: validate('password', this.state.password),
+      confirmPasswordError: !this.state.confirmPassword || this.state.password != this.state.confirmPassword ? 'Password must be same.' : '',
+
     });
-    return !this.state.usernameError;
+    return !(this.state.passwordError || this.state.confirmPasswordError);
   }
 
 
-  onSubmit = async () => {
+  onSignIn = async () => {
     if (!(await this.validate())) {
       return;
     }
-    const repsonse: any = await this.props.forgotPassword(this.state.username);
-    if (repsonse.success) {
-      this.redirectToLogin();
-    }
+    this.redirectToLogin();
   }
 
   redirectToLogin = () => {
@@ -89,23 +91,49 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
             <View style={[styles.row, styles.imageContainer]}>
                 <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
             </View>
-            <Text style={styles.heading}>Forgot your password?</Text>
-            <Text style={[styles.heading, styles.note]}>Enter your email address to reset your password. You may need to check your spam folder or unblock no-reply@factscloud.com.</Text>
-            <Text style={styles.label}>Email</Text>
-            <TextField
-                onChangeText={(value: any) => {
-                  this.setState({
-                    username: value
-                  })
-                }}
-                onBlur={() => {
-                  this.setState({
-                    usernameError: validate('required', this.state.username, 'Username')
-                  })
-                }}
-                error={this.state.usernameError}/>
+            <Text style={styles.heading}>Reset your password?</Text>
+            {
+              true || this.state.token ? 
+              <View>
+                <Text style={styles.label}>Password</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      password: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      passwordError: validate('password', this.state.password)
+                    })
+                  }}
+                  secureTextEntry={!this.state.showPassword}
+                  error={this.state.passwordError}/>
+                
+                <Text style={styles.label}>Confirm Password</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      confirmPassword: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      confirmPasswordError: validate('password', this.state.confirmPassword)
+                    })
+                  }}
+                  secureTextEntry={!this.state.showPassword}
+                  error={this.state.passwordError}/>
+                  
+                <CheckBox title='Show password' 
+                  containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
+                  checked={this.state.showPassword} onPress={() => this.setState({
+                    showPassword: !this.state.showPassword
+                  })}/>
               
-            <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} style={styles.buttonStyle}/>
+              </View> : null
+            }    
+            <ActionButton title="Submit" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>
           </View>
         </View>
         {(this.props.loading)&& <LoadingScreen />}
@@ -187,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgetPasswordScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen);

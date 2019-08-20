@@ -19,6 +19,8 @@ interface IOwnProps {
     dateRange?: DateRange;
     rightIcon?: string,
     onRightIconClick?: Function
+    rightText?: string,
+    onRightTextClick?: Function
 }
 type IProps = IOwnProps & NavigationInjectedProps;
 
@@ -59,6 +61,12 @@ class HeaderBar extends React.Component<IProps, IState> {
         }
     }
 
+    onRightTextClick = () => {
+        if (this.props.onRightTextClick) {
+            this.props.onRightTextClick();
+        }
+    }
+
     onDrawerIconClick = () => {
         this.props.navigation.toggleDrawer();  
     }
@@ -89,6 +97,7 @@ class HeaderBar extends React.Component<IProps, IState> {
                             onPress={this.onRightIconClick}
                             containerStyle={[styles.iconContainer, styles.rightIconContainer]} /> : <Text style={styles.iconContainer}></Text> }
                     { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange.startDate)} - {formatDate(this.props.dateRange.endDate)}</Text> : null }
+                    { this.props.rightText ? <Text style={[styles.rightText]} onPress={this.onRightTextClick}>{this.props.rightText}</Text> : null }
                 </View>
                 <Divider style={styles.divider} />
             </View>
@@ -128,6 +137,13 @@ const styles = StyleSheet.create({
         color: colors.TEXT_NOTE,
         paddingRight: responsive(10),
         lineHeight: 16,
+    },
+    rightText: {
+        ...typos.HEADLINE,
+        fontWeight: 'normal',
+        color: colors.TEXT_NOTE,
+        padding: 5,
+        marginRight: 20
     }
 });
 const wrapper = withNavigation(HeaderBar);

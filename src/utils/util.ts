@@ -17,3 +17,32 @@ export const capitalize = (text: string) => {
     }
     return textArr.join(" ");
 }
+
+export const isValidEmail = (email: string) => {
+    let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(String(email).toLowerCase());
+}
+
+export const validate = (type: string, value: any, field?: string) => {
+    let error = '';
+    switch(type) {
+        case 'email': 
+            if (!value || !isValidEmail(value)) 
+                error = 'Please enter valid email.'
+            break;
+        
+        case 'password': 
+            if (!value || value.length < 8) 
+                error = 'Password must be 8 characters long.'
+            break;
+        
+        case 'required': 
+            if (!value) 
+                error = `${field} can't be empty.`
+            break;
+        
+        default: 
+            break; 
+    }
+    return error;
+}

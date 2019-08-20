@@ -1,11 +1,14 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Image, TouchableOpacity } from 'react-native';
 import { typos, colors } from '@styles';
 
+// Interfaces
+import { IUser } from '@interfaces/user';
+
 // Component
-import { ActionButton } from '@components';
+import { ActionButton, TextField } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -14,6 +17,7 @@ import { connect } from "react-redux";
 import { LoadingScreen } from '@screens';
 import { mapDispatchToProps } from '@actions/user';
 import { CheckBox } from 'react-native-elements';
+import { validate } from '@utils';
 
 // props
 interface ParamType {
@@ -26,14 +30,19 @@ interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
 }
 type IProps = IOwnProps &
-  NavigationInjectedProps;
+  NavigationInjectedProps &
+  IUser.StateToProps &
+  IUser.DispatchFromProps;
 
 // state
 interface IState {
-    showPage: boolean;
-    email: string;
-    password: string;
-    rememberMe: boolean;
+  showPage: boolean;
+  userName: string;
+  password: string;
+  showPassword: boolean;
+  // Errors
+  userNameError: string,
+  passwordError: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -47,35 +56,53 @@ class LoginScreen extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-
     this.state = {
-        showPage: true,
-        email: '',
-        password: '',
-        rememberMe: false
+      showPage: false,
+      userName: '',
+      password: '',
+      showPassword: false,
+      userNameError: '',
+      passwordError: '',
     };
   }
 
-  onEmailChange = (text: any) => {
-    this.setState({
-      email: text
-    });
-  }
-
-  onPasswordChange = (text: any) => {
-    this.setState({
-      password: text
-    });
+  async componentDidMount() {
+    const token = await this.props.isLoggedIn();
+    if (token) {
+      this.redirectToMain();
+    } else {
+      this.setState({
+        showPage: true
+      })
+    }
   }
   
   onRememberMeChange = () => {
     this.setState({
-      rememberMe: !this.state.rememberMe
+      showPassword: !this.state.showPassword
     });
   }
 
-  onSignIn = () => {
-    this.props.navigation.navigate('Main');
+  setAsyncState = (newState: any) => {
+    return new Promise((resolve) => this.setState(newState, () => resolve()));
+  }
+
+  validate = async () => {
+    await this.setAsyncState({
+      userNameError: validate('required', this.state.userName, 'Username'),
+      passwordError: validate('password', this.state.password),
+    }); 
+    return !(this.state.userNameError || this.state.passwordError);
+  }
+
+  onSignIn = async () => {
+    if (!(await this.validate())) {
+      return;
+    }
+    const response: any = await this.props.login(this.state.userName, this.state.password);
+    if (response.success) {
+      this.redirectToMain();
+    }
   }
 
   onForgetPassword = () => {
@@ -86,29 +113,60 @@ class LoginScreen extends React.Component<IProps, IState> {
     this.props.navigation.navigate('RegisterScreen');    
   }
  
+  redirectToMain = () => {
+    this.props.navigation.navigate('Main');
+  }
+
   public render() {
-    const { email, password } = this.state;
     return (
       <SafeAreaView style={styles.flex}>
       { this.state.showPage ? 
         <View style={styles.container}>
+          <View style={styles.skipContainer}>
+            <Text style={[styles.skip]} onPress={this.redirectToMain}>Skip</Text>
+          </View>
           <View style={[styles.row, styles.imageContainer]}>
               <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
           </View>
           <Text style={styles.heading}>Sign in to your account</Text>
-          <Text style={styles.label}>Email</Text>
-          <TextInput style={[styles.text]} value={`${email}`} onChangeText={(text) => this.onEmailChange(text)}/>
+          <Text style={styles.label}>Username</Text>
+          <TextField
+            onChangeText={(value: any) => {
+              this.setState({
+                userName: value
+              })
+            }}
+            onBlur={() => {
+              this.setState({
+                userNameError: validate('required', this.state.userName, 'Username')
+              })
+            }}
+            error={this.state.userNameError}/>
+
+          <Text style={[styles.label]}>Password</Text>
+          <TextField
+            onChangeText={(value: any) => {
+              this.setState({
+                password: value
+              })
+            }}
+            onBlur={() => {
+              this.setState({
+                passwordError: validate('password', this.state.password)
+              })
+            }}
+            secureTextEntry={!this.state.showPassword}
+            error={this.state.passwordError}/>
+          
           <View style={styles.row}>
-              <Text style={[styles.label, styles.flex]}>Password</Text>
-              <TouchableOpacity onPress={this.onForgetPassword} activeOpacity={.9}>
-                <Text style={[styles.label, styles.link]}>Forget Password</Text>
-              </TouchableOpacity>
+            <CheckBox title='Show password' 
+              containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
+              checked={this.state.showPassword} onPress={this.onRememberMeChange}/>
+            <TouchableOpacity onPress={this.onForgetPassword} activeOpacity={.9}>
+              <Text style={[styles.label, styles.link]}>Forgot Password</Text>
+            </TouchableOpacity>
           </View>
-          <TextInput style={[styles.text]} value={`${password}`} onChangeText={(text) => this.onPasswordChange(text)}/>
-          <CheckBox title='Remember Me' checkedIcon='dot-circle-o' uncheckedIcon='circle-o' 
-              containerStyle={styles.checkBoxContainer} textStyle={styles.checkBoxLabel}
-              checked={this.state.rememberMe} onPress={this.onRememberMeChange}/>
-          <ActionButton title="Sign in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>
+          <ActionButton title="Sign in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
           <TouchableOpacity onPress={this.onRegister} activeOpacity={.9}>
             <Text style={[styles.label, styles.signup]}>Not an existing user? <Text style={styles.link}>Signup here</Text></Text>
           </TouchableOpacity>
@@ -121,7 +179,7 @@ class LoginScreen extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
    flex: {
-       flex: 1
+    flex: 1
    },
    container: {
     flex: 1,
@@ -131,8 +189,21 @@ const styles = StyleSheet.create({
     marginRight: 5,
     padding: 20
   },
+  skipContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  skip: {
+    ...typos.HEADLINE,
+    fontWeight: 'normal',
+    color: colors.TEXT_NOTE,
+    padding: 10,
+    marginTop: 20,
+    marginRight: -10,
+  },
   imageContainer: {
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 10,
     justifyContent: 'center',
   },
@@ -175,11 +246,11 @@ const styles = StyleSheet.create({
   },
   checkBoxContainer: {
     backgroundColor: colors.WHITE,
-    marginVertical: 15,
+    marginVertical: 10,
     marginLeft: 0,
     padding: 0,
     width: 140,
-    borderWidth: 0
+    borderWidth: 0,
   },
   checkBoxLabel: {
     ...typos.PRIMARY,

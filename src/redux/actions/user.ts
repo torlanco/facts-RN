@@ -1,67 +1,127 @@
 import { Types } from '@types';
 import { IUser } from '@interfaces/user';
-import { login, register, forgetPassword } from '@services';
+import { login, register, forgotPassword, resetPassword } from '@services';
+import { AsyncStorage } from 'react-native';
+import { CONSTANTS } from '@utils';
 
 const IUserAction: IUser.DispatchFromProps = {
-  login: (email?: string, password?: string) => {
+  isLoggedIn: () => {
+    return async function (dispatch: any) {
+      let token = undefined;
+      try {
+        let asyncToken = AsyncStorage.getItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
+        if (asyncToken) 
+          token = asyncToken;
+        dispatch({
+          type: Types.LOGIN_SUCCESS,
+          payload: token,
+        });
+        return token;
+      } catch(e) {
+        
+      }
+      return null;
+    };
+  },
+  login: (username?: string, password?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.LOGIN,
       });
       try {
-        const response =  await login(email, password);
+        const response =  await login(username, password);
         dispatch({
           type: Types.LOGIN_SUCCESS,
-          payload: response.data.data,
+          payload: response.data.data.token,
         });
-        return response.data.data.user;
+        AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
+        return response.data;
       } catch(e) {
         dispatch({
           type: Types.LOGIN_FAILED,
           payload: e,
         });
-        return [];
+        return e;
       }
     };
   },
-  forgetPassword: (email?: string) => {
+  forgotPassword: (username?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.FORGET_PASSWORD,
       });
       try {
-        const response =  await forgetPassword(email);
+        const response =  await forgotPassword(username);
         dispatch({
           type: Types.FORGET_PASSWORD_SUCCESS,
-          payload: response.data.data,
         });
+        return response.data;
       } catch(e) {
         dispatch({
           type: Types.FORGET_PASSWORD_FAILED,
           payload: e,
         });
-        return [];
+        return e;
       }
     };
   },
-  register: (name?: string, email?: string, password?: string) => {
+  resetPassword: (token?: string, password?: string, confirmPassword?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.RESET_PASSWORD,
+      });
+      try {
+        const response =  await resetPassword(token, password, confirmPassword);
+        dispatch({
+          type: Types.RESET_PASSWORD_SUCCESS,
+        });
+      } catch(e) {
+        dispatch({
+          type: Types.RESET_PASSWORD_FAILED,
+          payload: e,
+        });
+        return e;
+      }
+    };
+  },
+  register: (userData: IUser.IUserData) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.REGISTER,
       });
       try {
-        const response =  await register(name, email, password);
+        const response =  await register(userData);
         dispatch({
           type: Types.REGISTER_SUCCESS,
-          payload: response.data.data,
         });
+        return response.data;
       } catch(e) {
         dispatch({
           type: Types.REGISTER_FAILED,
           payload: e,
         });
-        return [];
+        return e;
       }
+    };
+  },
+  logout: () => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.LOGOUT,
+      });
+      try {
+        await AsyncStorage.removeItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
+        dispatch({
+          type: Types.LOGOUT_SUCCESS,
+        });
+        return true;
+      } catch(e) {
+        dispatch({
+          type: Types.LOGOUT_FAILED,
+          payload: e,
+        });
+      }
+      return false;
     };
   }
 };
