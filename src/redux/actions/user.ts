@@ -14,7 +14,7 @@ const IUserAction: IUser.DispatchFromProps = {
           token = asyncToken;
         dispatch({
           type: Types.LOGIN_SUCCESS,
-          payload: token,
+          payload: {token},
         });
         return token;
       } catch(e) {
@@ -32,7 +32,7 @@ const IUserAction: IUser.DispatchFromProps = {
         const response =  await login(username, password);
         dispatch({
           type: Types.LOGIN_SUCCESS,
-          payload: response.data.data.token,
+          payload: response.data.data,
         });
         AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
         return response.data;

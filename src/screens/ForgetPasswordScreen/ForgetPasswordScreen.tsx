@@ -91,7 +91,7 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
             </View>
             <Text style={styles.heading}>Forgot your password?</Text>
             <Text style={[styles.heading, styles.note]}>Enter your email address to reset your password. You may need to check your spam folder or unblock no-reply@factscloud.com.</Text>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>Username</Text>
             <TextField
                 onChangeText={(value: any) => {
                   this.setState({

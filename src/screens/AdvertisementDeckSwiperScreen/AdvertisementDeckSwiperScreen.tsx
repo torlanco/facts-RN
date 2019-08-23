@@ -223,7 +223,7 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                   }}
                   animateOverlayLabelsOpacity>
                 </Swiper>
-                <Text style={styles.text}>{`${this.getCurrentIndex()} of ${this.totalAdvertisments}`}</Text>
+                <Text style={styles.text}>{`${this.totalAdvertisments - this.getCurrentIndex()} Remaining`}</Text>
               </View> : 
               <View style={styles.noMoreReviewView}> 
                 <Text style={styles.noMoreReview}>{this.getNoReviewMessage()}</Text>
