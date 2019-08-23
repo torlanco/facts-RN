@@ -22,12 +22,14 @@ export function user(
       };
     case Types.LOGIN_SUCCESS:
       return {
+        ...state,
         error: false,
         loading: false,
         token: action.payload.token,
       };
     case Types.LOGIN_FAILED:
       return {
+        ...state,
         error: action.payload.message || true,
         loading: false,
         token: undefined,

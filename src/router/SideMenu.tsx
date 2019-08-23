@@ -39,6 +39,11 @@ const mapStateToProps = function(state: any) {
 
 const SideMenu: React.SFC<IProps> = (props: IProps) => {
   const { navigation } = props;
+
+  const isLoggedIn = () =>  {
+    return typeof props.token === "string" && props.token;
+  }
+
   const renderItem = ({ item }) => {
     return (
       <View style={styles.listItem}>
@@ -46,7 +51,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
           onPress={() => {
             navigation.closeDrawer();
             requestAnimationFrame(() =>
-              navigation.navigate(!props.token && item.requiredAuth ? 'LoginScreen' : `${item.routeName}`)
+              navigation.navigate(!isLoggedIn() && item.requiredAuth ? 'LoginScreen' : `${item.routeName}`)
             );
           }}>
           <View style={styles.wrapper}>
@@ -98,7 +103,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle= {{flex: 1}}/>
-        { props.token && renderLogout() }  
+        { isLoggedIn() && renderLogout() }  
       </View>        
     </SafeAreaView>
   );

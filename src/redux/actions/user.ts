@@ -120,8 +120,8 @@ const IUserAction: IUser.DispatchFromProps = {
           type: Types.LOGOUT_FAILED,
           payload: e,
         });
+        return false;
       }
-      return false;
     };
   }
 };
