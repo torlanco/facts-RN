@@ -59,7 +59,7 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
     return (
       <SafeAreaView>
         <Card containerStyle={[styles.container, {maxHeight: height}]}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={false}>
             <Card containerStyle={[styles.container, styles.imageContainer]}>
               { this.state.featureImage == this.props.advertisement.image ?
                 <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     padding: 0,
     margin: 0,
+    maxHeight: 250,
   },
   padding: {
     padding: 2,
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
+    maxHeight: 250,
     borderRadius: 10,
   },
   text: {

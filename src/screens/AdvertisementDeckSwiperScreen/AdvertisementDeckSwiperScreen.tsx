@@ -38,7 +38,8 @@ type IProps = IOwnProps &
 // state
 interface IState {
   advertisements: IAdvertisement.IAdvertisementData[],
-  currentIndex: number
+  totalAdvertisments: number,
+  loading: boolean
 }
 
 const mapStateToProps = function(state: any) {
@@ -50,17 +51,19 @@ const mapStateToProps = function(state: any) {
 class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   _isMounted = false;
   page: number = 1;
-  limit: number = 5;
+  limit: number = 2;
   nextAdvertisements: IAdvertisement.IAdvertisementData[] = [];
-  totalAdvertisments: number =  -1;
   currentCard: any = {};
+  _swiper: any;
+  currentIndex: number = 0;
 
   constructor(props: IProps) {
     super(props);
     this.nextAdvertisements = [];
     this.state = {
       advertisements: [],
-      currentIndex: 0
+      totalAdvertisments: -1,
+      loading: false
     };
   }
 
@@ -71,53 +74,55 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
   async fetchAdvertisementsForReview() {
     const { category } = this.props.navigation.state.params;
     const data: any = await this.props.fetchAdvertisementsForReview(category, this.page, this.limit);
-    this.totalAdvertisments=  data.total;
     if (data.features.length) {
       this.currentCard = data.features[0]
     }
     this.setState({
       advertisements: data.features,
+      totalAdvertisments: data.total
     });
   }
 
-  async updateAdvertisementsForReview(prevCardIndex: number) {
+  updateAdvertisementsForReview = async (prevCardIndex: number) => {
     const advertisement = this.currentCard;
     this.onSwipedChangeCurrentData(prevCardIndex);
     await this.props.updateAdvertisementsForReview(advertisement);
   }
 
-  onSwipedChangeCurrentData (prevCardIndex: number) {
+  onSwipedChangeCurrentData = (prevCardIndex: number) => {
     // When a new card is loaded in the front of the deck. Use onSwiped event and set the next card index
-    this.setState({
-      currentIndex: prevCardIndex + 1
-    });;
+    this.currentIndex = prevCardIndex + 1;
     if (prevCardIndex + 1 < this.state.advertisements.length) {
       this.onUpdateCurrentCardData(this.state.advertisements[prevCardIndex+1]);  
     } 
-    if (prevCardIndex == (((this.page -1) * this.limit) + (this.limit >> 1)) 
-      && this.page * this.limit < this.totalAdvertisments) {
-      this.page++;
-      this.fetchNextPageAdvertisementsForReview();
-    }
-  }
-
-  onSwipedAll = () => {
-    if (this.nextAdvertisements.length) {
-      this.nextAdvertisements.forEach(advertisement => {
-        this.state.advertisements.push(advertisement);
-      });
-      this.currentCard = this.nextAdvertisements[0]
-      this.nextAdvertisements = [];
+    if (this.currentIndex >= this.state.advertisements.length && this.state.totalAdvertisments) {
       this.setState({
-        currentIndex: 0
-      })
+        loading: true
+      }, () => {
+        this.fetchNextAdvertisementsForReview();
+      });
+    } else if (this.state.totalAdvertisments != 0) {
+      this.fetchNextAdvertisementsForReview();
     }
   }
 
-  async fetchNextPageAdvertisementsForReview() {
+  fetchNextAdvertisementsForReview = async () => {
     const { category } = this.props.navigation.state.params;
-    const data: any = await this.props.fetchAdvertisementsForReview(category, this.page, this.limit, true);
-    this.nextAdvertisements = data.features;
+    const data: any = await this.props.fetchAdvertisementsForReview(category, this.page, this.limit - 1, true);
+    if (data.features) {
+      data.features.forEach((advertisement: IAdvertisement.IAdvertisementData) => {
+        this.state.advertisements.push(advertisement);
+      });  
+      this.setState({
+        totalAdvertisments: data.total
+      })
+      this._swiper.jumpToCardIndex(this.currentIndex);
+      setTimeout(() => {
+        this.setState({
+          loading: false
+        });         
+      }, 200);
+    }
   }
 
   onUpdateCurrentCardData = (updatedData: IAdvertisement.IAdvertisementData) => {
@@ -140,10 +145,6 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
     this.props.navigation.navigate('SelectCategoryScreen', { isExternalCall: true });
   };
 
-  getCurrentIndex = () => {
-    return (this.page-1)*this.limit + this.state.currentIndex + 1;
-  }
-
   getNoReviewMessage = () => {
     let {category} = this.props.navigation.state.params;
     return `No more review for \ncategory "${capitalize(category)}"`;
@@ -155,9 +156,10 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
           <View style={styles.container}>
             <HeaderBar title={'Review Features'} style={{paddingHorizontal: '4%'}}
               rightIcon="filter" onRightIconClick={this.onHeaderRightIconClick}></HeaderBar>
-            { this.state.advertisements && this.state.advertisements.length && this.getCurrentIndex() != this.totalAdvertisments + 1 ? 
+            { this.state.advertisements && this.state.advertisements.length && this.state.totalAdvertisments > 0 ? 
               <View style={styles.flex}>
                 <Swiper
+                    ref={(swiper: any) => this._swiper = swiper}
                     useViewOverflow={Platform.OS === 'ios'}
                     cards={this.state.advertisements}
                     renderCard={(card: any) => {
@@ -168,12 +170,8 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                     }}
                     onSwipedLeft={this.onSwipedLeft}
                     onSwipedRight={this.onSwipedRight}
-                    onSwipedAll={this.onSwipedAll}                  
                     cardIndex={0}
                     stackSize= {2}
-                    // verticalSwipe={false}
-                    // disableTopSwipe={true}
-                    // disableBottomSwipe={true}
                     verticalThreshold={100000}
                     showSecondCard={true}
                     backgroundColor={colors.WHITE}
@@ -223,13 +221,13 @@ class AdvertisementDeckSwiperScreen extends React.Component<IProps, IState> {
                   }}
                   animateOverlayLabelsOpacity>
                 </Swiper>
-                <Text style={styles.text}>{`${this.totalAdvertisments - this.getCurrentIndex()} Remaining`}</Text>
+                <Text style={styles.text}>{`${this.state.totalAdvertisments} Remaining`}</Text>
               </View> : 
               <View style={styles.noMoreReviewView}> 
                 <Text style={styles.noMoreReview}>{this.getNoReviewMessage()}</Text>
               </View> }
           </View>
-          {(this.props.loading) && <LoadingScreen />}
+          {(this.props.loading || this.state.loading) && <LoadingScreen />}
       </SafeAreaView>
     );
   }

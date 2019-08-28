@@ -18,6 +18,7 @@ type IProps = IOwnProps;
 
 interface IState {
     outletImage: any,
+    resizeMode: any,
 }
 
 class OutletCard extends React.Component<IProps, IState> {
@@ -26,6 +27,7 @@ class OutletCard extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             outletImage: require('@assets/images/placeholder.png'),
+            resizeMode: "stretch",
         };
     }
 
@@ -34,6 +36,7 @@ class OutletCard extends React.Component<IProps, IState> {
             Image.getSize(this.props.outlet.outletImage, (width: number, height: number) => {
                 this.setState({ 
                     outletImage: {uri: this.props.outlet.outletImage},
+                    resizeMode: "center",
                 });
             }, err => {});
         }
@@ -53,9 +56,7 @@ class OutletCard extends React.Component<IProps, IState> {
                     <View style={styles.cardContainer}>
                         <View style={styles.outletImageWrapper}>
                             <Card containerStyle={styles.outletImage}>
-                            { this.state.outletImage == this.props.outlet.outletImage ?
-                                <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> : 
-                                <Image style={[styles.image, { height: 100 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+                                <Image style={[styles.image, { height: 100 }]} source={ this.state.outletImage } resizeMode={this.state.resizeMode}/>
                             </Card>
                         </View>
                         <View style={styles.mainContent}>

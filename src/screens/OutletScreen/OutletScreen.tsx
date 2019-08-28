@@ -99,7 +99,8 @@ class OutletScreen extends React.Component<IProps, IState> {
                                 onPress={this.onActionButtonPress}/>}
                                 extraData={this.state.selectedTab}
                                 keyExtractor={(item, index) => index.toString()}
-                                horizontal={true}/>
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}/>
                                 { this.state.outletList.length ?
                                     <View style={styles.itemCountContainer}>
                                         <Text style={styles.itemCount}>{this.state.outletList.length} </Text>

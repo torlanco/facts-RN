@@ -9,9 +9,10 @@ const IUserAction: IUser.DispatchFromProps = {
     return async function (dispatch: any) {
       let token = undefined;
       try {
-        let asyncToken = AsyncStorage.getItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
+        let asyncToken = await AsyncStorage.getItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
         if (asyncToken) 
           token = asyncToken;
+          console.log(token);
         dispatch({
           type: Types.LOGIN_SUCCESS,
           payload: {token},
