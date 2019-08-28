@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { LoadingScreen } from '@screens';
 import { mapDispatchToProps } from '@actions/user';
 import { CheckBox } from 'react-native-elements';
-import { validate } from '@utils';
+import { validate, CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
@@ -102,6 +102,11 @@ class LoginScreen extends React.Component<IProps, IState> {
     const response: any = await this.props.login(this.state.userName, this.state.password);
     if (response.success) {
       this.redirectToMain();
+    } else if (response.status == CONSTANTS.FAILURE && response.result.errText == CONSTANTS.INVALID_LOGIN_CREDENTIALS) {
+      this.setState({
+        password: '',
+        userNameError: CONSTANTS.INVALID_LOGIN_CREDENTIALS
+      });
     }
   }
 

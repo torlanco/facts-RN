@@ -12,16 +12,14 @@ const IUserAction: IUser.DispatchFromProps = {
         let asyncToken = await AsyncStorage.getItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
         if (asyncToken) 
           token = asyncToken;
-          console.log(token);
         dispatch({
           type: Types.LOGIN_SUCCESS,
           payload: {token},
         });
         return token;
       } catch(e) {
-        
+        return null;
       }
-      return null;
     };
   },
   login: (username?: string, password?: string) => {
@@ -40,9 +38,9 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.LOGIN_FAILED,
-          payload: e,
+          payload: e.response.data,
         });
-        return e;
+        return e.response.data;
       }
     };
   },
@@ -60,9 +58,9 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.FORGET_PASSWORD_FAILED,
-          payload: e,
+          payload: e.response.data,
         });
-        return e;
+        return e.response.data;
       }
     };
   },
@@ -79,9 +77,9 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.RESET_PASSWORD_FAILED,
-          payload: e,
+          payload: e.response.data,
         });
-        return e;
+        return e.response.data;
       }
     };
   },
@@ -99,9 +97,9 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.REGISTER_FAILED,
-          payload: e,
+          payload: e.response.data,
         });
-        return e;
+        return e.response.data;
       }
     };
   },
@@ -119,7 +117,7 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.LOGOUT_FAILED,
-          payload: e,
+          payload: e.response.data,
         });
         return false;
       }

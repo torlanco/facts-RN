@@ -6,4 +6,6 @@ export const CONSTANTS = {
     RIGHT_OPERATION: 'APPROVE',
     NONE: 'NONE',
     FACTS_RN_AUTH_TOKEN: 'FACTS_RN_AUTH_TOKEN',
+    FAILURE: 'FAILURE',
+    INVALID_LOGIN_CREDENTIALS: 'Invalid login credentials',
 };
