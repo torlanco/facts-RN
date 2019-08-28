@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { colors, typos, responsive } from '@styles';
 
@@ -8,7 +8,7 @@ import { Card } from 'react-native-elements';
 
 // Utils
 import { formatDate } from '@utils';
-import FullWidthImage from 'react-native-fullwidth-image';
+import { ImageView } from '@components';
 interface IOwnProps {
     outlet: IOutlet.IOutletData,
     onItemPress?: Function
@@ -16,30 +16,12 @@ interface IOwnProps {
 
 type IProps = IOwnProps;
 
-interface IState {
-    outletImage: any,
-    resizeMode: any,
-}
+interface IState {}
 
 class OutletCard extends React.Component<IProps, IState> {
    
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            outletImage: require('@assets/images/placeholder.png'),
-            resizeMode: "stretch",
-        };
-    }
-
-    componentDidMount() {
-        if (this.props.outlet.outletImage) {
-            Image.getSize(this.props.outlet.outletImage, (width: number, height: number) => {
-                this.setState({ 
-                    outletImage: {uri: this.props.outlet.outletImage},
-                    resizeMode: "center",
-                });
-            }, err => {});
-        }
     }
 
     onItemPress = () => {
@@ -55,8 +37,8 @@ class OutletCard extends React.Component<IProps, IState> {
                 <View style={styles.mainContainer}>
                     <View style={styles.cardContainer}>
                         <View style={styles.outletImageWrapper}>
-                            <Card containerStyle={styles.outletImage}>
-                                <Image style={[styles.image, { height: 100 }]} source={ this.state.outletImage } resizeMode={this.state.resizeMode}/>
+                            <Card containerStyle={styles.outletImage}>                                
+                                <ImageView image={this.props.outlet.outletImage} />
                             </Card>
                         </View>
                         <View style={styles.mainContent}>
@@ -109,7 +91,7 @@ const styles = StyleSheet.create({
         marginRight: '10%',
     },
     outletImage: {
-        maxHeight: 100,
+        height: 100,
         borderRadius: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
