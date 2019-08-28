@@ -17,7 +17,7 @@ interface IState {
 
 class ImageViewWrapper extends React.Component<IProps, IState> {
 
-    isMounted: boolean = false;
+    _isMounted: boolean = false;
 
     constructor(props: IProps) {
         super(props);
@@ -28,7 +28,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
         };
     }
     componentDidMount() {
-        this.isMounted = true;
+        this._isMounted = true;
         if (this.props.image) {
             Image.getSize(this.props.image, (width: number, height: number) => {
                 this.setState({ 
@@ -39,8 +39,12 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
         }
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     showFullScreenImage = () => {
-        if (this.isMounted && this.state.resizeMode == "center") {
+        if (this._isMounted && this.state.resizeMode == "center") {
             this.setState({isVisible: true});
         }
     }
