@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   input: {
     padding:10,
-    minWidth: 200,
+    minWidth: 150,
   },
   icon: {
     paddingVertical: 8

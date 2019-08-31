@@ -5,6 +5,7 @@ import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 interface IImageViewProps {
     image: any;
     height?: number;
+    allowFullMode?: boolean;
 }
 
 type IProps = IImageViewProps;
@@ -44,7 +45,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
     }
 
     showFullScreenImage = () => {
-        if (this._isMounted && this.state.resizeMode == "center") {
+        if (this._isMounted && this.props.allowFullMode && this.state.resizeMode == "center") {
             this.setState({isVisible: true});
         }
     }

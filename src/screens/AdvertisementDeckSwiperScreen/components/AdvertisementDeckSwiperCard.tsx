@@ -12,6 +12,7 @@ import { Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { SafeAreaView, ScrollView } from 'react-navigation';
+import { ImageView } from '@components';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
@@ -20,7 +21,6 @@ interface IOwnProps {
 type IProps = IOwnProps;
 
 interface IState {
-  featureImage: any,
   advertisement: any,
 }
 class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
@@ -28,19 +28,8 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      featureImage: require('@assets/images/placeholder.png'),
       advertisement: this.props.advertisement || {},
     };
-  }
-
-  componentDidMount() {
-    if (this.props.advertisement.image) {
-        Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
-            this.setState({
-                featureImage: this.props.advertisement.image
-            });
-        }, err => {});
-    }
   }
 
   onChangeField = (field: string, text: any) => {
@@ -61,9 +50,7 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
         <Card containerStyle={[styles.container, {maxHeight: height}]}>
           <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={false}>
             <Card containerStyle={[styles.container, styles.imageContainer]}>
-              { this.state.featureImage == this.props.advertisement.image ?
-                <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
-                <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
+              <ImageView image={this.props.advertisement.image} height={200} allowFullMode={true}/>
             </Card>
             <Text style={styles.label}>Brand</Text>
             <TextInput style={[styles.text]} value={`${brand}`} onChangeText={(text) => this.onChangeField('brand', text)}/>
