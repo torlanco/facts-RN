@@ -1,6 +1,8 @@
 import * as React from 'react';
 import ImageView from 'react-native-image-view';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { colors } from '@styles';
+import { Icon } from 'react-native-elements';
 
 interface IImageViewProps {
     image: any;
@@ -50,6 +52,21 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
         }
     }
 
+    hideFullScreenImage = () => {
+        this.setState({ isVisible: false});
+    }
+
+    _renderFooter = () => {
+        return  <TouchableOpacity activeOpacity={1} style={styles.closeIconTouchable}
+                    onPress={() => {this.setState({isVisible: false})}} >
+                    <Icon
+                        name='x'
+                        type='feather'
+                        color={colors.WHITE}
+                        containerStyle={styles.iconContainer}/>
+                </TouchableOpacity>
+    }
+
     render() {
         const images = [{
             source: this.state.image,
@@ -64,7 +81,8 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
                         images={images}
                         imageIndex={0}
                         isVisible={this.state.isVisible}
-                        onClose={() => {this.setState({ isVisible: false})}}/>
+                        controls={{close: null}}
+                        renderFooter={(currentImage: any) => (this._renderFooter())}/>
 
                     <Image style={[styles.image, { height: imageHeight }]} source={ this.state.image } resizeMode={this.state.resizeMode}/>
                 </View>
@@ -81,6 +99,24 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '100%',
     },
+    closeIconTouchable: {
+        marginBottom: 60,
+        height: 60,
+        width: 60,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    iconContainer: {
+        alignSelf: 'center',
+        height: 60,
+        width: 60,
+        borderRadius: 30,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 });
 
 export { ImageViewWrapper as ImageView };
+

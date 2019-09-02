@@ -3,13 +3,11 @@ import {
     StyleSheet,
     Text,
     View,
-    Image,
     TextInput,
     Dimensions,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
-import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { SafeAreaView, ScrollView } from 'react-navigation';
 import { ImageView } from '@components';
@@ -48,53 +46,51 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
     return (
       <SafeAreaView>
         <Card containerStyle={[styles.container, {maxHeight: height}]}>
-          <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={false}>
-            <Card containerStyle={[styles.container, styles.imageContainer]}>
-              <ImageView image={this.props.advertisement.image} height={200} allowFullMode={true}/>
-            </Card>
-            <Text style={styles.label}>Brand</Text>
-            <TextInput style={[styles.text]} value={`${brand}`} onChangeText={(text) => this.onChangeField('brand', text)}/>
+          <Card containerStyle={[styles.container, styles.imageContainer]}>
+            <ImageView image={this.props.advertisement.image} height={200} allowFullMode={true}/>
+          </Card>
+          <Text style={styles.label}>Brand</Text>
+          <TextInput style={[styles.text]} value={`${brand}`} onChangeText={(text) => this.onChangeField('brand', text)}/>
 
-            <Text style={styles.label}>Classification</Text>
-            <TextInput style={[styles.text]} value={`${category}`} onChangeText={(text) => this.onChangeField('category', text)}/>
+          <Text style={styles.label}>Classification</Text>
+          <TextInput style={[styles.text]} value={`${category}`} onChangeText={(text) => this.onChangeField('category', text)}/>
 
-            <Text style={styles.label}>Type</Text>
-            <TextInput style={[styles.text]} value={`${type}`} onChangeText={(text) => this.onChangeField('type', text)}/>
+          <Text style={styles.label}>Type</Text>
+          <TextInput style={[styles.text]} value={`${type}`} onChangeText={(text) => this.onChangeField('type', text)}/>
 
-            <View style={styles.row}>
-              <View style={styles.flex}>
-                <Text style={styles.label}>Units</Text>
-                <TextInput style={[styles.text]} value={`${units}`} onChangeText={(text) => this.onChangeField('units', text)}
-                  keyboardType="numeric"/>
-              </View>
-              <View style={styles.empty}></View>
-              <View style={styles.flex}>
-                <Text style={styles.label}>Capacity</Text>
-                <TextInput style={[styles.text]} value={`${capacity}`} onChangeText={(text) => this.onChangeField('capacity', text)}
-                  keyboardType="numeric"/>
-              </View>
-              <View style={styles.empty}></View>
-              <View style={styles.flex}>
-                <Text style={styles.label}>Size</Text>
-                <TextInput style={[styles.text]} value={`${size}`} onChangeText={(text) => this.onChangeField('size', text)}
-                  keyboardType="numeric"/>
-              </View>
+          <View style={styles.row}>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Units</Text>
+              <TextInput style={[styles.text]} value={`${units}`} onChangeText={(text) => this.onChangeField('units', text)}
+                keyboardType="numeric"/>
             </View>
-
-            <View style={styles.row}>
-              <View style={styles.flex}>
-                <Text style={styles.label}>Regular Price</Text>
-                <TextInput style={[styles.text]} value={`${rprice}`} onChangeText={(text) => this.onChangeField('rprice', text)}
-                  keyboardType="numeric"/>
-              </View>
-              <View style={styles.empty}></View>
-              <View style={styles.flex}>
-                <Text style={styles.label}>Special Price</Text>
-                <TextInput style={[styles.text]} value={`${sprice}`} onChangeText={(text) => this.onChangeField('sprice', text)}
-                  keyboardType="numeric"/>
-              </View>
+            <View style={styles.empty}></View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Capacity</Text>
+              <TextInput style={[styles.text]} value={`${capacity}`} onChangeText={(text) => this.onChangeField('capacity', text)}
+                keyboardType="numeric"/>
             </View>
-          </ScrollView>
+            <View style={styles.empty}></View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Size</Text>
+              <TextInput style={[styles.text]} value={`${size}`} onChangeText={(text) => this.onChangeField('size', text)}
+                keyboardType="numeric"/>
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Regular Price</Text>
+              <TextInput style={[styles.text]} value={`${rprice}`} onChangeText={(text) => this.onChangeField('rprice', text)}
+                keyboardType="numeric"/>
+            </View>
+            <View style={styles.empty}></View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Special Price</Text>
+              <TextInput style={[styles.text]} value={`${sprice}`} onChangeText={(text) => this.onChangeField('sprice', text)}
+                keyboardType="numeric"/>
+            </View>
+          </View>
         </Card>
       </SafeAreaView>
     );

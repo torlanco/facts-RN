@@ -1,6 +1,6 @@
 import { colors, typos } from '@styles';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, KeyboardTypeOptions } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 interface IActionButtonProps {
@@ -8,31 +8,49 @@ interface IActionButtonProps {
     secureTextEntry?: boolean;
     onChangeText?: Function;
     onBlur?: Function;
+    keyboardType?: KeyboardTypeOptions
 }
 
 type IProps = IActionButtonProps;
 
-const TextField : React.SFC<IProps> = (props: IProps) => {
-    const {error} = props;
+type IState = {}
 
-    const onChangeText = (value: any) => {
-        if (props.onChangeText) {
-            props.onChangeText(value);
-        }
+class TextField extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+    
+    onChangeText = (value: any) => {
+        this.setState({
+            value: value
+        }, () => {
+            if (this.props.onChangeText) {
+                this.props.onChangeText(value);
+            }
+        });
     }
 
-    const onBlur = () => {
-        if (props.onBlur) {
-            props.onBlur();
+    onBlur = () => {
+        if (this.props.onBlur) {
+            this.props.onBlur();
         }
     }
     
-    return (
-        <View style={styles.container}>
-            <TextInput style={[styles.input]} onChangeText={onChangeText} onBlur={onBlur} secureTextEntry={props.secureTextEntry}/>
-            { error ? <Text style={styles.error}>{error}</Text> : null }
-        </View>
-    )
+    render() {
+        const { error, secureTextEntry } = this.props;
+        return (
+            <View style={styles.container}>
+                <TextInput style={[styles.input]}
+                    onChangeText={this.onChangeText} 
+                    onBlur={this.onBlur} 
+                    secureTextEntry={secureTextEntry}
+                    keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
+                    autoCapitalize={'none'}/>
+                { error ? <Text style={styles.error}>{error}</Text> : null }
+            </View>
+        )    
+    }
 }
 
 const styles = StyleSheet.create({

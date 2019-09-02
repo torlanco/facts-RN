@@ -116,7 +116,7 @@ class OutletScreen extends React.Component<IProps, IState> {
                         </View>
                     </View>
                 </View>
-                {this.props.loading && <LoadingScreen />}
+                {/* {this.props.loading && <LoadingScreen />} */}
             </SafeAreaView>
         )
     }

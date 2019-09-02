@@ -136,6 +136,7 @@ class LoginScreen extends React.Component<IProps, IState> {
           <Text style={styles.heading}>Sign in to your account</Text>
           <Text style={styles.label}>Username</Text>
           <TextField
+            keyboardType={'email-address'}
             onChangeText={(value: any) => {
               this.setState({
                 userName: value

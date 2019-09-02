@@ -34,6 +34,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                     style={styles.input}
                     editable={false}
                     placeholder={props.placeholder}
+                    placeholderTextColor={colors.TEXT_PRIMARY}
                     value={props.value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()} />
 
                 <Icon
