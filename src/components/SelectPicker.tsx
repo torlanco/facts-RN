@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import {
     StyleSheet,
-    Picker,
     TextInput,
     View,
     Platform
 } from 'react-native';
 import { colors } from '@styles';
 import ModalSelector from 'react-native-modal-selector';
+import RNPickerSelect from 'react-native-picker-select';
 import { Icon } from 'react-native-elements';
 import { CONSTANTS } from '@utils';
 
@@ -53,13 +53,12 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             </View>
         </ModalSelector>
         :  
-        <Picker selectedValue = {props.value} onValueChange={handleValueChange}>
-          {
-            props.options && props.options.map((option) => {
-              return <Picker.Item label={option} value={props.value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()} />
-            })
-          }
-        </Picker>
+        <RNPickerSelect
+            onValueChange={handleValueChange}
+            items={props.options ? props.options.map((option) => {
+              return { label: option, value: option.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()}
+            }) : []}
+        />
     );
 };
 
