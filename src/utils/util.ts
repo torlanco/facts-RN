@@ -46,3 +46,13 @@ export const validate = (type: string, value: any, field?: string) => {
     }
     return error;
 }
+
+
+export const formatObject = (obj: any) => {
+    for (let key in obj) {
+        if (!obj[key]) {
+            obj[key] = '';
+        }
+    }
+    return obj;
+}   

@@ -11,6 +11,7 @@ import { Card } from 'react-native-elements';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { SafeAreaView, ScrollView } from 'react-navigation';
 import { ImageView } from '@components';
+import { formatObject } from '@utils';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
@@ -26,7 +27,7 @@ class AdvertisementDeckSwiperCard extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      advertisement: this.props.advertisement || {},
+      advertisement: formatObject(this.props.advertisement || {}),
     };
   }
 

@@ -4,9 +4,10 @@ import {
     StyleSheet,
     Picker,
     TextInput,
-    View
+    View,
+    Platform
 } from 'react-native';
-import { colors, typos } from '@styles';
+import { colors } from '@styles';
 import ModalSelector from 'react-native-modal-selector';
 import { Icon } from 'react-native-elements';
 import { CONSTANTS } from '@utils';
@@ -20,7 +21,14 @@ interface IOwnProps {
 type IProps = IOwnProps;
 
 const SelectPicker: React.SFC<IProps> = (props: IProps) => {
+
+    const handleValueChange = (value: any) => {
+      if (props.handleValueChange)
+        props.handleValueChange(value);
+    }
+
     return (
+      Platform.OS === "android" ?
         <ModalSelector
             style={styles.picker}
             data={props.options}
@@ -43,8 +51,15 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                     color={colors.BLACK}
                     containerStyle={styles.icon}/>
             </View>
-
         </ModalSelector>
+        :  
+        <Picker selectedValue = {props.value} onValueChange={handleValueChange}>
+          {
+            props.options && props.options.map((option) => {
+              return <Picker.Item label={option} value={props.value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()} />
+            })
+          }
+        </Picker>
     );
 };
 
