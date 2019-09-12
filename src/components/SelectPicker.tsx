@@ -53,12 +53,15 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             </View>
         </ModalSelector>
         :  
-        <RNPickerSelect
-            onValueChange={handleValueChange}
-            items={props.options ? props.options.map((option) => {
-              return { label: option, value: option.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()}
-            }) : []}
-        />
+        <View style={styles.iosPicker}>
+          <RNPickerSelect
+              onValueChange={handleValueChange}
+              items={props.options ? props.options.map((option) => {
+                return { label: option, value: option.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()}
+              }) : []}
+              placeholder='props.placeholder'
+          />
+        </View>
     );
 };
 
@@ -77,6 +80,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingVertical: 8
+  },
+  iosPicker: {
+    paddingVertical: 10
   }
 });
 
