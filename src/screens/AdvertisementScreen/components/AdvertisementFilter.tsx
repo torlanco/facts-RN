@@ -5,16 +5,17 @@ import {
     View,
 } from 'react-native';
 import { colors } from '@styles';
-import { Icon } from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import { ViewType } from '../enums/ViewType';
 import { SelectPicker } from '@components';
 
 interface IOwnProps {
-    viewType: ViewType,
-    handleViewTypeChange: Function,
-    typeList: string[],
-    type: string,
-    handleTypeChange: Function,
+    viewType?: ViewType,
+    handleViewTypeChange?: Function,
+    typeList?: string[],
+    type?: string,
+    handleTypeChange?: Function,
+    totalItems?: Number
 }
 type IProps = IOwnProps;
 
@@ -25,21 +26,31 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
 
 
     const toggleViewType = (type: ViewType) => {
-        if (props.viewType !== type) {
+        if (props.viewType !== type && props.handleViewTypeChange) {
             props.handleViewTypeChange(type);
         }
     };
 
     const onTypeChange = (type: string) => {
-        props.handleTypeChange(type);
+        if (props.handleTypeChange)
+            props.handleTypeChange(type);
     };
 
     return (
         <View style={styles.container}>
-            <SelectPicker options={props.typeList} value={props.type}
-                          placeholder={'Select an category'}
-                          handleValueChange={onTypeChange}>
-            </SelectPicker>
+            <View>
+                { props.type ? 
+                    <View style={styles.pickerContainer}>
+                        <SelectPicker options={props.typeList} value={props.type}
+                                    placeholder={'Select an category'}
+                                    handleValueChange={onTypeChange}>
+                        </SelectPicker> 
+                    </View>: null }
+                <View style={styles.itemCountContainer}>
+                    <Text style={styles.itemCount}>{props.totalItems} </Text>
+                    <Text> ITEM</Text>
+                </View>
+            </View>
             <View style={{ flex: 1 }}></View>
             <Icon
                 name='grid'
@@ -61,12 +72,22 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 5,
   },
   iconContainer: {
     padding: 5
   },
+  itemCountContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginLeft: 10
+  },
+  itemCount: {
+    fontWeight: 'bold',
+  },
+  pickerContainer: {
+    marginTop: -5,
+  }
 });
 
 export { AdvertisementFilter };

@@ -16,3 +16,11 @@ export const fetchAdvertisementsForReview = (category: string, page: number, lim
 export const updateAdvertisementsForReview = (advertisement: IAdvertisement.IAdvertisementData) => {
     return HTTP.put(`https://facts-cloud.herokuapp.com/features/${advertisement.id}`, advertisement);
 };
+
+export const fetchBrands = (value?: string) => {
+    return HTTP.get('http://facts-cloud.herokuapp.com/brands/search?term=' + value);
+};
+
+export const fetchFeaturesByBrand = (brand?: string) => {
+    return HTTP.get('http://facts-cloud.herokuapp.com/features/' + brand);
+};

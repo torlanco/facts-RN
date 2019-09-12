@@ -16,8 +16,11 @@ export namespace IAdvertisement {
         measure?: string;
         capacity?: string;
         createdAt?: string;
-        keywords?: string;        
-    }
+        keywords?: string;  
+        outlet?: string;
+        startDate?: string;
+        endDate?: string;      
+    }   
 
     export interface StateToProps {
         error: string | boolean;
@@ -26,6 +29,8 @@ export namespace IAdvertisement {
         categories: string[] | undefined;
         advertisementsForReview: IAdvertisementData[] | undefined;
         categoriesForReview: string[] | undefined;
+        brands: string[] | undefined;
+        featuresByBrands: IAdvertisementData[] | undefined;
     }
     
     export interface DispatchFromProps {
@@ -33,6 +38,8 @@ export namespace IAdvertisement {
         fetchCategoriesForReview(): Function;
         fetchAdvertisementsForReview(category: string, page: number, limit?: number, isBackground?: boolean): Function;
         updateAdvertisementsForReview(advertisement: IAdvertisement.IAdvertisementData): Function;
+        fetchBrands(value?: string): Function;
+        fetchFeaturesByBrand(brand?: string): Function;
     }
 
 }

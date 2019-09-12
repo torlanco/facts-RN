@@ -14,7 +14,9 @@ import {
   LoginScreen,
   ForgetPasswordScreen,
   RegisterScreen,
-  ResetPasswordScreen
+  ResetPasswordScreen,
+  AutoSuggestScreen,
+  FeaturesScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -64,10 +66,32 @@ const WorkNavigator = createStackNavigator(
     }
 )
 
+const FeaturesNavigator = createStackNavigator(
+    {
+        AutoSuggestScreen: {screen: AutoSuggestScreen},
+        FeaturesScreen: {screen: FeaturesScreen},
+    },
+    {
+        initialRouteName: 'AutoSuggestScreen',
+        defaultNavigationOptions: {
+            headerLeft: null,
+            headerBackTitle: null,
+            headerTransparent: true,
+            headerStyle: {
+                borderBottomWidth: 0, // remove the bottom line
+                height: 0,
+                elevation: 0
+            },
+            headerTintColor: colors.WHITE
+        }
+    }
+)
+
 const MainNavigator = createDrawerNavigator(
     {
       Outlet: { screen: OutletNavigator },
       Work: { screen: WorkNavigator },
+      Features: {screen: FeaturesNavigator},
     },
     {
       contentComponent: SideMenu,

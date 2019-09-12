@@ -1,6 +1,7 @@
 import { Types } from '@types';
 import { IAdvertisement } from '@interfaces/advertisement';
-import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview, updateAdvertisementsForReview } from '@services';
+import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview, 
+  updateAdvertisementsForReview, fetchBrands, fetchFeaturesByBrand } from '@services';
 
 const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
   fetchAdvertisements: (shopperId?: string) => {
@@ -89,6 +90,52 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.UPDATE_ADVERTISEMENT_FOR_REVIEW_FAILED,
+          payload: e,
+        });
+        return [];
+      }
+    };
+  },
+  fetchBrands: (value?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_BRANDS,
+      });
+      try {
+        const response = await fetchBrands(value);
+        dispatch({
+          type: Types.FETCH_BRANDS_SUCCESS,
+          payload: { 
+            brands: response.data.data,
+          }
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_BRANDS_FAILED,
+          payload: e,
+        });
+        return [];
+      }
+    };
+  },
+  fetchFeaturesByBrand: (brand?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_ADVERTISEMENTS_BY_BRANDS,
+      });
+      try {
+        const response = await fetchFeaturesByBrand(brand);
+        dispatch({
+          type: Types.FETCH_ADVERTISEMENTS_BY_BRANDS_SUCCESS,
+          payload: {
+            features: response.data.data.features,
+          }
+        });
+        return response.data.data.features;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_ADVERTISEMENTS_BY_BRANDS_FAILED,
           payload: e,
         });
         return [];

@@ -29,6 +29,7 @@ type IProps = IOwnProps &
 const data = [
   { iconName: 'book', title: 'Outlet', routeName: 'Outlet' },
   { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
+  { iconName: 'book', title: 'Features', routeName: 'Features' },
 ];
 
 const mapStateToProps = function(state: any) {

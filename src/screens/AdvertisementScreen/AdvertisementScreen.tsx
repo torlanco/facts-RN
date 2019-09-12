@@ -141,11 +141,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
             <AdvertisementFilter viewType={this.state.viewType}
               handleViewTypeChange={this.onViewTypeChange}
               typeList={this.props.categories || []} type={this.state.category}
-              handleTypeChange={this.onTypeChange}></AdvertisementFilter>
-            <View style={styles.itemCountContainer}>
-              <Text style={styles.itemCount}>{this.state.advertisementList.length} </Text>
-              <Text> ITEM</Text>
-            </View>
+              handleTypeChange={this.onTypeChange} totalItems={this.state.advertisementList.length}></AdvertisementFilter>
             { this.getView() }
           </View>
           {this.props.loading && <LoadingScreen />}

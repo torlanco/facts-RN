@@ -9,7 +9,9 @@ const initialState: IAdvertisement.StateToProps = {
   advertisements: undefined,
   categories: undefined,
   advertisementsForReview: undefined,
-  categoriesForReview: undefined
+  categoriesForReview: undefined,
+  brands: undefined,
+  featuresByBrands: undefined,
 };
 
 export function advertisement(
@@ -98,6 +100,50 @@ export function advertisement(
         ...state,
         error: action.payload.message || true
       };  
+      
+    // FETCH BRANDS 
+    case Types.FETCH_BRANDS:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FETCH_BRANDS_SUCCESS:
+      return {
+        ...state,
+        brands: action.payload.brands,
+        loading: false,
+        error: false,
+      };
+    case Types.FETCH_BRANDS_FAILED:
+      return {
+        ...state,
+        brands: [],
+        loading: false,
+        error: action.payload.message || true,
+      };  
+      
+    // FETCH ADVERTISEMENTS BY BRANDS
+    case Types.FETCH_ADVERTISEMENTS_BY_BRANDS:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FETCH_ADVERTISEMENTS_BY_BRANDS_SUCCESS:
+      return {
+        ...state,
+        featuresByBrands: action.payload.features,
+        loading: false,
+        error: false,
+      };
+    case Types.FETCH_ADVERTISEMENTS_BY_BRANDS_FAILED:
+      return {
+        ...state,
+        featuresByBrands: [],
+        loading: false,
+        error: action.payload.message || true,
+      };    
     default:
       return state;
   }
