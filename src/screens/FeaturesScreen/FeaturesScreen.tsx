@@ -5,7 +5,7 @@ import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { typos } from '@styles';
 
 // Component
-import { HeaderBar } from '@components';
+import { HeaderBar, EmptyListMessage } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { AdvertisementGridView } from '../AdvertisementScreen/components/AdvertisementGridView';
 import { AdvertisementListView } from '../AdvertisementScreen/components/AdvertisementListView';
@@ -98,13 +98,15 @@ class FeaturesScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
+    const { brand } = this.props.navigation.state.params;
     return (
       <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
             <HeaderBar title={'Features'} titleStyle={{textAlign: 'left'}}></HeaderBar>
             <AdvertisementFilter viewType={this.state.viewType}
               handleViewTypeChange={this.onViewTypeChange} totalItems={this.state.advertisementList.length}></AdvertisementFilter>
-            { this.getView() }
+            { this.state.advertisementList.length ? this.getView() : 
+              <EmptyListMessage message={`No features found for brand ${brand}`}/>  }
           </View>
           {this.props.loading && <LoadingScreen />}
       </SafeAreaView>

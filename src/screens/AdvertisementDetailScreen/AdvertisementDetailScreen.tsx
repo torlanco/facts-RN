@@ -20,8 +20,8 @@ import { formatDate } from '@utils';
 
 // props
 interface ParamType {
-  outlet: IOutlet.IOutletData;
-  shopper: IShopper.IShopperData;
+  outlet?: IOutlet.IOutletData;
+  shopper?: IShopper.IShopperData;
   advertisement: IAdvertisement.IAdvertisementData;
 }
 interface StateParams extends NavigationState {
@@ -66,9 +66,12 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { outlet, shopper, advertisement } = this.props.navigation.state.params;
+    const { outlet, advertisement } = this.props.navigation.state.params;
     const { category, type, brand, sprice, rprice, sizeMeasure, image } = advertisement;
-    const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
+    let dateRange = undefined;
+    if (outlet) {
+      dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
+    }
     
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -99,10 +102,11 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                   color={colors.LIGHT_ORANGE}
                   size={14}
                   containerStyle={styles.iconContainer} />
-                <Text style={[styles.outlet]}>{outlet.outlet}</Text>
+                <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet }</Text>
               </View>
             </View>
-            <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text>
+            { outlet ? 
+              <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text> : null }
           </View>
       </SafeAreaView>
     );

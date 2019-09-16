@@ -59,7 +59,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
               items={props.options ? props.options.map((option) => {
                 return { label: option, value: option.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()}
               }) : []}
-              placeholder='props.placeholder'
+              placeholder={props.placeholder}
           />
         </View>
     );
