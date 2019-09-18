@@ -17,6 +17,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { Text, Divider, Icon } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { formatDate } from '@utils';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // props
 interface ParamType {
@@ -75,8 +76,9 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     
     return (
       <SafeAreaView style={{flex: 1}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
-            <HeaderBar title={'Features'} dateRange={dateRange} titleStyle={{textAlign: 'left'}}></HeaderBar>
+            <HeaderBar title={'Detail'} dateRange={dateRange} titleStyle={{textAlign: 'left'}}></HeaderBar>
             <Text style={[styles.name, styles.padding]}>{brand}</Text>
             <View style={[styles.detail, styles.flexContainer]}>
               <Text style={[styles.pieces, styles.flex]}>{sizeMeasure}</Text>
@@ -108,6 +110,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
             { outlet ? 
               <Text style={[styles.note]}>* Valid {formatDate(outlet.earliestStartDate)} - {formatDate(outlet.latestEndDate)}</Text> : null }
           </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

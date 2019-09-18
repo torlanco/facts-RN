@@ -70,6 +70,7 @@ const FeaturesNavigator = createStackNavigator(
     {
         AutoSuggestScreen: {screen: AutoSuggestScreen},
         FeaturesScreen: {screen: FeaturesScreen},
+        AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
     },
     {
         initialRouteName: 'AutoSuggestScreen',

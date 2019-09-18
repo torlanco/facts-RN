@@ -17,7 +17,8 @@ import { mapDispatchToProps } from '@actions/advertisement';
 import { HeaderBar } from '@components';
 import Autocomplete from 'react-native-autocomplete-input';
 import { Text, Divider } from 'react-native-elements';
-import { colors } from '@styles';
+import { colors, typos } from '@styles';
+import { TextInput } from 'react-native-gesture-handler';
 
 interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
@@ -84,12 +85,15 @@ class AutoSuggestScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={styles.flex}>
         <View style={styles.container}>
-          <HeaderBar title={'Outlets'}/>
+          <HeaderBar title={'Select Brand'}/>
           <View style={styles.mainContainer}>
             <Autocomplete
               data={this.state.data}
-              defaultValue={this.state.query}
-              onChangeText={this.onChangeText}
+              // defaultValue={this.state.query}
+              // onChangeText={this.onChangeText}
+              renderTextInput={() => (
+                <TextInput style={[styles.textInput]} value={this.state.query} onChangeText={this.onChangeText}/>
+              )}
               renderItem={({item, index}) => (
                 <TouchableOpacity onPress={() => this.onItemSelect(item)}>
                   <Text style={styles.listItem}>{item.trim()}</Text>
@@ -145,6 +149,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.LIGHT_GRAY,
     height: 1,
   },
+  textInput: {
+    ...typos.PRIMARY,
+    borderRadius: 2,
+    borderColor: colors.LIGHT_GRAY,
+    height: 30,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 5
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoSuggestScreen);
