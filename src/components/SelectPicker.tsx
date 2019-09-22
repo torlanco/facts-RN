@@ -6,7 +6,7 @@ import {
     View,
     Platform
 } from 'react-native';
-import { colors } from '@styles';
+import { colors, typos } from '@styles';
 import ModalSelector from 'react-native-modal-selector';
 import RNPickerSelect from 'react-native-picker-select';
 import { Icon } from 'react-native-elements';
@@ -16,7 +16,8 @@ interface IOwnProps {
     options: string[] | undefined,
     value: string,
     placeholder: string,
-    handleValueChange: Function
+    handleValueChange: Function,
+    width?: number
 }
 type IProps = IOwnProps;
 
@@ -30,7 +31,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
     return (
       Platform.OS === "android" ?
         <ModalSelector
-            style={styles.picker}
+            style={[styles.picker, {width: props.width ? props.width : 200}]}
             data={props.options}
             keyExtractor= {(item: string) => item}
             labelExtractor= {(item: string) => item}
@@ -53,13 +54,19 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             </View>
         </ModalSelector>
         :  
-        <View style={styles.iosPicker}>
+        <View style={[styles.iosPicker, {width: props.width ? props.width : 200}]}>
           <RNPickerSelect
               onValueChange={handleValueChange}
               items={props.options ? props.options.map((option) => {
                 return { label: option, value: option.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()}
               }) : []}
-              placeholder={props.placeholder}
+              placeholder={{ label: props.placeholder, value: null }}
+              Icon={() => { return <Icon
+                name='chevron-down'
+                type='feather'
+                color={colors.BLACK}/> }}
+              value={props.value}
+              textInputProps={{style: [styles.pickerTextInputProps]}}
           />
         </View>
     );
@@ -82,7 +89,15 @@ const styles = StyleSheet.create({
     paddingVertical: 8
   },
   iosPicker: {
-    paddingVertical: 10
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    height: 50,
+    width: 200,
+  },
+  pickerTextInputProps: {
+    color: colors.TEXT_PRIMARY,
+    ...typos.PRIMARY,
+    paddingTop: 3
   }
 });
 

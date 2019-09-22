@@ -149,7 +149,7 @@ class SelectCategoryScreen extends React.Component<IProps, IState> {
                     </View> : null }
                   <Text style={[styles.label, {marginBottom: -10}]}>{ this.state.localStorageCategory ? 'Change category' :'Category'}</Text>
                   <SelectPicker options={this.state.categories} value={this.state.category}
-                      placeholder={'Select a category'}
+                      placeholder='Select a category'
                       handleValueChange={this.onCategoryChange}>
                   </SelectPicker>
 
