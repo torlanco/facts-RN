@@ -19,6 +19,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { Text, Divider } from 'react-native-elements';
 import { colors, typos } from '@styles';
 import { TextInput } from 'react-native-gesture-handler';
+import { CONSTANTS } from '@utils';
 
 interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
@@ -65,8 +66,8 @@ class AutoSuggestScreen extends React.Component<IProps, IState> {
       await this.props.fetchBrands(value);
       this.setState({
         hideResults: false,
-        data: this.props.brands || []
-      });  
+        data: this.props.brands ? this.props.brands.map((brand: any) => `${brand.brand} (${brand.total})`) : []
+      });   
     }
   }
 
@@ -76,7 +77,7 @@ class AutoSuggestScreen extends React.Component<IProps, IState> {
       hideResults: true
     }, () => {
       this.props.navigation.navigate('FeaturesScreen', {
-        brand: value.trim()
+        brand: value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()
       });
     });
   }
