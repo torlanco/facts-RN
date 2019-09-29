@@ -217,4 +217,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectCategoryScreen);
+const SelectCategoryScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(SelectCategoryScreen);
+export { SelectCategoryScreenWrapper as SelectCategoryScreen }

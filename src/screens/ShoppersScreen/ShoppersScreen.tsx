@@ -136,4 +136,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppersScreen);
+const ShoppersScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(ShoppersScreen);
+export { ShoppersScreenWrapper as ShoppersScreen }

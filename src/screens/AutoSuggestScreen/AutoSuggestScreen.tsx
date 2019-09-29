@@ -161,4 +161,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AutoSuggestScreen);
+const AutoSuggestScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(AutoSuggestScreen);
+export { AutoSuggestScreenWrapper as AutoSuggestScreen }

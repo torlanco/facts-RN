@@ -187,4 +187,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgetPasswordScreen);
+const ForgetPasswordScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(ForgetPasswordScreen);
+export { ForgetPasswordScreenWrapper as ForgetPasswordScreen }

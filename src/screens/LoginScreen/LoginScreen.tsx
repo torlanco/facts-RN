@@ -275,4 +275,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+const LoginScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export { LoginScreenWrapper as LoginScreen } 

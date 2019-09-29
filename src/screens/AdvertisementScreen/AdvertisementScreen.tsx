@@ -172,4 +172,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdvertisementScreen);
+const AdvertisementScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(AdvertisementScreen);
+export { AdvertisementScreenWrapper as AdvertisementScreen }

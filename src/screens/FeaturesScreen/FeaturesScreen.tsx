@@ -129,4 +129,5 @@ const styles = StyleSheet.create({
   
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeaturesScreen);
+const FeaturesScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(FeaturesScreen);
+export { FeaturesScreenWrapper as FeaturesScreen }

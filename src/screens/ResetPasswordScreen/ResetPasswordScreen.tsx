@@ -215,4 +215,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen);
+const ResetPasswordScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen);
+export { ResetPasswordScreenWrapper as ResetPasswordScreen }

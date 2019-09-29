@@ -143,4 +143,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OutletScreen);
+const OutletScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(OutletScreen);
+export { OutletScreenWrapper as OutletScreen }

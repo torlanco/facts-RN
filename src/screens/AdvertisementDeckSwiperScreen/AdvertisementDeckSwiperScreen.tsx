@@ -266,4 +266,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdvertisementDeckSwiperScreen);
+const AdvertisementDeckSwiperScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(AdvertisementDeckSwiperScreen);
+export { AdvertisementDeckSwiperScreenWrapper as AdvertisementDeckSwiperScreen }

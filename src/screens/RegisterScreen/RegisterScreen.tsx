@@ -296,4 +296,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+const RegisterScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+export { RegisterScreenWrapper as RegisterScreen }
