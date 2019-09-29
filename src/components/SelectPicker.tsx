@@ -75,7 +75,6 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 const styles = StyleSheet.create({
   picker: {
     height: 50,
-    width: 200,
   },
   selector: {
     flexDirection: 'row',

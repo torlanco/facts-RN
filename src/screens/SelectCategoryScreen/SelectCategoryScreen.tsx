@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Dimensions } from 'react-native';
 import { typos, colors, responsive } from '@styles';
 
 // Component
@@ -150,6 +150,7 @@ class SelectCategoryScreen extends React.Component<IProps, IState> {
                   <Text style={[styles.label, {marginBottom: -10}]}>{ this.state.localStorageCategory ? 'Change category' :'Category'}</Text>
                   <SelectPicker options={this.state.categories} value={this.state.category}
                       placeholder='Select a category'
+                      width={Dimensions.get('window').width - 50}
                       handleValueChange={this.onCategoryChange}>
                   </SelectPicker>
 
