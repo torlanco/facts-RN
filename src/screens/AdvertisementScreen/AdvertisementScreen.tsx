@@ -22,7 +22,6 @@ import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
-import { Text } from 'react-native-elements';
 import { LoadingScreen } from '@screens';
 import { CONSTANTS } from '@utils';
 

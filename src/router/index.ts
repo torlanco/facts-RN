@@ -16,7 +16,9 @@ import {
   RegisterScreen,
   ResetPasswordScreen,
   AutoSuggestScreen,
-  FeaturesScreen
+  FeaturesScreen,
+  CameraScreen,
+  CustomCameraScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -88,11 +90,33 @@ const FeaturesNavigator = createStackNavigator(
     }
 )
 
+const CameraNavigator = createStackNavigator(
+    {
+        CustomCameraScreen: {screen: CustomCameraScreen},
+        CameraScreen: {screen: CameraScreen},
+    },
+    {
+        initialRouteName: 'CustomCameraScreen',
+        defaultNavigationOptions: {
+            headerLeft: null,
+            headerBackTitle: null,
+            headerTransparent: true,
+            headerStyle: {
+                borderBottomWidth: 0, // remove the bottom line
+                height: 0,
+                elevation: 0
+            },
+            headerTintColor: colors.WHITE
+        }
+    }
+)
+
 const MainNavigator = createDrawerNavigator(
     {
       Outlet: { screen: OutletNavigator },
       Work: { screen: WorkNavigator },
       Features: {screen: FeaturesNavigator},
+      Camera: { screen: CameraNavigator },
     },
     {
       contentComponent: SideMenu,

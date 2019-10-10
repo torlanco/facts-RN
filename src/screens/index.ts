@@ -9,18 +9,7 @@ export * from './RegisterScreen/RegisterScreen';
 export * from './ResetPasswordScreen/ResetPasswordScreen';
 export * from './AutoSuggestScreen/AutoSuggestScreen';
 export * from './FeaturesScreen/FeaturesScreen';
-
-// export { OutletScreen };
-//export { ShoppersScreen };
-// export { AdvertisementScreen };
-// export { SelectCategoryScreen }
-// export { AdvertisementDeckSwiperScreen };
-// export { LoginScreen };
-// export { ForgetPasswordScreen };
-// export { RegisterScreen };
-// export { ResetPasswordScreen };
-// export { AutoSuggestScreen };
-// export { FeaturesScreen };
-
 export * from './LoadingScreen/LoadingScreen';
 export * from './AdvertisementDetailScreen/AdvertisementDetailScreen';
+export * from './CustomCameraScreen/CustomCameraScreen';
+export * from './CameraScreen/CameraScreen';

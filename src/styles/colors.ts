@@ -18,4 +18,5 @@ export const colors = {
     DISABLED_GRAY: '#E3E6E8',
     ERROR: '#cc0000',
     SUCCESS: '#668741',
+    TRANSPARENT_BLACK: '#FF000000',
 };

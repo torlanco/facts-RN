@@ -1,7 +1,9 @@
 import * as React from 'react';
 
 // ui
-import { Asset, Font, AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 import { View, NetInfo } from 'react-native';
 import { AppNavigator } from '@router';
 
