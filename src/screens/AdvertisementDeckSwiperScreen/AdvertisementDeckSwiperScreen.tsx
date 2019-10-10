@@ -17,7 +17,7 @@ import { AdvertisementDeckSwiperCard } from './components/AdvertisementDeckSwipe
 import { responsive, colors, typos } from '@styles';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { IAdvertisement } from '@interfaces/advertisement';
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { Text } from 'react-native-elements';
 import { capitalize } from '@utils';
 

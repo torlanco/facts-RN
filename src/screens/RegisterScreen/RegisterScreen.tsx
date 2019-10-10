@@ -13,7 +13,7 @@ import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
 import { connect } from "react-redux";
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';

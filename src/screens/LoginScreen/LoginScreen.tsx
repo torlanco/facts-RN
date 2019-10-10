@@ -14,7 +14,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 
 // Props Action
 import { connect } from "react-redux";
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { CheckBox } from 'react-native-elements';
 import { validate, CONSTANTS } from '@utils';

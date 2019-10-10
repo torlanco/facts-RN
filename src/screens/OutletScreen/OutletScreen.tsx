@@ -14,7 +14,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 interface IOwnProps {}
 type IProps = IOwnProps &

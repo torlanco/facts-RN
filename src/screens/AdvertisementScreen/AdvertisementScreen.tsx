@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { CONSTANTS } from '@utils';
 
 // props

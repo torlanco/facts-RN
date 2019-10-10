@@ -15,7 +15,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState, FlatLis
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/shopper';
 import { IOutlet } from '@interfaces/outlet';
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 // props
 interface ParamType {

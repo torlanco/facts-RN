@@ -11,7 +11,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState, StackAc
 
 // Props Action
 import { connect } from "react-redux";
-import { LoadingScreen } from '@screens';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { Button } from 'react-native-elements';
 import { AsyncStorage } from 'react-native';
