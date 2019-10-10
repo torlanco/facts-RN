@@ -6,6 +6,7 @@ import { colors } from '@styles';
 import { Icon } from 'react-native-elements';
 import { NavigationInjectedProps, NavigationState, NavigationScreenProp } from 'react-navigation';
 import FullWidthImage from 'react-native-fullwidth-image';
+import {NavigationEvents} from 'react-navigation';
 
 interface ParamType {
   image: any;
@@ -21,6 +22,7 @@ type IProps = IOwnProps &
 
 interface IState {
   images: any[];
+  extraData: boolean;
 }
 class CustomCameraScreen extends React.Component<IProps, IState> {
   camera: any;
@@ -36,32 +38,21 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
         "height": 4608,
         "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ffacts-mobile-app-3f08643a-634c-4ccd-b5d9-ba3710421f0e/Camera/ff47faed-a82e-458e-8147-da214c1aa2ed.jpg",
         "width": 3456,
-      }]
+      }],
+      extraData: false
     }
   }
 
   componentDidMount() {
-    console.log('Hello');  
-    console.log(this.props.navigation.state.params);
     
-    if (this.props.navigation.state.params && this.props.navigation.state.params.image) {
-      const images = this.state.images;
-      // images.push(this.props.navigation.state.params.image);
-      images.push(1);
-      this.setState({
-        images: images
-      }, () => {
-        // this.props.navigation.state.params.image = null;
-      });  
-    }
   }
   
   onBack = () => {
-    if (this.state.images.length > 0) {
-      const images = this.state.images;
+    const images = this.state.images;
+    if (images.length > 0) {
       images.pop();
       this.setState({
-        images: images
+        extraData: !this.state.extraData
       })
     }
   } 
@@ -74,15 +65,29 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
 
   }
 
+  onBackFromCamera = () => {
+    if (this.props.navigation.state.params && this.props.navigation.state.params.image) {
+      const images = this.state.images;
+      images.push(this.props.navigation.state.params.image);
+      this.setState({
+        extraData: !this.state.extraData
+      }, () => {
+        this.props.navigation.state.params.image = null;
+      });  
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents onDidFocus={this.onBackFromCamera} />
         <View style={styles.flex}>
           <FlatList
             data={this.state.images}
             renderItem={({ item }) => <FullWidthImage source={{uri: item.uri}}/>}
             keyExtractor={(item: any) => item.uri}
-            showsVerticalScrollIndicator={false}/>
+            showsVerticalScrollIndicator={false}
+            extraData={this.state.extraData}/>
         </View>
         <View style={styles.options}>
           <View style={[styles.flex, styles.option]}>

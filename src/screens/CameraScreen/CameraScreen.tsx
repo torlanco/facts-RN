@@ -41,9 +41,6 @@ class CameraScreen extends React.Component<IProps, IState> {
       this.props.navigation.navigate('CustomCameraScreen', {
         image
       })
-      console.log({
-        image
-      })
     }
   };
 
