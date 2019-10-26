@@ -21,7 +21,7 @@ interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
 }
 
-type IProps = IOwnProps & 
+type IProps = IOwnProps &
   NavigationInjectedProps;
 
 interface IState {
@@ -38,7 +38,7 @@ class CameraScreen extends React.Component<IProps, IState> {
       hasCameraPermission: null,
       flash: false,
       front: false,
-    };  
+    };
   }
 
   async componentDidMount() {
@@ -48,10 +48,15 @@ class CameraScreen extends React.Component<IProps, IState> {
 
   snap = async () => {
     if (this.camera) {
-      let image = await this.camera.takePictureAsync();
+      // let image = await this.camera.takePictureAsync();
+      const image = await new Promise(async resolve => {
+        await this.camera.takePictureAsync({onPictureSaved : resolve,  skipProcessing: true});
+        this.camera.pausePreview();
+      });
+      this.camera.resumePreview();
       this.props.navigation.navigate('CustomCameraScreen', {
         image
-      })
+      });
     }
   };
 
@@ -92,21 +97,21 @@ class CameraScreen extends React.Component<IProps, IState> {
                     type='feather'
                     color={colors.WHITE}
                     size={16}
-                    containerStyle={styles.optionIcon}/>    
-                </TouchableOpacity>  
+                    containerStyle={styles.optionIcon}/>
+                </TouchableOpacity>
             </View>
           </View>
           <View style={styles.flex}>
-            { images.length ? 
+            { images.length ?
               <View style={styles.imageList}>
                 <FlatList
                   data={images}
                   renderItem={({ item }) => <FullWidthImage source={{uri: item.uri}}/>}
                   keyExtractor={(item: any) => item.uri}
-                  showsVerticalScrollIndicator={false} 
+                  showsVerticalScrollIndicator={false}
                   initialScrollIndex={images.length - 1} />
               </View> : null }
-            <Camera style={styles.flex} 
+            <Camera style={styles.flex}
               type={this.state.front ? Camera.Constants.Type.front : Camera.Constants.Type.back}
               flashMode={this.state.flash ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off}
               ref={ref => {
@@ -123,7 +128,7 @@ class CameraScreen extends React.Component<IProps, IState> {
                   name='camera'
                   type='feather'
                   color={colors.WHITE}
-                  containerStyle={[styles.icon, styles.blueBackground]}/>  
+                  containerStyle={[styles.icon, styles.blueBackground]}/>
               </TouchableOpacity>
             </View>
             <View style={[styles.flex, styles.bottomControlOption, styles.alignItemsRight]}>
@@ -132,7 +137,7 @@ class CameraScreen extends React.Component<IProps, IState> {
                   name='x'
                   type='feather'
                   color={colors.WHITE}
-                  containerStyle={[styles.icon]}/>  
+                  containerStyle={[styles.icon]}/>
               </TouchableOpacity>
             </View>
           </View>
@@ -158,19 +163,19 @@ const styles = StyleSheet.create({
   bottomControl: {
     position: "absolute",
     bottom: 20,
-    left: 0, 
+    left: 0,
     right: 0,
     flex: 1,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     paddingVertical: 20,
-    backgroundColor: 'transparent',   
+    backgroundColor: 'transparent',
   },
   bottomControlOption: {
     alignSelf: 'flex-end',
     alignItems: 'center'
   },
   alignItemsRight: {
-    alignItems: 'flex-end'  
+    alignItems: 'flex-end'
   },
   flex: {
     flex: 1
