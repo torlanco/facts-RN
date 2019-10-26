@@ -5,6 +5,7 @@ export const colors = {
     TEXT_SECONDARY: '#7A7F83',
     TEXT_NOTE: '#BDBDBD',
     WHITE: '#FFFFFF',
+    BLUE: '#7ed4e6',
     PRIMARY: '#F2D518',
     PRIMARY_LIGHT: '#FFE11A',
     LIGHTEST_GRAY: '#FAFAFA',

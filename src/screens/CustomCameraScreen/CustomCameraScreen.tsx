@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Text, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, StyleSheet, StatusBar, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { connect } from "react-redux";
 import { Platform } from '@unimodules/core';
 import { colors } from '@styles';
@@ -26,25 +26,20 @@ interface IState {
 }
 class CustomCameraScreen extends React.Component<IProps, IState> {
   camera: any;
+  imageListRef: any;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      images: [{
-        "height": 4608,
-        "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ffacts-mobile-app-3f08643a-634c-4ccd-b5d9-ba3710421f0e/Camera/397b015d-a5bb-4202-b36e-d0ddcefb44bf.jpg",
-        "width": 3456,
-      }, {
-        "height": 4608,
-        "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Ffacts-mobile-app-3f08643a-634c-4ccd-b5d9-ba3710421f0e/Camera/ff47faed-a82e-458e-8147-da214c1aa2ed.jpg",
-        "width": 3456,
-      }],
+      images: [],
       extraData: false
     }
   }
 
   componentDidMount() {
-    
+    if (!this.state.images.length) {
+      this.openCamera();
+    }
   }
   
   onBack = () => {
@@ -58,7 +53,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   } 
 
   openCamera = () => {
-    this.props.navigation.navigate('CameraScreen');
+    this.props.navigation.navigate('CameraScreen', {images: this.state.images});
   }
 
   onCheck = () => {
@@ -73,24 +68,36 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
         extraData: !this.state.extraData
       }, () => {
         this.props.navigation.state.params.image = null;
+        setTimeout(() => {
+          this.scrollToImageIndex(this.state.images.length - 1);          
+        }, 100);
       });  
     }
   }
 
+  setListRef = (imageListRef: any) => {
+    this.imageListRef = imageListRef;
+  }
+
+  scrollToImageIndex = (index: number) => {
+    this.imageListRef && this.imageListRef.scrollToIndex({ index, animated: true })
+  }
+ 
   render() {
     return (
       <View style={styles.container}>
         <NavigationEvents onDidFocus={this.onBackFromCamera} />
         <View style={styles.flex}>
           <FlatList
+            ref={this.setListRef}
             data={this.state.images}
-            renderItem={({ item }) => <FullWidthImage source={{uri: item.uri}}/>}
+            renderItem={({ item }) => <Image style={styles.image} source={{uri: item.uri}}/>}
             keyExtractor={(item: any) => item.uri}
             showsVerticalScrollIndicator={false}
-            extraData={this.state.extraData}/>
+            extraData={this.state.extraData} />
         </View>
         <View style={styles.options}>
-          <View style={[styles.flex, styles.option]}>
+          <View style={[styles.flex, styles.option, styles.alignLeft]}>
             <TouchableOpacity onPress={this.onBack} activeOpacity={0.85}>
               <Icon
                 name='arrow-left'
@@ -105,10 +112,10 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
                 name='camera'
                 type='feather'
                 color={colors.WHITE}
-                containerStyle={styles.icon}/>  
+                containerStyle={[styles.icon, styles.blueBackground]}/>  
             </TouchableOpacity>
           </View>
-          <View style={[styles.flex, styles.option]}>
+          <View style={[styles.flex, styles.option, styles.alignRight]}>
             <TouchableOpacity onPress={this.onCheck} activeOpacity={0.8}>
               <Icon
                 name='check'
@@ -117,6 +124,16 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
                 containerStyle={styles.icon}/>    
             </TouchableOpacity>  
           </View>
+        </View>
+        <View style={styles.thumbnails}>
+          <FlatList
+            data={this.state.images}
+            renderItem={({ item, index }) => <TouchableOpacity onPress={() => this.scrollToImageIndex(index)} activeOpacity={0.85}>
+                <Image style={styles.thumbnailImage} source={{uri: item.uri}}/>
+              </TouchableOpacity> }
+            keyExtractor={(item: any) => item.uri}
+            showsVerticalScrollIndicator={false}
+            extraData={this.state.extraData} />  
         </View>
       </View>
     );
@@ -127,17 +144,21 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    flex: 1
+    flex: 1,
+    backgroundColor: colors.BLACK 
   },
   icon: {
     paddingVertical: 8,
-    backgroundColor: colors.LIGHT_ORANGE,
     height: 60,
     width: 60,
     borderRadius: 30,
     justifyContent: 'center'
   },
   options: {
+    position: "absolute",
+    bottom: 20,
+    left: 0,
+    right: 0,
     flexDirection: 'row', 
     paddingVertical: 20,
   },
@@ -146,6 +167,31 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1
+  },
+  blueBackground: {
+    backgroundColor: colors.BLUE,
+  },
+  image: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+  },
+  alignLeft: {
+    alignItems: 'flex-start'
+  },
+  alignRight: {
+    alignItems: 'flex-end'
+  },
+  thumbnails: {
+    marginTop: Platform.OS === "android" ? 0 : -5,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    position: "absolute",
+    top: 20,
+    left: 20,
+    elevation: 1
+  },
+  thumbnailImage:{
+    width: 30,
+    height: 30 * Dimensions.get('window').height / Dimensions.get('window').width
   }
 });
 
