@@ -71,10 +71,6 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
 
   }
 
-  onBackFromCamera = () => {
-    
-  }
-
   setListRef = (imageListRef: any) => {
     this.imageListRef = imageListRef;
   }
@@ -88,7 +84,6 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   render() {
     return (
       <View style={styles.container}>
-        <NavigationEvents onDidFocus={this.onBackFromCamera} />
         <View style={styles.flex}>
           <FlatList
             ref={this.setListRef}
