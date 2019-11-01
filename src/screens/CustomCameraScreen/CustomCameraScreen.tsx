@@ -9,7 +9,7 @@ import FullWidthImage from 'react-native-fullwidth-image';
 import {NavigationEvents} from 'react-navigation';
 
 interface ParamType {
-  image: any;
+  images: any[];
 }
 interface StateParams extends NavigationState {
   params: ParamType;
@@ -37,8 +37,16 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    if (!this.state.images.length) {
-      this.openCamera();
+    if (this.props.navigation.state.params && this.props.navigation.state.params.images) {
+      this.setState({
+        images: this.props.navigation.state.params.images,
+        extraData: !this.state.extraData
+      }, () => {
+        this.props.navigation.state.params.images = [];
+        this.scrollToImageIndex(this.state.images.length - 1);          
+      });  
+    } else {
+      this.openCamera(true);
     }
   }
   
@@ -50,10 +58,13 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
         extraData: !this.state.extraData
       })
     }
+    if (!images.length) {
+      this.openCamera(true);
+    }
   } 
 
-  openCamera = () => {
-    this.props.navigation.navigate('CameraScreen', {images: this.state.images});
+  openCamera = (replace: boolean) => {
+    this.props.navigation.replace('CameraScreen', {images: this.state.images});
   }
 
   onCheck = () => {
@@ -61,18 +72,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   }
 
   onBackFromCamera = () => {
-    if (this.props.navigation.state.params && this.props.navigation.state.params.image) {
-      const images = this.state.images;
-      images.push(this.props.navigation.state.params.image);
-      this.setState({
-        extraData: !this.state.extraData
-      }, () => {
-        this.props.navigation.state.params.image = null;
-        setTimeout(() => {
-          this.scrollToImageIndex(this.state.images.length - 1);          
-        }, 100);
-      });  
-    }
+    
   }
 
   setListRef = (imageListRef: any) => {
@@ -80,9 +80,11 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   }
 
   scrollToImageIndex = (index: number) => {
-    this.imageListRef && this.imageListRef.scrollToIndex({ index, animated: true })
+    setTimeout(() => {
+      this.imageListRef && this.imageListRef.scrollToIndex({ index, animated: true })
+    }, 1000)
   }
- 
+
   render() {
     return (
       <View style={styles.container}>
@@ -94,7 +96,8 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
             renderItem={({ item }) => <Image style={styles.image} source={{uri: item.uri}}/>}
             keyExtractor={(item: any) => item.uri}
             showsVerticalScrollIndicator={false}
-            extraData={this.state.extraData} />
+            extraData={this.state.extraData}  
+            onScrollToIndexFailed ={() => {}} />
         </View>
         <View style={styles.options}>
           <View style={[styles.flex, styles.option, styles.alignLeft]}>
@@ -109,10 +112,11 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
           <View style={[styles.flex, styles.option]}>
             <TouchableOpacity onPress={this.openCamera} activeOpacity={0.8}>
               <Icon
-                name='camera'
-                type='feather'
-                color={colors.WHITE}
-                containerStyle={[styles.icon, styles.blueBackground]}/>  
+              name='camera-enhance'
+              type='material'
+              size={30}
+              color={colors.WHITE}
+              containerStyle={[styles.icon, styles.blueBackground]}/>  
             </TouchableOpacity>
           </View>
           <View style={[styles.flex, styles.option, styles.alignRight]}>

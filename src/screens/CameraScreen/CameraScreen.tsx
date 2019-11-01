@@ -54,8 +54,10 @@ class CameraScreen extends React.Component<IProps, IState> {
         this.camera.pausePreview();
       });
       this.camera.resumePreview();
-      this.props.navigation.navigate('CustomCameraScreen', {
-        image
+      const { images } = this.props.navigation.state.params
+      images.push(image);
+      this.props.navigation.replace('CustomCameraScreen', {
+        images
       });
     }
   };
@@ -63,9 +65,9 @@ class CameraScreen extends React.Component<IProps, IState> {
   close = async () => {
     const { images } = this.props.navigation.state.params;
     if (images.length) {
-      this.props.navigation.navigate('CustomCameraScreen');
+      this.props.navigation.replace('CustomCameraScreen');
     } else {
-
+      this.props.navigation.goBack(null);
     }
   }
 
