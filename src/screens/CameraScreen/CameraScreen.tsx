@@ -9,6 +9,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from '
 import { connect } from "react-redux";
 import { FlatList } from 'react-native-gesture-handler';
 import FullWidthImage from 'react-native-fullwidth-image';
+import { NavigationEvents } from 'react-navigation';
 
 // props
 interface ParamType {
@@ -41,10 +42,24 @@ class CameraScreen extends React.Component<IProps, IState> {
     };
   }
 
-  async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+  onDidFocus = () => {
+    this._requestCameraPermission();
   }
+
+  onDidBlur = () => {
+    this.setState({
+      hasCameraPermission: null,
+      flash: false,
+      front: false,
+    })
+  }
+
+  _requestCameraPermission = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({
+        hasCameraPermission: status === 'granted',
+    });
+  };
 
   snap = async () => {
     if (this.camera) {
@@ -74,78 +89,75 @@ class CameraScreen extends React.Component<IProps, IState> {
   render() {
     const { hasCameraPermission } = this.state;
     const { images } = this.props.navigation.state.params;
-    if (hasCameraPermission === null) {
-      return <View />;
-    } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    } else {
-      return (
-        <View style={styles.horizontalFlex}>
-          <View style={styles.optionsContainer}>
-            <View style={[styles.option]}>
-              <TouchableOpacity onPress={() => this.setState({flash: !this.state.flash})} activeOpacity={0.85}>
-                <Icon
-                    name={this.state.flash ? 'zap' : 'zap-off'}
-                    type='feather'
-                    color={colors.WHITE}
-                    size={16}
-                    containerStyle={styles.optionIcon}/>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.option]}>
-                <TouchableOpacity onPress={() => this.setState({front: !this.state.front})} activeOpacity={0.8}>
+    return <View style={styles.container}>
+      <NavigationEvents onDidFocus={this.onDidFocus} onDidBlur={this.onDidBlur}/>
+      { hasCameraPermission ?      
+          <View style={styles.horizontalFlex}>
+            <View style={styles.optionsContainer}>
+              <View style={[styles.option]}>
+                <TouchableOpacity onPress={() => this.setState({flash: !this.state.flash})} activeOpacity={0.85}>
                   <Icon
-                    name='refresh-cw'
+                      name={this.state.flash ? 'zap' : 'zap-off'}
+                      type='feather'
+                      color={colors.WHITE}
+                      size={16}
+                      containerStyle={styles.optionIcon}/>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.option]}>
+                  <TouchableOpacity onPress={() => this.setState({front: !this.state.front})} activeOpacity={0.8}>
+                    <Icon
+                      name='refresh-cw'
+                      type='feather'
+                      color={colors.WHITE}
+                      size={16}
+                      containerStyle={styles.optionIcon}/>
+                  </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.flex}>
+              { images.length ?
+                <View style={styles.imageList}>
+                  <FlatList
+                    data={images}
+                    renderItem={({ item }) => <FullWidthImage source={{uri: item.uri}}/>}
+                    keyExtractor={(item: any) => item.uri}
+                    showsVerticalScrollIndicator={false}
+                    initialScrollIndex={images.length - 1} />
+                </View> : null }
+              <Camera style={styles.flex}
+                type={this.state.front ? Camera.Constants.Type.front : Camera.Constants.Type.back}
+                flashMode={this.state.flash ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off}
+                ref={ref => {
+                  this.camera = ref;
+                }}>
+              </Camera>
+            </View>
+            <View style={styles.optionsContainer}></View>
+            <View style={styles.bottomControl}>
+              <View style={styles.flex}></View>
+              <View style={[styles.flex, styles.bottomControlOption]}>
+                <TouchableOpacity onPress={this.snap} activeOpacity={0.8}>
+                  <Icon
+                    name='camera'
                     type='feather'
                     color={colors.WHITE}
-                    size={16}
-                    containerStyle={styles.optionIcon}/>
+                    containerStyle={[styles.icon, styles.blueBackground]}/>
                 </TouchableOpacity>
+              </View>
+              <View style={[styles.flex, styles.bottomControlOption, styles.alignItemsRight]}>
+                <TouchableOpacity onPress={this.close} activeOpacity={0.8}>
+                  <Icon
+                    name='x'
+                    type='feather'
+                    color={colors.WHITE}
+                    containerStyle={[styles.icon]}/>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          <View style={styles.flex}>
-            { images.length ?
-              <View style={styles.imageList}>
-                <FlatList
-                  data={images}
-                  renderItem={({ item }) => <FullWidthImage source={{uri: item.uri}}/>}
-                  keyExtractor={(item: any) => item.uri}
-                  showsVerticalScrollIndicator={false}
-                  initialScrollIndex={images.length - 1} />
-              </View> : null }
-            <Camera style={styles.flex}
-              type={this.state.front ? Camera.Constants.Type.front : Camera.Constants.Type.back}
-              flashMode={this.state.flash ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off}
-              ref={ref => {
-                this.camera = ref;
-              }}>
-            </Camera>
-          </View>
-          <View style={styles.optionsContainer}></View>
-          <View style={styles.bottomControl}>
-            <View style={styles.flex}></View>
-            <View style={[styles.flex, styles.bottomControlOption]}>
-              <TouchableOpacity onPress={this.snap} activeOpacity={0.8}>
-                <Icon
-                  name='camera'
-                  type='feather'
-                  color={colors.WHITE}
-                  containerStyle={[styles.icon, styles.blueBackground]}/>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.flex, styles.bottomControlOption, styles.alignItemsRight]}>
-              <TouchableOpacity onPress={this.close} activeOpacity={0.8}>
-                <Icon
-                  name='x'
-                  type='feather'
-                  color={colors.WHITE}
-                  containerStyle={[styles.icon]}/>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      );
-    }
+          </View> : <Text>No access to camera</Text>
+      }
+    </View>
   }
 }
 
@@ -190,8 +202,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BLACK,
     width: 50,
     alignItems: 'center',
-    marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   blueBackground: {
     backgroundColor: colors.BLUE,
