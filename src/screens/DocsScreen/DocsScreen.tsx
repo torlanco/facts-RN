@@ -73,7 +73,7 @@ class DocsScreen extends React.Component<IProps, IState> {
   }
 
   openCustomCameraScreen = () => {
-    this.props.navigation.navigate('CustomCameraScreen');
+    this.props.navigation.navigate('CameraScreen', {images: []});
   }
 
   public render() {

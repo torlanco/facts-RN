@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StatusBar, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, StyleSheet, BackHandler } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import { Platform } from '@unimodules/core';
@@ -80,10 +80,18 @@ class CameraScreen extends React.Component<IProps, IState> {
   close = async () => {
     const { images } = this.props.navigation.state.params;
     if (images.length) {
-      this.props.navigation.replace('CustomCameraScreen');
+      this.props.navigation.replace('CustomCameraScreen', {images});
     } else {
       this.props.navigation.goBack(null);
     }
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.close);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.close);
   }
 
   render() {

@@ -41,8 +41,8 @@ const mapStateToProps = function(state: any){
 
 class CustomCameraScreen extends React.Component<IProps, IState> {
   camera: any;
-  imageListRef: any;
-
+  arr: [] = [];
+  
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -83,7 +83,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   }
 
   onCheck = () => {
-    captureRef(this.refs.viewRef, {
+    captureRef(this.refs.scrollView, {
       quality: 0.8, 
       snapshotContentContainer: true
     }).then(async (uri: any) => {
@@ -96,25 +96,34 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
     })
   }
 
-  setListRef = (imageListRef: any) => {
-    this.imageListRef = imageListRef;
-  }
+  // setListRef = (imageListRef: any) => {
+  //   this.imageListRef = imageListRef;
+  // }
 
   scrollToImageIndex = (index: number) => {
     setTimeout(() => {
-      this.imageListRef && this.imageListRef.scrollToIndex({ index, animated: true })
+      this.refs.scrollView && this.refs.scrollView.scrollTo({
+        x: 0,
+        y: this.arr[index],
+        animated: true,
+      });
     }, 1000)
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView collapsable={false} contentContainerStyle={{}} ref="viewRef">
-          <View>
-          {
-            this.state.images.map((item) => <Image style={styles.image} key={item.uri} source={{uri: item.uri}}/>)
+        <ScrollView collapsable={false} ref="scrollView" pagingEnabled>
+          { 
+            this.state.images.map((item, index) => 
+              <View key={item.uri}
+                onLayout={event => {
+                  const layout = event.nativeEvent.layout;
+                  this.arr[index] = layout.y;
+                }}>
+                <Image style={styles.image} source={{uri: item.uri}}/>
+              </View>)
           }
-          </View>
         </ScrollView>
         <View style={styles.options}>
           <View style={[styles.flex, styles.option, styles.alignLeft]}>
