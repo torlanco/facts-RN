@@ -11,7 +11,8 @@ import {
   outlet,
   shopper,
   advertisement,
-  user
+  user,
+  doc
 } from '../reducers';
 
 const blacklist = ['online'];
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   shopper,
   advertisement,
   user,
+  doc
 });
 
 const middleware = [thunk];

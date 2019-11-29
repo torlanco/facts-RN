@@ -2,25 +2,25 @@ import HTTP from '../http';
 import { IAdvertisement } from '@interfaces/advertisement';
 
 export const fetchAdvertisements = (shopperId?: string) => {
-    return HTTP.get('https://facts-cloud.herokuapp.com/features?shopperId=' + shopperId);
+    return HTTP.get('features?shopperId=' + shopperId);
 };
 
 export const fetchCategoriesForReview = () => {
-    return HTTP.get('https://facts-cloud.herokuapp.com/categories/review');
+    return HTTP.get('categories/review');
 };
 
 export const fetchAdvertisementsForReview = (category: string, page: number, limit: number) => {
-    return HTTP.get(`https://facts-cloud.herokuapp.com/features/pending-review?page=${page}&limit=${limit}&category=${category}`);
+    return HTTP.get(`features/pending-review?page=${page}&limit=${limit}&category=${category}`);
 };
 
 export const updateAdvertisementsForReview = (advertisement: IAdvertisement.IAdvertisementData) => {
-    return HTTP.put(`https://facts-cloud.herokuapp.com/features/${advertisement.id}`, advertisement);
+    return HTTP.put(`features/${advertisement.id}`, advertisement);
 };
 
 export const fetchBrands = (value?: string) => {
-    return HTTP.get('http://facts-cloud.herokuapp.com/brands/search?term=' + value);
+    return HTTP.get('brands/search?term=' + value);
 };
 
 export const fetchFeaturesByBrand = (brand?: string) => {
-    return HTTP.get('http://facts-cloud.herokuapp.com/features/' + brand);
+    return HTTP.get('features/' + brand);
 };

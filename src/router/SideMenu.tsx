@@ -30,7 +30,7 @@ const data = [
   { iconName: 'book', title: 'Outlet', routeName: 'Outlet' },
   { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
   { iconName: 'book', title: 'Features', routeName: 'Features' },
-  { iconName: 'camera', title: 'Camera', routeName: 'Camera' },
+  { iconName: 'file', title: 'Docs', routeName: 'Docs' },
 ];
 
 const mapStateToProps = function(state: any) {

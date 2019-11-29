@@ -5,8 +5,12 @@ import { Platform } from '@unimodules/core';
 import { colors } from '@styles';
 import { Icon } from 'react-native-elements';
 import { NavigationInjectedProps, NavigationState, NavigationScreenProp } from 'react-navigation';
-import FullWidthImage from 'react-native-fullwidth-image';
-import {NavigationEvents} from 'react-navigation';
+import ViewShot from "react-native-view-shot";
+import { IDoc } from '@interfaces/doc';
+import { mapDispatchToProps } from '@actions/doc';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+import { captureRef } from "react-native-view-shot";
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface ParamType {
   images: any[];
@@ -15,15 +19,26 @@ interface StateParams extends NavigationState {
   params: ParamType;
 }
 interface IOwnProps {
-  navigation: NavigationScreenProp<StateParams>
+  navigation: NavigationScreenProp<StateParams>,
+  token: string,
+  loading: boolean
 }
 type IProps = IOwnProps & 
-  NavigationInjectedProps;
+  NavigationInjectedProps &
+  IDoc.DispatchFromProps;
 
 interface IState {
   images: any[];
   extraData: boolean;
 }
+
+const mapStateToProps = function(state: any){
+  return {
+    token: state.user.token,
+    loading: state.doc.loading
+  }
+};
+
 class CustomCameraScreen extends React.Component<IProps, IState> {
   camera: any;
   imageListRef: any;
@@ -68,7 +83,17 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   }
 
   onCheck = () => {
-
+    captureRef(this.refs.viewRef, {
+      quality: 0.8, 
+      snapshotContentContainer: true
+    }).then(async (uri: any) => {
+      // uri = Platform.OS === "android" ? uri : uri.replace("file:/", "")
+      let response: any = await this.props.uploadDoc(this.props.token, uri); 
+      if (response && response.path) {
+        response = await this.props.saveReceipt(this.props.token, response.path);
+        this.props.navigation.goBack();
+      }
+    })
   }
 
   setListRef = (imageListRef: any) => {
@@ -84,16 +109,13 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.flex}>
-          <FlatList
-            ref={this.setListRef}
-            data={this.state.images}
-            renderItem={({ item }) => <Image style={styles.image} source={{uri: item.uri}}/>}
-            keyExtractor={(item: any) => item.uri}
-            showsVerticalScrollIndicator={false}
-            extraData={this.state.extraData}  
-            onScrollToIndexFailed ={() => {}} />
-        </View>
+        <ScrollView collapsable={false} contentContainerStyle={{}} ref="viewRef">
+          <View>
+          {
+            this.state.images.map((item) => <Image style={styles.image} key={item.uri} source={{uri: item.uri}}/>)
+          }
+          </View>
+        </ScrollView>
         <View style={styles.options}>
           <View style={[styles.flex, styles.option, styles.alignLeft]}>
             <TouchableOpacity onPress={this.onBack} activeOpacity={0.85}>
@@ -134,6 +156,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
             showsVerticalScrollIndicator={false}
             extraData={this.state.extraData} />  
         </View>
+        {this.props.loading && <LoadingScreen />}
       </View>
     );
   }
@@ -194,5 +217,5 @@ const styles = StyleSheet.create({
   }
 });
 
-const CustomCameraScreenWrapper = connect(null, null)(CustomCameraScreen);
+const CustomCameraScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(CustomCameraScreen);
 export { CustomCameraScreenWrapper as CustomCameraScreen }

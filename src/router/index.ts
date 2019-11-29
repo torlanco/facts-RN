@@ -18,7 +18,9 @@ import {
   AutoSuggestScreen,
   FeaturesScreen,
   CameraScreen,
-  CustomCameraScreen
+  CustomCameraScreen,
+  DocsScreen,
+  FullImageScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -90,13 +92,15 @@ const FeaturesNavigator = createStackNavigator(
     }
 )
 
-const CameraNavigator = createStackNavigator(
+const DocsNavigator = createStackNavigator(
     {
+        DocsScreen: {screen: DocsScreen},
         CustomCameraScreen: {screen: CustomCameraScreen},
         CameraScreen: {screen: CameraScreen},
+        FullImageScreen: {screen: FullImageScreen}
     },
     {
-        initialRouteName: 'CustomCameraScreen',
+        initialRouteName: 'DocsScreen',
         defaultNavigationOptions: {
             headerLeft: null,
             headerBackTitle: null,
@@ -116,7 +120,7 @@ const MainNavigator = createDrawerNavigator(
       Outlet: { screen: OutletNavigator },
       Work: { screen: WorkNavigator },
       Features: {screen: FeaturesNavigator},
-      Camera: { screen: CameraNavigator },
+      Docs: { screen: DocsNavigator },
     },
     {
       contentComponent: SideMenu,
