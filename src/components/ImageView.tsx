@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ImageView from 'react-native-image-view';
-import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions, BackHandler } from 'react-native';
 import { colors } from '@styles';
 import { Icon } from 'react-native-elements';
 
@@ -8,6 +8,7 @@ interface IImageViewProps {
     image: any;
     height?: number;
     allowFullMode?: boolean;
+    hasFullWidth?: boolean;
 }
 
 type IProps = IImageViewProps;
@@ -32,6 +33,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
     }
     componentDidMount() {
         this._isMounted = true;
+        BackHandler.addEventListener('hardwareBackPress', this.close);
         if (this.props.image) {
             Image.getSize(this.props.image, (width: number, height: number) => {
                 this.setState({ 
@@ -44,6 +46,13 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
 
     componentWillUnmount() {
         this._isMounted = false;
+        BackHandler.removeEventListener('hardwareBackPress', this.close);
+    }
+
+    close = () => {
+        this.setState({
+            isVisible: false
+        })
     }
 
     showFullScreenImage = () => {
@@ -84,7 +93,8 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
                         controls={{close: null}}
                         renderFooter={(currentImage: any) => (this._renderFooter())}/>
 
-                    <Image style={[styles.image, { height: imageHeight }]} source={ this.state.image } resizeMode={this.state.resizeMode}/>
+                    <Image style={[styles.image, { height: imageHeight }]} source={ this.state.image } 
+                        resizeMode={this.props.hasFullWidth ? undefined : this.state.resizeMode}/>
                 </View>
             </TouchableOpacity>
         );

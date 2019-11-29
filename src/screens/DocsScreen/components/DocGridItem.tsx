@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { colors, typos } from '@styles';
 import FullWidthImage from 'react-native-fullwidth-image';
+import { ImageView } from '@components';
 
 interface IOwnProps {
   doc: any,
@@ -50,7 +51,7 @@ class DocGridItem extends React.Component<IProps, IState> {
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <View style={[styles.container, {width: itemWidth}]}>
           { this.state.featureImage == this.props.doc.item.path ?
-          <Image style={[styles.image, { height: 200 }]} source={{ uri: this.state.featureImage }} /> : 
+          <ImageView image={this.props.doc.item.path} height={200} allowFullMode={true} hasFullWidth={true}/> : 
           <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
         </View>
       </TouchableOpacity>
