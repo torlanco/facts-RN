@@ -66,7 +66,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
     }
 
     _renderFooter = () => {
-        return  <TouchableOpacity activeOpacity={1} style={styles.closeIconTouchable}
+        return  <TouchableOpacity style={styles.closeIconTouchable}
                     onPress={() => {this.setState({isVisible: false})}} >
                     <Icon
                         name='x'

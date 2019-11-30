@@ -9,7 +9,6 @@ import ViewShot from "react-native-view-shot";
 import { IDoc } from '@interfaces/doc';
 import { mapDispatchToProps } from '@actions/doc';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
-import { captureRef } from "react-native-view-shot";
 import { ScrollView } from 'react-native-gesture-handler';
 
 interface ParamType {
@@ -29,7 +28,9 @@ type IProps = IOwnProps &
 
 interface IState {
   images: any[];
+  image: any;
   extraData: boolean;
+  loading: boolean;
 }
 
 const mapStateToProps = function(state: any){
@@ -41,13 +42,15 @@ const mapStateToProps = function(state: any){
 
 class CustomCameraScreen extends React.Component<IProps, IState> {
   camera: any;
-  arr: [] = [];
+  arr: any[] = [];
   
   constructor(props: IProps) {
     super(props);
     this.state = {
       images: [],
-      extraData: false
+      image: null,
+      extraData: false,
+      loading: false
     }
   }
 
@@ -61,7 +64,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
         this.scrollToImageIndex(this.state.images.length - 1);          
       });  
     } else {
-      this.openCamera(true);
+      this.openCamera();
     }
   }
   
@@ -74,17 +77,17 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
       })
     }
     if (!images.length) {
-      this.openCamera(true);
+      this.openCamera();
     }
   } 
 
-  openCamera = (replace: boolean) => {
+  openCamera = () => {
     this.props.navigation.replace('CameraScreen', {images: this.state.images});
   }
 
   onCheck = () => {
-    captureRef(this.refs.scrollView, {
-      quality: 0.8, 
+    this.setLoading(true);
+    this.refs.viewShot.capture({
       snapshotContentContainer: true
     }).then(async (uri: any) => {
       // uri = Platform.OS === "android" ? uri : uri.replace("file:/", "")
@@ -93,12 +96,18 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
         response = await this.props.saveReceipt(this.props.token, response.path);
         this.props.navigation.goBack();
       }
-    })
+      this.setLoading(false);        
+    }).catch((err: any) => {
+      this.setLoading(false);
+      console.log(err);
+    });
   }
 
-  // setListRef = (imageListRef: any) => {
-  //   this.imageListRef = imageListRef;
-  // }
+  setLoading = (loading: boolean) => {
+    this.setState({
+      loading: loading
+    });
+  }
 
   scrollToImageIndex = (index: number) => {
     setTimeout(() => {
@@ -110,12 +119,28 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
     }, 1000)
   }
 
+  onClose = () => {
+    this.props.navigation.goBack();
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView collapsable={false} ref="scrollView" pagingEnabled>
+      <View style={styles.container}>   
+        <View style={styles.rightOptions}>
+          <View style={[styles.option, styles.alignRight]}>
+            <TouchableOpacity onPress={this.onClose}>
+              <Icon
+                name='x'
+                type='feather'
+                color={colors.WHITE}
+                containerStyle={styles.icon}/>    
+            </TouchableOpacity>  
+          </View>
+        </View>
+        <ScrollView collapsable={false} ref="scrollView" pagingEnabled showsVerticalScrollIndicator={false}>
+          <ViewShot ref="viewShot">
           { 
-            this.state.images.map((item, index) => 
+            !this.state.image && this.state.images.map((item, index) => 
               <View key={item.uri}
                 onLayout={event => {
                   const layout = event.nativeEvent.layout;
@@ -124,10 +149,11 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
                 <Image style={styles.image} source={{uri: item.uri}}/>
               </View>)
           }
+          </ViewShot>
         </ScrollView>
         <View style={styles.options}>
           <View style={[styles.flex, styles.option, styles.alignLeft]}>
-            <TouchableOpacity onPress={this.onBack} activeOpacity={0.85}>
+            <TouchableOpacity onPress={this.onBack}>
               <Icon
                 name='arrow-left'
                 type='feather'
@@ -136,7 +162,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
             </TouchableOpacity>
           </View>
           <View style={[styles.flex, styles.option]}>
-            <TouchableOpacity onPress={this.openCamera} activeOpacity={0.8}>
+            <TouchableOpacity onPress={this.openCamera}>
               <Icon
               name='camera-enhance'
               type='material'
@@ -146,7 +172,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
             </TouchableOpacity>
           </View>
           <View style={[styles.flex, styles.option, styles.alignRight]}>
-            <TouchableOpacity onPress={this.onCheck} activeOpacity={0.8}>
+            <TouchableOpacity onPress={this.onCheck}>
               <Icon
                 name='check'
                 type='feather'
@@ -165,7 +191,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
             showsVerticalScrollIndicator={false}
             extraData={this.state.extraData} />  
         </View>
-        {this.props.loading && <LoadingScreen />}
+        {this.state.loading || this.props.loading ? <LoadingScreen /> : null}
       </View>
     );
   }
@@ -185,6 +211,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center'
   },
+  rightOptions: {
+    position: "absolute",
+    top: 10, right: 0,
+    flexDirection: 'row', 
+    paddingVertical: 20,
+    elevation: 2,
+    zIndex: 5,
+  },
   options: {
     position: "absolute",
     bottom: 20,
@@ -192,6 +226,7 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row', 
     paddingVertical: 20,
+    elevation: 2
   },
   option: {
     alignItems: 'center'

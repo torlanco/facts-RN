@@ -20,6 +20,7 @@ import {
   CameraScreen,
   CustomCameraScreen,
   DocsScreen,
+  FullImageScreen,
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -96,6 +97,7 @@ const DocsNavigator = createStackNavigator(
         DocsScreen: {screen: DocsScreen},
         CustomCameraScreen: {screen: CustomCameraScreen},
         CameraScreen: {screen: CameraScreen},
+        FullImageScreen: {screen: FullImageScreen}
     },
     {
         initialRouteName: 'DocsScreen',

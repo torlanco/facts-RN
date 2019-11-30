@@ -103,7 +103,7 @@ class CameraScreen extends React.Component<IProps, IState> {
           <View style={styles.horizontalFlex}>
             <View style={styles.optionsContainer}>
               <View style={[styles.option]}>
-                <TouchableOpacity onPress={() => this.setState({flash: !this.state.flash})} activeOpacity={0.85}>
+                <TouchableOpacity onPress={() => this.setState({flash: !this.state.flash})}>
                   <Icon
                       name={this.state.flash ? 'zap' : 'zap-off'}
                       type='feather'
@@ -113,7 +113,7 @@ class CameraScreen extends React.Component<IProps, IState> {
                 </TouchableOpacity>
               </View>
               <View style={[styles.option]}>
-                  <TouchableOpacity onPress={() => this.setState({front: !this.state.front})} activeOpacity={0.8}>
+                  <TouchableOpacity onPress={() => this.setState({front: !this.state.front})}>
                     <Icon
                       name='refresh-cw'
                       type='feather'
@@ -145,7 +145,7 @@ class CameraScreen extends React.Component<IProps, IState> {
             <View style={styles.bottomControl}>
               <View style={styles.flex}></View>
               <View style={[styles.flex, styles.bottomControlOption]}>
-                <TouchableOpacity onPress={this.snap} activeOpacity={0.8}>
+                <TouchableOpacity onPress={this.snap}>
                   <Icon
                     name='camera'
                     type='feather'
@@ -154,7 +154,7 @@ class CameraScreen extends React.Component<IProps, IState> {
                 </TouchableOpacity>
               </View>
               <View style={[styles.flex, styles.bottomControlOption, styles.alignItemsRight]}>
-                <TouchableOpacity onPress={this.close} activeOpacity={0.8}>
+                <TouchableOpacity onPress={this.close}>
                   <Icon
                     name='x'
                     type='feather'
@@ -163,7 +163,12 @@ class CameraScreen extends React.Component<IProps, IState> {
                 </TouchableOpacity>
               </View>
             </View>
-          </View> : <Text>No access to camera</Text>
+          </View> : <View style={styles.nullContainer}>
+            {
+              this.state.hasCameraPermission === false ? 
+                <Text style={{color: colors.WHITE}}>No access to camera</Text> : null
+            }
+          </View>
       }
     </View>
   }
@@ -225,6 +230,12 @@ const styles = StyleSheet.create({
   },
   imageList: {
     height: '25%',
+  },
+  nullContainer: {
+    flex: 1,
+    backgroundColor: colors.BLACK, 
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
 
