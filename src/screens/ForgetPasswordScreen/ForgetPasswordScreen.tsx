@@ -15,12 +15,19 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
-import { validate } from '@utils';
-import { CheckBox } from 'react-native-elements';
+import { validate, CONSTANTS } from '@utils';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { PermissionsAndroid } from "react-native";
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 
-// props
+interface ParamType {
+  type?: string;
+}
+interface StateParams extends NavigationState {
+  params: ParamType;
+}
 interface IOwnProps {
-  navigation: NavigationScreenProp<NavigationState>;
+  navigation: NavigationScreenProp<StateParams>;
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -30,8 +37,11 @@ type IProps = IOwnProps &
 // state
 interface IState {
   username: string;
+  otpRequested: boolean;
+  otp: string;
   // Errors
-  usernameError: string
+  usernameError: string,
+  otpError: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -42,14 +52,18 @@ const mapStateToProps = function(state: any) {
 
 class ForgetPasswordScreen extends React.Component<IProps, IState> {
   _isMounted = false;
+  _subscription: any;
 
   constructor(props: IProps) {
     super(props);
 
     this.state = {
-        username: '',   
-        // Errors
-        usernameError: '',
+      username: '',  
+      otpRequested: false, 
+      otp: '',
+      // Errors
+      usernameError: '',
+      otpError: '',
     };
   }
 
@@ -58,29 +72,47 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
   }
 
   validate = async () => {
-    await this.setAsyncState({
-      usernameError: validate('required', this.state.username, 'Username'),
-    });
-    return !this.state.usernameError;
+    const { type } = this.props.navigation.state.params;
+    const state: any = {};
+    state.usernameError = type ? validate('required',  this.state.username, 'Username') : validate('phone', this.state.username);
+    if (this.state.otpRequested) {
+      state.otpError = validate('required', this.state.otp, 'Otp');
+    }
+    await this.setAsyncState(state);
+    return !(this.state.usernameError || this.state.otpError);
   }
 
-
   onSubmit = async () => {
+    const { type } = this.props.navigation.state.params;
     if (!(await this.validate())) {
       return;
     }
-    const repsonse: any = await this.props.forgotPassword(this.state.username);
-    if (repsonse.success) {
-      this.redirectToLogin();
+    if (type) {
+      const repsonse: any = await this.props.forgotPassword(this.state.username);
+      //@Mohit Get otp from mail and do the functioning when its is done.
+    } else if (this.state.otpRequested) {
+      const repsonse: any = await this.props.verifyResetPasswordOtp(this.state.username, this.state.otp);
+      if (repsonse.success) {
+        this.redirectToResetPassword("");
+      }      
+    } else {
+      this.requestOtp();
     }
   }
 
-  redirectToLogin = () => {
-    this.props.navigation.goBack();
+  requestOtp = async () => {
+    if (!this.state.otpRequested) {
+      this.setState({otpRequested: true});
+    }
+    const repsonse: any = await this.props.requestResetPasswordOtp(this.state.username);
   }
 
+  redirectToResetPassword = (token: string) => {
+    this.props.navigation.replace('ResetPasswordScreen', {token});
+  }
 
   public render() {
+    const { type } = this.props.navigation.state.params;
     return (
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
@@ -90,9 +122,13 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
                 <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
             </View>
             <Text style={styles.heading}>Forgot your password?</Text>
-            <Text style={[styles.heading, styles.note]}>Enter your email address to reset your password. You may need to check your spam folder or unblock no-reply@factscloud.com.</Text>
-            <Text style={styles.label}>Username</Text>
+            <Text style={[styles.heading, styles.note]}>{type ? CONSTANTS.FORGOT_PASSWORD_WITH_EMAIL_TEXT : CONSTANTS.FORGOT_PASSWORD_WITH_OTP_TEXT}</Text>
+            
+            <Text style={[styles.label]}>{type ? 'Username': 'Phone'}</Text>
             <TextField
+                nonEditable={this.state.otpRequested}
+                keyboardType={type ? "default" : "numeric"}
+                textContentType="oneTimeCode"
                 onChangeText={(value: any) => {
                   this.setState({
                     username: value
@@ -100,10 +136,48 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
                 }}
                 onBlur={() => {
                   this.setState({
-                    usernameError: validate('required', this.state.username, 'Username')
+                    usernameError: type ? validate('required',  this.state.username, 'Username') : validate('phone', this.state.username)
                   })
                 }}
                 error={this.state.usernameError}/>
+            {
+              this.state.otpRequested && 
+              <View>
+                <Text style={styles.label}>OTP</Text>
+                {/* <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      otp: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      otpError: validate('required', this.state.otp, 'Otp')
+                    })
+                  }}
+                  error={this.state.otpError}/> */}
+                <OTPInputView
+                    style={{width: '100%', height: 50}}
+                    pinCount={4}
+                    autoFocusOnLoad
+                    codeInputFieldStyle={styles.underlineStyleBase}
+                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                    onCodeFilled={(code) => {
+                      this.setState({
+                        otp: code
+                      })
+                    }}/>
+                <View style={styles.row}>
+                  <View style={styles.flex}/>
+                  <TouchableOpacity onPress={() => {this.setState({otpRequested: false})}}>
+                    <Text style={[styles.label, styles.link]}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.requestOtp}>
+                    <Text style={[styles.label, styles.link]}>Resend</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>    
+            }
               
             <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} style={styles.buttonStyle}/>
           </View>
@@ -184,6 +258,22 @@ const styles = StyleSheet.create({
     ...typos.PRIMARY,
     color: colors.TEXT_NOTE,
     fontWeight: 'normal'
+  },
+  link: {
+    color: colors.LIGHT_ORANGE,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: colors.LIGHT_ORANGE,
+    marginLeft: 20,
+  },
+  underlineStyleBase: {
+    width: 30,
+    height: 45,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+  },
+  underlineStyleHighLighted: {
+    borderColor: "#03DAC6",
   },
 });
 

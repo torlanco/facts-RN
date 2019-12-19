@@ -111,7 +111,7 @@ class LoginScreen extends React.Component<IProps, IState> {
   }
 
   onForgetPassword = () => {
-    this.props.navigation.navigate('ForgetPasswordScreen');  
+    this.props.navigation.navigate('ForgetPasswordScreen', {});  
   }
 
   onRegister = () => {
@@ -168,12 +168,12 @@ class LoginScreen extends React.Component<IProps, IState> {
             <CheckBox title='Show password' 
               containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
               checked={this.state.showPassword} onPress={this.onRememberMeChange}/>
-            {/* <TouchableOpacity onPress={this.onForgetPassword} activeOpacity={.9}>
+            <TouchableOpacity onPress={this.onForgetPassword}>
               <Text style={[styles.label, styles.link]}>Forgot Password</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
           <ActionButton title="Sign in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
-          <TouchableOpacity onPress={this.onRegister} activeOpacity={.9}>
+          <TouchableOpacity onPress={this.onRegister}>
             <Text style={[styles.label, styles.signup]}>Not an existing user? <Text style={styles.link}>Signup here</Text></Text>
           </TouchableOpacity>
         </View> : null }

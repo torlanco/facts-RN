@@ -1,3 +1,5 @@
+import validator from 'validator';
+
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -23,6 +25,11 @@ export const isValidEmail = (email: string) => {
     return regex.test(String(email).toLowerCase());
 }
 
+export const isValidPhone = (phone: string) => {
+    let regex = /^([7-9][0-9]{9})$/;
+    return regex.test(String(phone));
+}
+
 export const validate = (type: string, value: any, field?: string) => {
     let error = '';
     switch(type) {
@@ -36,10 +43,15 @@ export const validate = (type: string, value: any, field?: string) => {
                 error = 'Password must be 8 characters long.'
             break;
         
+        case 'phone': 
+            if (!value || !isValidPhone(value)) 
+                error = `Please enter valid phone number.`
+            break;
+
         case 'required': 
             if (!value) 
                 error = `${field} can't be empty.`
-            break;
+            break;    
         
         default: 
             break; 

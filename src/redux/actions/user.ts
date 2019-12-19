@@ -1,6 +1,6 @@
 import { Types } from '@types';
 import { IUser } from '@interfaces/user';
-import { login, register, forgotPassword, resetPassword } from '@services';
+import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp, verifyResetPasswordOtp } from '@services';
 import { AsyncStorage } from 'react-native';
 import { CONSTANTS } from '@utils';
 
@@ -97,6 +97,46 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.REGISTER_FAILED,
+          payload: e.response.data,
+        });
+        return e.response.data;
+      }
+    };
+  },
+  requestResetPasswordOtp: (phone?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.REQUEST_RESET_PASSWORD_OTP,
+      });
+      try {
+        const response =  await requestResetPasswordOtp(phone);
+        dispatch({
+          type: Types.REQUEST_RESET_PASSWORD_OTP_SUCCESS,
+        });
+        return response.data;
+      } catch(e) {
+        dispatch({
+          type: Types.REQUEST_RESET_PASSWORD_OTP_FAILED,
+          payload: e.response.data,
+        });
+        return e.response.data;
+      }
+    };
+  },
+  verifyResetPasswordOtp: (phone?: string, otp?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.VERIFY_RESET_PASSWORD_OTP,
+      });
+      try {
+        const response =  await verifyResetPasswordOtp(phone, otp);
+        dispatch({
+          type: Types.VERIFY_RESET_PASSWORD_OTP_SUCCESS,
+        });
+        return response.data;
+      } catch(e) {
+        dispatch({
+          type: Types.VERIFY_RESET_PASSWORD_OTP_FAILED,
           payload: e.response.data,
         });
         return e.response.data;

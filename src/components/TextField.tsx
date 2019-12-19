@@ -9,6 +9,8 @@ interface IActionButtonProps {
     onChangeText?: Function;
     onBlur?: Function;
     keyboardType?: KeyboardTypeOptions
+    nonEditable?: boolean;
+    textContentType?: any 
 }
 
 type IProps = IActionButtonProps;
@@ -38,15 +40,17 @@ class TextField extends React.Component<IProps, IState> {
     }
     
     render() {
-        const { error, secureTextEntry } = this.props;
+        const { error, secureTextEntry, nonEditable } = this.props;
         return (
             <View style={styles.container}>
                 <TextInput style={[styles.input]}
+                    editable={!nonEditable}
                     onChangeText={this.onChangeText} 
                     onBlur={this.onBlur} 
                     secureTextEntry={secureTextEntry}
                     keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
-                    autoCapitalize={'none'}/>
+                    autoCapitalize={'none'}
+                    textContentType={this.props.textContentType ? this.props.textContentType : "none"}/>
                 { error ? <Text style={styles.error}>{error}</Text> : null }
             </View>
         )    

@@ -7,6 +7,7 @@ export namespace IUser {
         lastName?: string;
         email?: string;
         password?: string;
+        phone?: string;
     }
 
     export interface StateToProps {
@@ -20,9 +21,10 @@ export namespace IUser {
         login(username?: string, password?: string): Function;
         forgotPassword(username?: string): Function;
         resetPassword(token?: string, password?: string, confirmPassword?: string): Function;
+        requestResetPasswordOtp(phone?: string): Function;
+        verifyResetPasswordOtp(phone?: string, otp?: string): Function;
         register(userData: IUser.IUserData): Function;
         logout(): Function;
     }
-
-}
+}   
   

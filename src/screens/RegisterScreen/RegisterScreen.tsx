@@ -36,12 +36,14 @@ interface IState {
   firstName: string,
   lastName: string,
   showPassword: boolean,
+  phone: string,
   // Errors
   userNameError: string,
   emailError: string,
   passwordError: string,
   firstNameError: string,
   lastNameError: string,
+  phoneError: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -63,12 +65,14 @@ class RegisterScreen extends React.Component<IProps, IState> {
       firstName: '',
       lastName: '',
       showPassword: false,
+      phone: '',
       // Errors
       userNameError: '',
       emailError: '',
       passwordError: '',
       firstNameError: '',
       lastNameError: '',
+      phoneError: '',
     };
   }
 
@@ -82,10 +86,11 @@ class RegisterScreen extends React.Component<IProps, IState> {
       emailError: validate('email', this.state.email),
       passwordError: validate('password', this.state.password),
       firstNameError: validate('required', this.state.firstName, 'First name'),
-      lastNameError: validate('required', this.state.lastName, 'Last name')
+      lastNameError: validate('required', this.state.lastName, 'Last name'),
+      phoneError: validate('required', this.state.phone, 'Phone'),
     });
     return !(this.state.userNameError || this.state.emailError || this.state.passwordError 
-      || this.state.firstNameError || this.state.lastNameError);
+      || this.state.firstNameError || this.state.lastNameError || this.state.phoneError);
   }
 
   onSignUp = async () => {
@@ -98,6 +103,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
+      phone: this.state.phone
     }
     const response: any = await this.props.register(userData);
     if (response.success) {
@@ -179,7 +185,22 @@ class RegisterScreen extends React.Component<IProps, IState> {
                   })
                 }}
                 error={this.state.lastNameError}/>
-              
+
+              <Text style={styles.label}>Phone</Text>
+              <TextField
+                keyboardType="number-pad"
+                onChangeText={(value: any) => {
+                  this.setState({
+                    phone: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    phoneError: validate('phone', this.state.phone)
+                  })
+                }}
+                error={this.state.phoneError}/>
+
               <Text style={styles.label}>Password</Text>
               <TextField
                 onChangeText={(value: any) => {
@@ -201,7 +222,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 })}/>
                 
               <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
-              <TouchableOpacity onPress={this.onLogin} activeOpacity={.9}>
+              <TouchableOpacity onPress={this.onLogin}>
                 <Text style={[styles.label, styles.signin]}>Already a user? <Text style={styles.link}> Login here</Text></Text>
               </TouchableOpacity>
             </View>
