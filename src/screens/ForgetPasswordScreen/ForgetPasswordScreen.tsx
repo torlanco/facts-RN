@@ -39,6 +39,7 @@ interface IState {
   username: string;
   otpRequested: boolean;
   otp: string;
+  disableResend: boolean;
   // Errors
   usernameError: string,
   otpError: string,
@@ -61,6 +62,7 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
       username: '',  
       otpRequested: false, 
       otp: '',
+      disableResend: false,
       // Errors
       usernameError: '',
       otpError: '',
@@ -88,12 +90,12 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
       return;
     }
     if (type) {
-      const repsonse: any = await this.props.forgotPassword(this.state.username);
+      const response: any = await this.props.forgotPassword(this.state.username);
       //@Mohit Get otp from mail and do the functioning when its is done.
     } else if (this.state.otpRequested) {
-      const repsonse: any = await this.props.verifyResetPasswordOtp(this.state.username, this.state.otp);
-      if (repsonse.success) {
-        this.redirectToResetPassword("");
+      const token: any = await this.props.verifyResetPasswordOtp(this.state.username, this.state.otp);
+      if (token) {
+        this.redirectToResetPassword(token);
       }      
     } else {
       this.requestOtp();
@@ -101,14 +103,35 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
   }
 
   requestOtp = async () => {
-    if (!this.state.otpRequested) {
-      this.setState({otpRequested: true});
+    this.setState({ otp: '', otpError: '', otpRequested: true })
+    const response: any = await this.props.requestResetPasswordOtp(this.state.username);
+    if (response.success) {
+      this.setState({
+        disableResend: true
+      }, () => {
+        setTimeout(() => {
+          if (this.state.disableResend) {
+            this.setState({
+              disableResend: false
+            });
+          }
+        })
+      })
     }
-    const repsonse: any = await this.props.requestResetPasswordOtp(this.state.username);
   }
 
   redirectToResetPassword = (token: string) => {
     this.props.navigation.replace('ResetPasswordScreen', {token});
+  }
+  
+  onEdit = () => {
+    this.setState({
+      otp: '',
+      otpError: '',
+      usernameError: '',
+      otpRequested: false,
+      disableResend: false
+    })
   }
 
   public render() {
@@ -128,7 +151,6 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
             <TextField
                 nonEditable={this.state.otpRequested}
                 keyboardType={type ? "default" : "numeric"}
-                textContentType="oneTimeCode"
                 onChangeText={(value: any) => {
                   this.setState({
                     username: value
@@ -144,35 +166,20 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
               this.state.otpRequested && 
               <View>
                 <Text style={styles.label}>OTP</Text>
-                {/* <TextField
-                  onChangeText={(value: any) => {
-                    this.setState({
-                      otp: value
-                    })
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      otpError: validate('required', this.state.otp, 'Otp')
-                    })
-                  }}
-                  error={this.state.otpError}/> */}
                 <OTPInputView
                     style={{width: '100%', height: 50}}
                     pinCount={4}
                     autoFocusOnLoad
                     codeInputFieldStyle={styles.underlineStyleBase}
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                    onCodeFilled={(code) => {
-                      this.setState({
-                        otp: code
-                      })
-                    }}/>
+                    code={this.state.otp} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                    onCodeChanged = {code => { this.setState({otp: code})}}/>
                 <View style={styles.row}>
                   <View style={styles.flex}/>
-                  <TouchableOpacity onPress={() => {this.setState({otpRequested: false})}}>
+                  <TouchableOpacity onPress={this.onEdit}>
                     <Text style={[styles.label, styles.link]}>Edit</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={this.requestOtp}>
+                  <TouchableOpacity onPress={this.requestOtp} disabled={this.state.disableResend}>
                     <Text style={[styles.label, styles.link]}>Resend</Text>
                   </TouchableOpacity>
                 </View>

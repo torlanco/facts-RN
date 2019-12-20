@@ -14,13 +14,22 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { CheckBox } from 'react-native-elements';
+import { IUser } from '@interfaces/user';
 
 // props
+interface ParamType {
+  token?: string;
+}
+interface StateParams extends NavigationState {
+  params: ParamType;
+}
 interface IOwnProps {
-  navigation: NavigationScreenProp<NavigationState>;
+  navigation: NavigationScreenProp<StateParams>;
 }
 type IProps = IOwnProps &
-  NavigationInjectedProps;
+  NavigationInjectedProps &
+  IUser.StateToProps &
+  IUser.DispatchFromProps;
 
 // state
 interface IState {
@@ -70,11 +79,15 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
   }
 
 
-  onSignIn = async () => {
+  resetPassword = async () => {
     if (!(await this.validate())) {
       return;
     }
-    this.redirectToLogin();
+    const response: any = this.props.resetPassword(this.props.navigation.state.params.token, 
+      this.state.password, this.state.confirmPassword);
+    if (response) {
+      this.redirectToLogin();
+    }  
   }
 
   redirectToLogin = () => {
@@ -126,14 +139,14 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
                   error={this.state.passwordError}/>
                   
                 <CheckBox title='Show password' 
-                  containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
+                  containerStyle={[styles.checkBoxContainer]} textStyle={styles.checkBoxLabel}
                   checked={this.state.showPassword} onPress={() => this.setState({
                     showPassword: !this.state.showPassword
                   })}/>
               
               </View> : null
             }    
-            <ActionButton title="Submit" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>
+            <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} style={styles.buttonStyle}/>
           </View>
         </View>
         {(this.props.loading)&& <LoadingScreen />}

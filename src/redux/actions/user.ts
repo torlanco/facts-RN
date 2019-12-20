@@ -133,7 +133,7 @@ const IUserAction: IUser.DispatchFromProps = {
         dispatch({
           type: Types.VERIFY_RESET_PASSWORD_OTP_SUCCESS,
         });
-        return response.data;
+        return response.data.token;
       } catch(e) {
         dispatch({
           type: Types.VERIFY_RESET_PASSWORD_OTP_FAILED,
