@@ -51,7 +51,7 @@ export function user(
     case Types.FORGET_PASSWORD_FAILED:
         return {
           ...state,  
-          error: action.payload.message || true,
+          error: true,
           loading: false,
         };
 
@@ -71,7 +71,7 @@ export function user(
     case Types.RESET_PASSWORD_FAILED:
         return {
           ...state,  
-          error: action.payload.message || true,
+          error: true,
           loading: false,
         };    
 

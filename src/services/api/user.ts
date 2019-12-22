@@ -15,10 +15,10 @@ export const forgotPassword = (username?: string) => {
 };
 
 export const resetPassword = (token?: string, password?: string, confirmPassword?: string) => {
-  return HTTP.post('auth/forgot-password', {
-    token: token,
-    password: password,
-    confirmPassword: confirmPassword
+  return HTTP.post('auth/reset-password', {
+    token,
+    password,
+    confirmPassword
   });
 };
 

@@ -93,10 +93,14 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
       const response: any = await this.props.forgotPassword(this.state.username);
       //@Mohit Get otp from mail and do the functioning when its is done.
     } else if (this.state.otpRequested) {
-      const token: any = await this.props.verifyResetPasswordOtp(this.state.username, this.state.otp);
-      if (token) {
-        this.redirectToResetPassword(token);
-      }      
+      const response: any = await this.props.verifyResetPasswordOtp(this.state.username, this.state.otp);
+      if (response.token) {
+        this.redirectToResetPassword(response.token);
+      } else {
+        this.setState({
+          otpError: response.errText
+        })
+      }     
     } else {
       this.requestOtp();
     }
@@ -174,6 +178,7 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
                     code={this.state.otp} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                     onCodeChanged = {code => { this.setState({otp: code})}}/>
+                { this.state.otpError ? <Text style={styles.error}>{this.state.otpError}</Text> : null }
                 <View style={styles.row}>
                   <View style={styles.flex}/>
                   <TouchableOpacity onPress={this.onEdit}>
@@ -281,6 +286,11 @@ const styles = StyleSheet.create({
   },
   underlineStyleHighLighted: {
     borderColor: "#03DAC6",
+  },
+  error: {
+    ...typos.CAPTION,
+    color: colors.ERROR, 
+    marginTop: 3,
   },
 });
 

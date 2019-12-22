@@ -73,7 +73,6 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
     await this.setAsyncState({
       passwordError: validate('password', this.state.password),
       confirmPasswordError: !this.state.confirmPassword || this.state.password != this.state.confirmPassword ? 'Password must be same.' : '',
-
     });
     return !(this.state.passwordError || this.state.confirmPasswordError);
   }
@@ -83,11 +82,16 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
     if (!(await this.validate())) {
       return;
     }
-    const response: any = this.props.resetPassword(this.props.navigation.state.params.token, 
+    const response: any = await this.props.resetPassword(this.props.navigation.state.params.token, 
       this.state.password, this.state.confirmPassword);
-    if (response) {
+    console.log(response);
+    if (response.success) {
       this.redirectToLogin();
-    }  
+    } else {
+      this.setState({
+        confirmPassword: response.errText
+      })
+    }
   }
 
   redirectToLogin = () => {
@@ -136,7 +140,7 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
                     })
                   }}
                   secureTextEntry={!this.state.showPassword}
-                  error={this.state.passwordError}/>
+                  error={this.state.confirmPasswordError}/>
                   
                 <CheckBox title='Show password' 
                   containerStyle={[styles.checkBoxContainer]} textStyle={styles.checkBoxLabel}

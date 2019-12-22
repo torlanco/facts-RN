@@ -74,12 +74,12 @@ const IUserAction: IUser.DispatchFromProps = {
         dispatch({
           type: Types.RESET_PASSWORD_SUCCESS,
         });
+        return response.data;
       } catch(e) {
         dispatch({
           type: Types.RESET_PASSWORD_FAILED,
-          payload: e.response.data,
         });
-        return e.response.data;
+        return e.response.data.result;
       }
     };
   },
@@ -117,9 +117,8 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.REQUEST_RESET_PASSWORD_OTP_FAILED,
-          payload: e.response.data,
         });
-        return e.response.data;
+        return null;
       }
     };
   },
@@ -133,13 +132,12 @@ const IUserAction: IUser.DispatchFromProps = {
         dispatch({
           type: Types.VERIFY_RESET_PASSWORD_OTP_SUCCESS,
         });
-        return response.data.token;
+        return response.data.data;
       } catch(e) {
         dispatch({
           type: Types.VERIFY_RESET_PASSWORD_OTP_FAILED,
-          payload: e.response.data,
         });
-        return e.response.data;
+        return e.response.data.result;
       }
     };
   },

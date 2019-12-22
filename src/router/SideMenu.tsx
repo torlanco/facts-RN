@@ -70,30 +70,33 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
     );
   };
   
+  const onLogin = () => {
+    requestAnimationFrame(() => navigation.navigate('LoginScreen'));
+  }
+
   const onLogout = async () => {
     navigation.closeDrawer();
     const logout = await props.logout();
     if (logout) {
-      requestAnimationFrame(() =>
-        navigation.navigate('LoginScreen')
-      );
+      onLogin();
     }
   }
-  const renderLogout = () => {
+
+  const renderFooter = () => {
     return (
       <View style={styles.listItem}>
         <View style={[styles.separator, {top: 0}]}/>
-        <TouchableOpacity
-          onPress={onLogout}>
-          <View style={styles.wrapper}>
-            <Icon
-              name='power'
-              type='feather'
-              color={colors.TEXT_PRIMARY}
-              containerStyle={styles.iconContainer} />
-            <Text style={styles.title}>Logout</Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={isLoggedIn() ? onLogout : onLogin}>
+            <View style={styles.wrapper}>
+              <Icon
+                name={isLoggedIn() ? 'log-out' : 'log-in'}
+                type='feather'
+                color={colors.TEXT_PRIMARY}
+                containerStyle={styles.iconContainer} />
+              <Text style={styles.title}>{isLoggedIn() ? 'Logout' : 'Login'}</Text>
+            </View>
+          </TouchableOpacity>
       </View>
     );
   };
@@ -105,7 +108,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle= {{flex: 1}}/>
-        { isLoggedIn() && renderLogout() }  
+        { renderFooter() }  
       </View>        
     </SafeAreaView>
   );
