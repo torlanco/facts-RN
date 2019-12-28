@@ -2,24 +2,21 @@ import { colors, typos } from '@styles';
 import * as React from 'react';
 import { StyleSheet, Text, View, KeyboardTypeOptions } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { CONSTANTS } from '@utils';
 
 interface IActionButtonProps {
     error?: string;
-    secureTextEntry?: boolean;
     onChangeText?: Function;
     onBlur?: Function;
-    keyboardType?: KeyboardTypeOptions
     nonEditable?: boolean;
-    textContentType?: any 
 }
 
 type IProps = IActionButtonProps;
 
 type IState = {}
 
-class TextField extends React.Component<IProps, IState> {
-    _textInput: any;
-
+class PhoneField extends React.Component<IProps, IState> {
+    
     constructor(props: IProps) {
         super(props);
     }
@@ -29,7 +26,7 @@ class TextField extends React.Component<IProps, IState> {
             value: value
         }, () => {
             if (this.props.onChangeText) {
-                this.props.onChangeText(value);
+                this.props.onChangeText(CONSTANTS.COUNTRY_CODE + value);
             }
         });
     }
@@ -39,27 +36,18 @@ class TextField extends React.Component<IProps, IState> {
             this.props.onBlur();
         }
     }
-
-    clear = () => {
-        if (this._textInput) {
-            this._textInput.clear();
-        }
-    }
     
     render() {
-        const { error, secureTextEntry, nonEditable } = this.props;
+        const { error, nonEditable } = this.props;
         return (
             <View style={styles.container}>
-                <TextInput 
-                    ref={input => { this._textInput = input }}
-                    style={[styles.input]}
+                <Text style={[styles.code]}>{CONSTANTS.COUNTRY_CODE}</Text>
+                <TextInput style={[styles.input]}
                     editable={!nonEditable}
                     onChangeText={this.onChangeText} 
                     onBlur={this.onBlur} 
-                    secureTextEntry={secureTextEntry}
-                    keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
-                    autoCapitalize={'none'}
-                    textContentType={this.props.textContentType ? this.props.textContentType : "none"}/>
+                    keyboardType='number-pad'
+                    autoCapitalize={'none'}/>
                 { error ? <Text style={styles.error}>{error}</Text> : null }
             </View>
         )    
@@ -70,13 +58,21 @@ const styles = StyleSheet.create({
     container: {
         margin: 0,
         padding: 0,
+        flexDirection: "row",
+        borderRadius: 5,
+        borderColor: colors.LIGHT_GRAY,
+        borderWidth: 1,
+    },
+    code: {
+        ...typos.PRIMARY,
+        height: 40,
+        borderColor: colors.LIGHT_GRAY,
+        borderRightWidth: 1,
+        padding: 10
     },
     input: {
         ...typos.PRIMARY,
-        borderRadius: 5,
-        borderColor: colors.LIGHT_GRAY,
         height: 40,
-        borderWidth: 1,
         paddingVertical: 5,
         paddingHorizontal: 10
     },
@@ -87,4 +83,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export { TextField };
+export { PhoneField };

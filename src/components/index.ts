@@ -4,3 +4,4 @@ export * from './SelectPicker';
 export * from './TextField';
 export * from './ImageView';
 export * from './EmptyListMessage';
+export * from './PhoneField';

@@ -118,7 +118,7 @@ const IUserAction: IUser.DispatchFromProps = {
         dispatch({
           type: Types.REQUEST_RESET_PASSWORD_OTP_FAILED,
         });
-        return null;
+        return e.response.data.result;
       }
     };
   },

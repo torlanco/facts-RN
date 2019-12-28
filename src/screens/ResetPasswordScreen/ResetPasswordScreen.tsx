@@ -84,7 +84,6 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
     }
     const response: any = await this.props.resetPassword(this.props.navigation.state.params.token, 
       this.state.password, this.state.confirmPassword);
-    console.log(response);
     if (response.success) {
       this.redirectToLogin();
     } else {

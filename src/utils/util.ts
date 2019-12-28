@@ -1,4 +1,4 @@
-import validator from 'validator';
+const phoneAPI = require('phone');
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -26,8 +26,9 @@ export const isValidEmail = (email: string) => {
 }
 
 export const isValidPhone = (phone: string) => {
-    let regex = /^([7-9][0-9]{9})$/;
-    return regex.test(String(phone));
+    // let regex = /^([7-9][0-9]{9})$/;
+    // return regex.test(String(phone));
+    return phoneAPI(phone).length;
 }
 
 export const validate = (type: string, value: any, field?: string) => {

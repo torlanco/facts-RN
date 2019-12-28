@@ -53,6 +53,7 @@ const mapStateToProps = function(state: any) {
 
 class LoginScreen extends React.Component<IProps, IState> {
   _isMounted = false;
+  _passwordField: any;
 
   constructor(props: IProps) {
     super(props);
@@ -107,6 +108,7 @@ class LoginScreen extends React.Component<IProps, IState> {
         password: '',
         userNameError: CONSTANTS.INVALID_LOGIN_CREDENTIALS
       });
+      this._passwordField.clear();
     }
   }
 
@@ -151,6 +153,7 @@ class LoginScreen extends React.Component<IProps, IState> {
 
           <Text style={[styles.label]}>Password</Text>
           <TextField
+            ref={input => { this._passwordField = input }}
             onChangeText={(value: any) => {
               this.setState({
                 password: value

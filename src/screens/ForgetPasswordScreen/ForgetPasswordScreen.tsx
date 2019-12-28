@@ -8,7 +8,7 @@ import { typos, colors } from '@styles';
 import { IUser } from '@interfaces/user';
 
 // Component
-import { ActionButton, HeaderBar, TextField } from '@components';
+import { ActionButton, HeaderBar, TextField, PhoneField } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -17,7 +17,6 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { validate, CONSTANTS } from '@utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { PermissionsAndroid } from "react-native";
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 interface ParamType {
@@ -107,11 +106,10 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
   }
 
   requestOtp = async () => {
-    this.setState({ otp: '', otpError: '', otpRequested: true })
     const response: any = await this.props.requestResetPasswordOtp(this.state.username);
     if (response.success) {
       this.setState({
-        disableResend: true
+        otp: '', otpError: '', otpRequested: true, disableResend: true
       }, () => {
         setTimeout(() => {
           if (this.state.disableResend) {
@@ -120,6 +118,10 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
             });
           }
         })
+      })
+    } else if (response.errText) {
+      this.setState({
+        usernameError: response.errText
       })
     }
   }
@@ -152,20 +154,34 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
             <Text style={[styles.heading, styles.note]}>{type ? CONSTANTS.FORGOT_PASSWORD_WITH_EMAIL_TEXT : CONSTANTS.FORGOT_PASSWORD_WITH_OTP_TEXT}</Text>
             
             <Text style={[styles.label]}>{type ? 'Username': 'Phone'}</Text>
-            <TextField
-                nonEditable={this.state.otpRequested}
-                keyboardType={type ? "default" : "numeric"}
-                onChangeText={(value: any) => {
-                  this.setState({
-                    username: value
-                  })
-                }}
-                onBlur={() => {
-                  this.setState({
-                    usernameError: type ? validate('required',  this.state.username, 'Username') : validate('phone', this.state.username)
-                  })
-                }}
-                error={this.state.usernameError}/>
+            { type ? 
+              <TextField
+                  nonEditable={this.state.otpRequested}
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      username: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      usernameError: validate('required',  this.state.username, 'Username')
+                    })
+                  }}
+                  error={this.state.usernameError}/> :
+              <PhoneField
+                  nonEditable={this.state.otpRequested}
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      username: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      usernameError: validate('phone',  this.state.username)
+                    })
+                  }}
+                  error={this.state.usernameError}/> 
+            }                 
             {
               this.state.otpRequested && 
               <View>

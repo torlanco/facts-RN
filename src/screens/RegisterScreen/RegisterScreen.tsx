@@ -8,7 +8,7 @@ import { typos, colors } from '@styles';
 import { IUser } from '@interfaces/user';
 
 // Component
-import { ActionButton, HeaderBar, TextField } from '@components';
+import { ActionButton, HeaderBar, TextField, PhoneField } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -187,8 +187,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 error={this.state.lastNameError}/>
 
               <Text style={styles.label}>Phone</Text>
-              <TextField
-                keyboardType="number-pad"
+              <PhoneField
                 onChangeText={(value: any) => {
                   this.setState({
                     phone: value
