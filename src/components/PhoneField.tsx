@@ -9,16 +9,24 @@ interface IActionButtonProps {
     onChangeText?: Function;
     onBlur?: Function;
     nonEditable?: boolean;
+    defaultValue?: string; 
 }
 
 type IProps = IActionButtonProps;
 
-type IState = {}
+type IState = {
+    value: any;
+    focused: boolean;
+}
 
 class PhoneField extends React.Component<IProps, IState> {
     
     constructor(props: IProps) {
         super(props);
+        this.state = {
+            value: '',
+            focused: false
+        }
     }
     
     onChangeText = (value: any) => {
@@ -31,7 +39,16 @@ class PhoneField extends React.Component<IProps, IState> {
         });
     }
 
+    onFocus = () => {
+        this.setState({
+            focused: true
+        });        
+    }
+
     onBlur = () => {
+        this.setState({
+            focused: false
+        });
         if (this.props.onBlur) {
             this.props.onBlur();
         }
@@ -39,15 +56,23 @@ class PhoneField extends React.Component<IProps, IState> {
     
     render() {
         const { error, nonEditable } = this.props;
+        const focused: any = {};
+        if (this.state.focused) {
+            focused.borderColor = colors.BLUE
+        }
         return (
             <View style={styles.container}>
-                <Text style={[styles.code]}>{CONSTANTS.COUNTRY_CODE}</Text>
-                <TextInput style={[styles.input]}
-                    editable={!nonEditable}
-                    onChangeText={this.onChangeText} 
-                    onBlur={this.onBlur} 
-                    keyboardType='number-pad'
-                    autoCapitalize={'none'}/>
+                <View style={[styles.rowContainer, focused]}>
+                    <Text style={[styles.code]}>{CONSTANTS.COUNTRY_CODE}</Text>
+                    <TextInput style={[styles.input]}
+                        defaultValue={this.props.defaultValue ? this.props.defaultValue : ''}
+                        editable={!nonEditable}
+                        onChangeText={this.onChangeText} 
+                        onFocus={this.onFocus}
+                        onBlur={this.onBlur} 
+                        keyboardType='number-pad'
+                        autoCapitalize={'none'}/>
+                </View>
                 { error ? <Text style={styles.error}>{error}</Text> : null }
             </View>
         )    
@@ -58,6 +83,8 @@ const styles = StyleSheet.create({
     container: {
         margin: 0,
         padding: 0,
+    },
+    rowContainer: {
         flexDirection: "row",
         borderRadius: 5,
         borderColor: colors.LIGHT_GRAY,
@@ -71,6 +98,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     input: {
+        flex: 1,
         ...typos.PRIMARY,
         height: 40,
         paddingVertical: 5,

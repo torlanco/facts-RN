@@ -21,6 +21,7 @@ import {
   CustomCameraScreen,
   DocsScreen,
   FullImageScreen,
+  ProfileScreen,
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -121,6 +122,7 @@ const MainNavigator = createDrawerNavigator(
       Work: { screen: WorkNavigator },
       Features: {screen: FeaturesNavigator},
       Docs: { screen: DocsNavigator },
+      Profile: {screen: ProfileScreen}
     },
     {
       contentComponent: SideMenu,

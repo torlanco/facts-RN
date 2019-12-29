@@ -15,3 +15,4 @@ export * from './CustomCameraScreen/CustomCameraScreen';
 export * from './CameraScreen/CameraScreen';
 export * from './DocsScreen/DocsScreen';
 export * from './FullImageScreen/FullImageScreen';
+export * from './ProfileScreen/ProfileScreen';

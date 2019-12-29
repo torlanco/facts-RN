@@ -27,6 +27,7 @@ type IProps = IOwnProps &
   IUser.DispatchFromProps;
 
 const data = [
+  { iconName: 'user', title: 'Profile', routeName: 'Profile', requiredAuth: true, hideTillLogin: true },
   { iconName: 'book', title: 'Outlet', routeName: 'Outlet' },
   { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
   { iconName: 'book', title: 'Features', routeName: 'Features' },
@@ -100,11 +101,16 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
       </View>
     );
   };
+
+  const onProfile = () => {
+    requestAnimationFrame(() => navigation.navigate('Profile'));
+  }
+
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <View style={{height: '100%'}}>
         <FlatList
-          data={data}
+          data={data.filter(item => isLoggedIn() || !item.hideTillLogin)}
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle= {{flex: 1}}/>

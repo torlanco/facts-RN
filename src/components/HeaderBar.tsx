@@ -93,6 +93,7 @@ class HeaderBar extends React.Component<IProps, IState> {
                         <Icon
                             name={this.props.rightIcon}
                             type='feather'
+                            size={18}
                             color={colors.BLACK}
                             onPress={this.onRightIconClick}
                             containerStyle={[styles.iconContainer, styles.rightIconContainer]} /> : <Text style={styles.iconContainer}></Text> }
@@ -125,7 +126,8 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     rightIconContainer: {
-        marginRight: 5
+        marginRight: 5,
+        padding: 10
     },
     divider: {
         backgroundColor: colors.LIGHTER_GRAY,

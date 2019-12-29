@@ -10,18 +10,26 @@ interface IActionButtonProps {
     onBlur?: Function;
     keyboardType?: KeyboardTypeOptions
     nonEditable?: boolean;
-    textContentType?: any 
+    textContentType?: any;
+    defaultValue?: string; 
 }
 
 type IProps = IActionButtonProps;
 
-type IState = {}
+type IState = {
+    value: any;
+    focused: boolean;
+}
 
 class TextField extends React.Component<IProps, IState> {
     _textInput: any;
 
     constructor(props: IProps) {
         super(props);
+        this.state = {
+            value: '',
+            focused: false
+        }
     }
     
     onChangeText = (value: any) => {
@@ -34,7 +42,16 @@ class TextField extends React.Component<IProps, IState> {
         });
     }
 
+    onFocus = () => {
+        this.setState({
+            focused: true
+        });        
+    }
+
     onBlur = () => {
+        this.setState({
+            focused: false
+        });
         if (this.props.onBlur) {
             this.props.onBlur();
         }
@@ -48,13 +65,19 @@ class TextField extends React.Component<IProps, IState> {
     
     render() {
         const { error, secureTextEntry, nonEditable } = this.props;
+        const focused: any = {};
+        if (this.state.focused) {
+            focused.borderColor = colors.BLUE
+        }
         return (
             <View style={styles.container}>
                 <TextInput 
+                    defaultValue={this.props.defaultValue ? this.props.defaultValue : ''}
                     ref={input => { this._textInput = input }}
-                    style={[styles.input]}
+                    style={[styles.input, focused]}
                     editable={!nonEditable}
                     onChangeText={this.onChangeText} 
+                    onFocus={this.onFocus}
                     onBlur={this.onBlur} 
                     secureTextEntry={secureTextEntry}
                     keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
