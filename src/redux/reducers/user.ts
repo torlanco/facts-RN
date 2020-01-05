@@ -5,7 +5,8 @@ import { AnyAction } from 'redux';
 const initialState: IUser.StateToProps = {
   error: false,
   loading: false,
-  token: undefined
+  token: undefined,
+  loggedInUser: undefined,
 };
 
 export function user(
@@ -115,7 +116,50 @@ export function user(
         error: false,
         loading: false,
       };
-  
+
+    // FETCH USER INFO
+    case Types.FETCH_USER_PROFILE:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.FETCH_USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        loggedInUser: action.payload
+      };
+    case Types.FETCH_USER_PROFILE_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        loggedInUser: undefined
+      };
+      
+    // UPDATE USER INFO
+    case Types.UPDATE_USER_PROFILE:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.UPDATE_USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        loggedInUser: undefined
+      };
+    case Types.UPDATE_USER_PROFILE_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };  
+
     default:
         return state;
   }

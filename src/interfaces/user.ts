@@ -14,6 +14,7 @@ export namespace IUser {
         error: string | boolean;
         loading: boolean;
         token: string | undefined;
+        loggedInUser: IUserData | undefined;
     }
     
     export interface DispatchFromProps {
@@ -24,6 +25,8 @@ export namespace IUser {
         requestResetPasswordOtp(phone?: string): Function;
         verifyResetPasswordOtp(phone?: string, otp?: string): Function;
         register(userData: IUser.IUserData): Function;
+        fetchUserInfo(token: string, doInBackground?: boolean): Function;
+        updateUserInfo(token: string, userData: IUserData): Function;
         logout(): Function;
     }
 }   

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Image, TouchableOpacity, BackHandler } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -15,13 +15,13 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
-import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';
-import { CheckBox } from 'react-native-elements';
 
 // props
 interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
+  token: any;
+  loggedInUser: any;
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -46,18 +46,14 @@ interface IState {
 const mapStateToProps = function(state: any) {
   return {
     loading: state.user.loading,
+    token: state.user.token,
+    loggedInUser: state.user.loggedInUser,
   }
 };
 
 class ProfileScreen extends React.Component<IProps, IState> {
   _isMounted = false;
-  _userData = {
-    userName: 'mohit',
-    email: 'mohit@gmail.com',
-    firstName: 'Mohit',
-    lastName: 'Nagori',
-    phone: '9784323158',
-  }
+  _backHandler: any;
 
   constructor(props: IProps) {
     super(props);
@@ -78,7 +74,29 @@ class ProfileScreen extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    this.updateStateWithGlobalState();
+    if (this.props.loggedInUser) {
+      this.updateStateWithGlobalState();
+    } else {
+      this.fetchUserInfo();
+    }
+    this._backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    this._backHandler.remove()
+  }
+
+  handleBackPress = () => {
+    this.onCancel();
+    this.props.navigation.goBack(); 
+    return true;
+  }
+
+  fetchUserInfo = async (doInBackground?: boolean) => {
+    const response: any = await this.props.fetchUserInfo(this.props.token, doInBackground);
+    if (!response.errText && !doInBackground) {
+      this.updateStateWithGlobalState();
+    }
   }
 
   setAsyncState = (newState: any) => {
@@ -89,26 +107,32 @@ class ProfileScreen extends React.Component<IProps, IState> {
     await this.setAsyncState({
       firstNameError: validate('required', this.state.firstName, 'First name'),
       lastNameError: validate('required', this.state.lastName, 'Last name'),
-      phoneError: validate('required', this.state.phone, 'Phone'),
+      phoneError: validate('phone', this.state.phone),
     });
     return !(this.state.firstNameError || this.state.lastNameError || this.state.phoneError);
   }
 
   updateStateWithGlobalState = () => {
-    this.setState({
-      userName: this._userData.userName,
-      email: this._userData.email,
-      firstName: this._userData.firstName,
-      lastName: this._userData.lastName,
-      phone: this._userData.phone
-    })
+    if (this.props.loggedInUser) {
+      this.setState({
+        userName: this.props.loggedInUser.username,
+        email: this.props.loggedInUser.email,
+        firstName: this.props.loggedInUser.firstName,
+        lastName: this.props.loggedInUser.lastName,
+        phone: this.props.loggedInUser.phone,
+      })
+    }
   }
 
   onSave = async () => {
-    // call api to save profile
-    this.setState({
-      editable: false
-    });
+    const userData = { firstName: this.state.firstName, lastName: this.state.lastName, phone: this.state.phone };
+    const response: any = await this.props.updateUserInfo(this.props.token, userData);    
+    if (!response.errText) {
+      this.setState({
+        editable: false
+      });
+      this.fetchUserInfo(true);  
+    }
   }
 
   onEdit = () => {

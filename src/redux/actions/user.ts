@@ -1,6 +1,6 @@
 import { Types } from '@types';
 import { IUser } from '@interfaces/user';
-import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp, verifyResetPasswordOtp } from '@services';
+import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp, verifyResetPasswordOtp, fetchUserInfo, updateUserInfo } from '@services';
 import { AsyncStorage } from 'react-native';
 import { CONSTANTS } from '@utils';
 
@@ -158,6 +158,49 @@ const IUserAction: IUser.DispatchFromProps = {
           payload: e.response.data,
         });
         return false;
+      }
+    };
+  },
+  fetchUserInfo: (token: string, doInBackground?: boolean) => {
+    return async function (dispatch: any) {
+      if (!doInBackground) {
+        dispatch({
+          type: Types.FETCH_USER_PROFILE,
+        });  
+      }
+      try {
+        const response =  await fetchUserInfo(token);
+        dispatch({
+          type: Types.FETCH_USER_PROFILE_SUCCESS,
+          payload: response.data.data,
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_USER_PROFILE_FAILED,
+        });
+        return e.response.data.result;
+      }
+    };
+  },
+  updateUserInfo: (token: string, userData: IUser.IUserData) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.UPDATE_USER_PROFILE,
+      });
+      try {
+        const response =  await updateUserInfo(token, userData);
+        dispatch({
+          type: Types.UPDATE_USER_PROFILE_SUCCESS,
+          payload: response.data.data,
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.UPDATE_USER_PROFILE_FAILED,
+          payload: e.response.data.result,
+        });
+        return e.response.data.result;
       }
     };
   }

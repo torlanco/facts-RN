@@ -68,8 +68,9 @@ class LoginScreen extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const token = await this.props.isLoggedIn();
+    const token: any = await this.props.isLoggedIn();
     if (token) {
+      await this.props.fetchUserInfo(token);
       this.redirectToMain();
     } else {
       this.setState({
@@ -106,7 +107,7 @@ class LoginScreen extends React.Component<IProps, IState> {
     } else if (response.status == CONSTANTS.FAILURE && response.result.errText == CONSTANTS.INVALID_LOGIN_CREDENTIALS) {
       this.setState({
         password: '',
-        userNameError: CONSTANTS.INVALID_LOGIN_CREDENTIALS
+        passwordError: CONSTANTS.INVALID_LOGIN_CREDENTIALS
       });
       this._passwordField.clear();
     }
