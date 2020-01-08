@@ -5,7 +5,7 @@ import { StyleSheet, SafeAreaView, Text, View, TextInput, Image } from 'react-na
 import { typos, colors } from '@styles';
 
 // Component
-import { ActionButton, HeaderBar, TextField } from '@components';
+import { ActionButton, HeaderBar, TextField, FieldType } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -104,10 +104,8 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title=""></HeaderBar>
           <View style={[styles.flex, styles.container]}>
-            <View style={[styles.row, styles.imageContainer]}>
-                <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
-            </View>
-            <Text style={styles.heading}>Reset your password?</Text>
+            <Text style={styles.heading}>Reset password</Text>
+            <Text style={styles.subHeadig}>to continue</Text>
             {
               true || this.state.token ? 
               <View>
@@ -124,7 +122,8 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
                     })
                   }}
                   secureTextEntry={!this.state.showPassword}
-                  error={this.state.passwordError}/>
+                  error={this.state.passwordError}
+                  type={FieldType.PASSWORD}/>
                 
                 <Text style={styles.label}>Confirm Password</Text>
                 <TextField
@@ -139,17 +138,19 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
                     })
                   }}
                   secureTextEntry={!this.state.showPassword}
-                  error={this.state.confirmPasswordError}/>
-                  
-                <CheckBox title='Show password' 
-                  containerStyle={[styles.checkBoxContainer]} textStyle={styles.checkBoxLabel}
-                  checked={this.state.showPassword} onPress={() => this.setState({
-                    showPassword: !this.state.showPassword
-                  })}/>
-              
+                  error={this.state.confirmPasswordError}
+                  type={FieldType.PASSWORD}/>
+                                
               </View> : null
             }    
-            <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} style={styles.buttonStyle}/>
+
+            <View style={styles.row}>
+              <View style={styles.flex}></View>
+              <View style={styles.flex}>
+                <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} style={styles.buttonStyle}/>
+              </View>
+            </View>
+
           </View>
         </View>
         {(this.props.loading)&& <LoadingScreen />}
@@ -180,11 +181,13 @@ const styles = StyleSheet.create({
     height: 54,
   },
   heading: {
-    ...typos.SUBHEADLINE,
+    ...typos.TITLE,
     fontWeight: 'bold',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    textAlign: 'center',
+    marginTop: 40
+  },
+  subHeadig: {
+    ...typos.TITLE_REGULAR,
+    marginBottom: 15
   },
   note: {
     ...typos.PRIMARY,
@@ -192,14 +195,17 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   row: {
+    marginTop: 40,
     display: 'flex',
     flexDirection: 'row',
   },
   label: {
     ...typos.PRIMARY,
-    color: colors.TEXT_NOTE,
+    color: colors.BLACK,
     marginTop: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    marginLeft: 10,
+    fontWeight: 'bold'
   },
   text: {
     ...typos.PRIMARY,
@@ -212,7 +218,6 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     borderRadius: 5,
-    marginTop: 30,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },

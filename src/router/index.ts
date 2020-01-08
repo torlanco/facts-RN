@@ -22,6 +22,7 @@ import {
   DocsScreen,
   FullImageScreen,
   ProfileScreen,
+  WelcomeScreen,
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -134,13 +135,14 @@ const MainNavigator = createDrawerNavigator(
 
 const AuthNavigator = createStackNavigator(
     {
+        WelcomeScreen: {screen: WelcomeScreen},
         LoginScreen: {screen: LoginScreen},
         RegisterScreen: {screen: RegisterScreen},
         ForgetPasswordScreen: {screen: ForgetPasswordScreen},
         ResetPasswordScreen: {screen: ResetPasswordScreen},
     },
     {
-        initialRouteName: 'LoginScreen',
+        initialRouteName: 'WelcomeScreen',
         defaultNavigationOptions: {
             headerLeft: null,
             headerBackTitle: null,

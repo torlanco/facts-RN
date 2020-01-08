@@ -9,7 +9,11 @@ interface IActionButtonProps {
     onPress?(buttonText: string): void,
     disabled?: boolean;
     style?: ViewStyle;
+    buttonStyle?: ViewStyle;
     titleStyle?: TextStyle;
+    invertedStyle?: ViewStyle;
+    invertedButtonStyle?: ViewStyle;
+    invertedTitleStyle?: TextStyle;
 }
 
 type IProps = IActionButtonProps;
@@ -17,7 +21,7 @@ type IProps = IActionButtonProps;
 const ActionButton: React.SFC<IProps> = (props: IProps) => {
     const {title, inverted, onPress, disabled} = props;
     const backgroundColor = !inverted ? colors.WHITE : colors.PRIMARY;
-    const color = !inverted ? colors.MID_GRAY : colors.DARK_GRAY;
+    const color = !inverted ? colors.MID_GRAY : colors.BLACK;
     const borderColor = !inverted ? colors.LIGHTER_GRAY : colors.PRIMARY;
     const opacity = disabled ? 0.7 : 1;
     const boxShadow: any = {};
@@ -35,23 +39,36 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         { backgroundColor },
         boxShadow,
     ];
-    if (props.style) {
+    if (!inverted && props.style) {
         containerStyle.push(props.style);
     }
+    if (inverted && props.invertedStyle) {
+        containerStyle.push(props.invertedStyle);    
+    } 
+
     const buttonStyle = [
         styles.button,
         { borderColor },
         { backgroundColor },
         { opacity },
     ];
+    if (!inverted && props.buttonStyle) {
+        buttonStyle.push(props.buttonStyle);
+    }
+    if (inverted && props.invertedButtonStyle) {
+        buttonStyle.push(props.invertedButtonStyle);    
+    } 
     const textStyle = [
         styles.textStyle,
         { color }
     ];
-    if (props.titleStyle) {
-        containerStyle.push(props.titleStyle);
+    if (!inverted && props.titleStyle) {
+        textStyle.push(props.titleStyle);
     }
-
+    if (inverted && props.invertedTitleStyle) {
+        textStyle.push(props.invertedTitleStyle);    
+    } 
+    
     const onButtonPress = () => {
         if (props.onPress) {
             props.onPress(inverted ? '' : props.title);
@@ -70,8 +87,8 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        borderRadius: 40,
-        height: responsive(44),
+        borderRadius: 8,
+        height: responsive(50),
         justifyContent: 'center',
         marginVertical: 5,
         marginHorizontal: 2.5,
@@ -79,8 +96,9 @@ const styles = StyleSheet.create({
     },
     button: {
         borderWidth: 2,
-        borderRadius: 40,
-        height: responsive(44),
+        borderRadius: 8,
+        height: responsive(46),
+        paddingVertical: 2
     },
     textStyle: {
         textTransform: 'uppercase'

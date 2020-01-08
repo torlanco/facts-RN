@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
 import { IUser } from '@interfaces/user';
 
 // Component
-import { ActionButton, HeaderBar, TextField, PhoneField } from '@components';
+import { ActionButton, HeaderBar, TextField, PhoneField, FieldType } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -17,7 +17,6 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';
-import { CheckBox } from 'react-native-elements';
 
 // props
 interface IOwnProps {
@@ -107,12 +106,12 @@ class RegisterScreen extends React.Component<IProps, IState> {
     }
     const response: any = await this.props.register(userData);
     if (response.success) {
-      this.props.navigation.goBack();
+      this.onLogin();
     }
   }
 
   onLogin = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('LoginScreen');
   }
 
   redirectToMain = () => {
@@ -126,10 +125,9 @@ class RegisterScreen extends React.Component<IProps, IState> {
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={[styles.flex, styles.container]}>
-              <View style={[styles.row, styles.imageContainer]}>
-                  <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
-              </View>
-              <Text style={styles.heading}>Create your account</Text>
+              <Text style={styles.heading}>Sign up</Text>
+              <Text style={styles.subHeadig}>create an account</Text>
+              
               <Text style={styles.label}>User name</Text>
               <TextField
                 onChangeText={(value: any) => {
@@ -212,18 +210,25 @@ class RegisterScreen extends React.Component<IProps, IState> {
                     passwordError: validate('password', this.state.password)
                   })
                 }}
-                secureTextEntry={!this.state.showPassword}
-                error={this.state.passwordError}/>
-              <CheckBox title='Show password' 
-                containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
-                checked={this.state.showPassword} onPress={() => this.setState({
-                  showPassword: !this.state.showPassword
-                })}/>
-                
-              <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
-              <TouchableOpacity onPress={this.onLogin}>
-                <Text style={[styles.label, styles.signin]}>Already a user? <Text style={styles.link}> Login here</Text></Text>
-              </TouchableOpacity>
+                error={this.state.passwordError}
+                type={FieldType.PASSWORD}/>
+
+              <View style={styles.row}>
+                <View style={styles.flex}></View>
+                <View style={styles.flex}>
+                  <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <View style={styles.flex}></View>
+                <View style={styles.flex}>
+                  <Text style={styles.bottomActionText}>Already have an account?</Text>
+                  <TouchableOpacity onPress={this.onLogin}>
+                    <Text style={[styles.bottomActionText, styles.bold]}>Log in</Text>
+                  </TouchableOpacity> 
+                </View>
+              </View>                    
             </View>
           </ScrollView>
         </View>
@@ -255,11 +260,13 @@ const styles = StyleSheet.create({
     height: 54,
   },
   heading: {
-    ...typos.SUBHEADLINE,
+    ...typos.TITLE,
     fontWeight: 'bold',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    textAlign: 'center',
+    marginTop: 20
+  },
+  subHeadig: {
+    ...typos.TITLE_REGULAR,
+    marginBottom: 15
   },
   note: {
     ...typos.PRIMARY,
@@ -269,12 +276,16 @@ const styles = StyleSheet.create({
   row: {
     display: 'flex',
     flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 20,
   },
   label: {
     ...typos.PRIMARY,
-    color: colors.TEXT_NOTE,
+    color: colors.BLACK,
     marginTop: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    marginLeft: 10,
+    fontWeight: 'bold'
   },
   text: {
     ...typos.PRIMARY,
@@ -296,10 +307,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   link: {
-    color: colors.LIGHT_ORANGE,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
-    textDecorationColor: colors.LIGHT_ORANGE
+    ...typos.PRIMARY,
+    color: colors.BLACK,
+    paddingVertical: 10,
   },
   checkBoxContainer: {
     backgroundColor: colors.WHITE,
@@ -314,6 +324,14 @@ const styles = StyleSheet.create({
     color: colors.TEXT_NOTE,
     fontWeight: 'normal'
   },
+  bottomActionText: {
+    ...typos.PRIMARY,
+    color: colors.BLACK,
+    textAlign: 'right'
+  },
+  bold: {
+    fontWeight: 'bold'
+  }
 });
 
 const RegisterScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

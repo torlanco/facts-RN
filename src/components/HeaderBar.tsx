@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     Text,
-    StyleProp,
     ViewStyle,
     TextStyle
 } from 'react-native';
@@ -11,6 +10,8 @@ import { responsive, typos, colors } from '@styles';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Divider, Icon } from 'react-native-elements';
 import { formatDate } from '@utils';
+import { connect } from 'react-redux';
+import { IUser } from '@interfaces/user';
 
 interface IOwnProps {
     title: string;
@@ -21,13 +22,24 @@ interface IOwnProps {
     onRightIconClick?: Function
     rightText?: string,
     onRightTextClick?: Function
+    noDivider?: boolean;
+    noLeftIcon?: boolean;
 }
-type IProps = IOwnProps & NavigationInjectedProps;
+type IProps = IOwnProps 
+        & NavigationInjectedProps
+        & IUser.StateToProps;
 
 interface IState {
     backEnabled: boolean | undefined,
     isDateRangeValid: boolean | undefined
 }
+
+const mapStateToProps = function(state: any) {
+    return {
+      token: state.user.token,
+    }
+};
+    
 class HeaderBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
@@ -37,7 +49,7 @@ class HeaderBar extends React.Component<IProps, IState> {
             isDateRangeValid: this.isDateRangeValid()
         };
     }
-
+    
     isBackEnabled() {
         const parent = this.props.navigation.dangerouslyGetParent();
         return parent && parent.state && parent.state.index > 0;    
@@ -75,19 +87,19 @@ class HeaderBar extends React.Component<IProps, IState> {
         return (
             <View style={[this.props.style]}>
                 <View style={styles.header}>
-                    { this.state.backEnabled ? 
+                    { !this.props.noLeftIcon ? (this.state.backEnabled ? 
                         <Icon
                             name='arrow-left'
                             type='feather'
                             color={colors.BLACK}
                             onPress={() => this.onBackClick()}
-                            containerStyle={styles.iconContainer} /> : 
-                        <Icon
-                            name='menu'
-                            type='feather'
-                            color={colors.BLACK}
-                            onPress={() => this.onDrawerIconClick()}
-                            containerStyle={styles.iconContainer} /> }
+                            containerStyle={styles.iconContainer} /> :                         
+                            <Icon
+                                name='menu'
+                                type='feather'
+                                color={colors.BLACK}
+                                onPress={() => this.onDrawerIconClick()}
+                                containerStyle={styles.iconContainer} /> ) : null }
                     <Text style={[styles.title, this.props.titleStyle]}>{this.props.title}</Text>
                     { this.props.rightIcon ? 
                         <Icon
@@ -100,7 +112,7 @@ class HeaderBar extends React.Component<IProps, IState> {
                     { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange.startDate)} - {formatDate(this.props.dateRange.endDate)}</Text> : null }
                     { this.props.rightText ? <Text style={[styles.rightText]} onPress={this.onRightTextClick}>{this.props.rightText}</Text> : null }
                 </View>
-                <Divider style={styles.divider} />
+                    { !this.props.noDivider && <Divider style={styles.divider} /> }
             </View>
         );
     }
@@ -143,12 +155,12 @@ const styles = StyleSheet.create({
     rightText: {
         ...typos.HEADLINE,
         fontWeight: 'normal',
-        color: colors.TEXT_NOTE,
+        color: colors.BLACK,
         padding: 5,
         marginRight: 20
     }
 });
-const wrapper = withNavigation(HeaderBar);
+const wrapper = withNavigation(connect(mapStateToProps, null)(HeaderBar));
 export { wrapper as HeaderBar };
 export class DateRange {
     startDate?: string

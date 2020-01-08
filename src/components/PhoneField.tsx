@@ -58,7 +58,8 @@ class PhoneField extends React.Component<IProps, IState> {
         const { error, nonEditable } = this.props;
         const focused: any = {};
         if (this.state.focused) {
-            focused.borderColor = colors.BLUE
+            focused.borderBottomColor = colors.PRIMARY,
+            focused.borderBottomWidth = 5
         }
         return (
             <View style={styles.container}>
@@ -86,9 +87,10 @@ const styles = StyleSheet.create({
     },
     rowContainer: {
         flexDirection: "row",
-        borderRadius: 5,
+        borderRadius: 2,
         borderColor: colors.LIGHT_GRAY,
         borderWidth: 1,
+        backgroundColor: colors.LIGHTEST_GRAY
     },
     code: {
         ...typos.PRIMARY,

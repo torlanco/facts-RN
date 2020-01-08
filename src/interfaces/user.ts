@@ -11,10 +11,10 @@ export namespace IUser {
     }
 
     export interface StateToProps {
-        error: string | boolean;
-        loading: boolean;
-        token: string | undefined;
-        loggedInUser: IUserData | undefined;
+        error?: string | boolean;
+        loading?: boolean;
+        token?: string | undefined;
+        loggedInUser?: IUserData | undefined;
     }
     
     export interface DispatchFromProps {

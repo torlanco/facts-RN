@@ -154,10 +154,14 @@ class ProfileScreen extends React.Component<IProps, IState> {
             rightIcon={this.state.editable ? '' : 'edit'} onRightIconClick={this.onEdit}></HeaderBar>
             <View style={[styles.flex, styles.container]}>
               <Text style={styles.label}>User name</Text>
-              <Text style={styles.text}>{this.state.userName}</Text>
+              <TextField
+                defaultValue={this.state.userName}
+                nonEditable={true}/>
 
               <Text style={styles.label}>Email</Text>
-              <Text style={styles.text}>{this.state.email}</Text>
+              <TextField
+                defaultValue={this.state.email}
+                nonEditable={true}/>
 
               <Text style={styles.label}>First name</Text>
               <TextField
@@ -208,11 +212,15 @@ class ProfileScreen extends React.Component<IProps, IState> {
                 error={this.state.phoneError}/>
 
               { this.state.editable && <View>
-                  <ActionButton title="Save" inverted={true} onPress={this.onSave} style={styles.buttonStyle}/>
-                  <View style={styles.rowContainer}>
-                    <TouchableOpacity onPress={this.onCancel}>
-                      <Text style={[styles.label, styles.link]}>Cancel</Text>
-                    </TouchableOpacity>    
+                  <View style={[styles.row, {marginTop: 40}]}>
+                    <View style={[styles.flex, styles.row]}>
+                      <TouchableOpacity onPress={this.onCancel}>
+                        <Text style={[styles.label, styles.link]}>Cancel</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.flex}>
+                      <ActionButton title="Save" inverted={true} onPress={this.onSave} style={styles.buttonStyle}/>
+                    </View>
                   </View>
                 </View> }
             </View>
@@ -259,12 +267,17 @@ const styles = StyleSheet.create({
   row: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    margin: 0, 
+    padding: 0,
   },
   label: {
     ...typos.PRIMARY,
-    color: colors.TEXT_NOTE,
+    color: colors.BLACK,
     marginTop: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    marginLeft: 10,
+    fontWeight: 'bold'
   },
   text: {
     ...typos.PRIMARY,
@@ -285,11 +298,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   link: {
-    color: colors.LIGHT_ORANGE,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
-    textDecorationColor: colors.LIGHT_ORANGE,
-    display: "flex"
+    ...typos.PRIMARY,
+    color: colors.BLACK,
+    display: "flex",
+    marginTop: 15,
   },
   checkBoxContainer: {
     backgroundColor: colors.WHITE,

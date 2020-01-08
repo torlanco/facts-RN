@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
 import { IUser } from '@interfaces/user';
 
 // Component
-import { ActionButton, TextField } from '@components';
+import { ActionButton, TextField, FieldType, HeaderBar } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -21,7 +21,7 @@ import { validate, CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
-  isExternalCall: boolean
+  isExternalCall?: boolean
 }
 interface StateParams extends NavigationState {
   params: ParamType;
@@ -36,7 +36,6 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-  showPage: boolean;
   userName: string;
   password: string;
   showPassword: boolean;
@@ -58,25 +57,12 @@ class LoginScreen extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      showPage: false,
       userName: '',
       password: '',
       showPassword: false,
       userNameError: '',
       passwordError: '',
     };
-  }
-
-  async componentDidMount() {
-    const token: any = await this.props.isLoggedIn();
-    if (token) {
-      await this.props.fetchUserInfo(token);
-      this.redirectToMain();
-    } else {
-      this.setState({
-        showPage: true
-      })
-    }
   }
   
   onRememberMeChange = () => {
@@ -128,60 +114,62 @@ class LoginScreen extends React.Component<IProps, IState> {
   public render() {
     return (
       <SafeAreaView style={styles.flex}>
-      { this.state.showPage ? 
-        <View style={styles.container}>
-          <View style={styles.skipContainer}>
-            <Text style={[styles.skip]} onPress={this.redirectToMain}>Skip</Text>
-          </View>
-          <View style={[styles.row, styles.imageContainer]}>
-              <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
-          </View>
-          <Text style={styles.heading}>Sign in to your account</Text>
-          <Text style={styles.label}>Username</Text>
-          <TextField
-            keyboardType={'email-address'}
-            onChangeText={(value: any) => {
-              this.setState({
-                userName: value
-              })
-            }}
-            onBlur={() => {
-              this.setState({
-                userNameError: validate('required', this.state.userName, 'Username')
-              })
-            }}
-            error={this.state.userNameError}/>
+        <View style={[styles.flex, styles.mainContainer]}>
+          <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
+          <View style={styles.container}>
+            <Text style={styles.heading}>Log in</Text>
+            <Text style={styles.subHeadig}>to continue</Text>
+            <Text style={styles.label}>Username</Text>
+            <TextField
+              keyboardType={'email-address'}
+              onChangeText={(value: any) => {
+                this.setState({
+                  userName: value
+                })
+              }}
+              onBlur={() => {
+                this.setState({
+                  userNameError: validate('required', this.state.userName, 'Username')
+                })
+              }}
+              error={this.state.userNameError}/>
 
-          <Text style={[styles.label]}>Password</Text>
-          <TextField
-            ref={input => { this._passwordField = input }}
-            onChangeText={(value: any) => {
-              this.setState({
-                password: value
-              })
-            }}
-            onBlur={() => {
-              this.setState({
-                passwordError: validate('password', this.state.password)
-              })
-            }}
-            secureTextEntry={!this.state.showPassword}
-            error={this.state.passwordError}/>
-          
-          <View style={styles.row}>
-            <CheckBox title='Show password' 
-              containerStyle={[styles.checkBoxContainer, styles.flex]} textStyle={styles.checkBoxLabel}
-              checked={this.state.showPassword} onPress={this.onRememberMeChange}/>
-            <TouchableOpacity onPress={this.onForgetPassword}>
-              <Text style={[styles.label, styles.link]}>Forgot Password</Text>
-            </TouchableOpacity>
-          </View>
-          <ActionButton title="Sign in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
-          <TouchableOpacity onPress={this.onRegister}>
-            <Text style={[styles.label, styles.signup]}>Not an existing user? <Text style={styles.link}>Signup here</Text></Text>
-          </TouchableOpacity>
-        </View> : null }
-      {(this.props.loading || !this.state.showPage)&& <LoadingScreen />}
+            <Text style={[styles.label]}>Password</Text>
+            <TextField
+              ref={input => { this._passwordField = input }}
+              onChangeText={(value: any) => {
+                this.setState({
+                  password: value
+                })
+              }}
+              onBlur={() => {
+                this.setState({
+                  passwordError: validate('password', this.state.password)
+                })
+              }}
+              error={this.state.passwordError}
+              type={FieldType.PASSWORD}/>
+            
+            <View style={styles.row}>
+              <TouchableOpacity onPress={this.onForgetPassword}>
+                <Text style={[styles.link]}>forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.row}>
+              <View style={styles.flex}></View>
+              <View style={styles.flex}>
+                <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
+              </View>
+            </View>
+            <View style={[styles.bottomAction]}>
+              <Text style={styles.bottomActionText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={this.onRegister}>
+                <Text style={[styles.bottomActionText, styles.bold]}>Register Now</Text>
+              </TouchableOpacity>              
+            </View>    
+          </View> 
+        </View>
+      { this.props.loading && <LoadingScreen />}
       </SafeAreaView>
     );
   }
@@ -191,10 +179,12 @@ const styles = StyleSheet.create({
    flex: {
     flex: 1
    },
-   container: {
-    flex: 1,
+   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+   },
+   container: {
+    flex: 1,
     marginLeft: 5,
     marginRight: 5,
     padding: 20
@@ -207,7 +197,7 @@ const styles = StyleSheet.create({
   skip: {
     ...typos.HEADLINE,
     fontWeight: 'normal',
-    color: colors.TEXT_NOTE,
+    color: colors.BLACK,
     padding: 10,
     marginTop: 20,
     marginRight: -10,
@@ -217,16 +207,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
   },
-  image: {
-    width: 102,
-    height: 54,
-  },
   heading: {
-    ...typos.SUBHEADLINE,
+    ...typos.TITLE,
     fontWeight: 'bold',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    textAlign: 'center',
+    marginTop: 40
+  },
+  subHeadig: {
+    ...typos.TITLE_REGULAR,
     marginBottom: 15
   },
   row: {
@@ -235,9 +222,11 @@ const styles = StyleSheet.create({
   },
   label: {
     ...typos.PRIMARY,
-    color: colors.TEXT_NOTE,
+    color: colors.BLACK,
     marginTop: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    marginLeft: 10,
+    fontWeight: 'bold'
   },
   text: {
     ...typos.PRIMARY,
@@ -249,10 +238,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   link: {
-    color: colors.LIGHT_ORANGE,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
-    textDecorationColor: colors.LIGHT_ORANGE
+    ...typos.PRIMARY,
+    color: colors.BLACK,
+    paddingVertical: 10,
   },
   checkBoxContainer: {
     backgroundColor: colors.WHITE,
@@ -273,9 +261,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     paddingHorizontal: 0
   },
-  signup: {
-    textAlign: 'center',
-    marginVertical: 10,
+  bottomAction: {
+    position: "absolute",
+    bottom: 30, 
+    right: 22,
+  }, 
+  bottomActionText: {
+    ...typos.PRIMARY,
+    color: colors.BLACK,
+    textAlign: 'right'
+  },
+  bold: {
+    fontWeight: 'bold'
   }
 });
 

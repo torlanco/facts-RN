@@ -183,7 +183,6 @@ class ForgetPasswordScreen extends React.Component<IProps, IState> {
                   error={this.state.usernameError}/> 
             }                 
             {
-              this.state.otpRequested && 
               <View>
                 <Text style={styles.label}>OTP</Text>
                 <OTPInputView
@@ -255,9 +254,11 @@ const styles = StyleSheet.create({
   },
   label: {
     ...typos.PRIMARY,
-    color: colors.TEXT_NOTE,
+    color: colors.BLACK,
     marginTop: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    marginLeft: 10,
+    fontWeight: 'bold'
   },
   text: {
     ...typos.PRIMARY,
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     borderRadius: 5,
-    marginTop: 30,
+    marginTop: 50,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },
@@ -288,10 +289,9 @@ const styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   link: {
-    color: colors.LIGHT_ORANGE,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
-    textDecorationColor: colors.LIGHT_ORANGE,
+    ...typos.PRIMARY,
+    color: colors.BLACK,
+    paddingVertical: 10,
     marginLeft: 20,
   },
   underlineStyleBase: {

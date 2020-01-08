@@ -3,6 +3,7 @@ import { responsive } from './helper';
 export const typos = {
   LARGE_TITLE: { fontSize: responsive(34), fontFamily: 'SFProText-Semibold' },
   TITLE: { fontSize: responsive(28), fontFamily: 'SFProText-Semibold' },
+  TITLE_REGULAR: { fontSize: responsive(28), fontFamily: 'SFProText-Regular' },
   HEADLINE: { fontSize: responsive(17), fontFamily: 'SFProText-Semibold' },
   BODY: { fontSize: responsive(17), fontFamily: 'SFProText-Regular' },
   CALLOUT: { fontSize: responsive(16), fontFamily: 'SFProText-Regular' },
