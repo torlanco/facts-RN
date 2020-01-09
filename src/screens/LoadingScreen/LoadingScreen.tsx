@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)'
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    zIndex: 10,
   }
 });

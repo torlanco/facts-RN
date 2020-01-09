@@ -1,3 +1,5 @@
+import { CONSTANTS } from "./constant";
+
 const phoneAPI = require('phone');
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
@@ -45,7 +47,7 @@ export const validate = (type: string, value: any, field?: string) => {
             break;
         
         case 'phone': 
-            if (!value || !isValidPhone(value)) 
+            if (!value || !isValidPhone(formatPhone(value))) 
                 error = `Please enter valid phone number.`
             break;
 
@@ -69,3 +71,7 @@ export const formatObject = (obj: any) => {
     }
     return obj;
 }   
+
+export const formatPhone = (phone: any) => {
+    return CONSTANTS.COUNTRY_CODE + phone;
+}

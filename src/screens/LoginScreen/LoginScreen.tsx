@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, BackHandler } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -16,8 +16,9 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Divider } from 'react-native-elements';
 import { validate, CONSTANTS } from '@utils';
+import { ForgotPasswordComponent } from './ForgotPasswordComponent';
 
 // props
 interface ParamType {
@@ -42,6 +43,7 @@ interface IState {
   // Errors
   userNameError: string,
   passwordError: string,
+  showForgotPassword: boolean;
 }
 
 const mapStateToProps = function(state: any) {
@@ -53,6 +55,7 @@ const mapStateToProps = function(state: any) {
 class LoginScreen extends React.Component<IProps, IState> {
   _isMounted = false;
   _passwordField: any;
+  _backHandler: any;
 
   constructor(props: IProps) {
     super(props);
@@ -62,9 +65,30 @@ class LoginScreen extends React.Component<IProps, IState> {
       showPassword: false,
       userNameError: '',
       passwordError: '',
+      showForgotPassword: false
     };
   }
   
+  componentDidMount() {
+    this._backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    this._backHandler.remove()
+  }
+
+  handleBackPress = () => {
+    if (this.state.showForgotPassword) {
+      this.setState({
+        showForgotPassword: false
+      })
+    } else {
+      this.props.navigation.goBack(); 
+    }
+    return true;
+  }
+
+
   onRememberMeChange = () => {
     this.setState({
       showPassword: !this.state.showPassword
@@ -100,7 +124,9 @@ class LoginScreen extends React.Component<IProps, IState> {
   }
 
   onForgetPassword = () => {
-    this.props.navigation.navigate('ForgetPasswordScreen', {});  
+    this.setState({
+      showForgotPassword: true
+    })
   }
 
   onRegister = () => {
@@ -152,22 +178,26 @@ class LoginScreen extends React.Component<IProps, IState> {
             
             <View style={styles.row}>
               <TouchableOpacity onPress={this.onForgetPassword}>
-                <Text style={[styles.link]}>forgot Password?</Text>
+                <Text style={[styles.link]}>forgot password?</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.row}>
-              <View style={styles.flex}></View>
-              <View style={styles.flex}>
-                <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
-              </View>
-            </View>
             <View style={[styles.bottomAction]}>
-              <Text style={styles.bottomActionText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={this.onRegister}>
-                <Text style={[styles.bottomActionText, styles.bold]}>Register Now</Text>
-              </TouchableOpacity>              
+              <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
+              <View style={styles.row}>
+                <View style={[styles.flex, {paddingTop: 8}]}>
+                  <Text style={styles.bottomActionText}>Don't have an account?</Text>
+                  <TouchableOpacity onPress={this.onRegister}>
+                    <Text style={[styles.bottomActionText, styles.boldLink]}>Register Now</Text>
+                  </TouchableOpacity>              
+                </View>
+                <View style={{width: 25}}></View>
+                <View style={styles.flex}>
+                  <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
+                </View>
+              </View>
             </View>    
           </View> 
+          { this.state.showForgotPassword && <ForgotPasswordComponent/> }   
         </View>
       { this.props.loading && <LoadingScreen />}
       </SafeAreaView>
@@ -192,6 +222,7 @@ const styles = StyleSheet.create({
   skipContainer: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
   },
   skip: {
@@ -241,6 +272,8 @@ const styles = StyleSheet.create({
     ...typos.PRIMARY,
     color: colors.BLACK,
     paddingVertical: 10,
+    textDecorationLine: 'underline', 
+    textDecorationStyle: 'solid'
   },
   checkBoxContainer: {
     backgroundColor: colors.WHITE,
@@ -263,16 +296,23 @@ const styles = StyleSheet.create({
   },
   bottomAction: {
     position: "absolute",
-    bottom: 30, 
+    bottom: 20, 
+    left: 22,
     right: 22,
+    zIndex: 1,
+    backgroundColor: colors.WHITE
   }, 
   bottomActionText: {
     ...typos.PRIMARY,
     color: colors.BLACK,
-    textAlign: 'right'
+    textAlign: 'right',
+    margin: 0,
+    padding: 0,
   },
-  bold: {
-    fontWeight: 'bold'
+  boldLink: {
+    fontWeight: 'bold',
+    textDecorationLine: 'underline', 
+    textDecorationStyle: 'solid'
   }
 });
 

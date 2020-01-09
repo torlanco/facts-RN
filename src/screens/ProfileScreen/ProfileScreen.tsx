@@ -119,7 +119,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
         email: this.props.loggedInUser.email,
         firstName: this.props.loggedInUser.firstName,
         lastName: this.props.loggedInUser.lastName,
-        phone: this.props.loggedInUser.phone,
+        phone: this.props.loggedInUser.phone ? this.props.loggedInUser.phone.substring(2) : '',
       })
     }
   }

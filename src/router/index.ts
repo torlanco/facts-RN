@@ -12,7 +12,6 @@ import {
   AdvertisementDeckSwiperScreen,
   SelectCategoryScreen,
   LoginScreen,
-  ForgetPasswordScreen,
   RegisterScreen,
   ResetPasswordScreen,
   AutoSuggestScreen,
@@ -23,6 +22,7 @@ import {
   FullImageScreen,
   ProfileScreen,
   WelcomeScreen,
+  VerifyOTPScreen,
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -138,7 +138,7 @@ const AuthNavigator = createStackNavigator(
         WelcomeScreen: {screen: WelcomeScreen},
         LoginScreen: {screen: LoginScreen},
         RegisterScreen: {screen: RegisterScreen},
-        ForgetPasswordScreen: {screen: ForgetPasswordScreen},
+        VerifyOTPScreen: {screen: VerifyOTPScreen},
         ResetPasswordScreen: {screen: ResetPasswordScreen},
     },
     {

@@ -160,6 +160,46 @@ export function user(
         loading: false,
       };  
 
+    // REQUEST OTP 
+    case Types.REQUEST_RESET_PASSWORD_OTP:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.REQUEST_RESET_PASSWORD_OTP_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
+    case Types.REQUEST_RESET_PASSWORD_OTP_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };  
+
+    // Verify OTP
+    case Types.VERIFY_RESET_PASSWORD_OTP:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.VERIFY_RESET_PASSWORD_OTP_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
+    case Types.VERIFY_RESET_PASSWORD_OTP_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };  
+
     default:
         return state;
   }

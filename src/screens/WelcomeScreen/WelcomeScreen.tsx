@@ -111,13 +111,15 @@ class WelcomeScreen extends React.Component<IProps, IState> {
             <View style={[styles.row, styles.bottomAction]}>
               <View style={styles.flex}>
                 <ActionButton title="Sign up" inverted={isSignUpSelected} onPress={this.onSignUp} 
-                  style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle} invertedTitleStyle={styles.buttonTextStyle}
+                  style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle}
+                  titleStyle={styles.buttonTextStyle} invertedTitleStyle={styles.invertedButtonTextStyle}
                   invertedStyle={styles.invertedButtonContainerStyle} invertedButtonStyle={styles.invertedButtonStyle}/>          
               </View>
               <View style={{width: 30}}></View>
               <View style={styles.flex}>
                 <ActionButton title="Log in" inverted={!isSignUpSelected} onPress={this.onLogIn} 
-                  style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle} invertedTitleStyle={styles.buttonTextStyle}
+                  style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle} 
+                  titleStyle={styles.buttonTextStyle} invertedTitleStyle={styles.invertedButtonTextStyle}
                   invertedStyle={styles.invertedButtonContainerStyle} invertedButtonStyle={styles.invertedButtonStyle}/>          
               </View>
             </View>    
@@ -231,11 +233,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BLACK,
   },
   buttonTextStyle: {
+    color: colors.BLACK,
+  },
+  invertedButtonTextStyle: {
     color: colors.WHITE
   },
   bottomAction: {
     position: "absolute",
-    bottom: 30, 
+    bottom: 20, 
     right: 22,
   }, 
 });

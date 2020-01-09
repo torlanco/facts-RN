@@ -10,7 +10,7 @@ export const colors = {
     PRIMARY_LIGHT: '#FFE11A',
     LIGHTEST_GRAY: '#F6F6F6',
     LIGHTER_GRAY: '#F1F0F5',
-    LIGHT_GRAY: '#EEF0F2',
+    LIGHT_GRAY: '#EBEBEB',
     DARK_GRAY: '#595758',
     MID_GRAY: '#7A7F83',
     LIGHT_GREEN: '#84D157',
@@ -19,5 +19,5 @@ export const colors = {
     DISABLED_GRAY: '#E3E6E8',
     ERROR: '#cc0000',
     SUCCESS: '#668741',
-    TRANSPARENT_BLACK: '#FF000000',
+    TRANSPARENT_BLACK: '#E3E6E8',
 };

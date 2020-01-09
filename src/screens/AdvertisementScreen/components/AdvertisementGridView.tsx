@@ -8,10 +8,12 @@ import {
 } from 'react-native';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { AdvertisementGridItem } from './AdvertisementGridItem';
+import { IOutlet } from '@interfaces/outlet';
 
 interface IOwnProps {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
   onItemPress?: Function
+  outlet: IOutlet.IOutletData;
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
@@ -42,13 +44,13 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
           contentContainerStyle={styles.list}
           dataSource={datasource.cloneWithRows(sectionOneAdvertisement)}
           keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id}
-          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}
+          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
           enableEmptySections={true}/>
         <ListView
           contentContainerStyle={styles.list}
           dataSource={datasource.cloneWithRows(sectionTwoAdvertisement)}
           keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id}
-          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress}/>}
+          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
           enableEmptySections={true}/>
       </ScrollView>
     </View>

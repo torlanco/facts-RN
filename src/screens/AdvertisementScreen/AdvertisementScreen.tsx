@@ -124,8 +124,9 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   };
 
   getView() {
+    const { outlet } = this.props.navigation.state.params;
     return this.state.viewType === ViewType.Grid
-      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress}></AdvertisementGridView>
+      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress} outlet={outlet}></AdvertisementGridView>
       : <AdvertisementListView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress}></AdvertisementListView>
   }
 
@@ -136,7 +137,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
-            <HeaderBar title={'Features'} dateRange={dateRange} titleStyle={{textAlign: 'left'}}></HeaderBar>
+            <HeaderBar title={'FEATURES'}></HeaderBar>
             <AdvertisementFilter viewType={this.state.viewType}
               handleViewTypeChange={this.onViewTypeChange}
               typeList={this.props.categories || []} type={this.state.category}

@@ -17,6 +17,7 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';
+import { Divider } from 'react-native-elements';
 
 // props
 interface IOwnProps {
@@ -212,25 +213,23 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 }}
                 error={this.state.passwordError}
                 type={FieldType.PASSWORD}/>
-
-              <View style={styles.row}>
-                <View style={styles.flex}></View>
-                <View style={styles.flex}>
-                  <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
-                </View>
-              </View>
-
-              <View style={styles.row}>
-                <View style={styles.flex}></View>
-                <View style={styles.flex}>
-                  <Text style={styles.bottomActionText}>Already have an account?</Text>
-                  <TouchableOpacity onPress={this.onLogin}>
-                    <Text style={[styles.bottomActionText, styles.bold]}>Log in</Text>
-                  </TouchableOpacity> 
-                </View>
-              </View>                    
             </View>
           </ScrollView>
+          <View style={[styles.bottomAction]}>
+            <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
+            <View style={styles.row}>
+              <View style={[styles.flex, {paddingTop: 8}]}>
+                <Text style={styles.bottomActionText}>Have an account?</Text>
+                <TouchableOpacity onPress={this.onLogin}>
+                  <Text style={[styles.bottomActionText, styles.boldLink]}>Log in</Text>
+                </TouchableOpacity> 
+              </View>
+              <View style={{width: 30}}></View>
+              <View style={styles.flex}>
+                <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
+              </View>
+            </View>
+          </View>    
         </View>
         {(this.props.loading) && <LoadingScreen />}
       </SafeAreaView>
@@ -250,6 +249,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     paddingHorizontal: 20,
+    paddingBottom: 100
   },
   imageContainer: {
     marginVertical: 5,
@@ -276,8 +276,6 @@ const styles = StyleSheet.create({
   row: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 20,
-    marginBottom: 20,
   },
   label: {
     ...typos.PRIMARY,
@@ -310,6 +308,8 @@ const styles = StyleSheet.create({
     ...typos.PRIMARY,
     color: colors.BLACK,
     paddingVertical: 10,
+    textDecorationLine: 'underline', 
+    textDecorationStyle: 'solid'
   },
   checkBoxContainer: {
     backgroundColor: colors.WHITE,
@@ -324,13 +324,25 @@ const styles = StyleSheet.create({
     color: colors.TEXT_NOTE,
     fontWeight: 'normal'
   },
+  bottomAction: {
+    position: "absolute",
+    bottom: 20, 
+    left: 22,
+    right: 22,
+    zIndex: 1,
+    backgroundColor: colors.WHITE
+  }, 
   bottomActionText: {
     ...typos.PRIMARY,
     color: colors.BLACK,
-    textAlign: 'right'
+    textAlign: 'right',
+    margin: 0,
+    padding: 0,
   },
-  bold: {
-    fontWeight: 'bold'
+  boldLink: {
+    fontWeight: 'bold',
+    textDecorationLine: 'underline', 
+    textDecorationStyle: 'solid'
   }
 });
 

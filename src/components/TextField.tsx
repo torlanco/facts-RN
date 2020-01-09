@@ -8,6 +8,7 @@ export enum FieldType {
     EMAIL,
     PASSWORD,
     TEXT,
+    PHONE
 }
 
 interface IActionButtonProps {

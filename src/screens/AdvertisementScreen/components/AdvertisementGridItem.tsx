@@ -11,10 +11,12 @@ import { colors, typos } from '@styles';
 import { Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
+import { IOutlet } from '@interfaces/outlet';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
-  onItemPress?: Function
+  onItemPress?: Function,
+  outlet: IOutlet.IOutletData;
 }
 type IProps = IOwnProps;
 
@@ -46,22 +48,28 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
+    const { advertisement, outlet } = this.props;
+    const {id, type, brand, sprice, rprice, sizeMeasure } = advertisement;
     const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <Card containerStyle={[styles.container, {width: itemWidth}]}>
-          <Card containerStyle={[styles.container, styles.imageContainer]}>
+          <Card containerStyle={[styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
               <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
           </Card>
-          <Text style={[styles.type, styles.padding]}>{type}</Text>
-          <Text style={[styles.name, styles.padding]}>{brand}</Text>
-          <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
-          <View style={styles.priceContainer}>
-            <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-            <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+          <View style={styles.details}>
+            <View style={styles.row}>
+              <Text style={[styles.boldText, styles.padding, styles.flex]}>{brand}</Text>
+              <Text style={[styles.boldText, styles.padding]}>${sprice}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={[styles.pieces, styles.padding, styles.flex]}>{sizeMeasure}</Text>
+              <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+            </View>
+            <Text style={[styles.type, styles.padding]}>{type}</Text>
+            <Text style={[styles.type, styles.padding]}>{outlet.outlet}</Text>
           </View>
         </Card>
       </TouchableOpacity>
@@ -82,10 +90,18 @@ const styles = StyleSheet.create({
     shadowColor: colors.LIGHT_BLUE,
     elevation: 3,
     shadowRadius: 10,
+    padding: 0, 
   },
   imageContainer: {
-    padding: 0,
+    borderRadius: 0,
+    padding: 15,
     margin: 0,
+    backgroundColor: colors.WHITE,
+    borderWidth: 0,
+    borderTopRightRadius: 10, 
+    borderTopLeftRadius: 10,
+    shadowOpacity: 0,
+    elevation: 0,
   },
   padding: {
     padding: 2,
@@ -95,14 +111,13 @@ const styles = StyleSheet.create({
     height: 'auto',
     borderRadius: 10,
   },
+  boldText: {
+    ...typos.HEADLINE,
+    color: colors.TEXT_PRIMARY
+  },
   type: {
     ...typos.SECONDARY,
     color: colors.TEXT_SECONDARY,
-    paddingTop: 10
-  },
-  name: {
-    ...typos.HEADLINE,
-    color: colors.TEXT_PRIMARY
   },
   pieces: {
     ...typos.SECONDARY,
@@ -121,8 +136,23 @@ const styles = StyleSheet.create({
   },
   originalPrice: {
     ...typos.SMALL,
-    color: colors.LIGHT_ORANGE  
+    textDecorationLine: 'line-through', 
+    textDecorationStyle: 'solid'
   },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  flex: {
+    flex: 1
+  },
+  details: {
+    backgroundColor: colors.LIGHT_GRAY, 
+    paddingVertical: 15, 
+    paddingHorizontal: 10,
+    borderBottomRightRadius: 10, 
+    borderBottomLeftRadius: 10
+  }
 });
 
 export { AdvertisementGridItem };

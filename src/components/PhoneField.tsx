@@ -34,7 +34,7 @@ class PhoneField extends React.Component<IProps, IState> {
             value: value
         }, () => {
             if (this.props.onChangeText) {
-                this.props.onChangeText(CONSTANTS.COUNTRY_CODE + value);
+                this.props.onChangeText(value);
             }
         });
     }

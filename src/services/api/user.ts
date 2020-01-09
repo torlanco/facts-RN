@@ -1,5 +1,6 @@
 import HTTP from '../http';
 import { IUser } from '@interfaces/user';
+import { formatPhone } from '@utils';
 
 export const login = (username?: string, password?: string) => {
   return HTTP.post('auth/signin', {
@@ -23,19 +24,28 @@ export const resetPassword = (token?: string, password?: string, confirmPassword
 };
 
 export const register = (userData: IUser.IUserData) => {
+  userData.phone = formatPhone(userData.phone)
   return HTTP.post('auth/signup', userData);
 };
 
 export const requestResetPasswordOtp = (phone?: string) => {
   return HTTP.post('auth/send-reset-password-otp', {
-    phone
+    phone: formatPhone(phone)
   });
 };
+
+export const verifyResetPasswordOtp = (phone?: string, otp?: string) => {
+  return HTTP.post('auth/verify-reset-password-otp', {
+    phone: formatPhone(phone),
+    otp
+  });
+}
 
 export const fetchUserInfo = (token: string) => {
   return HTTP.get('me', { headers: { Authorization: `Bearer ${token}` } });
 };
 
 export const updateUserInfo = (token: string, userData: IUser.IUserData) => {
+  userData.phone = formatPhone(userData.phone)
   return HTTP.put('users', userData, { headers: { Authorization: `Bearer ${token}` } });
 };

@@ -4,7 +4,7 @@ export * from './AdvertisementScreen/AdvertisementScreen';
 export * from './SelectCategoryScreen/SelectCategoryScreen';
 export * from './AdvertisementDeckSwiperScreen/AdvertisementDeckSwiperScreen';
 export * from './LoginScreen/LoginScreen';
-export * from './ForgetPasswordScreen/ForgetPasswordScreen';
+export * from './VerifyOTPScreen/VerifyOTPScreen';
 export * from './RegisterScreen/RegisterScreen';
 export * from './ResetPasswordScreen/ResetPasswordScreen';
 export * from './AutoSuggestScreen/AutoSuggestScreen';
