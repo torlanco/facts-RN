@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 // UI
-import {FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, ListView, TouchableOpacity} from 'react-native';
+import {Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 // Components
-import { ActionButton, HeaderBar } from '@components';
+import { HeaderBar } from '@components';
 
 // Interfaces
 import { IOutlet } from '@interfaces/outlet';
@@ -13,11 +13,9 @@ import { NavigationInjectedProps, ScrollView } from 'react-navigation';
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
-import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { OutletScreen } from '../OutletScreen/OutletScreen';
 import { typos, colors } from '@styles';
 import { Categories } from './components/Categories';
-import { AdvertisementGridView } from '../AdvertisementScreen/components/AdvertisementGridView';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { PopularSpecials } from './components/PopularSpecials';
 
@@ -52,7 +50,11 @@ class HomeScreen extends React.Component<IProps, IState> {
     onPopularSpecialsItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
         this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement });    
     }
- 
+
+    redirectToOutletScreen = () => {
+        this.props.navigation.navigate('OutletScreen');
+    }
+
     public render() {
         return (
             <SafeAreaView style={{flex: 1}}>
@@ -79,13 +81,13 @@ class HomeScreen extends React.Component<IProps, IState> {
                                         <Text style={styles.note}>Find your outlets containing shoppers</Text>
                                     </View>
                                     {   this.props.outlets && this.props.outlets.length > 4 &&
-                                        <TouchableOpacity activeOpacity={0.9}>
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => {this.redirectToOutletScreen()}}>
                                             <Text style={styles.seeall}>SEE All</Text>
                                         </TouchableOpacity>                        
                                     }
                                 </View>
                             </View>
-                            <View style={{marginTop: -30, flex: 1}  }>
+                            <View style={{flex: 1}}>
                                 <OutletScreen onlyOutlets={true}/>
                             </View>
 
@@ -98,7 +100,8 @@ class HomeScreen extends React.Component<IProps, IState> {
                                     </View>
                                 </View>
                             </View>
-                            <PopularSpecials/>        
+                            <PopularSpecials/> 
+  
                         </View>
                     </ScrollView>
                 </View>
@@ -111,7 +114,8 @@ const styles = StyleSheet.create({
     container: {
         marginTop: Platform.OS === "android" ? 0 : -5,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.LIGHTEST_GRAY
     },
     mainContainer: {
         flex: 1

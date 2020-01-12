@@ -18,7 +18,7 @@ export const typos = {
   
   BIGTEXT_BOLD: { fontSize: responsive(32), fontFamily: 'Montserrat-SemiBold' },
   BIGTEXT: { fontSize: responsive(32), fontFamily: 'Montserrat-Light' },
-  HEADLINE: { fontSize: responsive(25), fontFamily: 'Montserrat-Regular' },
+  HEADLINE: { fontSize: responsive(25), fontFamily: 'Montserrat-Medium' },
   SUBHEADLINE: { fontSize: responsive(20), fontFamily: 'Montserrat-ExtraBold' },
   LARGE_TITLE: { fontSize: responsive(18), fontFamily: 'Montserrat-ExtraBold' },
   TITLE: { fontSize: responsive(16), fontFamily: 'Montserrat-ExtraBold' },

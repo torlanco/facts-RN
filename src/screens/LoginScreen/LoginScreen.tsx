@@ -194,7 +194,7 @@ class LoginScreen extends React.Component<IProps, IState> {
                   <View style={styles.flex}></View>
                 </View>
                 <View style={styles.flex}>
-                  <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
+                  <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} invertedStyle={styles.buttonStyle}/>          
                 </View>
               </View>
             </View>    
@@ -291,8 +291,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   buttonStyle: {
-    borderRadius: 5,
-    marginTop: 30,
+    borderRadius: 0,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },

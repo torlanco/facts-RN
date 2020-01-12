@@ -147,7 +147,7 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
             <View style={styles.row}>
               <View style={styles.flex}></View>
               <View style={styles.flex}>
-                <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} style={styles.buttonStyle}/>
+                <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} invertedStyle={styles.buttonStyle}/>
               </View>
             </View>
 
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   buttonStyle: {
-    borderRadius: 5,
+    borderRadius: 0,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },

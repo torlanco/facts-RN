@@ -33,6 +33,7 @@ interface IState {
   userName: string,
   email: string;
   password: string;
+  cpassword: string;
   firstName: string,
   lastName: string,
   showPassword: boolean,
@@ -41,6 +42,7 @@ interface IState {
   userNameError: string,
   emailError: string,
   passwordError: string,
+  cpasswordError: string,
   firstNameError: string,
   lastNameError: string,
   phoneError: string,
@@ -62,6 +64,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
       userName: '',
       email: '',
       password: '',
+      cpassword: '',
       firstName: '',
       lastName: '',
       showPassword: false,
@@ -70,6 +73,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
       userNameError: '',
       emailError: '',
       passwordError: '',
+      cpasswordError: '',
       firstNameError: '',
       lastNameError: '',
       phoneError: '',
@@ -85,11 +89,12 @@ class RegisterScreen extends React.Component<IProps, IState> {
       userNameError: validate('required', this.state.userName, 'Username'),
       emailError: validate('email', this.state.email),
       passwordError: validate('password', this.state.password),
+      cpasswordError: validate('cpassword', this.state.cpassword, undefined, this.state.password),
       firstNameError: validate('required', this.state.firstName, 'First name'),
       lastNameError: validate('required', this.state.lastName, 'Last name'),
       phoneError: validate('required', this.state.phone, 'Phone'),
     });
-    return !(this.state.userNameError || this.state.emailError || this.state.passwordError 
+    return !(this.state.userNameError || this.state.emailError || this.state.passwordError || this.state.cpasswordError
       || this.state.firstNameError || this.state.lastNameError || this.state.phoneError);
   }
 
@@ -103,7 +108,8 @@ class RegisterScreen extends React.Component<IProps, IState> {
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      phone: this.state.phone
+      phone: this.state.phone,
+      cpassword: this.state.cpassword,
     }
     const response: any = await this.props.register(userData);
     if (response.success) {
@@ -213,6 +219,21 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 }}
                 error={this.state.passwordError}
                 type={FieldType.PASSWORD}/>
+              
+              <Text style={styles.label}>Confirm Password</Text>
+              <TextField
+                onChangeText={(value: any) => {
+                  this.setState({
+                    cpassword: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    cpasswordError: validate('cpassword', this.state.cpassword, undefined, this.state.password)
+                  })
+                }}
+                error={this.state.cpasswordError}
+                type={FieldType.PASSWORD}/>
             </View>
           </ScrollView>
           <View style={[styles.bottomAction]}>
@@ -228,7 +249,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                   <View style={styles.flex}></View>
               </View>
               <View style={styles.flex}>
-                <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
+                <ActionButton title="Register" inverted={true} onPress={this.onSignUp} invertedStyle={styles.buttonStyle}/>
               </View>
             </View>
           </View>    
@@ -297,8 +318,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   buttonStyle: {
-    borderRadius: 5,
-    marginTop: 20,
+    borderRadius: 0,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },

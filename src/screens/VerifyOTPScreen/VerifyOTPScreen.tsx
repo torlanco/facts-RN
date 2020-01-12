@@ -145,7 +145,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
               <View style={styles.flex}>
               </View>
               <View style={styles.flex}>                  
-                <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} style={styles.buttonStyle}/>
+                <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
               </View>
             </View>    
           </View>
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   buttonStyle: {
-    borderRadius: 5,
+    borderRadius: 0,
     marginTop: 50,
     marginHorizontal: 0,
     paddingHorizontal: 0

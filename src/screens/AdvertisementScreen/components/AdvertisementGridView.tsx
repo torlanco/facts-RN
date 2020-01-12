@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   container: {
-    flexDirection: 'row',
+    flexDirection: 'row', 
+    paddingHorizontal: 15,
   },
   list: {
     flex: 1,

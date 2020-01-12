@@ -16,8 +16,6 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
-import { CheckBox } from 'react-native-elements';
-import { validate, CONSTANTS } from '@utils';
 
 // props
 interface ParamType {
@@ -132,17 +130,17 @@ class WelcomeScreen extends React.Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-   flex: {
+  flex: {
     flex: 1
-   },
-   mainContainer: {
+  },
+  mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-   },
-   container: {
+    backgroundColor: colors.PRIMARY
+  },
+  container: {
     flex: 1,
     padding: 20,
-    backgroundColor: colors.PRIMARY
   },
   skipContainer: {
     display: 'flex',

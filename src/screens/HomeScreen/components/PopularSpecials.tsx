@@ -59,7 +59,10 @@ class PopularSpecials extends React.Component<IProps, IState> {
             <SafeAreaView style={{flex: 1}}>
                 <View>
                     { this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
-                    <AdvertisementGridView advertisementList={this.props.trendingFeatures || []} onItemPress={this.onPopularSpecialsItemPress}/>
+                    {
+                        this.props.trendingFeatures && this.props.trendingFeatures.length > 0 && !this.state.loading &&
+                        <AdvertisementGridView advertisementList={this.props.trendingFeatures} onItemPress={this.onPopularSpecialsItemPress}/>
+                    }
                 </View>
             </SafeAreaView>
         )

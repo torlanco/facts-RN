@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         marginLeft: '2.5%',
         marginRight: '2.5%',
         borderRadius: 10,
-        marginTop: responsive(10),
+        marginBottom: 10,
         padding: 10,
         shadowOpacity: 0.1,
         shadowOffset: {

@@ -50,11 +50,11 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
   public render() {
     const { advertisement, outlet } = this.props;
     const {id, type, brand, sprice, rprice, sizeMeasure } = advertisement;
-    const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
+    const itemWidth = (Dimensions.get('window').width >> 1) - 22;
     const marginTopofSize = brand && brand.length > 9 ? 0 : -12;
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
-        <Card containerStyle={[styles.container, {width: itemWidth}]}>
+        <View style={[styles.container, {width: itemWidth}]}>
           <Card containerStyle={[styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
@@ -72,7 +72,7 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
             <Text style={[styles.type]}>{type}</Text>
             <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
           </View>
-        </Card>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -85,13 +85,15 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     shadowOpacity: 0.1,
     shadowOffset: {
-        width: 0,
-        height: 5
+      width: 0,
+      height: 2
     },
     shadowColor: colors.LIGHT_BLUE,
-    elevation: 3,
-    shadowRadius: 10,
+    elevation: 1,
+    shadowRadius: 3,
     padding: 0, 
+    marginTop: 10,
+    marginHorizontal: '2.5%',
   },
   imageContainer: {
     borderRadius: 0,
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
   },
   outlet: {
     ...typos.SMALL_BOLD,
+    fontWeight: 'bold',
     color: colors.TEXT_PRIMARY
   },
   sellprice: {
