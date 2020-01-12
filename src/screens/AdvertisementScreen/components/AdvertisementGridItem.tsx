@@ -63,10 +63,10 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
           <View style={styles.details}>
             <View style={styles.row}>
               <Text style={[styles.boldText, styles.flex]}>{brand}</Text>
-              <View>
+            </View>
+            <View style={[styles.row, {flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}]}>
                 <Text style={[styles.sellprice]}>${sprice}</Text>
                 <Text style={[styles.regularPrice]}>${rprice}</Text>  
-              </View>
             </View>
             <Text style={[styles.size, styles.flex, { marginTop: marginTopofSize }]}>{sizeMeasure}</Text>
             <Text style={[styles.type]}>{type}</Text>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 0,
-    padding: 10,
+    // padding: 10,
     margin: 0,
     backgroundColor: colors.WHITE,
     borderWidth: 0,
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
   boldText: {
     ...typos.TITLE,
     color: colors.TEXT_PRIMARY,
-    paddingRight: 5
   },
   type: {
     ...typos.SMALL,

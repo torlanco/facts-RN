@@ -60,21 +60,12 @@ class HomeScreen extends React.Component<IProps, IState> {
                     <HeaderBar title={'Home'}/>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.mainContainer}>
-                            {/* CATEGORIES */}
-                            <View style={styles.componentWrapper}>
-                                <View style={styles.row}>
-                                    <View style={styles.flex}>
-                                        <Text style={styles.highlight}>CATEGORIES</Text>
-                                        <Text style={styles.note}>Find your products in categories</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <Categories />
+                            
 
                             {/* OUTLETS */}
                             <View style={[styles.componentWrapper, {marginTop: 30}]}>
                                 <View style={styles.row}>
-                                    <View style={styles.flex}>
+                                    <View style={[styles.flex, {marginBottom: 50}]}>
                                         <Text style={styles.highlight}>OUTLETS</Text>
                                         <Text style={styles.note}>Find your outlets containing shoppers</Text>
                                     </View>
@@ -85,6 +76,7 @@ class HomeScreen extends React.Component<IProps, IState> {
                                     }
                                 </View>
                             </View>
+                            
                             <View style={{marginTop: -30, flex: 1}  }>
                                 <OutletScreen onlyOutlets={true}/>
                             </View>
