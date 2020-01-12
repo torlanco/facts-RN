@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import { typos, colors, responsive } from '@styles';
 
 // Component
@@ -13,11 +13,12 @@ import { IAdvertisement } from '@interfaces/advertisement';
 import { IShopper } from '@interfaces/shopper';
 import { IOutlet } from '@interfaces/outlet';
 
-import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
 import { Text, Divider, Icon, Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { formatDate } from '@utils';
-import { ScrollView } from 'react-native-gesture-handler';
+import { mapDispatchToProps } from '@actions/advertisement';
+import { connect } from "react-redux";
 
 // props
 interface ParamType {
@@ -33,11 +34,20 @@ interface IOwnProps {
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
-  IAdvertisement.StateToProps;
+  IAdvertisement.StateToProps &
+  IAdvertisement.DispatchFromProps;
 
 // state
 interface IState {
   featureImage: any,
+}
+
+const mapStateToProps = function(state: any){
+  return {
+    loading: state.outlet.loading ||
+      state.shopper.loading ||
+      state.advertisement.loading
+  }
 }
 
 class AdvertisementDetailScreen extends React.Component<IProps, IState> {
@@ -60,6 +70,13 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
           });
       }, err => {});
     }
+    this.incrementFeatureViewCount();
+  }
+
+  incrementFeatureViewCount = async () => {
+    const { advertisement } = this.props.navigation.state.params;
+    const response = await this.props.incrementFeaturesViewCount(advertisement.id || '');
+    console.log(response);
   }
 
   componentWillUnmount() {
@@ -84,46 +101,48 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                   <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
                   <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
               </Card>
-            </Card>
-            <View style={styles.details}>
-              <View style={{paddingHorizontal: 15}}>    
-                <View style={styles.row}>
-                  <Text style={[styles.headingText, styles.flex]}>{brand}</Text>
+              <View style={styles.details}>    
+                <Text style={[styles.headingText, styles.flex]}>{brand}</Text>
+                <View style={[styles.row, { alignSelf: 'flex-end' }]}>
+                  <Text style={[styles.outlet, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
                   <Icon
                     name='map-pin'
                     type='feather'
                     color={colors.LIGHT_ORANGE}
                     size={14}
                     containerStyle={styles.iconContainer} />
-                    <Text style={[styles.text, styles.bold]}>{outlet?.outlet}</Text>
                 </View>
                 <Text style={[styles.text, styles.padding, styles.flex]}>{sizeMeasure}</Text>
                 <Text style={[styles.text, styles.padding]}>{type}</Text>
-              </View> 
-
-              <Divider style={styles.divider}/>
-              <View style={[styles.row, {paddingHorizontal: 15}]}>
-                <View style={{marginRight: 20}}>
-                  <Text style={styles.label}>Special Price</Text>
-                  <Text style={styles.headingText}>${sprice}</Text>
+                
+                <Divider style={styles.divider}/>
+                <View style={[styles.row]}>
+                  <View style={{marginRight: 20}}>
+                    <Text style={styles.label}>Special Price</Text>
+                    <Text style={styles.headingText}>${sprice}</Text>
+                  </View>
+                  <Divider style={styles.divider}/>
+                  <View>
+                    <Text style={styles.label}>Regular Price</Text>
+                    <Text style={[styles.headingText, styles.disabled]}>${rprice}</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={styles.label}>Regular Price</Text>
-                  <Text style={[styles.headingText, styles.disabled]}>${rprice}</Text>
-                </View>
-              </View>
 
-              { outlet &&  
                 <View>
                   <Divider style={styles.divider}/>
-                    <View style={{paddingHorizontal: 15}}>
-                    <Text style={styles.label}>Outlet</Text>
-                    <Text style={styles.text}>{outlet.outlet}</Text>
-                    <Text style={styles.label}>Validity</Text>
-                    <Text style={[styles.text]}>Valid from <Text style={styles.bold}>{formatDate(outlet.earliestStartDate)} until</Text> {formatDate(outlet.latestEndDate)}</Text>
-                  </View> 
-                </View> }
-            </View>
+                    <View>
+                    <Text style={[styles.label]}>Outlet</Text>
+                    <Text style={[styles.text, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
+                    { outlet &&  
+                      <View>
+                        <Text style={styles.label}>Validity</Text>
+                        <Text style={[styles.text]}>Valid from <Text style={styles.bold}>{formatDate(outlet.earliestStartDate)} until</Text> {formatDate(outlet.latestEndDate)}</Text>
+                      </View> 
+                    }
+                  </View>
+                </View>
+              </View>
+            </Card>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -138,7 +157,8 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   mainContainer: {
-    borderRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     borderWidth: 0,
     shadowOpacity: 0,
     shadowOffset: {
@@ -148,16 +168,15 @@ const styles = StyleSheet.create({
     shadowColor: colors.LIGHTEST_GRAY,
     elevation: 0,
     shadowRadius: 0,
-    padding: 0, 
+    padding: 0,
   },
   imageContainer: {
-    borderRadius: 0,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     padding: 15,
     margin: 0,
     backgroundColor: colors.WHITE,
     borderWidth: 0,
-    borderTopRightRadius: 10, 
-    borderTopLeftRadius: 10,
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -167,7 +186,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
-    borderRadius: 10,
   },
   boldText: {
     ...typos.HEADLINE,
@@ -177,12 +195,8 @@ const styles = StyleSheet.create({
     ...typos.SECONDARY,
     color: colors.TEXT_SECONDARY,
   },
-  pieces: {
-    ...typos.SECONDARY,
-    color: colors.TEXT_SECONDARY
-  },
   headingText: {
-    ...typos.HEADLINE1,
+    ...typos.SUBHEADLINE,
     color: colors.TEXT_PRIMARY  
   },
   disabled: {
@@ -199,9 +213,7 @@ const styles = StyleSheet.create({
   details: {
     backgroundColor: colors.LIGHTEST_GRAY, 
     paddingVertical: 15, 
-    paddingHorizontal: 20 ,
-    borderBottomRightRadius: 10, 
-    borderBottomLeftRadius: 10
+    paddingHorizontal: 15 ,
   },
   label: {
     ...typos.PRIMARY,
@@ -210,7 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   text: {
-    ...typos.PRIMARY,
+    ...typos.PRIMARY_LIGHT,
     color: colors.BLACK,
   },
   bold: {
@@ -220,8 +232,17 @@ const styles = StyleSheet.create({
     marginTop: 10 
   },
   iconContainer: {
-    width: responsive(40),
-  },    
+    width: responsive(30),
+    marginRight: -5,
+  }, 
+  link: {
+    textDecorationLine: 'underline', 
+    textDecorationStyle: 'solid'
+  },
+  outlet: {
+    ...typos.PRIMARY_MEDIUM
+  }   
 });
 
-export { AdvertisementDetailScreen };
+const AdvertisementDetailScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(AdvertisementDetailScreen);
+export { AdvertisementDetailScreenWrapper as AdvertisementDetailScreen }

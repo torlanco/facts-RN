@@ -1,7 +1,7 @@
 export namespace IAdvertisement {
 
     export interface IAdvertisementData {
-        id?: number;
+        id?: string;
         copypage?: number;
         category?: string;
         type?: string;
@@ -23,14 +23,16 @@ export namespace IAdvertisement {
     }   
 
     export interface StateToProps {
-        error: string | boolean;
-        loading: boolean;
-        advertisements: IAdvertisementData[] | undefined;
-        categories: string[] | undefined;
-        advertisementsForReview: IAdvertisementData[] | undefined;
-        categoriesForReview: string[] | undefined;
-        brands: string[] | undefined;
-        featuresByBrands: IAdvertisementData[] | undefined;
+        error?: string | boolean;
+        loading?: boolean;
+        advertisements?: IAdvertisementData[] | undefined;
+        categories?: string[] | undefined;
+        advertisementsForReview?: IAdvertisementData[] | undefined;
+        categoriesForReview?: string[] | undefined;
+        brands?: string[] | undefined;
+        featuresByBrands?: IAdvertisementData[] | undefined;
+        trendingFeatures?: IAdvertisementData[] | undefined;
+        homeCategories?: any[] | undefined;
     }
     
     export interface DispatchFromProps {
@@ -40,6 +42,9 @@ export namespace IAdvertisement {
         updateAdvertisementsForReview(advertisement: IAdvertisement.IAdvertisementData): Function;
         fetchBrands(value?: string): Function;
         fetchFeaturesByBrand(brand?: string): Function;
+        fetchTrendingFeatures(): Function;
+        incrementFeaturesViewCount(id?: string): Function;
+        fetchHomeCategories(): Function;  
     }
 
 }

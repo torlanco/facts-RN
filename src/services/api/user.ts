@@ -24,19 +24,18 @@ export const resetPassword = (token?: string, password?: string, confirmPassword
 };
 
 export const register = (userData: IUser.IUserData) => {
-  userData.phone = formatPhone(userData.phone)
   return HTTP.post('auth/signup', userData);
 };
 
 export const requestResetPasswordOtp = (phone?: string) => {
   return HTTP.post('auth/send-reset-password-otp', {
-    phone: formatPhone(phone)
+    phone
   });
 };
 
 export const verifyResetPasswordOtp = (phone?: string, otp?: string) => {
   return HTTP.post('auth/verify-reset-password-otp', {
-    phone: formatPhone(phone),
+    phone,
     otp
   });
 }

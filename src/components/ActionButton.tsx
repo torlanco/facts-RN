@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         paddingVertical: 2
     },
     textStyle: {
+        ...typos.PRIMARY,
         textTransform: 'uppercase'
     }
 });

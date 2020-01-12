@@ -31,10 +31,13 @@ export default class App extends React.Component<Props, State> {
     NetInfo.addEventListener('connectionChange', this.handleConnectivityChange);
 
     await Font.loadAsync({
-      'SFProText-Regular': require('./assets/fonts/SF-Pro-Text-Regular.otf'),
-      'SFProText-Semibold': require('./assets/fonts/SF-Pro-Text-Semibold.otf'),
-      'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-      'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf')
+      'Montserrat-Black': require('./assets/fonts/Montserrat-Black.otf'),
+      'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.otf'),
+      'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.otf'),
+      'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.otf'),
+      'Montserrat-Medium': require('./assets/fonts/Montserrat-Medium.otf'),
+      'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.otf'),
+      'Montserrat-Light': require('./assets/fonts/Montserrat-Light.otf'),
     });
 
     // const timer = setInterval(this.tick, 1000);
@@ -75,10 +78,13 @@ export default class App extends React.Component<Props, State> {
     ]);
 
     return Font.loadAsync({
-      'SFProText-Regular': require('./assets/fonts/SF-Pro-Text-Regular.otf'),
-      'SFProText-Semibold': require('./assets/fonts/SF-Pro-Text-Semibold.otf'),
-      'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-      'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf')
+      'Montserrat-Black': require('./assets/fonts/Montserrat-Black.otf'),
+      'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.otf'),
+      'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.otf'),
+      'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.otf'),
+      'Montserrat-Medium': require('./assets/fonts/Montserrat-Medium.otf'),
+      'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.otf'),
+      'Montserrat-Light': require('./assets/fonts/Montserrat-Light.otf'),
     });
   }
 

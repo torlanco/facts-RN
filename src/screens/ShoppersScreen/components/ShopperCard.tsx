@@ -17,7 +17,7 @@ interface IOwnProps {
 }
 
 type IProps = IOwnProps 
-        & NavigationInjectedProps;
+    & NavigationInjectedProps;
 
 interface IState {
     shopperImage: any,
@@ -86,8 +86,8 @@ class ShopperCard extends React.Component<IProps, IState> {
                             <View style={styles.thumbimageContainer}>
                                 { this.state.outletImage == this.props.outlet.outletImage ?
                                     <FullWidthImage style={ styles.thumbimage } source={{ uri: this.state.outletImage }}/> : 
-                                    <Image style={[styles.thumbimage, { height: 80 }]} source={ this.state.outletImage } resizeMode="stretch"/> }  
-                            </View>
+                                    <Image style={[styles.thumbimage, { height: 60 }]} source={ this.state.outletImage } resizeMode="stretch"/> }  
+                            </View> 
                             <View>
                                 <Text style={[styles.highlight]}>{outlet}</Text>
                                 <Text style={[styles.date]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
@@ -110,14 +110,7 @@ const styles = StyleSheet.create({
     outletImage: {
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        shadowOpacity: 0.1,
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowColor: colors.LIGHT_BLUE,
-        elevation: 1,
-        shadowRadius: 3,
+        elevation: 0,
         padding: 0,
         margin: 0,
         width: '100%',
@@ -134,14 +127,8 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         padding: 20,
-        shadowOpacity: 0.1,
-        shadowOffset: {
-            width: 0,
-            height: 5
-        },
-        shadowColor: colors.LIGHT_BLUE,
         backgroundColor: colors.WHITE,
-        elevation: 1,
+        elevation: 0,
         flexDirection: 'column',
         borderRadius: responsive(12),
     },
@@ -149,16 +136,16 @@ const styles = StyleSheet.create({
         padding: 2,
     },
     highlight: {
-        ...typos.HEADLINE,
+        ...typos.TITLE,
         color: colors.TEXT_PRIMARY
     },
     date: {
-        ...typos.PRIMARY,
-        color: colors.BLACK
+        ...typos.CAPTION,
+        color: colors.TEXT_PRIMARY
     },
     text: {
-        ...typos.SECONDARY,
-        color: colors.TEXT_SECONDARY,
+        ...typos.CAPTION,
+        color: colors.TEXT_PRIMARY
     },
     details: {
         backgroundColor: colors.LIGHT_GRAY, 
@@ -171,8 +158,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }, 
     thumbimageContainer: {
-        width: 80,
-        marginRight: 20
+        width: 60,
+        height: 60,
+        display: 'flex',
+        justifyContent: 'center',
+        marginRight: 10,
+        backgroundColor: colors.WHITE,
+        borderRadius: 10,
     },
     thumbimage: {
         borderRadius: 5,

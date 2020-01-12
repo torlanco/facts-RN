@@ -55,12 +55,14 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
             <Icon
                 name='grid'
                 type='feather'
+                size={18}
                 color={gridIconColor}
                 onPress={() => toggleViewType(ViewType.Grid)}
                 containerStyle={styles.iconContainer} />
             <Icon
                 name='list'
                 type='feather'
+                size={18}
                 color={listIconColor}
                 onPress={() => toggleViewType(ViewType.List)}
                 containerStyle={styles.iconContainer} />
@@ -72,10 +74,11 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 5,
+    padding: 5,
   },
   iconContainer: {
-    padding: 5
+    padding: 5,
+    marginTop: -2
   },
   itemCountContainer: {
     flexDirection: 'row',

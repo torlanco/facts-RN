@@ -40,17 +40,18 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 
             <View style={styles.selector}>
                 <TextInput
-                    style={styles.input}
-                    editable={false}
-                    placeholder={props.placeholder}
-                    placeholderTextColor={colors.TEXT_PRIMARY}
-                    value={props.value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()} />
+                  style={styles.input}
+                  editable={false}
+                  placeholder={props.placeholder}
+                  placeholderTextColor={colors.TEXT_PRIMARY}
+                  value={props.value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim()} />
 
                 <Icon
-                    name='chevron-down'
-                    type='feather'
-                    color={colors.BLACK}
-                    containerStyle={styles.icon}/>
+                  name='chevron-down'
+                  size={16}
+                  type='feather'
+                  color={colors.BLACK}
+                  containerStyle={styles.icon}/>
             </View>
         </ModalSelector>
         :  
@@ -62,9 +63,11 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
               }) : []}
               placeholder={{ label: props.placeholder, value: null }}
               Icon={() => { return <Icon
+                size={16}
                 name='chevron-down'
                 type='feather'
-                color={colors.BLACK}/> }}
+                color={colors.BLACK}
+                containerStyle={styles.icon}/> }}
               value={props.value}
               textInputProps={{style: [styles.pickerTextInputProps]}}
           />
@@ -74,29 +77,34 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 
 const styles = StyleSheet.create({
   picker: {
-    height: 50,
+    height: 40,
   },
   selector: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
-    padding:10,
-    minWidth: 150,
+    padding: 10,
+    maxWidth: 150,
+    ...typos.PRIMARY_LIGHT
   },
   icon: {
-    paddingVertical: 8
+    padding: 0,
+    marginTop: -2,
   },
   iosPicker: {
     paddingVertical: 15,
     paddingHorizontal: 10,
-    height: 50,
+    height: 40,
     width: 200,
   },
   pickerTextInputProps: {
     color: colors.TEXT_PRIMARY,
-    ...typos.PRIMARY,
+    ...typos.PRIMARY_LIGHT,
     paddingTop: 3
+  },
+  padding: {
+    padding: 2
   }
 });
 

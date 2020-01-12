@@ -112,7 +112,6 @@ class HeaderBar extends React.Component<IProps, IState> {
                     { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange.startDate)} - {formatDate(this.props.dateRange.endDate)}</Text> : null }
                     { this.props.rightText ? <Text style={[styles.rightText]} onPress={this.onRightTextClick}>{this.props.rightText}</Text> : null }
                 </View>
-                    { !this.props.noDivider && <Divider style={styles.divider} /> }
             </View>
         );
     }
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
         height: 60
     },
     title: {
-        ...typos.SUBHEADLINE,
+        ...typos.LARGE_TITLE,
         textAlign: 'center',
         color: colors.TEXT_PRIMARY,
         paddingLeft: responsive(15),

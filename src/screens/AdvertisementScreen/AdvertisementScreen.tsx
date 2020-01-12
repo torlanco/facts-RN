@@ -138,11 +138,13 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
           <View style={styles.container}>
             <HeaderBar title={'FEATURES'}></HeaderBar>
-            <AdvertisementFilter viewType={this.state.viewType}
-              handleViewTypeChange={this.onViewTypeChange}
-              typeList={this.props.categories || []} type={this.state.category}
-              handleTypeChange={this.onTypeChange} totalItems={this.state.advertisementList.length}></AdvertisementFilter>
-            { this.getView() }
+            <View style={{paddingHorizontal: 5, flex: 1}}>
+              <AdvertisementFilter viewType={this.state.viewType}
+                handleViewTypeChange={this.onViewTypeChange}
+                typeList={this.props.categories || []} type={this.state.category}
+                handleTypeChange={this.onTypeChange} totalItems={this.state.advertisementList.length}></AdvertisementFilter>
+              { this.getView() }
+            </View>
           </View>
           {this.props.loading && <LoadingScreen />}
       </SafeAreaView>
@@ -155,8 +157,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    marginLeft: 5,
-    marginRight: 5,
   },
   text: {
     ...typos.TITLE,

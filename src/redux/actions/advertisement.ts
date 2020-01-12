@@ -1,7 +1,8 @@
 import { Types } from '@types';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview, 
-  updateAdvertisementsForReview, fetchBrands, fetchFeaturesByBrand } from '@services';
+  updateAdvertisementsForReview, fetchBrands, fetchFeaturesByBrand, 
+  fetchTrendingFeatures, incrementFeatureViewCount, fetchCategoriesForHome } from '@services';
 
 const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
   fetchAdvertisements: (shopperId?: string) => {
@@ -139,6 +140,67 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
           payload: e,
         });
         return [];
+      }
+    };
+  },
+  fetchTrendingFeatures: () => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_TRENDING_FEATURES,
+      });
+      try {
+        const response = await fetchTrendingFeatures();
+        dispatch({
+          type: Types.FETCH_TRENDING_FEATURES_SUCCESS,
+          payload: {
+            features: response.data.data.features,
+          }
+        });
+        return response.data.data.features;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_TRENDING_FEATURES_FAILED,
+        });
+        return [];
+      }
+    };
+  },
+  incrementFeaturesViewCount: (id?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FEATURE_INCREMENT_VIEW_COUNT,
+      });
+      try {
+        const response = await incrementFeatureViewCount(id);
+        dispatch({
+          type: Types.FEATURE_INCREMENT_VIEW_COUNT_SUCCESS,
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.FEATURE_INCREMENT_VIEW_COUNT_FAILED,
+        });
+        return e.response.data;
+      }
+    };
+  },
+  fetchHomeCategories: () => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_CATEGORIES_FOR_HOME,
+      });
+      try {
+        const response = await fetchCategoriesForHome();
+        dispatch({
+          type: Types.FETCH_CATEGORIES_FOR_HOME_SUCCESS,
+          payload: response.data.data
+        });
+        return response.data.data.categories;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_CATEGORIES_FOR_HOME_FAILED,
+        });
+        return e.response.data;
       }
     };
   }

@@ -24,3 +24,15 @@ export const fetchBrands = (value?: string) => {
 export const fetchFeaturesByBrand = (brand?: string) => {
     return HTTP.get('features/' + brand);
 };
+
+export const fetchTrendingFeatures = () => {
+    return HTTP.get('features/top-10');
+};
+
+export const incrementFeatureViewCount = (id?: string) => {
+    return HTTP.put(`features/${id}/viewed`);
+};
+
+export const fetchCategoriesForHome = () => {
+    return HTTP.get('categories');
+};

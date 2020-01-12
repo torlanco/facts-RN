@@ -16,7 +16,7 @@ import { IOutlet } from '@interfaces/outlet';
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
   onItemPress?: Function,
-  outlet: IOutlet.IOutletData;
+  outlet?: IOutlet.IOutletData;
 }
 type IProps = IOwnProps;
 
@@ -51,6 +51,7 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
     const { advertisement, outlet } = this.props;
     const {id, type, brand, sprice, rprice, sizeMeasure } = advertisement;
     const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
+    const marginTopofSize = brand && brand.length > 9 ? 0 : -12;
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <Card containerStyle={[styles.container, {width: itemWidth}]}>
@@ -61,15 +62,15 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
           </Card>
           <View style={styles.details}>
             <View style={styles.row}>
-              <Text style={[styles.boldText, styles.padding, styles.flex]}>{brand}</Text>
-              <Text style={[styles.boldText, styles.padding]}>${sprice}</Text>
+              <Text style={[styles.boldText, styles.flex]}>{brand}</Text>
+              <View>
+                <Text style={[styles.sellprice]}>${sprice}</Text>
+                <Text style={[styles.regularPrice]}>${rprice}</Text>  
+              </View>
             </View>
-            <View style={styles.row}>
-              <Text style={[styles.pieces, styles.padding, styles.flex]}>{sizeMeasure}</Text>
-              <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
-            </View>
-            <Text style={[styles.type, styles.padding]}>{type}</Text>
-            <Text style={[styles.type, styles.padding]}>{outlet.outlet}</Text>
+            <Text style={[styles.size, styles.flex, { marginTop: marginTopofSize }]}>{sizeMeasure}</Text>
+            <Text style={[styles.type]}>{type}</Text>
+            <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
           </View>
         </Card>
       </TouchableOpacity>
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 0,
-    padding: 15,
+    padding: 10,
     margin: 0,
     backgroundColor: colors.WHITE,
     borderWidth: 0,
@@ -109,35 +110,30 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
-    borderRadius: 10,
   },
   boldText: {
-    ...typos.HEADLINE,
-    color: colors.TEXT_PRIMARY
+    ...typos.TITLE,
+    color: colors.TEXT_PRIMARY,
+    paddingRight: 5
   },
   type: {
-    ...typos.SECONDARY,
-    color: colors.TEXT_SECONDARY,
-  },
-  pieces: {
-    ...typos.SECONDARY,
-    color: colors.TEXT_SECONDARY
-  },
-  priceContainer: {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 30
-  },
-  price: {
-    ...typos.PRIMARY_BOLD,
-    color: colors.TEXT_SECONDARY  
-  },
-  originalPrice: {
     ...typos.SMALL,
+    color: colors.TEXT_PRIMARY
+  },
+  outlet: {
+    ...typos.SMALL_BOLD,
+    color: colors.TEXT_PRIMARY
+  },
+  sellprice: {
+    ...typos.TITLE,
+    color: colors.TEXT_PRIMARY
+  },
+  regularPrice: {
+    ...typos.SMALL,
+    color: colors.TEXT_PRIMARY,
     textDecorationLine: 'line-through', 
-    textDecorationStyle: 'solid'
+    textDecorationStyle: 'solid',
+    textAlign: 'right'
   },
   row: {
     display: 'flex',
@@ -152,6 +148,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderBottomRightRadius: 10, 
     borderBottomLeftRadius: 10
+  },
+  size: {
+    ...typos.CAPTION,
+    color: colors.TEXT_PRIMARY,
   }
 });
 

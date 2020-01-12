@@ -1,7 +1,7 @@
 export const colors = {
-    BLACK: '#000000',
+    BLACK: '#222220',
     OFF_BLACK: '#141414',
-    TEXT_PRIMARY: '#383F45',
+    TEXT_PRIMARY: '#222220',
     TEXT_SECONDARY: '#7A7F83',
     TEXT_NOTE: '#BDBDBD',
     WHITE: '#FFFFFF',

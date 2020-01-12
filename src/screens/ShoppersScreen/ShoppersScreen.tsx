@@ -88,17 +88,19 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
           <View style={styles.container}>
-              <HeaderBar title={'Shoppers'}></HeaderBar>
+            <HeaderBar title={'SHOPPERS'}></HeaderBar>
+            <View style={styles.content}>    
               <SelectPicker options={this.props.outlets} value={this.state.outlet}
-                            placeholder={'Select an outlet'}
-                            handleValueChange={this.onShopperChange}>
+                placeholder={'Select an outlet'}
+                handleValueChange={this.onShopperChange}>
               </SelectPicker>
               <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
-              <FlatList
-                data={this.state.shoppersList}
-                keyExtractor={(item: IShopper.IShopperData) => item.id}
-                renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress} outlet={outlet}></ShopperCard>}
-                showsVerticalScrollIndicator={false}/>
+            </View>
+            <FlatList
+              data={this.state.shoppersList}
+              keyExtractor={(item: IShopper.IShopperData) => item.id}
+              renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress} outlet={outlet}></ShopperCard>}
+              showsVerticalScrollIndicator={false}/>
           </View>
           {this.props.loading && <LoadingScreen />}
         </SafeAreaView>
@@ -111,8 +113,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    marginLeft: 5,
-    marginRight: 5,
+  },
+  content: {
+    paddingHorizontal: 10,
   },
   text: {
     ...typos.PRIMARY,
@@ -121,20 +124,6 @@ const styles = StyleSheet.create({
   textBold: {
     ...typos.PRIMARY,
     fontWeight: 'bold'
-  },
-  dotStyle: {
-    backgroundColor: colors.LIGHT_ORANGE,
-    opacity: 0.4,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  selectedDotStyle: {
-    backgroundColor: colors.LIGHT_ORANGE,
-    opacity: 1,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
   },
 });
 

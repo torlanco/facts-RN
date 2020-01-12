@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {
     StyleSheet,
-    Dimensions,
     View,
     ScrollView,
-    ListView, FlatList
+    FlatList
 } from 'react-native';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { AdvertisementGridItem } from './AdvertisementGridItem';
@@ -13,24 +12,22 @@ import { IOutlet } from '@interfaces/outlet';
 interface IOwnProps {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
   onItemPress?: Function
-  outlet: IOutlet.IOutletData;
+  outlet?: IOutlet.IOutletData;
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
 
-  const sectionOneAdvertisement = props.advertisementList.filter((item, index) => {
+  const sectionOneAdvertisement = props.advertisementList ? props.advertisementList.filter((item, index) => {
     if (!(index & 1)) {
       return item;
     }
-  });
+  }) : [];
 
-  const sectionTwoAdvertisement = props.advertisementList.filter((item, index) => {
+  const sectionTwoAdvertisement = props.advertisementList ? props.advertisementList.filter((item, index) => {
     if (index & 1) {
       return item;
     }
-  });
-
-  const datasource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  }) : [];
 
   const onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
     if (props.onItemPress)
@@ -40,17 +37,17 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
   return (
     <View style={styles.wrapper}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        <ListView
+        <FlatList
           contentContainerStyle={styles.list}
-          dataSource={datasource.cloneWithRows(sectionOneAdvertisement)}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id}
-          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+          data={sectionOneAdvertisement}
+          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id?.toString()}
+          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
           enableEmptySections={true}/>
-        <ListView
+        <FlatList
           contentContainerStyle={styles.list}
-          dataSource={datasource.cloneWithRows(sectionTwoAdvertisement)}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id}
-          renderRow={(item) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+          data={sectionTwoAdvertisement}
+          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id?.toString()}
+          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
           enableEmptySections={true}/>
       </ScrollView>
     </View>
@@ -67,7 +64,7 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 10,
+    paddingVertical: 10, 
   }
 });
 

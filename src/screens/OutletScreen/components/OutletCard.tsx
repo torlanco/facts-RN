@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 
 import { colors, typos, responsive } from '@styles';
 
@@ -9,6 +9,7 @@ import { Card } from 'react-native-elements';
 // Utils
 import { formatDate } from '@utils';
 import { ImageView } from '@components';
+import FullWidthImage from 'react-native-fullwidth-image';
 interface IOwnProps {
     outlet: IOutlet.IOutletData,
     onItemPress?: Function
@@ -16,12 +17,27 @@ interface IOwnProps {
 
 type IProps = IOwnProps;
 
-interface IState {}
+interface IState {
+    outletImage: string;
+}
 
 class OutletCard extends React.Component<IProps, IState> {
    
     constructor(props: IProps) {
         super(props);
+        this.state = {
+            outletImage: require('@assets/images/placeholder.png')
+        };
+    }
+
+    componentDidMount() {
+        if (this.props.outlet.outletImage) {
+            Image.getSize(this.props.outlet.outletImage, (width: number, height: number) => {
+                this.setState({ 
+                    outletImage: this.props.outlet.outletImage
+                });
+            }, err => {});
+        }
     }
 
     onItemPress = () => {
@@ -35,24 +51,23 @@ class OutletCard extends React.Component<IProps, IState> {
         return (
             <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
                 <View style={styles.mainContainer}>
-                    <View style={styles.cardContainer}>
-                        <Card containerStyle={styles.outletImage}>                                
-                            <ImageView image={this.props.outlet.outletImage} />
-                        </Card>
-                        <View style={styles.mainContent}>
-                            {/* <Text style={[styles.type, styles.padding]}>{channelName}</Text> */}
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={[styles.name, styles.padding]}>{outlet}</Text>
-                            </View>
-                            <Text style={[styles.date, styles.padding]}>{formatDate(earliestStartDate)} - {formatDate(latestEndDate)}</Text>
-                            <View style={styles.flexDiv}>
-                                <Text style={[styles.shoppers, styles.padding]}>
-                                    <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS
-                                </Text>
-                                {/* <Text style={[styles.isNew, styles.padding]}>New</Text> */}
-                            </View>
+                    <Card containerStyle={styles.outletImage}>                                
+                        { this.state.outletImage == this.props.outlet.outletImage ?
+                            <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> : 
+                            <Image style={[styles.image, { height: 50 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+                    </Card>
+                    <View style={styles.mainContent}>
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={[styles.name]}>{outlet}</Text>
+                        </View>
+                        <Text style={[styles.date]}>{formatDate(earliestStartDate)} - {formatDate(latestEndDate)}</Text>
+                        <View style={styles.flexDiv}>
+                            <Text style={[styles.shoppers]}>
+                                <Text style={styles.shoppersCount}>{shopperCount}</Text> shoppers
+                            </Text>
                         </View>
                     </View>
+                    <Text style={[styles.isNew]}>New</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -64,64 +79,51 @@ const styles = StyleSheet.create({
         width: '95%',
         marginLeft: '2.5%',
         marginRight: '2.5%',
-    },
-    cardContainer: {
-        borderRadius: responsive(24),
-        marginTop: responsive(15),
-        marginBottom: responsive(15),
-        paddingVertical: 20,
-        paddingHorizontal: 20,
+        borderRadius: 10,
+        marginTop: responsive(10),
+        padding: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
-            height: 5
+            height: 2
         },
-        shadowColor: colors.LIGHT_BLUE,
         elevation: 1,
         shadowRadius: 3,
-        backgroundColor: colors.WHITE,
-    },
-    outletImageWrapper: {
-        width: '100%',
-        marginRight: 5,
+        backgroundColor: colors.LIGHT_GRAY, 
+        display: 'flex',
+        flexDirection: 'row',
+        alignContent: 'center'
     },
     outletImage: {
-        height: 80,
-        borderRadius: 10,
-        shadowOpacity: 0.1,
-        shadowOffset: {
-            width: 0,
-            height: 5
-        },
-        shadowColor: colors.LIGHT_BLUE,
-        elevation: 3,
-        shadowRadius: 10,
+        height: 50,
+        width: 50,
+        borderRadius: 5,
+        shadowColor: colors.WHITE,
+        elevation: 0,
         padding: 0,
-        margin: 0
+        margin: 0,
+        marginRight: 5,
+        justifyContent: 'center'
     },
     image: {
-        borderRadius: 10,
         width: '100%',
-        maxHeight: 80
+        borderRadius: 5,
     },
     mainContent: {
-      flexDirection: 'column'
+        flex: 1,
+        flexDirection: 'column'
     },
     padding: {
         padding: 2,
     },
-    type: {
-        ...typos.SECONDARY,
-        color: colors.TEXT_SECONDARY,
-    },
     name: {
-        ...typos.HEADLINE,
+        ...typos.PRIMARY,
         color: colors.TEXT_PRIMARY,
         flex: 1,
-        flexWrap: 'wrap',
+        flexWrap: 'wrap'
     },
     date: {
-        ...typos.SECONDARY,
+        ...typos.CAPTION,
         color: colors.TEXT_SECONDARY,
     },
     flexDiv: {
@@ -129,21 +131,26 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10
     },
     shoppers: {
-        ...typos.PRIMARY_BOLD,
-        color: colors.TEXT_SECONDARY
+        ...typos.CAPTION,
+        color: colors.TEXT_PRIMARY
     },
     shoppersCount: {
-        flexDirection: 'row',
-        color: colors.BLACK
+        ...typos.PRIMARY,
+        color: colors.TEXT_PRIMARY
     },
     isNew: {
-        paddingLeft: responsive(20),
-        ...typos.FOOTNOTE,
-        textTransform: 'uppercase',
-        color: colors.LIGHT_ORANGE
+        position: "absolute",
+        top: 0,
+        left: 0,
+        backgroundColor: colors.PRIMARY,
+        ...typos.SMALL_BOLD,
+        color: colors.TEXT_PRIMARY,
+        borderRadius: 10,
+        padding: 5,
+        paddingHorizontal: 10,
+        fontWeight: 'bold'
     },
 });
 

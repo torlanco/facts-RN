@@ -12,6 +12,8 @@ const initialState: IAdvertisement.StateToProps = {
   categoriesForReview: undefined,
   brands: undefined,
   featuresByBrands: undefined,
+  trendingFeatures: undefined,
+  homeCategories: undefined,
 };
 
 export function advertisement(
@@ -42,6 +44,7 @@ export function advertisement(
         advertisements: [],
         categories: [],
       };
+
     // FETCH CATEGORIES PENDING FOR REVIEW 
     case Types.FETCH_CATEGORIES_FOR_REVIEW:
       return {
@@ -144,6 +147,71 @@ export function advertisement(
         loading: false,
         error: action.payload.message || true,
       };    
+
+    // FETCH TRENDING FEATURES
+    case Types.FETCH_TRENDING_FEATURES:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FETCH_TRENDING_FEATURES_SUCCESS:
+      return {
+        ...state,
+        trendingFeatures: action.payload.features,
+        loading: false,
+        error: false,
+      };
+    case Types.FETCH_TRENDING_FEATURES_FAILED:
+      return {
+        ...state,
+        trendingFeatures: [],
+        loading: false,
+        error: false,
+      };    
+
+    // INCREMENT FEATURE VIEW COUNT
+    case Types.FEATURE_INCREMENT_VIEW_COUNT:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FEATURE_INCREMENT_VIEW_COUNT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+      };
+    case Types.FEATURE_INCREMENT_VIEW_COUNT_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+      };    
+   
+    // FETCH CATEGORIES FOR HOME
+    case Types.FETCH_CATEGORIES_FOR_HOME:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FETCH_CATEGORIES_FOR_HOME_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        homeCategories: action.payload.categories.map((item: any) => item.category) 
+      };
+    case Types.FETCH_CATEGORIES_FOR_HOME_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        homeCategories: [],
+      };    
+     
     default:
       return state;
   }
