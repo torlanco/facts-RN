@@ -27,12 +27,13 @@ type IProps = IOwnProps &
   IUser.DispatchFromProps;
 
 const data = [
-  { iconName: 'user', title: 'Profile', routeName: 'Profile', requiredAuth: true, hideTillLogin: true },
   { iconName: 'home', title: 'Home', routeName: 'Home' },
   { iconName: 'book', title: 'Outlet', routeName: 'Outlet' },
-  { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
-  { iconName: 'book', title: 'Features', routeName: 'Features' },
-  { iconName: 'file', title: 'Docs', routeName: 'Docs' },
+  // { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
+  // { iconName: 'book', title: 'Features', routeName: 'Features' },
+  // { iconName: 'file', title: 'Docs', routeName: 'Docs' },
+  { iconName: 'user', title: 'Profile', routeName: 'Profile', requiredAuth: true, hideTillLogin: true },
+
 ];
 
 const mapStateToProps = function(state: any) {

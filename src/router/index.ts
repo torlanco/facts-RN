@@ -146,9 +146,9 @@ const MainNavigator = createDrawerNavigator(
     {
       Home: { screen: HomeNavigator },
       Outlet: { screen: OutletNavigator },
-      Work: { screen: WorkNavigator },
-      Features: {screen: FeaturesNavigator},
-      Docs: { screen: DocsNavigator },
+      // Work: { screen: WorkNavigator },
+      // Features: {screen: FeaturesNavigator},
+      // Docs: { screen: DocsNavigator },
       Profile: {screen: ProfileScreen}
     },
     {
