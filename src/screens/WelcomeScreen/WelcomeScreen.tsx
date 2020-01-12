@@ -131,7 +131,8 @@ class WelcomeScreen extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   flex: {
-    flex: 1
+    flex: 1,
+    backgroundColor: colors.PRIMARY
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
