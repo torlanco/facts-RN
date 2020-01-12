@@ -161,15 +161,15 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25
   },
   heading: {
-    ...typos.TITLE,
+    ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
     paddingTop: 5,
   },
   subHeadig: {
-    ...typos.TITLE_REGULAR,
+    ...typos.BIGTEXT,
   },
   message: {
-    ...typos.BODY,
+    ...typos.TITLE_LIGHT,
     marginTop: 10,
     marginBottom: 20
   },

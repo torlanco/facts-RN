@@ -93,15 +93,15 @@ const styles = StyleSheet.create({
         backgroundColor: colors.LIGHTEST_GRAY
     },
     code: {
-        ...typos.PRIMARY,
+        ...typos.PRIMARY_MEDIUM,
         height: 40,
         borderColor: colors.LIGHT_GRAY,
         borderRightWidth: 1,
-        padding: 10
+        padding: 12
     },
     input: {
         flex: 1,
-        ...typos.PRIMARY,
+        ...typos.PRIMARY_LIGHT,
         height: 40,
         paddingVertical: 5,
         paddingHorizontal: 10

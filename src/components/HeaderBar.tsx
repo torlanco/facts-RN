@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
         lineHeight: 16,
     },
     rightText: {
-        ...typos.HEADLINE,
-        fontWeight: 'normal',
+        ...typos.PRIMARY_BOLD,
+        fontWeight: 'bold',
         color: colors.BLACK,
         padding: 5,
         marginRight: 20

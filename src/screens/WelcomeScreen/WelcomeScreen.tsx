@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
     height: 80,
   },
   heading: {
-    ...typos.TITLE,
+    ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
     marginTop: 40
   },
   subHeadig: {
-    ...typos.TITLE_REGULAR,
+    ...typos.BIGTEXT,
     marginBottom: 15
   },
   row: {

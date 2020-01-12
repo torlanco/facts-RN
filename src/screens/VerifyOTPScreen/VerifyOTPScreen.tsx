@@ -20,7 +20,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 interface ParamType {
-  emailOrPhone: string;
+  emailOrPhone?: string;
 }
 interface StateParams extends NavigationState {
   params: ParamType;
@@ -178,15 +178,15 @@ const styles = StyleSheet.create({
     height: 54,
   },
   heading: {
-    ...typos.TITLE,
+    ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
     paddingTop: 5,
   },
   subHeadig: {
-    ...typos.TITLE_REGULAR,
+    ...typos.BIGTEXT,
   },
   message: {
-    ...typos.BODY,
+    ...typos.TITLE_LIGHT,
     marginTop: 10,
     marginBottom: 20
   },
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   linkText: {
-    ...typos.PRIMARY,
+    ...typos.PRIMARY_MEDIUM,
     color: colors.BLACK,
     margin: 0,
     padding: 0,

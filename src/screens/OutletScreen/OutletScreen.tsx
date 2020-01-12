@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { typos, colors } from '@styles';
+import { SkypeIndicator } from 'react-native-indicators';
 
 interface IOwnProps {
     onlyOutlets?: boolean;
@@ -31,6 +32,7 @@ interface IState {
     channels: string[],
     sectionOneOutlet: Array<IOutlet.IOutletData>,
     sectionTwoOutlet: Array<IOutlet.IOutletData>,
+    loading: boolean
 }
 
 const mapStateToProps = function (state: any) {
@@ -51,7 +53,8 @@ class OutletScreen extends React.Component<IProps, IState> {
             outletList: [],
             channels: [],
             sectionOneOutlet: [],
-            sectionTwoOutlet: []
+            sectionTwoOutlet: [],
+            loading: true
         };
 
         this.fetchOutlets();
@@ -62,6 +65,7 @@ class OutletScreen extends React.Component<IProps, IState> {
         this.setState({
             channels: (this.props.channels ? this.props.channels : []),
             selectedTab: (this.props.channels ? this.props.channels[0] : ''),
+            loading: false,
         });
         this.filterOutlets(this.props.channels ? this.props.channels[0] : '')
     }
@@ -117,6 +121,7 @@ class OutletScreen extends React.Component<IProps, IState> {
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
                     {!onlyOutlets && <HeaderBar title={'OUTLETS'} />}
+                    { onlyOutlets && this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
                     <View style={styles.mainContainer}>
                         {!onlyOutlets && <View style={{ marginTop: 10, marginBottom: 10 }}>
                             <FlatList

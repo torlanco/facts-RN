@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 // Interfaces
 import { IAdvertisement } from '@interfaces/advertisement';
@@ -11,6 +11,8 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 import { AdvertisementGridView } from '../../AdvertisementScreen/components/AdvertisementGridView';
+import { SkypeIndicator } from 'react-native-indicators';
+import { colors } from '@styles';
 
 interface IOwnProps {}
 type IProps = IOwnProps &
@@ -18,7 +20,9 @@ type IProps = IOwnProps &
     IAdvertisement.StateToProps &
     IAdvertisement.DispatchFromProps;
 
-interface IState {}
+interface IState {
+    loading: boolean;
+}
 
 const mapStateToProps = function(state: any){
     return {
@@ -33,12 +37,17 @@ class PopularSpecials extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            loading: true,
+        };
         this.fetchPopularSpecials();
     }
 
     async fetchPopularSpecials() {
         await this.props.fetchTrendingFeatures();
+        this.setState({
+            loading: false
+        });
     }
 
     onPopularSpecialsItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
@@ -48,7 +57,10 @@ class PopularSpecials extends React.Component<IProps, IState> {
     public render() {
         return (
             <SafeAreaView style={{flex: 1}}>
-                <AdvertisementGridView advertisementList={this.props.trendingFeatures || []} onItemPress={this.onPopularSpecialsItemPress}/>
+                <View>
+                    { this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
+                    <AdvertisementGridView advertisementList={this.props.trendingFeatures || []} onItemPress={this.onPopularSpecialsItemPress}/>
+                </View>
             </SafeAreaView>
         )
     }

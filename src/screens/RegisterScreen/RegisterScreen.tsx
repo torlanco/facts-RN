@@ -218,13 +218,15 @@ class RegisterScreen extends React.Component<IProps, IState> {
           <View style={[styles.bottomAction]}>
             <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
             <View style={styles.row}>
-              <View style={[styles.flex, {paddingTop: 8}]}>
-                <Text style={styles.bottomActionText}>Have an account?</Text>
-                <TouchableOpacity onPress={this.onLogin}>
-                  <Text style={[styles.bottomActionText, styles.boldLink]}>Log in</Text>
-                </TouchableOpacity> 
+              <View style={[styles.flex, styles.row, {paddingTop: 5}]}>
+                  <View style={[{paddingTop: 8}]}>
+                    <Text style={styles.bottomActionText}>Have an account?</Text>
+                    <TouchableOpacity onPress={this.onLogin}>
+                      <Text style={[styles.bottomActionText, styles.boldLink]}>Log in</Text>
+                    </TouchableOpacity>              
+                  </View>
+                  <View style={styles.flex}></View>
               </View>
-              <View style={{width: 30}}></View>
               <View style={styles.flex}>
                 <ActionButton title="Register" inverted={true} onPress={this.onSignUp} style={styles.buttonStyle}/>
               </View>
@@ -260,12 +262,12 @@ const styles = StyleSheet.create({
     height: 54,
   },
   heading: {
-    ...typos.TITLE,
+    ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
     marginTop: 20
   },
   subHeadig: {
-    ...typos.TITLE_REGULAR,
+    ...typos.BIGTEXT,
     marginBottom: 15
   },
   note: {
@@ -333,7 +335,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WHITE
   }, 
   bottomActionText: {
-    ...typos.PRIMARY,
+    ...typos.PRIMARY_MEDIUM,
     color: colors.BLACK,
     textAlign: 'right',
     margin: 0,

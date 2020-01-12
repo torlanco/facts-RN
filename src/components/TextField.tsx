@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     input: {
-        ...typos.PRIMARY,
+        ...typos.PRIMARY_LIGHT,
         borderRadius: 2,
         borderColor: colors.LIGHT_GRAY,
         height: 40,

@@ -184,13 +184,15 @@ class LoginScreen extends React.Component<IProps, IState> {
             <View style={[styles.bottomAction]}>
               <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
               <View style={styles.row}>
-                <View style={[styles.flex, {paddingTop: 8}]}>
-                  <Text style={styles.bottomActionText}>Don't have an account?</Text>
-                  <TouchableOpacity onPress={this.onRegister}>
-                    <Text style={[styles.bottomActionText, styles.boldLink]}>Register Now</Text>
-                  </TouchableOpacity>              
+                <View style={[styles.flex, styles.row, {paddingTop: 5}]}>
+                  <View style={[{paddingTop: 8}]}>
+                    <Text style={styles.bottomActionText}>Don't have an account?</Text>
+                    <TouchableOpacity onPress={this.onRegister}>
+                      <Text style={[styles.bottomActionText, styles.boldLink]}>Register Now</Text>
+                    </TouchableOpacity>              
+                  </View>
+                  <View style={styles.flex}></View>
                 </View>
-                <View style={{width: 25}}></View>
                 <View style={styles.flex}>
                   <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} style={styles.buttonStyle}/>          
                 </View>
@@ -239,12 +241,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   heading: {
-    ...typos.TITLE,
+    ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
     marginTop: 40
   },
   subHeadig: {
-    ...typos.TITLE_REGULAR,
+    ...typos.BIGTEXT,
     marginBottom: 15
   },
   row: {
@@ -269,8 +271,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   link: {
-    ...typos.PRIMARY,
-    color: colors.BLACK,
+    ...typos.PRIMARY_LIGHT,
+    color: colors.TEXT_PRIMARY,
     paddingVertical: 10,
     textDecorationLine: 'underline', 
     textDecorationStyle: 'solid'
@@ -303,7 +305,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WHITE
   }, 
   bottomActionText: {
-    ...typos.PRIMARY,
+    ...typos.PRIMARY_MEDIUM,
     color: colors.BLACK,
     textAlign: 'right',
     margin: 0,

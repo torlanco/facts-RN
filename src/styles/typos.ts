@@ -15,12 +15,15 @@ export const typos = {
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Montserrat-Medium' },
   SECONDARY: { fontSize: responsive(14), fontFamily: 'Montserrat-Regular' },
   PRIMARY_BOLD: { fontSize: responsive(16), fontFamily: 'Montserrat-Medium' },
-
+  
+  BIGTEXT_BOLD: { fontSize: responsive(32), fontFamily: 'Montserrat-SemiBold' },
+  BIGTEXT: { fontSize: responsive(32), fontFamily: 'Montserrat-Light' },
   HEADLINE: { fontSize: responsive(25), fontFamily: 'Montserrat-Regular' },
   SUBHEADLINE: { fontSize: responsive(20), fontFamily: 'Montserrat-ExtraBold' },
   LARGE_TITLE: { fontSize: responsive(18), fontFamily: 'Montserrat-ExtraBold' },
   TITLE: { fontSize: responsive(16), fontFamily: 'Montserrat-ExtraBold' },
   TITLE_SEMIBOLD: { fontSize: responsive(16), fontFamily: 'Montserrat-SemiBold' },
+  TITLE_LIGHT: { fontSize: responsive(16), fontFamily: 'Montserrat-Light' },
   PRIMARY: { fontSize: responsive(14), fontFamily: 'Montserrat-ExtraBold' },
   PRIMARY_MEDIUM: { fontSize: responsive(14), fontFamily: 'Montserrat-Medium' },
   PRIMARY_LIGHT: { fontSize: responsive(14), fontFamily: 'Montserrat-Light' },
