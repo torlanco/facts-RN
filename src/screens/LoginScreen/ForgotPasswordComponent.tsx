@@ -131,7 +131,7 @@ class ForgotPasswordComponent extends React.Component<IProps, IState> {
                     <View style={[styles.flex]}>
                     </View>
                     <View style={styles.flex}>
-                    <ActionButton title="Recover" inverted={true} onPress={this.onSubmit} style={styles.buttonStyle}/>
+                    <ActionButton title="Recover" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
                     </View>
                 </View>                  
             </View>

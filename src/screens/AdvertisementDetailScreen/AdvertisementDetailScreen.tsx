@@ -92,9 +92,9 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     }
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <HeaderBar title={'DETAIL'}></HeaderBar>
+        <View style={styles.container}>
+          <HeaderBar title={'DETAIL'}></HeaderBar>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <Card containerStyle={[styles.mainContainer]}>
               <Card containerStyle={[styles.imageContainer]}>
                 { this.state.featureImage == advertisement.image ?
@@ -102,7 +102,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                   <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
               </Card>
               <View style={styles.details}>    
-                <Text style={[styles.headingText, styles.flex]}>{brand}</Text>
+                <Text style={[styles.brand, styles.flex, styles.horizontalPadding]}>{brand}</Text>
                 <View style={[styles.row, { alignSelf: 'flex-end' }]}>
                   <Text style={[styles.outlet, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
                   <Icon
@@ -112,39 +112,44 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                     size={14}
                     containerStyle={styles.iconContainer} />
                 </View>
-                <Text style={[styles.text, styles.padding, styles.flex]}>{sizeMeasure}</Text>
-                <Text style={[styles.text, styles.padding]}>{type}</Text>
+                <Text style={[styles.text, styles.flex, styles.horizontalPadding]}>{sizeMeasure}</Text>
+                <Text style={[styles.text, styles.horizontalPadding]}>{type}</Text>
                 
                 <Divider style={styles.divider}/>
                 <View style={[styles.row]}>
                   <View style={{marginRight: 20}}>
                     <Text style={styles.label}>Special Price</Text>
-                    <Text style={styles.headingText}>${sprice}</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.label}>Regular Price</Text>
+                  </View>
+                </View>
+                <Divider style={styles.divider}/>
+                <View style={[styles.row]}>
+                  <View style={{marginRight: 20}}>
+                    <Text style={styles.prices}>${sprice}</Text>
                   </View>
                   <Divider style={styles.divider}/>
                   <View>
-                    <Text style={styles.label}>Regular Price</Text>
-                    <Text style={[styles.headingText, styles.disabled]}>${rprice}</Text>
+                    <Text style={[styles.prices, styles.disabled]}>${rprice}</Text>
                   </View>
                 </View>
 
-                <View>
-                  <Divider style={styles.divider}/>
+                <Divider style={styles.divider}/>
+                <View style={styles.horizontalPadding}>
+                  <Text style={[styles.label]}>Outlet</Text>
+                  <Text style={[styles.text, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
+                  { outlet &&  
                     <View>
-                    <Text style={[styles.label]}>Outlet</Text>
-                    <Text style={[styles.text, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
-                    { outlet &&  
-                      <View>
-                        <Text style={styles.label}>Validity</Text>
-                        <Text style={[styles.text]}>Valid from <Text style={styles.bold}>{formatDate(outlet.earliestStartDate)} until</Text> {formatDate(outlet.latestEndDate)}</Text>
-                      </View> 
-                    }
-                  </View>
+                      <Text style={styles.label}>Validity</Text>
+                      <Text style={[styles.text]}>Valid from <Text style={styles.bold}>{formatDate(outlet.earliestStartDate)} until</Text> {formatDate(outlet.latestEndDate)}</Text>
+                    </View> 
+                  }
                 </View>
               </View>
             </Card>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }
@@ -195,8 +200,8 @@ const styles = StyleSheet.create({
     ...typos.SECONDARY,
     color: colors.TEXT_SECONDARY,
   },
-  headingText: {
-    ...typos.SUBHEADLINE,
+  prices: {
+    ...typos.HEADLINE,
     color: colors.TEXT_PRIMARY  
   },
   disabled: {
@@ -206,6 +211,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 15 ,
   },
   flex: {
     flex: 1
@@ -213,7 +219,6 @@ const styles = StyleSheet.create({
   details: {
     backgroundColor: colors.LIGHTEST_GRAY, 
     paddingVertical: 15, 
-    paddingHorizontal: 15 ,
   },
   label: {
     ...typos.PRIMARY,
@@ -229,7 +234,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   divider: {
-    marginTop: 10 
+    marginTop: 10, 
   },
   iconContainer: {
     width: responsive(30),
@@ -241,6 +246,12 @@ const styles = StyleSheet.create({
   },
   outlet: {
     ...typos.PRIMARY_MEDIUM
+  },
+  horizontalPadding: {
+    paddingHorizontal: 15,
+  },
+  brand: {
+    ...typos.SUBHEADLINE,
   }   
 });
 

@@ -33,7 +33,7 @@ export const isValidPhone = (phone: string) => {
     return phoneAPI(phone).length;
 }
 
-export const validate = (type: string, value: any, field?: string) => {
+export const validate = (type: string, value: any, field?: string, extraValue?: string) => {
     let error = '';
     switch(type) {
         case 'email': 
@@ -45,6 +45,11 @@ export const validate = (type: string, value: any, field?: string) => {
             if (!value || value.length < 8) 
                 error = 'Password must be 8 characters long.'
             break;
+        
+        case 'cpassword': 
+            if (value != extraValue) 
+                error = 'Passowrd do not match.'
+            break;        
         
         case 'phone': 
             if (!value || !isValidPhone(formatPhone(value))) 

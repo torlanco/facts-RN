@@ -81,8 +81,9 @@ class OutletScreen extends React.Component<IProps, IState> {
                 return outlet.channelName == channel;
             });
         }
-        if (this.props.onlyOutlets && this.props.outlets) {
-            outletList = this.props.outlets.slice(0, 4);
+        if (this.props.onlyOutlets) {
+            outletList = this.props.outlets ? 
+                (this.props.outlets.length > 6 ? this.props.outlets.slice(0, 6) : this.props.outlets) : [];
         }
         let sectionOneOutlet: IOutlet.IOutletData[] = outletList.filter((item, index) => {
             if (!(index & 1)) {
@@ -165,7 +166,8 @@ const styles = StyleSheet.create({
     container: {
         marginTop: Platform.OS === "android" ? 0 : -5,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.LIGHTEST_GRAY
     },
     mainContainer: {
         paddingHorizontal: '4%',
@@ -190,7 +192,6 @@ const styles = StyleSheet.create({
     list: {
         flex: 1,
         flexDirection: 'column',
-        paddingVertical: 10,
     }
 });
 

@@ -20,7 +20,7 @@ type IProps = IActionButtonProps;
 
 const ActionButton: React.SFC<IProps> = (props: IProps) => {
     const {title, inverted, onPress, disabled} = props;
-    const backgroundColor = !inverted ? colors.WHITE : colors.PRIMARY;
+    const backgroundColor = !inverted ? colors.LIGHTEST_GRAY : colors.PRIMARY;
     const color = !inverted ? colors.MID_GRAY : colors.BLACK;
     const borderColor = !inverted ? colors.LIGHTER_GRAY : colors.PRIMARY;
     const opacity = disabled ? 0.7 : 1;
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 8,
         height: responsive(46),
-        paddingVertical: 2
+        paddingVertical: 2,
     },
     textStyle: {
         ...typos.PRIMARY,
