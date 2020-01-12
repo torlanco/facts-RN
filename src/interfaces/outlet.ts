@@ -11,11 +11,11 @@ export namespace IOutlet {
   }
 
   export interface StateToProps {
-    error: string | boolean;
-    loading: boolean;
-    outlets: IOutletData[] | undefined;
-    channels: string[] | undefined;
-    outletNames: string[] | undefined;
+    error?: string | boolean;
+    loading?: boolean;
+    outlets?: IOutletData[] | undefined;
+    channels?: string[] | undefined;
+    outletNames?: string[] | undefined;
   }
   export interface DispatchFromProps {
     fetchOutlets(): Function;

@@ -11,7 +11,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 export const formatDate = (date: string | undefined) => {
     if (!date) return '';
     const dateArray = date.split('-');
-    return `${MONTHS[parseInt(dateArray[1]) - 1]} ${parseInt(dateArray[2])}`;
+    return `${MONTHS[parseInt(dateArray[1]) - 1]}, ${parseInt(dateArray[2])}`;
 };
   
 export const capitalize = (text: string) => {

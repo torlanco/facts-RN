@@ -23,10 +23,35 @@ import {
   ProfileScreen,
   WelcomeScreen,
   VerifyOTPScreen,
+  HomeScreen,
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
 import { SideMenu } from './SideMenu';
+
+const HomeNavigator = createStackNavigator(
+    {
+        HomeScreen: {screen: HomeScreen},
+        OutletScreen: {screen: OutletScreen},
+        ShopperScreen: {screen: ShoppersScreen},
+        AdvertisementScreen: {screen: AdvertisementScreen},
+        AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
+    },
+    {
+        initialRouteName: 'HomeScreen',
+        defaultNavigationOptions: {
+            headerLeft: null,
+            headerBackTitle: null,
+            headerTransparent: true,
+            headerStyle: {
+                borderBottomWidth: 0, // remove the bottom line
+                height: 0,
+                elevation: 0
+            },
+            headerTintColor: colors.WHITE
+        }
+    }
+)
 
 const OutletNavigator = createStackNavigator(
     {
@@ -119,6 +144,7 @@ const DocsNavigator = createStackNavigator(
 
 const MainNavigator = createDrawerNavigator(
     {
+      Home: { screen: HomeNavigator },
       Outlet: { screen: OutletNavigator },
       Work: { screen: WorkNavigator },
       Features: {screen: FeaturesNavigator},

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 // UI
 import { StyleSheet, SafeAreaView, View } from 'react-native';
-import { typos } from '@styles';
+import { typos, colors } from '@styles';
 
 // Component
 import { HeaderBar, DateRange } from '@components';
@@ -135,7 +135,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
 
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
           <View style={styles.container}>
             <HeaderBar title={'FEATURES'}></HeaderBar>
             <AdvertisementFilter viewType={this.state.viewType}

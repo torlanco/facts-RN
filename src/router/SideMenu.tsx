@@ -28,6 +28,7 @@ type IProps = IOwnProps &
 
 const data = [
   { iconName: 'user', title: 'Profile', routeName: 'Profile', requiredAuth: true, hideTillLogin: true },
+  { iconName: 'home', title: 'Home', routeName: 'Home' },
   { iconName: 'book', title: 'Outlet', routeName: 'Outlet' },
   { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
   { iconName: 'book', title: 'Features', routeName: 'Features' },

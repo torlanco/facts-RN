@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import {FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, ListView} from 'react-native';
 
 // Components
 import { ActionButton, HeaderBar } from '@components';
@@ -9,14 +9,16 @@ import { OutletCard } from './components/OutletCard';
 
 // Interfaces
 import { IOutlet } from '@interfaces/outlet';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, ScrollView, NavigationScreenProp, NavigationState } from 'react-navigation';
 
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
-
-interface IOwnProps {}
+  
+interface IOwnProps {
+    onlyOutlets?: boolean;
+}
 type IProps = IOwnProps &
     NavigationInjectedProps &
     IOutlet.StateToProps &
@@ -26,6 +28,8 @@ interface IState {
     selectedTab: string,
     outletList: Array<IOutlet.IOutletData>,
     channels: string[],
+    sectionOneOutlet: Array<IOutlet.IOutletData>,
+    sectionTwoOutlet: Array<IOutlet.IOutletData>,
 }
 
 const mapStateToProps = function(state: any){
@@ -45,6 +49,8 @@ class OutletScreen extends React.Component<IProps, IState> {
             selectedTab: '',
             outletList: [],
             channels: [],
+            sectionOneOutlet: [],
+            sectionTwoOutlet: []
         };
 
         this.fetchOutlets();
@@ -55,8 +61,8 @@ class OutletScreen extends React.Component<IProps, IState> {
         this.setState({
             channels: (this.props.channels ? this.props.channels : []),
             selectedTab: (this.props.channels ? this.props.channels[0] : ''),
-            outletList: this.filterOutlets(this.props.channels ? this.props.channels[0] : ''),
         });
+        this.filterOutlets(this.props.channels ? this.props.channels[0] : '')
     }
 
     filterOutlets(channel: string) {
@@ -70,6 +76,22 @@ class OutletScreen extends React.Component<IProps, IState> {
                 return outlet.channelName == channel;
             });
         }
+        let sectionOneOutlet: IOutlet.IOutletData[] = outlets.filter((item, index) => {
+            if (!(index & 1)) {
+              return item;
+            }
+        })
+        
+        let sectionTwoOutlet: IOutlet.IOutletData[] =  outlets.filter((item, index) => {
+            if (index & 1) {
+              return item;
+            }
+        })
+        this.setState({
+            sectionOneOutlet,
+            sectionTwoOutlet
+        })
+
         return outlets;
     }
 
@@ -85,14 +107,15 @@ class OutletScreen extends React.Component<IProps, IState> {
             outletList: this.filterOutlets(buttonText)
         });
     }
-
+ 
     public render() {
+        const { onlyOutlets } = this.props;
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View style={styles.container}>
-                    <HeaderBar title={'Outlets'}/>
+                    { !onlyOutlets && <HeaderBar title={'Outlets'}/> }
                     <View style={styles.mainContainer}>
-                        <View style={{marginTop: 10}}>
+                        { !onlyOutlets && <View style={{marginTop: 10, marginBottom: 10}}>
                             <FlatList
                                 data={this.state.channels}
                                 renderItem={({item}) => <ActionButton title={item} inverted={this.state.selectedTab == item}
@@ -106,13 +129,27 @@ class OutletScreen extends React.Component<IProps, IState> {
                                         <Text style={styles.itemCount}>{this.state.outletList.length} </Text>
                                         <Text> ITEM</Text>
                                     </View> : null }
-                        </View>
-                        <View style={{marginTop: 10, flex: 1}}>
-                            <FlatList
+                                </View> }
+                        <View style={styles.wrapper}>
+                            <ScrollView contentContainerStyle={styles.row} showsVerticalScrollIndicator={false}>
+                                <FlatList
+                                    contentContainerStyle={styles.list}
+                                    data={this.state.sectionOneOutlet}
+                                    keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
+                                    renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
+                                    enableEmptySections={true}/>
+                                <FlatList
+                                    contentContainerStyle={styles.list}
+                                    data={this.state.sectionTwoOutlet}
+                                    keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
+                                    renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
+                                    enableEmptySections={true}/>
+                            </ScrollView>
+                            {/* <FlatList
                                 data={this.state.outletList}
                                 keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
                                 renderItem={({item}) => <OutletCard outlet={item} onItemPress={this.onItemPress}/>}
-                                showsVerticalScrollIndicator={false}/>
+                                showsVerticalScrollIndicator={false}/> */}
                         </View>
                     </View>
                 </View>
@@ -141,6 +178,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingLeft: 5
     },
+    wrapper: {
+        flex: 1
+    },
+    row: {
+        flexDirection: 'row',
+    },
+    list: {
+        flex: 1,
+        flexDirection: 'column',
+        paddingVertical: 10,
+      }
 });
 
 const OutletScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(OutletScreen);

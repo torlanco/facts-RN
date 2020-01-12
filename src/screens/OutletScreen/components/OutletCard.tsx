@@ -36,22 +36,20 @@ class OutletCard extends React.Component<IProps, IState> {
             <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
                 <View style={styles.mainContainer}>
                     <View style={styles.cardContainer}>
-                        <View style={styles.outletImageWrapper}>
-                            <Card containerStyle={styles.outletImage}>                                
-                                <ImageView image={this.props.outlet.outletImage} />
-                            </Card>
-                        </View>
+                        <Card containerStyle={styles.outletImage}>                                
+                            <ImageView image={this.props.outlet.outletImage} />
+                        </Card>
                         <View style={styles.mainContent}>
-                            <Text style={[styles.type, styles.padding]}>{channelName}</Text>
+                            {/* <Text style={[styles.type, styles.padding]}>{channelName}</Text> */}
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={[styles.name, styles.padding]}>{outlet}</Text>
                             </View>
-                            <Text style={[styles.date, styles.padding]}>Latest: {formatDate(earliestStartDate)}</Text>
+                            <Text style={[styles.date, styles.padding]}>{formatDate(earliestStartDate)} - {formatDate(latestEndDate)}</Text>
                             <View style={styles.flexDiv}>
                                 <Text style={[styles.shoppers, styles.padding]}>
                                     <Text style={styles.shoppersCount}>{shopperCount}</Text> SHOPPERS
                                 </Text>
-                                <Text style={[styles.isNew, styles.padding]}>New</Text>
+                                {/* <Text style={[styles.isNew, styles.padding]}>New</Text> */}
                             </View>
                         </View>
                     </View>
@@ -71,27 +69,24 @@ const styles = StyleSheet.create({
         borderRadius: responsive(24),
         marginTop: responsive(15),
         marginBottom: responsive(15),
-        marginLeft: '10%',
         paddingVertical: 20,
         paddingHorizontal: 20,
-        flexDirection: 'row',
         shadowOpacity: 0.1,
         shadowOffset: {
             width: 0,
             height: 5
         },
         shadowColor: colors.LIGHT_BLUE,
-        elevation: 3,
-        shadowRadius: 10,
+        elevation: 1,
+        shadowRadius: 3,
         backgroundColor: colors.WHITE,
     },
     outletImageWrapper: {
-        width: '50%',
-        marginLeft: '-22.5%',
-        marginRight: '10%',
+        width: '100%',
+        marginRight: 5,
     },
     outletImage: {
-        height: 100,
+        height: 80,
         borderRadius: 10,
         shadowOpacity: 0.1,
         shadowOffset: {
@@ -107,7 +102,7 @@ const styles = StyleSheet.create({
     image: {
         borderRadius: 10,
         width: '100%',
-        maxHeight: 100
+        maxHeight: 80
     },
     mainContent: {
       flexDirection: 'column'
@@ -128,7 +123,6 @@ const styles = StyleSheet.create({
     date: {
         ...typos.SECONDARY,
         color: colors.TEXT_SECONDARY,
-        marginTop: 30,
     },
     flexDiv: {
         display: 'flex',

@@ -83,8 +83,10 @@ class ShoppersScreen extends React.Component<IProps, IState> {
   };
 
   public render() {
+    const { outlet } = this.props.navigation.state.params;
+
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
           <View style={styles.container}>
               <HeaderBar title={'Shoppers'}></HeaderBar>
               <SelectPicker options={this.props.outlets} value={this.state.outlet}
@@ -95,7 +97,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
               <FlatList
                 data={this.state.shoppersList}
                 keyExtractor={(item: IShopper.IShopperData) => item.id}
-                renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress}></ShopperCard>}
+                renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress} outlet={outlet}></ShopperCard>}
                 showsVerticalScrollIndicator={false}/>
           </View>
           {this.props.loading && <LoadingScreen />}

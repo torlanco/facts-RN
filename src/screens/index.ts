@@ -17,3 +17,4 @@ export * from './DocsScreen/DocsScreen';
 export * from './FullImageScreen/FullImageScreen';
 export * from './ProfileScreen/ProfileScreen';
 export * from './WelcomeScreen/WelcomeScreen';
+export * from './HomeScreen/HomeScreen';
