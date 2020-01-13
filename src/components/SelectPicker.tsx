@@ -54,7 +54,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                   containerStyle={styles.icon}/>
             </View>
         </ModalSelector>
-        :  
+        :
         <View style={[styles.iosPicker, {width: props.width ? props.width : 200}]}>
           <RNPickerSelect
               onValueChange={handleValueChange}
@@ -86,21 +86,21 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
     maxWidth: 150,
-    ...typos.PRIMARY_LIGHT
+    ...typos.PRIMARY_MEDIUM
   },
   icon: {
     padding: 0,
-    marginTop: -2,
+    marginTop: Platform.OS === "android" ? -2 : 2,
   },
   iosPicker: {
-    paddingVertical: 15,
+    paddingVertical: 0,
     paddingHorizontal: 10,
     height: 40,
     width: 200,
   },
   pickerTextInputProps: {
     color: colors.TEXT_PRIMARY,
-    ...typos.PRIMARY_LIGHT,
+    ...typos.PRIMARY_MEDIUM,
     paddingTop: 3
   },
   padding: {

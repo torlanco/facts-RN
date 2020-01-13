@@ -22,7 +22,7 @@ interface IState {
 }
 
 class OutletCard extends React.Component<IProps, IState> {
-   
+
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -33,7 +33,7 @@ class OutletCard extends React.Component<IProps, IState> {
     componentDidMount() {
         if (this.props.outlet.outletImage) {
             Image.getSize(this.props.outlet.outletImage, (width: number, height: number) => {
-                this.setState({ 
+                this.setState({
                     outletImage: this.props.outlet.outletImage
                 });
             }, err => {});
@@ -47,13 +47,13 @@ class OutletCard extends React.Component<IProps, IState> {
 
     public render() {
         const { outlet, shopperCount, channelName, tag, earliestStartDate, latestEndDate } = this.props.outlet;
-        
+
         return (
             <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
                 <View style={styles.mainContainer}>
-                    <Card containerStyle={styles.outletImage}>                                
+                    <Card containerStyle={styles.outletImage}>
                         { this.state.outletImage == this.props.outlet.outletImage ?
-                            <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> : 
+                            <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> :
                             <Image style={[styles.image, { height: 50 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
                     </Card>
                     <View style={styles.mainContent}>
@@ -67,7 +67,9 @@ class OutletCard extends React.Component<IProps, IState> {
                             </Text>
                         </View>
                     </View>
-                    <Text style={[styles.isNew]}>New</Text>
+                    <View style={styles.isNewContainer}>
+                        <Text style={[styles.isNew]}>New</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
         },
         elevation: 1,
         shadowRadius: 3,
-        backgroundColor: colors.LIGHT_GRAY, 
+        backgroundColor: colors.LIGHT_GRAY,
         display: 'flex',
         flexDirection: 'row',
         alignContent: 'center'
@@ -140,17 +142,18 @@ const styles = StyleSheet.create({
         ...typos.PRIMARY,
         color: colors.TEXT_PRIMARY
     },
+    isNewContainer: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      backgroundColor: colors.PRIMARY,
+      borderRadius: 10,
+      padding: 5,
+      paddingHorizontal: 10,
+    },
     isNew: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        backgroundColor: colors.PRIMARY,
         ...typos.SMALL_BOLD,
         color: colors.TEXT_PRIMARY,
-        borderRadius: 10,
-        padding: 5,
-        paddingHorizontal: 10,
-        fontWeight: 'bold'
     },
 });
 

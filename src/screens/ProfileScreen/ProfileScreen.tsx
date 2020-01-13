@@ -88,7 +88,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
 
   handleBackPress = () => {
     this.onCancel();
-    this.props.navigation.goBack(); 
+    this.props.navigation.goBack();
     return true;
   }
 
@@ -126,12 +126,12 @@ class ProfileScreen extends React.Component<IProps, IState> {
 
   onSave = async () => {
     const userData = { firstName: this.state.firstName, lastName: this.state.lastName, phone: this.state.phone };
-    const response: any = await this.props.updateUserInfo(this.props.token, userData);    
+    const response: any = await this.props.updateUserInfo(this.props.token, userData);
     if (!response.errText) {
       this.setState({
         editable: false
       });
-      this.fetchUserInfo(true);  
+      this.fetchUserInfo(true);
     }
   }
 
@@ -150,8 +150,9 @@ class ProfileScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
-          <HeaderBar title="Profile" titleStyle={{textAlign: "left"}} 
-            rightIcon={this.state.editable ? '' : 'edit'} onRightIconClick={this.onEdit}></HeaderBar>
+          <HeaderBar title="PROFILE" titleStyle={{textAlign: "left"}}
+            rightIcon={this.state.editable ? '' : 'edit'} onRightIconClick={this.onEdit}
+            rightText={this.state.editable ? 'Cancel' : ''} onRightTextClick={this.onCancel}></HeaderBar>
             <View style={[styles.flex, styles.container]}>
               <Text style={styles.label}>User name</Text>
               <TextField
@@ -213,13 +214,9 @@ class ProfileScreen extends React.Component<IProps, IState> {
 
               { this.state.editable && <View>
                   <View style={[styles.row, {marginTop: 40}]}>
-                    <View style={[styles.flex, styles.row]}>
-                      <TouchableOpacity onPress={this.onCancel}>
-                        <Text style={[styles.label, styles.link]}>Cancel</Text>
-                      </TouchableOpacity>
-                    </View>
+                    <View style={styles.flex}/>
                     <View style={styles.flex}>
-                      <ActionButton title="Save" inverted={true} onPress={this.onSave} style={styles.buttonStyle}/>
+                      <ActionButton title="Save" inverted={true} onPress={this.onSave} invertedStyle={styles.buttonStyle}/>
                     </View>
                   </View>
                 </View> }
@@ -268,7 +265,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 0, 
+    margin: 0,
     padding: 0,
   },
   label: {
@@ -288,8 +285,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonStyle: {
-    borderRadius: 5,
-    marginTop: 20,
+    borderRadius: 0,
+    marginTop: 30,
     marginHorizontal: 0,
     paddingHorizontal: 0
   },

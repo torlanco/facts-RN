@@ -39,12 +39,12 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
     return (
         <View style={styles.container}>
             <View>
-                { props.type ? 
+                { props.type ?
                     <View style={styles.pickerContainer}>
                         <SelectPicker options={props.typeList} value={props.type}
                                     placeholder={'Select a category'}
                                     handleValueChange={onTypeChange}>
-                        </SelectPicker> 
+                        </SelectPicker>
                     </View>: null }
                 <View style={styles.itemCountContainer}>
                     <Text style={styles.itemCount}>{props.totalItems} </Text>
@@ -52,7 +52,7 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
                 </View>
             </View>
             <View style={{ flex: 1 }}></View>
-            <Icon
+            { /* <Icon
                 name='grid'
                 type='feather'
                 size={18}
@@ -65,7 +65,7 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
                 size={18}
                 color={listIconColor}
                 onPress={() => toggleViewType(ViewType.List)}
-                containerStyle={styles.iconContainer} />
+                containerStyle={styles.iconContainer} /> */ }
         </View>
     );
 };
