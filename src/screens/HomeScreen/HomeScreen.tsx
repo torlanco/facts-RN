@@ -65,7 +65,7 @@ class HomeScreen extends React.Component<IProps, IState> {
                             {/* OUTLETS */}
                             <View style={[styles.componentWrapper]}>
                                 <View style={styles.row}>
-                                    <View style={[styles.flex, {marginBottom: 50}]}>
+                                    <View style={[styles.flex, {marginBottom: 20}]}>
                                         <Text style={styles.highlight}>OUTLETS</Text>
                                         <Text style={styles.note}>Find your outlets containing shoppers</Text>
                                     </View>
@@ -79,7 +79,7 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 </View>
                             </View>
 
-                            <View style={{marginTop: -30, flex: 1}  }>
+                            <View style={{ flex: 1 }}>
                                 <OutletScreen onlyOutlets={true}/>
                             </View>
 
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
       paddingVertical: 8,
       backgroundColor: colors.PRIMARY,
       borderRadius: 15,
+      marginBottom: 0,
     },
     seeall: {
         ...typos.SMALL_BOLD,
