@@ -17,7 +17,7 @@ export const colors = {
     LIGHT_BLUE: '#7E849C',
     LIGHT_ORANGE: '#FE9870',
     DISABLED_GRAY: '#E3E6E8',
-    ERROR: '#cc0000',
+    ERROR: '#C93737',
     SUCCESS: '#668741',
     TRANSPARENT_BLACK: '#E3E6E8',
 };

@@ -7,6 +7,7 @@ import {
   Text,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 import { responsive, colors, typos } from '@styles';
 import { SafeAreaView } from 'react-navigation';
@@ -19,6 +20,7 @@ import { IUser } from '@interfaces/user';
 import { DrawerItemsProps } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { mapDispatchToProps } from '@actions/user';
+import { ActionButton } from '@components';
 
 interface IOwnProps {}
 type IProps = IOwnProps & 
@@ -88,18 +90,10 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
   const renderFooter = () => {
     return (
       <View style={styles.listItem}>
-        <View style={[styles.separator, {top: 0}]}/>
-          <TouchableOpacity
-            onPress={isLoggedIn() ? onLogout : onLogin}>
-            <View style={styles.wrapper}>
-              <Icon
-                name={isLoggedIn() ? 'log-out' : 'log-in'}
-                type='feather'
-                color={colors.TEXT_PRIMARY}
-                containerStyle={styles.iconContainer} />
-              <Text style={styles.title}>{isLoggedIn() ? 'Logout' : 'Login'}</Text>
-            </View>
-          </TouchableOpacity>
+        <ActionButton title={isLoggedIn() ? 'LOG OUT' : 'LOG IN'} 
+          onPress={isLoggedIn() ? onLogout : onLogin} inverted={true}
+          invertedStyle={styles.buttonContainerStyle} 
+          invertedButtonStyle={styles.buttonStyle} invertedTitleStyle={styles.buttonTextStyle}/>
       </View>
     );
   };
@@ -110,7 +104,10 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <View style={{height: '100%'}}>
+      <View style={{height: '100%', padding: 20}}>
+        <View style={[styles.row, styles.imageContainer]}>
+            <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
+        </View>
         <FlatList
           data={data.filter(item => isLoggedIn() || !item.hideTillLogin)}
           renderItem={renderItem}
@@ -125,7 +122,6 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
 const styles = StyleSheet.create({
   listItem: {
     height: responsive(60),
-    paddingHorizontal: responsive(15)
   },
   wrapper: {
     height: '100%',
@@ -143,11 +139,39 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: responsive(15),
-    ...typos.BODY,
+    ...typos.LARGE_TITLE,
     color: colors.TEXT_PRIMARY
   },
   iconContainer: {
-    width: responsive(40)
+    width: responsive(40),
+  },
+  buttonContainer: {
+    width: 150
+  },
+  buttonContainerStyle: {
+    width: 150,
+    borderRadius: 5,
+    borderColor: colors.WHITE,
+    backgroundColor: colors.ERROR,
+    borderWidth: 1,
+  },
+  buttonStyle: {
+    borderWidth: 0,
+    backgroundColor: colors.ERROR,
+  },
+  buttonTextStyle: {
+    color: colors.WHITE
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  imageContainer: {
+    marginBottom: 30,
+  },
+  image: {
+    width: 90,
+    height: 50,
   },
 });
 
