@@ -68,7 +68,7 @@ class LoginScreen extends React.Component<IProps, IState> {
       showForgotPassword: false
     };
   }
-  
+
   componentDidMount() {
     this._backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -83,7 +83,7 @@ class LoginScreen extends React.Component<IProps, IState> {
         showForgotPassword: false
       })
     } else {
-      this.props.navigation.goBack(); 
+      this.props.navigation.goBack();
     }
     return true;
   }
@@ -103,7 +103,7 @@ class LoginScreen extends React.Component<IProps, IState> {
     await this.setAsyncState({
       userNameError: validate('required', this.state.userName, 'Username'),
       passwordError: validate('password', this.state.password),
-    }); 
+    });
     return !(this.state.userNameError || this.state.passwordError);
   }
 
@@ -130,9 +130,9 @@ class LoginScreen extends React.Component<IProps, IState> {
   }
 
   onRegister = () => {
-    this.props.navigation.navigate('RegisterScreen');    
+    this.props.navigation.navigate('RegisterScreen');
   }
- 
+
   redirectToMain = () => {
     this.props.navigation.navigate('Main');
   }
@@ -175,7 +175,7 @@ class LoginScreen extends React.Component<IProps, IState> {
               }}
               error={this.state.passwordError}
               type={FieldType.PASSWORD}/>
-            
+
             <View style={styles.row}>
               <TouchableOpacity onPress={this.onForgetPassword}>
                 <Text style={[styles.link]}>forgot password?</Text>
@@ -184,22 +184,22 @@ class LoginScreen extends React.Component<IProps, IState> {
             <View style={[styles.bottomAction]}>
               <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
               <View style={styles.row}>
-                <View style={[styles.flex, styles.row, {paddingTop: 5}]}>
-                  <View style={[{paddingTop: 8}]}>
+                <View style={[styles.flex, styles.row]}>
+                  <View style={[{paddingTop: 15}]}>
                     <Text style={styles.bottomActionText}>Don't have an account?</Text>
                     <TouchableOpacity onPress={this.onRegister}>
                       <Text style={[styles.bottomActionText, styles.boldLink]}>Register Now</Text>
-                    </TouchableOpacity>              
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.flex}></View>
                 </View>
                 <View style={styles.flex}>
-                  <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} invertedStyle={styles.buttonStyle}/>          
+                  <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} invertedStyle={styles.buttonStyle}/>
                 </View>
               </View>
-            </View>    
-          </View> 
-          { this.state.showForgotPassword && <ForgotPasswordComponent/> }   
+            </View>
+          </View>
+          { this.state.showForgotPassword && <ForgotPasswordComponent/> }
         </View>
       { this.props.loading && <LoadingScreen />}
       </SafeAreaView>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     ...typos.PRIMARY_LIGHT,
     color: colors.TEXT_PRIMARY,
     paddingVertical: 10,
-    textDecorationLine: 'underline', 
+    textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   },
   checkBoxContainer: {
@@ -297,25 +297,26 @@ const styles = StyleSheet.create({
   },
   bottomAction: {
     position: "absolute",
-    bottom: 20, 
+    bottom: 20,
     left: 22,
     right: 22,
     zIndex: 1,
     backgroundColor: colors.WHITE
-  }, 
+  },
   bottomActionText: {
-    ...typos.PRIMARY_MEDIUM,
+    ...typos.CAPTION,
     color: colors.BLACK,
     textAlign: 'right',
     margin: 0,
     padding: 0,
   },
   boldLink: {
+    ...typos.CAPTION_BOLD,
     fontWeight: 'bold',
-    textDecorationLine: 'underline', 
+    textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   }
 });
 
 const LoginScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
-export { LoginScreenWrapper as LoginScreen } 
+export { LoginScreenWrapper as LoginScreen }

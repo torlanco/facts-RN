@@ -134,7 +134,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
             <View style={[styles.flex, styles.container]}>
               <Text style={styles.heading}>Sign up</Text>
               <Text style={styles.subHeadig}>create an account</Text>
-              
+
               <Text style={styles.label}>User name</Text>
               <TextField
                 onChangeText={(value: any) => {
@@ -219,7 +219,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 }}
                 error={this.state.passwordError}
                 type={FieldType.PASSWORD}/>
-              
+
               <Text style={styles.label}>Confirm Password</Text>
               <TextField
                 onChangeText={(value: any) => {
@@ -239,12 +239,12 @@ class RegisterScreen extends React.Component<IProps, IState> {
           <View style={[styles.bottomAction]}>
             <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
             <View style={styles.row}>
-              <View style={[styles.flex, styles.row, {paddingTop: 5}]}>
-                  <View style={[{paddingTop: 8}]}>
+              <View style={[styles.flex, styles.row]}>
+                  <View style={[{paddingTop: 15}]}>
                     <Text style={styles.bottomActionText}>Have an account?</Text>
                     <TouchableOpacity onPress={this.onLogin}>
                       <Text style={[styles.bottomActionText, styles.boldLink]}>Log in</Text>
-                    </TouchableOpacity>              
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.flex}></View>
               </View>
@@ -252,7 +252,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 <ActionButton title="Register" inverted={true} onPress={this.onSignUp} invertedStyle={styles.buttonStyle}/>
               </View>
             </View>
-          </View>    
+          </View>
         </View>
         {(this.props.loading) && <LoadingScreen />}
       </SafeAreaView>
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     ...typos.PRIMARY,
     color: colors.BLACK,
     paddingVertical: 10,
-    textDecorationLine: 'underline', 
+    textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   },
   checkBoxContainer: {
@@ -348,22 +348,22 @@ const styles = StyleSheet.create({
   },
   bottomAction: {
     position: "absolute",
-    bottom: 20, 
+    bottom: 20,
     left: 22,
     right: 22,
     zIndex: 1,
     backgroundColor: colors.WHITE
-  }, 
+  },
   bottomActionText: {
-    ...typos.PRIMARY_MEDIUM,
+    ...typos.CAPTION,
     color: colors.BLACK,
     textAlign: 'right',
     margin: 0,
     padding: 0,
   },
   boldLink: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline', 
+    ...typos.CAPTION_BOLD,
+    textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   }
 });

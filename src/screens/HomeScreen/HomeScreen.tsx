@@ -48,7 +48,7 @@ class HomeScreen extends React.Component<IProps, IState> {
     }
 
     onPopularSpecialsItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
-        this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement });    
+        this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement });
     }
 
     redirectToOutletScreen = () => {
@@ -57,15 +57,13 @@ class HomeScreen extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
                 <View style={styles.container}>
-                    <HeaderBar title={'Home'}/>
+                    <HeaderBar title={'HOME'}/>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.mainContainer}>
-                            
-
                             {/* OUTLETS */}
-                            <View style={[styles.componentWrapper, {marginTop: 30}]}>
+                            <View style={[styles.componentWrapper]}>
                                 <View style={styles.row}>
                                     <View style={[styles.flex, {marginBottom: 50}]}>
                                         <Text style={styles.highlight}>OUTLETS</Text>
@@ -73,12 +71,14 @@ class HomeScreen extends React.Component<IProps, IState> {
                                     </View>
                                     {   this.props.outlets && this.props.outlets.length > 4 &&
                                         <TouchableOpacity activeOpacity={0.9} onPress={() => {this.redirectToOutletScreen()}}>
-                                            <Text style={styles.seeall}>SEE All</Text>
-                                        </TouchableOpacity>                        
+                                            <View style={styles.seeAllContainer}>
+                                              <Text style={styles.seeall}>SEE ALL</Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     }
                                 </View>
                             </View>
-                            
+
                             <View style={{marginTop: -30, flex: 1}  }>
                                 <OutletScreen onlyOutlets={true}/>
                             </View>
@@ -92,8 +92,8 @@ class HomeScreen extends React.Component<IProps, IState> {
                                     </View>
                                 </View>
                             </View>
-                            <PopularSpecials/> 
-  
+                            <PopularSpecials/>
+
                         </View>
                     </ScrollView>
                 </View>
@@ -107,13 +107,13 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS === "android" ? 0 : -5,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         flex: 1,
-        backgroundColor: colors.LIGHTEST_GRAY
     },
     mainContainer: {
         flex: 1
     },
     componentWrapper: {
-        paddingHorizontal: 15,        
+        paddingHorizontal: 20,
+        marginTop: 10,
     },
     row: {
         flexDirection: 'row',
@@ -130,12 +130,14 @@ const styles = StyleSheet.create({
     note: {
         ...typos.CAPTION,
     },
+    seeAllContainer: {
+      paddingHorizontal: 15,
+      paddingVertical: 8,
+      backgroundColor: colors.PRIMARY,
+      borderRadius: 15,
+    },
     seeall: {
-        paddingHorizontal: 15,
-        paddingVertical: 8,
         ...typos.SMALL_BOLD,
-        backgroundColor: colors.PRIMARY,
-        borderRadius: 15,
     },
     flex: {
         flex: 1

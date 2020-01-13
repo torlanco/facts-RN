@@ -24,18 +24,18 @@ interface IState {
   featureImage: any,
 }
 class AdvertisementGridItem extends React.Component<IProps, IState> {
- 
+
   constructor(props: IProps) {
       super(props);
       this.state = {
           featureImage: require('@assets/images/placeholder.png')
       };
   }
-  
+
   componentDidMount() {
     if (this.props.advertisement.image) {
         Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
-            this.setState({ 
+            this.setState({
                 featureImage: this.props.advertisement.image
             });
         }, err => {});
@@ -43,22 +43,22 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
   }
 
   onItemPress = () => {
-    if (this.props.onItemPress) 
+    if (this.props.onItemPress)
       this.props.onItemPress(this.props.advertisement);
   }
 
   public render() {
     const { advertisement, outlet } = this.props;
     const {id, type, brand, sprice, rprice, sizeMeasure } = advertisement;
-    const itemWidth = (Dimensions.get('window').width >> 1) - 22;
+    const itemWidth = (Dimensions.get('window').width >> 1) - 25;
     const marginTopofSize = brand && brand.length > 9 ? 0 : -12;
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <View style={[styles.container, {width: itemWidth}]}>
           <Card containerStyle={[styles.imageContainer]}>
             { this.state.featureImage == this.props.advertisement.image ?
-              <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
-              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
+              <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
+              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
           </Card>
           <View style={styles.details}>
             <View style={styles.row}>
@@ -66,7 +66,7 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
             </View>
             <View style={[styles.row, {flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}]}>
                 <Text style={[styles.sellprice]}>${sprice}</Text>
-                <Text style={[styles.regularPrice]}>${rprice}</Text>  
+                <Text style={[styles.regularPrice]}>${rprice}</Text>
             </View>
             <Text style={[styles.size, styles.flex, { marginTop: marginTopofSize }]}>{sizeMeasure}</Text>
             <Text style={[styles.type]}>{type}</Text>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     shadowColor: colors.LIGHT_BLUE,
     elevation: 1,
     shadowRadius: 3,
-    padding: 0, 
+    padding: 0,
     marginTop: 10,
     marginHorizontal: '2.5%',
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: colors.WHITE,
     borderWidth: 0,
-    borderTopRightRadius: 10, 
+    borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     shadowOpacity: 0,
     elevation: 0,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   regularPrice: {
     ...typos.SMALL,
     color: colors.TEXT_PRIMARY,
-    textDecorationLine: 'line-through', 
+    textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
     textAlign: 'right'
   },
@@ -145,10 +145,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   details: {
-    backgroundColor: colors.LIGHT_GRAY, 
-    paddingVertical: 15, 
+    backgroundColor: colors.LIGHT_GRAY,
+    paddingVertical: 15,
     paddingHorizontal: 10,
-    borderBottomRightRadius: 10, 
+    borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10
   },
   size: {

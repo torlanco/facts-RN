@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Text,
     ViewStyle,
-    TextStyle
+    TextStyle,
+    TouchableOpacity
 } from 'react-native';
 import { responsive, typos, colors } from '@styles';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
@@ -25,7 +26,7 @@ interface IOwnProps {
     noDivider?: boolean;
     noLeftIcon?: boolean;
 }
-type IProps = IOwnProps 
+type IProps = IOwnProps
         & NavigationInjectedProps
         & IUser.StateToProps;
 
@@ -39,7 +40,7 @@ const mapStateToProps = function(state: any) {
       token: state.user.token,
     }
 };
-    
+
 class HeaderBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
@@ -49,16 +50,16 @@ class HeaderBar extends React.Component<IProps, IState> {
             isDateRangeValid: this.isDateRangeValid()
         };
     }
-    
+
     isBackEnabled() {
         const parent = this.props.navigation.dangerouslyGetParent();
-        return parent && parent.state && parent.state.index > 0;    
+        return parent && parent.state && parent.state.index > 0;
     }
 
     isDateRangeValid() {
         if (this.props.dateRange && this.props.dateRange.startDate && this.props.dateRange.endDate)
             return true;
-        return false;    
+        return false;
     }
 
     onBackClick = () => {
@@ -80,28 +81,30 @@ class HeaderBar extends React.Component<IProps, IState> {
     }
 
     onDrawerIconClick = () => {
-        this.props.navigation.toggleDrawer();  
+        this.props.navigation.toggleDrawer();
     }
 
     public render() {
         return (
             <View style={[this.props.style]}>
                 <View style={styles.header}>
-                    { !this.props.noLeftIcon ? (this.state.backEnabled ? 
+                    { !this.props.noLeftIcon ? (this.state.backEnabled ?
                         <Icon
                             name='arrow-left'
                             type='feather'
                             color={colors.BLACK}
                             onPress={() => this.onBackClick()}
-                            containerStyle={styles.iconContainer} /> :                         
-                            <Icon
-                                name='menu'
-                                type='feather'
-                                color={colors.BLACK}
-                                onPress={() => this.onDrawerIconClick()}
-                                containerStyle={styles.iconContainer} /> ) : null }
+                            containerStyle={styles.iconContainer} /> :
+                            <TouchableOpacity onPress={() => this.onDrawerIconClick()} activeOpacity={0.7}>
+                              <Icon
+                                  name='menu'
+                                  type='feather'
+                                  color={colors.BLACK}
+                                  style={{backgroundColor: colors.PRIMARY}}
+                                  containerStyle={styles.menuIconContainer} />
+                            </TouchableOpacity>  ) : null }
                     <Text style={[styles.title, this.props.titleStyle]}>{this.props.title}</Text>
-                    { this.props.rightIcon ? 
+                    { this.props.rightIcon ?
                         <Icon
                             name={this.props.rightIcon}
                             type='feather'
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     iconContainer: {
-        width: responsive(60),
+        width: responsive(50),
         padding: 10,
     },
     rightIconContainer: {
@@ -152,11 +155,18 @@ const styles = StyleSheet.create({
         lineHeight: 16,
     },
     rightText: {
-        ...typos.PRIMARY_BOLD,
-        fontWeight: 'bold',
+        ...typos.PRIMARY_MEDIUM,
         color: colors.BLACK,
-        padding: 5,
+        padding: 10,
+        marginTop: 5,
         marginRight: 20
+    },
+    menuIconContainer: {
+      width: responsive(40),
+      padding: 8,
+      marginLeft: 20,
+      backgroundColor: colors.PRIMARY,
+      borderRadius: 5,
     }
 });
 const wrapper = withNavigation(connect(mapStateToProps, null)(HeaderBar));
@@ -169,4 +179,4 @@ export class DateRange {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-} 
+}

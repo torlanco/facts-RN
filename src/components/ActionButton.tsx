@@ -43,8 +43,8 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         containerStyle.push(props.style);
     }
     if (inverted && props.invertedStyle) {
-        containerStyle.push(props.invertedStyle);    
-    } 
+        containerStyle.push(props.invertedStyle);
+    }
 
     const buttonStyle = [
         styles.button,
@@ -56,8 +56,8 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         buttonStyle.push(props.buttonStyle);
     }
     if (inverted && props.invertedButtonStyle) {
-        buttonStyle.push(props.invertedButtonStyle);    
-    } 
+        buttonStyle.push(props.invertedButtonStyle);
+    }
     const textStyle = [
         styles.textStyle,
         { color }
@@ -66,9 +66,9 @@ const ActionButton: React.SFC<IProps> = (props: IProps) => {
         textStyle.push(props.titleStyle);
     }
     if (inverted && props.invertedTitleStyle) {
-        textStyle.push(props.invertedTitleStyle);    
-    } 
-    
+        textStyle.push(props.invertedTitleStyle);
+    }
+
     const onButtonPress = () => {
         if (props.onPress) {
             props.onPress(inverted ? '' : props.title);

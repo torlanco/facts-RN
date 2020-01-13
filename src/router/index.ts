@@ -142,6 +142,26 @@ const DocsNavigator = createStackNavigator(
     }
 )
 
+const ProfileNavigator = createStackNavigator(
+    {
+        ProfileScreen: {screen: ProfileScreen},
+    },
+    {
+        initialRouteName: 'ProfileScreen',
+        defaultNavigationOptions: {
+            headerLeft: null,
+            headerBackTitle: null,
+            headerTransparent: true,
+            headerStyle: {
+                borderBottomWidth: 0, // remove the bottom line
+                height: 0,
+                elevation: 0
+            },
+            headerTintColor: colors.WHITE
+        }
+    }
+)
+
 const MainNavigator = createDrawerNavigator(
     {
       Home: { screen: HomeNavigator },
@@ -149,7 +169,7 @@ const MainNavigator = createDrawerNavigator(
       // Work: { screen: WorkNavigator },
       // Features: {screen: FeaturesNavigator},
       // Docs: { screen: DocsNavigator },
-      Profile: {screen: ProfileScreen}
+      Profile: { screen: ProfileNavigator }
     },
     {
       contentComponent: SideMenu,
