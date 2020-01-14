@@ -67,7 +67,7 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 <View style={styles.row}>
                                     <View style={[styles.flex, {marginBottom: 20}]}>
                                         <Text style={styles.highlight}>OUTLETS</Text>
-                                        <Text style={styles.note}>Find your outlets containing shoppers</Text>
+                                        <Text style={styles.note}>List of most recently printed Shoppers</Text>
                                     </View>
                                     {   this.props.outlets && this.props.outlets.length > 4 &&
                                         <TouchableOpacity activeOpacity={0.9} onPress={() => {this.redirectToOutletScreen()}}>
@@ -88,7 +88,7 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 <View style={styles.row}>
                                     <View style={styles.flex}>
                                         <Text style={styles.highlight}>POPULAR SPECIALS</Text>
-                                        <Text style={styles.note}>Find what is popular among shoppers</Text>
+                                        <Text style={styles.note}>People have found these specials interesting</Text>
                                     </View>
                                 </View>
                             </View>

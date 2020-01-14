@@ -83,7 +83,7 @@ class OutletScreen extends React.Component<IProps, IState> {
         }
         if (this.props.onlyOutlets) {
             outletList = this.props.outlets ? 
-                (this.props.outlets.length > 6 ? this.props.outlets.slice(0, 6) : this.props.outlets) : [];
+                (this.props.outlets.length > 6 ? this.props.outlets.slice(0, 10) : this.props.outlets) : [];
         }
         let sectionOneOutlet: IOutlet.IOutletData[] = outletList.filter((item, index) => {
             if (!(index & 1)) {

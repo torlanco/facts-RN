@@ -67,9 +67,12 @@ class OutletCard extends React.Component<IProps, IState> {
                             </Text>
                         </View>
                     </View>
+                    { tag ? 
                     <View style={styles.isNewContainer}>
                         <Text style={[styles.isNew]}>New</Text>
-                    </View>
+                    </View> : <View></View>
+                    }
+
                 </View>
             </TouchableOpacity>
         );
