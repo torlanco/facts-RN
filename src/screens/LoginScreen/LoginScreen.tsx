@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 5,
     marginRight: 5,
-    padding: 20
+    padding: 15
   },
   skipContainer: {
     display: 'flex',
@@ -304,15 +304,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WHITE
   },
   bottomActionText: {
-    ...typos.CAPTION,
+    ...typos.PRIMARY_LIGHT,
     color: colors.BLACK,
     textAlign: 'right',
     margin: 0,
     padding: 0,
   },
   boldLink: {
-    ...typos.CAPTION_BOLD,
-    fontWeight: 'bold',
+    ...typos.PRIMARY,
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   }

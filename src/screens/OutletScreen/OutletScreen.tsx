@@ -118,9 +118,14 @@ class OutletScreen extends React.Component<IProps, IState> {
 
     public render() {
         const { onlyOutlets, loading } = this.props;
+        const containerStyle: any = {};
+        if (onlyOutlets) {
+            containerStyle.marginTop = 0
+            containerStyle.paddingTop = 0
+        }
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.container}>
+                <View style={[styles.container, containerStyle]}>
                     {!onlyOutlets && <HeaderBar title={'OUTLETS'} />}
                     { onlyOutlets && this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
                     <View style={styles.mainContainer}>

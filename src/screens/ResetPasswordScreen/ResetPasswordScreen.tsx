@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 5,
     marginRight: 5,
-    padding: 20
+    padding: 15
   },
   imageContainer: {
     marginVertical: 10,

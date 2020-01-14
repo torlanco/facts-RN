@@ -5,7 +5,8 @@ import {
     Text,
     ViewStyle,
     TextStyle,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import { responsive, typos, colors } from '@styles';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
@@ -100,7 +101,6 @@ class HeaderBar extends React.Component<IProps, IState> {
                                   name='menu'
                                   type='feather'
                                   color={colors.BLACK}
-                                  style={{backgroundColor: colors.PRIMARY}}
                                   containerStyle={styles.menuIconContainer} />
                             </TouchableOpacity>  ) : null }
                     <Text style={[styles.title, this.props.titleStyle]}>{this.props.title}</Text>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     iconContainer: {
-        width: responsive(50),
+        width: responsive(60),
         padding: 10,
     },
     rightIconContainer: {
@@ -155,14 +155,14 @@ const styles = StyleSheet.create({
         lineHeight: 16,
     },
     rightText: {
-        ...typos.PRIMARY_MEDIUM,
+        ...typos.TITLE_SEMIBOLD,
         color: colors.BLACK,
         padding: 10,
         marginTop: 5,
         marginRight: 20
     },
     menuIconContainer: {
-      width: responsive(40),
+      width: Platform.OS === "android" ? responsive(45) : responsive(40),
       padding: 8,
       marginLeft: 20,
       backgroundColor: colors.PRIMARY,

@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 5,
     marginRight: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingBottom: 100
   },
   imageContainer: {
@@ -348,21 +348,22 @@ const styles = StyleSheet.create({
   },
   bottomAction: {
     position: "absolute",
-    bottom: 20,
+    bottom: 0,
     left: 22,
     right: 22,
     zIndex: 1,
+    paddingBottom: 20,
     backgroundColor: colors.WHITE
   },
   bottomActionText: {
-    ...typos.CAPTION,
+    ...typos.PRIMARY_LIGHT,
     color: colors.BLACK,
     textAlign: 'right',
     margin: 0,
     padding: 0,
   },
   boldLink: {
-    ...typos.CAPTION_BOLD,
+    ...typos.PRIMARY,
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   }
