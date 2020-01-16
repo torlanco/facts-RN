@@ -89,7 +89,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
                 name='search'
                 type='feather'
                 size={12}
-                color={colors.BLACK}
+                color={this.state.query ? colors.PRIMARY : colors.BLACK}
                 containerStyle={styles.searchIconContainer} />
               <TextInput style={[styles.textInput]} value={this.state.query} 
                   onChangeText={this.onChangeText} editable={!this.props.disabled} placeholder='search specials by brand'/>
