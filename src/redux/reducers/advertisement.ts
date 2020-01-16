@@ -136,7 +136,7 @@ export function advertisement(
     case Types.FETCH_ADVERTISEMENTS_BY_BRANDS_SUCCESS:
       return {
         ...state,
-        featuresByBrands: action.payload.features,
+        featuresByBrands: createMultiListWithOutlet(action.payload.features),
         loading: false,
         error: false,
       };
@@ -228,4 +228,22 @@ function fetchCategories(advertisements: IAdvertisement.IAdvertisementData[]) {
     map((advertisement: any) => `${advertisement.category} (${getAdvertisementCountByCategory(advertisements, advertisement.category)})`))].sort();
   categories.splice(0, 0, `${CONSTANTS.SHOW_ALL} (${advertisements.length})`);
   return categories;
+}
+
+function createMultiListWithOutlet(advertisements: IAdvertisement.IAdvertisementData[]) {
+  const featuresWithOutetMap: any = {};
+  advertisements.forEach((feature: IAdvertisement.IAdvertisementData) => {
+    if (!featuresWithOutetMap[feature.outlet]) {
+      featuresWithOutetMap[feature.outlet] = [];
+    }
+    featuresWithOutetMap[feature.outlet].push(feature);
+  });
+  const featuresWithOutletList: any = [];
+  for (let key in featuresWithOutetMap) {
+    featuresWithOutletList.push({
+      outlet: key,
+      features: featuresWithOutetMap[key]
+    })
+  }
+  return featuresWithOutletList;
 }

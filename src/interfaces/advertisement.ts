@@ -19,7 +19,10 @@ export namespace IAdvertisement {
         keywords?: string;  
         outlet?: string;
         startDate?: string;
-        endDate?: string;      
+        endDate?: string;    
+    
+        dummyId?: string;
+        opacity?: number;  
     }   
 
     export interface StateToProps {
@@ -30,7 +33,7 @@ export namespace IAdvertisement {
         advertisementsForReview?: IAdvertisementData[] | undefined;
         categoriesForReview?: string[] | undefined;
         brands?: string[] | undefined;
-        featuresByBrands?: IAdvertisementData[] | undefined;
+        featuresByBrands?: any[] | undefined;
         trendingFeatures?: IAdvertisementData[] | undefined;
         homeCategories?: any[] | undefined;
     }

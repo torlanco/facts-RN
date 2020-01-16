@@ -15,9 +15,9 @@ import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/outlet';
 import { OutletScreen } from '../OutletScreen/OutletScreen';
 import { typos, colors } from '@styles';
-import { Categories } from './components/Categories';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { PopularSpecials } from './components/PopularSpecials';
+import { AutoSuggestComponent } from '../FeaturesByCategoryScreen/components/AutoSuggestComponent';
 
 interface IOwnProps {}
 type IProps = IOwnProps &
@@ -54,6 +54,10 @@ class HomeScreen extends React.Component<IProps, IState> {
     redirectToOutletScreen = () => {
         this.props.navigation.navigate('OutletScreen');
     }
+    
+    redirectToFeaturesByCategory = () => {
+        this.props.navigation.navigate('FeaturesByCategoryScreen');
+    }
 
     public render() {
         return (
@@ -62,6 +66,15 @@ class HomeScreen extends React.Component<IProps, IState> {
                     <HeaderBar title={'HOME'}/>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.mainContainer}>
+
+                            {/* SEARCH SPECIALS BY BRANDS */}
+                            <TouchableOpacity onPress={this.redirectToFeaturesByCategory} activeOpacity={0.9}>
+                                <View style={{padding: 20}}>        
+                                    <AutoSuggestComponent disabled={true}/>
+                                </View>    
+                            </TouchableOpacity>            
+
+
                             {/* OUTLETS */}
                             <View style={[styles.componentWrapper]}>
                                 <View style={styles.row}>
@@ -93,7 +106,6 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 </View>
                             </View>
                             <PopularSpecials/>
-
                         </View>
                     </ScrollView>
                 </View>
@@ -142,6 +154,11 @@ const styles = StyleSheet.create({
     },
     flex: {
         flex: 1
+    },
+    searchbar: {
+        position: "absolute",
+        bottom: 0,
+        left: 0, right: 0,
     }
 });
 

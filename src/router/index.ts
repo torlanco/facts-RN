@@ -14,8 +14,7 @@ import {
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
-  AutoSuggestScreen,
-  FeaturesScreen,
+  FeaturesByCategoryScreen,
   CameraScreen,
   CustomCameraScreen,
   DocsScreen,
@@ -36,6 +35,7 @@ const HomeNavigator = createStackNavigator(
         ShopperScreen: {screen: ShoppersScreen},
         AdvertisementScreen: {screen: AdvertisementScreen},
         AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
+        FeaturesByCategoryScreen: {screen: FeaturesByCategoryScreen},
     },
     {
         initialRouteName: 'HomeScreen',
@@ -99,12 +99,11 @@ const WorkNavigator = createStackNavigator(
 
 const FeaturesNavigator = createStackNavigator(
     {
-        AutoSuggestScreen: {screen: AutoSuggestScreen},
-        FeaturesScreen: {screen: FeaturesScreen},
+        FeaturesByCategoryScreen: {screen: FeaturesByCategoryScreen},
         AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
     },
     {
-        initialRouteName: 'AutoSuggestScreen',
+        initialRouteName: 'FeaturesByCategoryScreen',
         defaultNavigationOptions: {
             headerLeft: null,
             headerBackTitle: null,

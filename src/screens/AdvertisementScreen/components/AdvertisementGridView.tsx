@@ -40,13 +40,13 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
         <FlatList
           contentContainerStyle={styles.list}
           data={sectionOneAdvertisement}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id?.toString()}
+          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
           renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
           enableEmptySections={true}/>
         <FlatList
           contentContainerStyle={styles.list}
           data={sectionTwoAdvertisement}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id?.toString()}
+          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
           renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
           enableEmptySections={true}/>
       </ScrollView>

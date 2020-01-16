@@ -24,6 +24,7 @@ export const typos = Platform.OS === "android" ? {
   LARGE_TITLE: { fontSize: responsive(18), fontFamily: 'Montserrat-ExtraBold' },
   TITLE: { fontSize: responsive(16), fontFamily: 'Montserrat-ExtraBold' },
   TITLE_SEMIBOLD: { fontSize: responsive(16), fontFamily: 'Montserrat-SemiBold' },
+  TITLE_MEDIUM: { fontSize: responsive(16), fontFamily: 'Montserrat-Medium' },
   TITLE_LIGHT: { fontSize: responsive(16), fontFamily: 'Montserrat-Light' },
   PRIMARY: { fontSize: responsive(14), fontFamily: 'Montserrat-ExtraBold' },
   PRIMARY_MEDIUM: { fontSize: responsive(14), fontFamily: 'Montserrat-SemiBold' },

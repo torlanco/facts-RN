@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     message: {
-        ...typos.PRIMARY_BOLD,
+        ...typos.PRIMARY,
         textAlign: 'center',
         paddingHorizontal: 10,
         paddingVertical: 30,

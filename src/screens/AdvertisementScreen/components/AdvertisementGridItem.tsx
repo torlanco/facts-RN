@@ -49,28 +49,35 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
 
   public render() {
     const { advertisement, outlet } = this.props;
-    const {id, type, brand, sprice, rprice, sizeMeasure } = advertisement;
+    const {id, type, brand, sprice, rprice, sizeMeasure, opacity } = advertisement;
     const itemWidth = (Dimensions.get('window').width >> 1) - 25;
     const marginTopofSize = brand && brand.length > 9 ? 0 : -12;
+
+    const imageContainerHeight: any = {};
+    if (!id) {
+      imageContainerHeight.height = 140;
+    }
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
-        <View style={[styles.container, {width: itemWidth}]}>
-          <Card containerStyle={[styles.imageContainer]}>
-            { this.state.featureImage == this.props.advertisement.image ?
+        <View style={[styles.container, {width: itemWidth, opacity:  opacity ? opacity : 1}]}>
+          <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
+            { id ? this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
-              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
+              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> : null }
           </Card>
           <View style={styles.details}>
-            <View style={styles.row}>
-              <Text style={[styles.boldText, styles.flex]}>{brand}</Text>
-            </View>
-            <View style={[styles.row, {flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}]}>
-                <Text style={[styles.sellprice]}>${sprice}</Text>
-                <Text style={[styles.regularPrice]}>${rprice}</Text>
-            </View>
-            <Text style={[styles.size, styles.flex, { marginTop: marginTopofSize }]}>{sizeMeasure}</Text>
-            <Text style={[styles.type]}>{type}</Text>
-            <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
+            { id && <View>    
+              <View style={styles.row}>
+                <Text style={[styles.boldText, styles.flex]}>{brand}</Text>
+              </View>
+              <View style={[styles.row, {flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}]}>
+                  <Text style={[styles.sellprice]}>${sprice}</Text>
+                  <Text style={[styles.regularPrice]}>${rprice}</Text>
+              </View>
+              <Text style={[styles.size, styles.flex, { marginTop: marginTopofSize }]}>{sizeMeasure}</Text>
+              <Text style={[styles.type]}>{type}</Text>
+              <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet}</Text> 
+              </View> }
           </View>
         </View>
       </TouchableOpacity>
@@ -92,7 +99,8 @@ const styles = StyleSheet.create({
     elevation: 1,
     shadowRadius: 3,
     padding: 0,
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 5,
     marginHorizontal: '2.5%',
   },
   imageContainer: {
