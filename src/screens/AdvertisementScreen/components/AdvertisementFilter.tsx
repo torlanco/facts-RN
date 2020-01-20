@@ -51,8 +51,8 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
                     <Text> ITEM</Text>
                 </View>
             </View>
-            <View style={{ flex: 1 }}></View>
-            { /* <Icon
+            { /* <View style={{ flex: 1 }}></View>
+            <Icon
                 name='grid'
                 type='feather'
                 size={18}

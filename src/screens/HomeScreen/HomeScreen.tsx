@@ -52,10 +52,11 @@ class HomeScreen extends React.Component<IProps, IState> {
     }
 
     redirectToOutletScreen = () => {
-        this.props.navigation.navigate('OutletScreen');
+        this.props.navigation.navigate('Outlet');
     }
-    
+
     redirectToFeaturesByCategory = () => {
+        // console.log('Hello');
         this.props.navigation.navigate('FeaturesByCategoryScreen');
     }
 
@@ -69,10 +70,10 @@ class HomeScreen extends React.Component<IProps, IState> {
 
                             {/* SEARCH SPECIALS BY BRANDS */}
                             <TouchableOpacity onPress={this.redirectToFeaturesByCategory} activeOpacity={0.9}>
-                                <View style={{padding: 20, elevation: 2, zIndex: 2}}>        
-                                    <AutoSuggestComponent disabled={true}/>
-                                </View>    
-                            </TouchableOpacity>            
+                                <View style={{padding: 20, zIndex: 4, elevation: 4}}>
+                                   <AutoSuggestComponent disabled={true}/>
+                                </View>
+                            </TouchableOpacity>
 
 
                             {/* OUTLETS */}

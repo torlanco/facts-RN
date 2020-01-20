@@ -57,9 +57,9 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   }
 
   onChangeText = async (value: any) => {
-    this.setState({ 
+    this.setState({
       query: value,
-      hideResults: value.length < 2, 
+      hideResults: value.length < 2,
     });
     if (value.length >= 2) {
       if (this._fetchBrandsHandler) {
@@ -67,17 +67,17 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
       }
       this._fetchBrandsHandler = setTimeout(() => {
         this.fetchBrands();
-      }, 300);  
+      }, 300);
     }
   }
-  
+
   fetchBrands = async () => {
     this._fetchBrandsHandler = null;
     await this.props.fetchBrands(this.state.query);
     this.setState({
       hideResults: false,
       data: this.props.brands ? this.props.brands.map((brand: any) => `${brand.brand} (${brand.total})`) : []
-    });   
+    });
   }
 
   onItemSelect = (value: string) => {
@@ -97,15 +97,16 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
         <Autocomplete
           data={this.state.data}
           renderTextInput={() => (
-            <View style={styles.inputWrapper}>  
+            <View style={styles.inputWrapper}>
               <Icon
                 name='search'
                 type='feather'
                 size={12}
                 color={this.state.query ? colors.PRIMARY : colors.BLACK}
                 containerStyle={styles.searchIconContainer} />
-              <TextInput autoFocus={true} style={[styles.textInput]} 
-                onChangeText={this.onChangeText} editable={!this.props.disabled} placeholder='search specials by brand'/>
+              { this.props.disabled ? <Text style={[styles.text]}>search specials by brand</Text>
+                : <TextInput autoFocus={true} style={[styles.textInput]}
+                onChangeText={this.onChangeText} editable={!this.props.disabled} placeholder='search specials by brand'/> }
             </View>
           )}
           renderItem={({item, index}) => (
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.LIGHT_GRAY
   },
   listContainerStyle: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   listStyle: {
     margin: 0,
@@ -177,6 +178,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingLeft: 30,
     textTransform: 'capitalize'
+  },
+  text: {
+    ...typos.PRIMARY_MEDIUM,
+    color: colors.TEXT_SECONDARY,
+    borderRadius: 5,
+    height: 30,
+    paddingVertical: 7,
+    paddingHorizontal: 5,
+    paddingLeft: 30,
+    opacity: 0.6
   },
   searchIconContainer: {
     position: "absolute",

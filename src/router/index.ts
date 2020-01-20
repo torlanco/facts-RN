@@ -36,6 +36,7 @@ const HomeNavigator = createStackNavigator(
         AdvertisementScreen: {screen: AdvertisementScreen},
         AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
         FeaturesByCategoryScreen: {screen: FeaturesByCategoryScreen},
+        FullImageScreen: {screen: FullImageScreen}
     },
     {
         initialRouteName: 'HomeScreen',
@@ -59,6 +60,7 @@ const OutletNavigator = createStackNavigator(
         ShopperScreen: {screen: ShoppersScreen},
         AdvertisementScreen: {screen: AdvertisementScreen},
         AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
+        FullImageScreen: {screen: FullImageScreen}
     },
     {
         initialRouteName: 'OutletScreen',

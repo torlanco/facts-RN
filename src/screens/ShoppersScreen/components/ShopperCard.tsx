@@ -8,7 +8,7 @@ import { IOutlet } from '@interfaces/outlet';
 // Utils
 import { formatDate } from '@utils';
 import FullWidthImage from 'react-native-fullwidth-image';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 
 interface IOwnProps {
   shopper: IShopper.IShopperData,
@@ -16,7 +16,7 @@ interface IOwnProps {
   onItemPress?: Function
 }
 
-type IProps = IOwnProps 
+type IProps = IOwnProps
     & NavigationInjectedProps;
 
 interface IState {
@@ -24,7 +24,7 @@ interface IState {
     outletImage: any
 }
 class ShopperCard extends React.Component<IProps, IState> {
-    
+
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -36,7 +36,7 @@ class ShopperCard extends React.Component<IProps, IState> {
     componentDidMount() {
         if (this.props.shopper.pathThumb) {
             Image.getSize(this.props.shopper.pathThumb, (width: number, height: number) => {
-                this.setState({ 
+                this.setState({
                     shopperImage: this.props.shopper.pathThumb
                 });
             }, err => {});
@@ -44,21 +44,21 @@ class ShopperCard extends React.Component<IProps, IState> {
 
         if (this.props.outlet.outletImage) {
             Image.getSize(this.props.outlet.outletImage, (width: number, height: number) => {
-                this.setState({ 
+                this.setState({
                     outletImage: this.props.outlet.outletImage
                 });
             }, err => {});
         }
     }
-    
+
     onItemPress = () => {
-        if (this.props.onItemPress) 
+        if (this.props.onItemPress)
             this.props.onItemPress(this.props.shopper);
     }
 
     openFullScreenImage = () => {
         if (this.props.shopper.pathThumb) {
-            this.props.navigation.navigate(this.props.shopper.pathThumb);
+            this.props.navigation.navigate('FullImageScreen', { image: this.props.shopper.pathThumb});
         }
     }
 
@@ -71,23 +71,23 @@ class ShopperCard extends React.Component<IProps, IState> {
                 <View style={styles.mainContainer}>
                     <Card containerStyle={styles.outletImage}>
                     { this.state.shopperImage == this.props.shopper.pathThumb ?
-                        <FullWidthImage style={ styles.image } source={{ uri: this.state.shopperImage }}/> : 
-                        <Image style={[styles.image, { height: 200 }]} source={ this.state.shopperImage } resizeMode="stretch"/> }  
+                        <FullWidthImage style={ styles.image } source={{ uri: this.state.shopperImage }}/> :
+                        <Image style={[styles.image, { height: 200 }]} source={ this.state.shopperImage } resizeMode="stretch"/> }
                         <View style={[styles.row, styles.details]}>
-                            { this.state.shopperImage == this.props.shopper.pathThumb && 
+                            { this.state.shopperImage == this.props.shopper.pathThumb &&
                                 <TouchableOpacity onPress={this.openFullScreenImage} style={styles.iconContainerWrapper}>
                                     <Icon
                                     name='maximize'
                                     type='feather'
                                     size={24}
                                     color={colors.BLACK}
-                                    containerStyle={[styles.iconContainer]} /> 
-                                </TouchableOpacity>}
+                                    containerStyle={[styles.iconContainer]} />
+                                </TouchableOpacity> }
                             <View style={styles.thumbimageContainer}>
                                 { this.state.outletImage == this.props.outlet.outletImage ?
-                                    <FullWidthImage style={ styles.thumbimage } source={{ uri: this.state.outletImage }}/> : 
-                                    <Image style={[styles.thumbimage, { height: 60 }]} source={ this.state.outletImage } resizeMode="stretch"/> }  
-                            </View> 
+                                    <FullWidthImage style={ styles.thumbimage } source={{ uri: this.state.outletImage }}/> :
+                                    <Image style={[styles.thumbimage, { height: 60 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+                            </View>
                             <View>
                                 <Text style={[styles.highlight]}>{outlet}</Text>
                                 <Text style={[styles.date]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
@@ -148,15 +148,15 @@ const styles = StyleSheet.create({
         color: colors.TEXT_PRIMARY
     },
     details: {
-        backgroundColor: colors.LIGHT_GRAY, 
-        paddingVertical: 10, 
-        paddingHorizontal: 10,    
+        backgroundColor: colors.LIGHT_GRAY,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
     },
     row: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'
-    }, 
+    },
     thumbimageContainer: {
         width: 60,
         height: 60,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     },
     thumbimage: {
         borderRadius: 5,
-        width: '100%'        
+        width: '100%'
     },
     iconContainerWrapper: {
         position: "absolute",
@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
     iconContainer: {
         padding: 10,
         width: 45, height: 45,
-        borderRadius: 6, 
+        borderRadius: 6,
         backgroundColor: colors.PRIMARY,
     },
 });
-
-export { ShopperCard };
+const ShopperCardWrapper = withNavigation(ShopperCard);
+export { ShopperCardWrapper as ShopperCard };

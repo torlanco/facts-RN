@@ -26,14 +26,18 @@ type IProps = IOwnProps;
 const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 
     const handleValueChange = (value: any) => {
-      if (props.handleValueChange)
+      console.log(value);
+      console.log(props.placeholder);
+
+      if (props.handleValueChange  && value) {
         props.handleValueChange(value);
+      }
     }
 
     return (
       Platform.OS === "android" ?
         <View>
-          <Text style={styles.label}>{props.label}</Text>            
+          <Text style={[styles.label], {paddingLeft: 10}}>{props.label}</Text>
           <ModalSelector
             style={[styles.picker, {width: props.width ? props.width : 200}]}
             data={props.options}
@@ -62,6 +66,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
         </View>
         :
         <View style={[styles.iosPicker, {width: props.width ? props.width : 200}]}>
+          <Text style={styles.label}>{props.label}</Text>
           <RNPickerSelect
               onValueChange={handleValueChange}
               items={props.options ? props.options.map((option) => {
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 10,
     marginBottom: 10,
-    maxWidth: 150,
+    maxWidth: 200,
     ...typos.PRIMARY_LIGHT,
     textTransform: 'capitalize'
   },
@@ -117,7 +122,6 @@ const styles = StyleSheet.create({
   },
   label: {
     ...typos.PRIMARY,
-    paddingLeft: 10,
   }
 });
 

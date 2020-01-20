@@ -47,7 +47,7 @@ class FullImageScreen extends React.Component<IProps, IState> {
     const { image } = this.props.navigation.state.params;
     if (image) {
         Image.getSize(image, (width: number, height: number) => {
-          this.setState({ 
+          this.setState({
             width: width,
             height: height
           });
@@ -67,7 +67,7 @@ class FullImageScreen extends React.Component<IProps, IState> {
     const { image } = this.props.navigation.state.params;
     return (
       <SafeAreaView style={{flex: 1}}>
-          <ScrollView style={styles.container}>
+          <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center', justifyContent: 'center',}}>
             <Image style={{width: this.state.width, height: this.state.height}} source={{ uri: image }} />
           </ScrollView>
           <TouchableOpacity style={styles.closeIconTouchable}
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)'
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
   },
   footer: {
     position: "absolute",
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   closeIconTouchable: {
     position: "absolute",
-    bottom: 80, 
+    bottom: 80,
     height: 60,
     width: 60,
     alignSelf: 'center',

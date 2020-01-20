@@ -75,7 +75,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   async fetchAdvertisements() {
     const { shopper } = this.props.navigation.state.params;
     await this.props.fetchAdvertisements(shopper.id);
-    const category = this.props.categories ? this.props.categories[0] : '';
+    const category = this.props.categories ? this.props.categories[0].split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim() : '';
     this.setState({
       category: category,
       advertisementList: this.filterAdvertisements(category),

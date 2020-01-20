@@ -87,7 +87,7 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
       })
     }
     return featuresWithOutletList;
-  }  
+  }
 
   componentDidMount() {
     this._isMounted = true;
@@ -110,15 +110,15 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
     return <SectionList
       sections={this.state.advertisementList}
       keyExtractor={(item, index) => item.key}
-      renderItem={({ item }) => <AdvertisementGridView listkey={item.key} advertisementList={item.features}/>}  
+      renderItem={({ item }) => <AdvertisementGridView listkey={item.key} advertisementList={item.features}/>}
       renderSectionHeader={({ section: { outlet } }) => (
         <Text style={styles.outlet}>{outlet}</Text>
-      )} 
+      )}
       ListEmptyComponent={() => <View style={{marginTop: 40}}>
         <EmptyListMessage message={`No features found for brand ${this.state.brand}`}/>
       </View>}/>
   }
- 
+
   getInitialView() {
     return this.state.initial && <View style={[styles.flex, {marginTop: 40}]}>
       <Text style={styles.heading}>SEARCH SPECIALS BY BRAND NAME</Text>
@@ -134,7 +134,7 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
         brand,
       }, () => {
         this.fetchAdvertisements();
-      });  
+      });
     }
   }
 
@@ -172,8 +172,10 @@ const styles = StyleSheet.create({
   },
   autoSuggestContainer: {
     position: "absolute",
-    top: 0, 
+    top: 0,
     left: 20, right: 20,
+    zIndex: 5,
+    elevation: 5
   },
   outlet: {
     marginTop: 30,

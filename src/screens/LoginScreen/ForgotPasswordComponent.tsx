@@ -14,9 +14,12 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
+import { Icon } from 'react-native-elements';
+
 
 interface IOwnProps {
     type?: string;
+    onBack?: Function
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -44,7 +47,7 @@ class ForgotPasswordComponent extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      emailOrPhone: '',  
+      emailOrPhone: '',
       // Errors
       emailOrPhoneError: '',
     };
@@ -77,7 +80,7 @@ class ForgotPasswordComponent extends React.Component<IProps, IState> {
 
   redirectToVerifyOtp = () => {
     this.props.navigation.navigate('VerifyOTPScreen', { emailOrPhone: this.state.emailOrPhone });
-  } 
+  }
 
   requestOtp = async () => {
     const response: any = await this.props.requestResetPasswordOtp(this.state.emailOrPhone);
@@ -90,17 +93,30 @@ class ForgotPasswordComponent extends React.Component<IProps, IState> {
     }
   }
 
+  close = () => {
+    if (this.props.onBack) {
+      this.props.onBack();
+    }
+  }
+
   public render() {
     const { type } = this.props;
     return (
         <View style={styles.grayHover}>
             <View style={[styles.flex, styles.container]}>
+                <Icon
+                  name='x'
+                  type='feather'
+                  size={18}
+                  color={colors.BLACK}
+                  containerStyle={styles.closeIconContainer}
+                  onPress={this.close}/>
                 <Text style={styles.heading}>Enter</Text>
                 <Text style={styles.subHeadig}>{type ? 'email': 'phone number'}</Text>
                 <Text style={styles.message}>We will send an OTP on your registered {type ? 'email': 'phone'} to reset the password.</Text>
-                
+
                 <Text style={[styles.label]}>{type ? 'Email': 'Phone'}</Text>
-                { type ? 
+                { type ?
                 <TextField
                     onChangeText={(value: any) => {
                         this.setState({
@@ -124,8 +140,8 @@ class ForgotPasswordComponent extends React.Component<IProps, IState> {
                         emailOrPhoneError: validate('phone',  this.state.emailOrPhone)
                         })
                     }}
-                    error={this.state.emailOrPhoneError}/> 
-                }                 
+                    error={this.state.emailOrPhoneError}/>
+                }
 
                 <View style={styles.row}>
                     <View style={[styles.flex]}>
@@ -133,9 +149,9 @@ class ForgotPasswordComponent extends React.Component<IProps, IState> {
                     <View style={styles.flex}>
                     <ActionButton title="Recover" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
                     </View>
-                </View>                  
+                </View>
             </View>
-        </View>    
+        </View>
     );
   }
 }
@@ -200,6 +216,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     paddingHorizontal: 0
   },
+  closeIconContainer: {
+    alignSelf: 'flex-end'
+  }
 });
 
 const ForgotPasswordComponentWrapper = withNavigation(connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordComponent));

@@ -88,7 +88,6 @@ class LoginScreen extends React.Component<IProps, IState> {
     return true;
   }
 
-
   onRememberMeChange = () => {
     this.setState({
       showPassword: !this.state.showPassword
@@ -199,7 +198,7 @@ class LoginScreen extends React.Component<IProps, IState> {
               </View>
             </View>
           </View>
-          { this.state.showForgotPassword && <ForgotPasswordComponent/> }
+          { this.state.showForgotPassword && <ForgotPasswordComponent onBack={this.handleBackPress}/> }
         </View>
       { this.props.loading && <LoadingScreen />}
       </SafeAreaView>
