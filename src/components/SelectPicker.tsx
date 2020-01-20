@@ -1,10 +1,11 @@
 import * as React from 'react';
 
 import {
-    StyleSheet,
-    TextInput,
-    View,
-    Platform
+  StyleSheet,
+  TextInput,
+  View,
+  Platform,
+  Text,
 } from 'react-native';
 import { colors, typos } from '@styles';
 import ModalSelector from 'react-native-modal-selector';
@@ -13,11 +14,12 @@ import { Icon } from 'react-native-elements';
 import { CONSTANTS } from '@utils';
 
 interface IOwnProps {
-    options: string[] | undefined,
-    value: string,
-    placeholder: string,
-    handleValueChange: Function,
-    width?: number
+  options: string[] | undefined,
+  value: string,
+  placeholder: string,
+  handleValueChange: Function,
+  width?: number
+  label?: string;
 }
 type IProps = IOwnProps;
 
@@ -30,13 +32,16 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 
     return (
       Platform.OS === "android" ?
-        <ModalSelector
+        <View>
+          <Text style={styles.label}>{props.label}</Text>            
+          <ModalSelector
             style={[styles.picker, {width: props.width ? props.width : 200}]}
             data={props.options}
             keyExtractor= {(item: string) => item}
             labelExtractor= {(item: string) => item}
             initValue={props.value}
-            onChange={props.handleValueChange}>
+            onChange={props.handleValueChange}
+            optionTextStyle={{textTransform: 'capitalize'}}>
 
             <View style={styles.selector}>
                 <TextInput
@@ -53,7 +58,8 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                   color={colors.BLACK}
                   containerStyle={styles.icon}/>
             </View>
-        </ModalSelector>
+          </ModalSelector>
+        </View>
         :
         <View style={[styles.iosPicker, {width: props.width ? props.width : 200}]}>
           <RNPickerSelect
@@ -84,13 +90,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    padding: 10,
+    paddingHorizontal: 10,
+    marginBottom: 10,
     maxWidth: 150,
-    ...typos.PRIMARY_MEDIUM
+    ...typos.PRIMARY_LIGHT,
+    textTransform: 'capitalize'
   },
   icon: {
     padding: 0,
-    marginTop: Platform.OS === "android" ? -2 : 2,
+    marginTop: Platform.OS === "android" ? -10 : 2,
   },
   iosPicker: {
     paddingVertical: 0,
@@ -101,10 +109,15 @@ const styles = StyleSheet.create({
   pickerTextInputProps: {
     color: colors.TEXT_PRIMARY,
     ...typos.PRIMARY_MEDIUM,
-    paddingTop: 3
+    paddingTop: 3,
+    textTransform: 'capitalize'
   },
   padding: {
     padding: 2
+  },
+  label: {
+    ...typos.PRIMARY,
+    paddingLeft: 10,
   }
 });
 

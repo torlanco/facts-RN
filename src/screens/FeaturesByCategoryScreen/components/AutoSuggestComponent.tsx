@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 // Interfaces
 import { IAdvertisement } from '@interfaces/advertisement';
@@ -13,7 +13,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState, withNav
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 import Autocomplete from 'react-native-autocomplete-input';
-import { Text, Divider, Icon } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 import { colors, typos } from '@styles';
 import { TextInput } from 'react-native-gesture-handler';
 import { CONSTANTS } from '@utils';
@@ -32,7 +32,8 @@ type IProps = IOwnProps &
 interface IState {
   data: string[],
   query: string,
-  hideResults: boolean
+  hideResults: boolean,
+  timeoutInProgress: boolean,
 }
 
 const mapStateToProps = function(state: any) {
@@ -42,13 +43,15 @@ const mapStateToProps = function(state: any) {
 };
 
 class AutoSuggestComponent extends React.Component<IProps, IState> {
-  _isMounted = false;
+  _textInput: any;
+  _fetchBrandsHandler: any
 
   constructor(props: IProps) {
     super(props);
     this.state = {
       data: [],
       query: '',
+      timeoutInProgress: false,
       hideResults: false
     }
   }
@@ -56,15 +59,25 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   onChangeText = async (value: any) => {
     this.setState({ 
       query: value,
-      hideResults: value.length < 3 
+      hideResults: value.length < 2, 
     });
-    if (value.length >= 3) {
-      await this.props.fetchBrands(value);
-      this.setState({
-        hideResults: false,
-        data: this.props.brands ? this.props.brands.map((brand: any) => `${brand.brand} (${brand.total})`) : []
-      });   
+    if (value.length >= 2) {
+      if (this._fetchBrandsHandler) {
+        clearTimeout(this._fetchBrandsHandler);
+      }
+      this._fetchBrandsHandler = setTimeout(() => {
+        this.fetchBrands();
+      }, 300);  
     }
+  }
+  
+  fetchBrands = async () => {
+    this._fetchBrandsHandler = null;
+    await this.props.fetchBrands(this.state.query);
+    this.setState({
+      hideResults: false,
+      data: this.props.brands ? this.props.brands.map((brand: any) => `${brand.brand} (${brand.total})`) : []
+    });   
   }
 
   onItemSelect = (value: string) => {
@@ -91,8 +104,8 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
                 size={12}
                 color={this.state.query ? colors.PRIMARY : colors.BLACK}
                 containerStyle={styles.searchIconContainer} />
-              <TextInput style={[styles.textInput]} value={this.state.query} 
-                  onChangeText={this.onChangeText} editable={!this.props.disabled} placeholder='search specials by brand'/>
+              <TextInput autoFocus={true} style={[styles.textInput]} 
+                onChangeText={this.onChangeText} editable={!this.props.disabled} placeholder='search specials by brand'/>
             </View>
           )}
           renderItem={({item, index}) => (
@@ -133,7 +146,7 @@ const styles = StyleSheet.create({
   listStyle: {
     margin: 0,
     marginTop: 10,
-    backgroundColor: colors.LIGHTER_GRAY,
+    backgroundColor: colors.LIGHT_GRAY,
     borderWidth: 0,
     borderRadius: 10,
     elevation: 3,
@@ -147,7 +160,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   listItem: {
-    ...typos.PRIMARY,
+    ...typos.PRIMARY_LIGHT,
     fontWeight: 'normal',
     padding: 10,
     textTransform: 'capitalize'

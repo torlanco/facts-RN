@@ -41,9 +41,9 @@ const AdvertisementFilter: React.SFC<IProps> = (props: IProps) => {
             <View>
                 { props.type ?
                     <View style={styles.pickerContainer}>
-                        <SelectPicker options={props.typeList} value={props.type}
-                                    placeholder={'Select a category'}
-                                    handleValueChange={onTypeChange}>
+                        <SelectPicker label="Category" options={props.typeList} value={props.type}
+                            placeholder={'Select a category'}
+                            handleValueChange={onTypeChange}>
                         </SelectPicker>
                     </View>: null }
                 <View style={styles.itemCountContainer}>

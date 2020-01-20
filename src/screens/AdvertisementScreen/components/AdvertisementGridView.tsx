@@ -13,6 +13,7 @@ interface IOwnProps {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
   onItemPress?: Function
   outlet?: IOutlet.IOutletData;
+  listkey?: string;
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
@@ -35,30 +36,28 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
   }
 
   return (
-    <View style={styles.wrapper}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        <FlatList
-          contentContainerStyle={styles.list}
-          data={sectionOneAdvertisement}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
-          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
-          enableEmptySections={true}/>
-        <FlatList
-          contentContainerStyle={styles.list}
-          data={sectionTwoAdvertisement}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
-          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
-          enableEmptySections={true}/>
-      </ScrollView>
-    </View>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      <FlatList
+        listKey={(props.listkey ? props.listkey : '') + '_section1'}
+        contentContainerStyle={styles.list}
+        data={sectionOneAdvertisement}
+        keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
+        renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+        enableEmptySections={true}/>
+      <FlatList
+        listKey={(props.listkey ? props.listkey : '') + '_section2'}
+        contentContainerStyle={styles.list}
+        data={sectionTwoAdvertisement}
+        keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
+        renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+        enableEmptySections={true}/>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1
-  },
   container: {
+    flex: 1,
     flexDirection: 'row', 
     paddingHorizontal: 15,
   },

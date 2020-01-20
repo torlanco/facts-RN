@@ -6,7 +6,7 @@ import { typos, colors } from '@styles';
 
 // Component
 import { HeaderBar, EmptyListMessage } from '@components';
-import { StatusBar, Platform } from "react-native";
+import { StatusBar, Platform, SectionList } from "react-native";
 import { AdvertisementGridView } from '../AdvertisementScreen/components/AdvertisementGridView';
 
 // Models
@@ -18,6 +18,7 @@ import { mapDispatchToProps } from '@actions/advertisement';
 import { NavigationInjectedProps, ScrollView } from "react-navigation";
 import { AutoSuggestComponent } from './components/AutoSuggestComponent';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+import { AdvertisementGridItem } from '../AdvertisementScreen/components/AdvertisementGridItem';
 
 interface IOwnProps {}
 
@@ -28,7 +29,7 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-  advertisementList: Array<IAdvertisement.IAdvertisementData>,
+  advertisementList: [],
   dummyAdvertismentList:[],
   brand: string,
   initial: boolean;
@@ -36,7 +37,6 @@ interface IState {
 
 const mapStateToProps = function(state: any){
   return {
-    advertisements: state.advertisement.featuresByBrands,
     loading: state.outlet.loading ||
       state.shopper.loading ||
       state.advertisement.loading
@@ -62,8 +62,32 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
   }
 
   async fetchAdvertisements() {
-    await this.props.fetchFeaturesByBrand(this.state.brand);
+    console.log('Hello');
+    const response: any = await this.props.fetchFeaturesByBrand(this.state.brand);
+    this.setState({
+      advertisementList: this.createMultiListWithOutlet(response)
+    })
   }
+
+  createMultiListWithOutlet(advertisements: IAdvertisement.IAdvertisementData[]) {
+    const featuresWithOutetMap: any = {};
+    advertisements.forEach((feature: IAdvertisement.IAdvertisementData) => {
+      if (!featuresWithOutetMap[feature.outlet]) {
+        featuresWithOutetMap[feature.outlet] = [];
+      }
+      featuresWithOutetMap[feature.outlet].push(feature);
+    });
+    const featuresWithOutletList: any = [];
+    for (let key in featuresWithOutetMap) {
+      const list = [];
+      list.push({key, features: featuresWithOutetMap[key]});
+      featuresWithOutletList.push({
+        outlet: key,
+        data: list
+      })
+    }
+    return featuresWithOutletList;
+  }  
 
   componentDidMount() {
     this._isMounted = true;
@@ -71,6 +95,7 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
 
   componentWillUnmount() {
     this._isMounted = false;
+    this.props.clearFeaturesByBrand();
   }
 
   onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
@@ -78,17 +103,24 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
   };
 
   getView() {
-    return this.props.advertisements &&
-      this.props.advertisements.map((featureListWithOutlet: any) => {
-        return <View key={featureListWithOutlet.outlet} style={[styles.flex, {paddingBottom: 20}]}>
-          <Text style={styles.outlet}>{featureListWithOutlet.outlet}</Text>
-          <AdvertisementGridView advertisementList={featureListWithOutlet.features} onItemPress={this.onItemPress}/> 
-        </View>
-      })
+    return this.state.initial ? this.getInitialView() : this.getFeaturesView();
   }
 
+  getFeaturesView() {
+    return <SectionList
+      sections={this.state.advertisementList}
+      keyExtractor={(item, index) => item.key}
+      renderItem={({ item }) => <AdvertisementGridView listkey={item.key} advertisementList={item.features}/>}  
+      renderSectionHeader={({ section: { outlet } }) => (
+        <Text style={styles.outlet}>{outlet}</Text>
+      )} 
+      ListEmptyComponent={() => <View style={{marginTop: 40}}>
+        <EmptyListMessage message={`No features found for brand ${this.state.brand}`}/>
+      </View>}/>
+  }
+ 
   getInitialView() {
-    return this.state.initial && <View style={[styles.flex]}>
+    return this.state.initial && <View style={[styles.flex, {marginTop: 40}]}>
       <Text style={styles.heading}>SEARCH SPECIALS BY BRAND NAME</Text>
       <Text style={styles.text}>Results per outlet will appear below</Text>
       <AdvertisementGridView advertisementList={this.state.dummyAdvertismentList}/>
@@ -110,17 +142,14 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={[styles.flex, {backgroundColor: colors.BACKGROUND_GRAY}]}>
           <View style={styles.container}>
-            <HeaderBar title={'FEATURES'}></HeaderBar>
+            <HeaderBar title={'SEARCH'}></HeaderBar>
             <View style={styles.mainContainer}>
               <View style={styles.autoSuggestContainer}>
                 <AutoSuggestComponent onBrandSelect={this.onBrandSelect}/>
               </View>
-              <ScrollView style={[styles.flex, {marginTop: 80}]} showsVerticalScrollIndicator={false}>
-                  { this.getInitialView() }
+              <View style={[styles.flex, {marginTop: 40}]}>
                   { this.getView() }
-                  { !this.props.loading && this.state.brand && this.props.advertisements && !this.props.advertisements.length ? 
-                    <EmptyListMessage message={`No features found for brand ${this.state.brand}`}/> : null }
-              </ScrollView>
+              </View>
             </View>
           </View>
           { this.props.loading && <LoadingScreen />}
@@ -147,6 +176,7 @@ const styles = StyleSheet.create({
     left: 20, right: 20,
   },
   outlet: {
+    marginTop: 30,
     paddingHorizontal: 20,
     ...typos.TITLE
   },

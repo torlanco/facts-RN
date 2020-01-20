@@ -48,7 +48,10 @@ export namespace IAdvertisement {
         fetchTrendingFeatures(): Function;
         incrementFeaturesViewCount(id?: string): Function;
         fetchHomeCategories(): Function;  
-    }
 
+        // clearing the store
+        fetchFeaturesByBrand(brand?: string): Function;
+        clearFeaturesByBrand(): Function;        
+    }
 }
   

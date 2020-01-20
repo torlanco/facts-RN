@@ -203,6 +203,14 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
         return e.response.data;
       }
     };
+  },
+
+  clearFeaturesByBrand: () => {
+    return function (dispatch: any) {
+      dispatch({
+        type: Types.CLEAR_ADVERTISEMENTS_BY_BRANDS,
+      });
+    };
   }
 };
 

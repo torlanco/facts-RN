@@ -90,7 +90,7 @@ class ShoppersScreen extends React.Component<IProps, IState> {
           <View style={styles.container}>
             <HeaderBar title={'SHOPPERS'}></HeaderBar>
             <View style={styles.content}>    
-              <SelectPicker options={this.props.outlets} value={this.state.outlet}
+              <SelectPicker label="Outlet" options={this.props.outlets} value={this.state.outlet}
                 placeholder={'Select an outlet'}
                 handleValueChange={this.onShopperChange}>
               </SelectPicker>

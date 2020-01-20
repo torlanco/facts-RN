@@ -69,7 +69,7 @@ class HomeScreen extends React.Component<IProps, IState> {
 
                             {/* SEARCH SPECIALS BY BRANDS */}
                             <TouchableOpacity onPress={this.redirectToFeaturesByCategory} activeOpacity={0.9}>
-                                <View style={{padding: 20}}>        
+                                <View style={{padding: 20, elevation: 2, zIndex: 2}}>        
                                     <AutoSuggestComponent disabled={true}/>
                                 </View>    
                             </TouchableOpacity>            

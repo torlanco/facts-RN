@@ -132,21 +132,28 @@ export function advertisement(
         ...state,
         loading: true,
         error: false,
+        featuresByBrands: []
       };
     case Types.FETCH_ADVERTISEMENTS_BY_BRANDS_SUCCESS:
       return {
         ...state,
-        featuresByBrands: createMultiListWithOutlet(action.payload.features),
         loading: false,
         error: false,
+        featuresByBrands: action.payload.features
       };
     case Types.FETCH_ADVERTISEMENTS_BY_BRANDS_FAILED:
       return {
         ...state,
-        featuresByBrands: [],
         loading: false,
         error: action.payload.message || true,
       };    
+
+    // CLEAR ADVERTISEMENTS BY BRANDS
+      case Types.CLEAR_ADVERTISEMENTS_BY_BRANDS:
+        return {
+          ...state,
+          featuresByBrands: undefined
+        };  
 
     // FETCH TRENDING FEATURES
     case Types.FETCH_TRENDING_FEATURES:
@@ -228,22 +235,4 @@ function fetchCategories(advertisements: IAdvertisement.IAdvertisementData[]) {
     map((advertisement: any) => `${advertisement.category} (${getAdvertisementCountByCategory(advertisements, advertisement.category)})`))].sort();
   categories.splice(0, 0, `${CONSTANTS.SHOW_ALL} (${advertisements.length})`);
   return categories;
-}
-
-function createMultiListWithOutlet(advertisements: IAdvertisement.IAdvertisementData[]) {
-  const featuresWithOutetMap: any = {};
-  advertisements.forEach((feature: IAdvertisement.IAdvertisementData) => {
-    if (!featuresWithOutetMap[feature.outlet]) {
-      featuresWithOutetMap[feature.outlet] = [];
-    }
-    featuresWithOutetMap[feature.outlet].push(feature);
-  });
-  const featuresWithOutletList: any = [];
-  for (let key in featuresWithOutetMap) {
-    featuresWithOutletList.push({
-      outlet: key,
-      features: featuresWithOutetMap[key]
-    })
-  }
-  return featuresWithOutletList;
 }
