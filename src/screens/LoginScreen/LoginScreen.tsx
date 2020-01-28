@@ -180,15 +180,15 @@ class LoginScreen extends React.Component<IProps, IState> {
               error={this.state.passwordError}
               type={FieldType.PASSWORD}/>
 
-            <View style={styles.row}>
-              <TouchableOpacity onPress={this.onForgetPassword}>
-                <Text style={[styles.link]}>forgot password?</Text>
-              </TouchableOpacity>
-              <View style={styles.flex}/>
-              <TouchableOpacity onPress={this.onLoginWithOtp}>
-                <Text style={[styles.link]}>Login with OTP</Text>
-              </TouchableOpacity>
-            </View>
+            {/*<View style={styles.row}>*/}
+            {/*  <TouchableOpacity onPress={this.onForgetPassword}>*/}
+            {/*    <Text style={[styles.link]}>forgot password?</Text>*/}
+            {/*  </TouchableOpacity>*/}
+            {/*  <View style={styles.flex}/>*/}
+            {/*  <TouchableOpacity onPress={this.onLoginWithOtp}>*/}
+            {/*    <Text style={[styles.link]}>Login with OTP</Text>*/}
+            {/*  </TouchableOpacity>*/}
+            {/*</View>*/}
             <View style={[styles.bottomAction]}>
               <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
               <View style={styles.row}>

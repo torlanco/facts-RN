@@ -61,7 +61,7 @@ export const validate = (type: string, value: any, field?: string, extraValue?: 
             break;
 
         case 'phone':
-            if (!value || !isValidPhone(formatPhone(value)))
+            if (value && !isValidPhone(formatPhone(value)))
                 error = `Please enter valid phone number.`
             break;
 

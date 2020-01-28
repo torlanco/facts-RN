@@ -30,7 +30,6 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-  userName: string,
   email: string;
   password: string;
   cpassword: string;
@@ -39,7 +38,6 @@ interface IState {
   showPassword: boolean,
   phone: string,
   // Errors
-  userNameError: string,
   emailError: string,
   passwordError: string,
   cpasswordError: string,
@@ -61,7 +59,6 @@ class RegisterScreen extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      userName: '',
       email: '',
       password: '',
       cpassword: '',
@@ -70,7 +67,6 @@ class RegisterScreen extends React.Component<IProps, IState> {
       showPassword: false,
       phone: '',
       // Errors
-      userNameError: '',
       emailError: '',
       passwordError: '',
       cpasswordError: '',
@@ -86,15 +82,14 @@ class RegisterScreen extends React.Component<IProps, IState> {
 
   validate = async () => {
     await this.setAsyncState({
-      userNameError: validate('required', this.state.userName, 'Username'),
       emailError: validate('email', this.state.email),
       passwordError: validate('password', this.state.password),
       cpasswordError: validate('cpassword', this.state.cpassword, undefined, this.state.password),
-      firstNameError: validate('required', this.state.firstName, 'First name'),
-      lastNameError: validate('required', this.state.lastName, 'Last name'),
-      phoneError: validate('required', this.state.phone, 'Phone'),
+      firstNameError: validate('optional', this.state.firstName, 'First name'),
+      lastNameError: validate('optional', this.state.lastName, 'Last name'),
+      phoneError: validate('optional', this.state.phone, 'Phone'),
     });
-    return !(this.state.userNameError || this.state.emailError || this.state.passwordError || this.state.cpasswordError
+    return !(this.state.emailError || this.state.passwordError || this.state.cpasswordError
       || this.state.firstNameError || this.state.lastNameError || this.state.phoneError);
   }
 
@@ -103,7 +98,6 @@ class RegisterScreen extends React.Component<IProps, IState> {
       return;
     }
     const userData: IUser.IUserData = {
-      username: this.state.userName,
       email: this.state.email,
       password: this.state.password,
       firstName: this.state.firstName,
@@ -135,20 +129,6 @@ class RegisterScreen extends React.Component<IProps, IState> {
               <Text style={styles.heading}>Sign up</Text>
               <Text style={styles.subHeadig}>create an account</Text>
 
-              <Text style={styles.label}>User name</Text>
-              <TextField
-                onChangeText={(value: any) => {
-                  this.setState({
-                    userName: value
-                  })
-                }}
-                onBlur={() => {
-                  this.setState({
-                    userNameError: validate('required', this.state.userName, 'Username')
-                  })
-                }}
-                error={this.state.userNameError}/>
-
               <Text style={styles.label}>Email</Text>
               <TextField
                 onChangeText={(value: any) => {
@@ -172,7 +152,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 }}
                 onBlur={() => {
                   this.setState({
-                    firstNameError: validate('required', this.state.firstName, 'First name')
+                    firstNameError: validate('optional', this.state.firstName, 'First name')
                   })
                 }}
                 error={this.state.firstNameError}/>
@@ -186,7 +166,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
                 }}
                 onBlur={() => {
                   this.setState({
-                    lastNameError: validate('required', this.state.lastName, 'Last name')
+                    lastNameError: validate('optional', this.state.lastName, 'Last name')
                   })
                 }}
                 error={this.state.lastNameError}/>
