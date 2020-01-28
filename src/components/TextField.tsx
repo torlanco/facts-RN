@@ -19,8 +19,9 @@ interface IActionButtonProps {
     keyboardType?: KeyboardTypeOptions
     nonEditable?: boolean;
     textContentType?: any;
-    defaultValue?: string; 
+    defaultValue?: string;
     type?: FieldType;
+    hideVisibleToggler?: boolean;
 }
 
 type IProps = IActionButtonProps;
@@ -39,10 +40,10 @@ class TextField extends React.Component<IProps, IState> {
         this.state = {
             value: '',
             focused: false,
-            visible: !(props.type && props.type == FieldType.PASSWORD) 
+            visible: !(props.type && props.type == FieldType.PASSWORD)
         }
     }
-    
+
     onChangeText = (value: any) => {
         this.setState({
             value: value
@@ -56,7 +57,7 @@ class TextField extends React.Component<IProps, IState> {
     onFocus = () => {
         this.setState({
             focused: true
-        });        
+        });
     }
 
     onBlur = () => {
@@ -84,11 +85,11 @@ class TextField extends React.Component<IProps, IState> {
 
     getkeyBoardType = () => {
         if (this.props.type && this.props.type == FieldType.PASSWORD) {
-        
-        } 
+
+        }
 
     }
-    
+
     render() {
         const { error, nonEditable } = this.props;
         const focused: any = {};
@@ -98,20 +99,20 @@ class TextField extends React.Component<IProps, IState> {
         }
         return (
             <View style={styles.container}>
-                <TextInput 
+                <TextInput
                     defaultValue={this.props.defaultValue ? this.props.defaultValue : ''}
                     ref={input => { this._textInput = input }}
                     style={[styles.input, focused]}
                     editable={!nonEditable}
-                    onChangeText={this.onChangeText} 
+                    onChangeText={this.onChangeText}
                     onFocus={this.onFocus}
-                    onBlur={this.onBlur} 
+                    onBlur={this.onBlur}
                     secureTextEntry={!this.state.visible}
                     keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
                     autoCapitalize={'none'}
                     textContentType={this.props.textContentType ? this.props.textContentType : "none"}/>
-                
-                { this.props.type && this.props.type == FieldType.PASSWORD 
+
+                { this.props.type && this.props.type == FieldType.PASSWORD && !this.props.hideVisibleToggler
                     && <Icon
                         name={this.state.visible ? 'eye' : 'eye-off'}
                         type='feather'
@@ -119,10 +120,10 @@ class TextField extends React.Component<IProps, IState> {
                         size={18}
                         onPress={() => this.onVisibilityChanger()}
                         containerStyle={styles.iconContainer} /> }
-            
+
                 { error ? <Text style={styles.error}>{error}</Text> : null }
             </View>
-        )    
+        )
     }
 }
 
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     },
     error: {
         ...typos.CAPTION,
-        color: colors.ERROR, 
+        color: colors.ERROR,
         marginTop: 3,
     },
     iconContainer: {

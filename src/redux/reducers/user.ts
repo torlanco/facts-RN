@@ -45,13 +45,13 @@ export function user(
         };
     case Types.FORGET_PASSWORD_SUCCESS:
         return {
-          ...state,  
+          ...state,
           error: false,
           loading: false,
         };
     case Types.FORGET_PASSWORD_FAILED:
         return {
-          ...state,  
+          ...state,
           error: true,
           loading: false,
         };
@@ -65,16 +65,16 @@ export function user(
         };
     case Types.RESET_PASSWORD_SUCCESS:
         return {
-          ...state,  
+          ...state,
           error: false,
           loading: false,
         };
     case Types.RESET_PASSWORD_FAILED:
         return {
-          ...state,  
+          ...state,
           error: true,
           loading: false,
-        };    
+        };
 
     // REGISTER
     case Types.REGISTER:
@@ -138,7 +138,7 @@ export function user(
         loading: false,
         loggedInUser: undefined
       };
-      
+
     // UPDATE USER INFO
     case Types.UPDATE_USER_PROFILE:
       return {
@@ -158,9 +158,9 @@ export function user(
         ...state,
         error: false,
         loading: false,
-      };  
+      };
 
-    // REQUEST OTP 
+    // REQUEST OTP
     case Types.REQUEST_RESET_PASSWORD_OTP:
       return {
         ...state,
@@ -178,7 +178,7 @@ export function user(
         ...state,
         error: false,
         loading: false,
-      };  
+      };
 
     // Verify OTP
     case Types.VERIFY_RESET_PASSWORD_OTP:
@@ -198,7 +198,27 @@ export function user(
         ...state,
         error: false,
         loading: false,
-      };  
+      };
+
+    // Change password
+    case Types.CHANGE_PASSWORD:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
+    case Types.CHANGE_PASSWORD_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
 
     default:
         return state;

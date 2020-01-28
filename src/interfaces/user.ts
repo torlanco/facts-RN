@@ -17,12 +17,13 @@ export namespace IUser {
         token?: string | undefined;
         loggedInUser?: IUserData | undefined;
     }
-    
+
     export interface DispatchFromProps {
         isLoggedIn(): Function;
         login(username?: string, password?: string): Function;
         forgotPassword(username?: string): Function;
         resetPassword(token?: string, password?: string, confirmPassword?: string): Function;
+        changePassword(oldPassword?: string, password?: string, confirmPassword?: string): Function;
         requestResetPasswordOtp(phone?: string): Function;
         verifyResetPasswordOtp(phone?: string, otp?: string): Function;
         register(userData: IUser.IUserData): Function;
@@ -30,5 +31,4 @@ export namespace IUser {
         updateUserInfo(token: string, userData: IUserData): Function;
         logout(): Function;
     }
-}   
-  
+}

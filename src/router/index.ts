@@ -23,6 +23,8 @@ import {
   WelcomeScreen,
   VerifyOTPScreen,
   HomeScreen,
+  ChangePasswordScreen,
+  ForgotPasswordScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -146,6 +148,7 @@ const DocsNavigator = createStackNavigator(
 const ProfileNavigator = createStackNavigator(
     {
         ProfileScreen: {screen: ProfileScreen},
+        ChangePasswordScreen: {screen: ChangePasswordScreen}
     },
     {
         initialRouteName: 'ProfileScreen',
@@ -184,6 +187,7 @@ const AuthNavigator = createStackNavigator(
     {
         WelcomeScreen: {screen: WelcomeScreen},
         LoginScreen: {screen: LoginScreen},
+        ForgotPasswordScreen: {screen: ForgotPasswordScreen},
         RegisterScreen: {screen: RegisterScreen},
         VerifyOTPScreen: {screen: VerifyOTPScreen},
         ResetPasswordScreen: {screen: ResetPasswordScreen},

@@ -8,7 +8,7 @@ import { typos, colors } from '@styles';
 import { IUser } from '@interfaces/user';
 
 // Component
-import { ActionButton, HeaderBar, TextField, PhoneField } from '@components';
+import { ActionButton, HeaderBar, TextField, FieldType, PhoneField } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
@@ -146,6 +146,10 @@ class ProfileScreen extends React.Component<IProps, IState> {
     this.updateStateWithGlobalState();
   }
 
+  redirectToChangePassword = () => {
+    this.props.navigation.navigate('ChangePasswordScreen');
+  }
+
   public render() {
     return (
       <SafeAreaView style={styles.flex}>
@@ -197,20 +201,32 @@ class ProfileScreen extends React.Component<IProps, IState> {
                 error={this.state.lastNameError}/>
 
               <Text style={styles.label}>Phone</Text>
-              <PhoneField
-                defaultValue={this.state.phone}
-                nonEditable={!this.state.editable}
-                onChangeText={(value: any) => {
-                  this.setState({
-                    phone: value
-                  })
-                }}
-                onBlur={() => {
-                  this.setState({
-                    phoneError: validate('phone', this.state.phone)
-                  })
-                }}
-                error={this.state.phoneError}/>
+              <TextField
+                  defaultValue={this.state.phone}
+                  nonEditable={!this.state.editable}
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      phone: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      phoneError: validate('phone', this.state.phone)
+                    })
+                  }}
+                  error={this.state.phoneError}/>
+
+              <View style={styles.row}>
+                <Text style={[styles.label, styles.flex]}>Password</Text>
+                <TouchableOpacity onPress={this.redirectToChangePassword}>
+                  <Text style={[styles.label]}>Change Password</Text>
+                </TouchableOpacity>
+              </View>
+              <TextField
+                defaultValue="********"
+                nonEditable={true}
+                type={FieldType.PASSWORD}
+                hideVisibleToggler={true}/>
 
               { this.state.editable && <View>
                   <View style={[styles.row, {marginTop: 40}]}>

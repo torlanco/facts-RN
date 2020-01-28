@@ -1,6 +1,7 @@
 import { Types } from '@types';
 import { IUser } from '@interfaces/user';
-import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp, verifyResetPasswordOtp, fetchUserInfo, updateUserInfo } from '@services';
+import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp,
+    verifyResetPasswordOtp, fetchUserInfo, updateUserInfo, changePassword } from '@services';
 import { AsyncStorage } from 'react-native';
 import { CONSTANTS } from '@utils';
 
@@ -10,7 +11,7 @@ const IUserAction: IUser.DispatchFromProps = {
       let token = undefined;
       try {
         let asyncToken = await AsyncStorage.getItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
-        if (asyncToken) 
+        if (asyncToken)
           token = asyncToken;
         dispatch({
           type: Types.LOGIN_SUCCESS,
@@ -166,7 +167,7 @@ const IUserAction: IUser.DispatchFromProps = {
       if (!doInBackground) {
         dispatch({
           type: Types.FETCH_USER_PROFILE,
-        });  
+        });
       }
       try {
         const response =  await fetchUserInfo(token);
@@ -203,7 +204,26 @@ const IUserAction: IUser.DispatchFromProps = {
         return e.response.data.result;
       }
     };
-  }
+  },
+  changePassword: (oldPassword?: string, password?: string, confirmPassword?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.CHANGE_PASSWORD,
+      });
+      try {
+        const response =  await changePassword(oldPassword, password, confirmPassword);
+        dispatch({
+          type: Types.CHANGE_PASSWORD_SUCCESS,
+        });
+        return response.data;
+      } catch(e) {
+        dispatch({
+          type: Types.CHANGE_PASSWORD_FAILED,
+        });
+        return e.response.data.result;
+      }
+    };
+  },
 };
 
 export { IUserAction as mapDispatchToProps}

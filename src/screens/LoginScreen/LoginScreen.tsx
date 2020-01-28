@@ -70,23 +70,23 @@ class LoginScreen extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    this._backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    // this._backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   componentWillUnmount() {
-    this._backHandler.remove()
+    // this._backHandler.remove()
   }
 
-  handleBackPress = () => {
-    if (this.state.showForgotPassword) {
-      this.setState({
-        showForgotPassword: false
-      })
-    } else {
-      this.props.navigation.goBack();
-    }
-    return true;
-  }
+  // handleBackPress = () => {
+  //   if (this.state.showForgotPassword) {
+  //     this.setState({
+  //       showForgotPassword: false
+  //     })
+  //   } else {
+  //     this.props.navigation.goBack();
+  //   }
+  //   return true;
+  // }
 
   onRememberMeChange = () => {
     this.setState({
@@ -123,9 +123,14 @@ class LoginScreen extends React.Component<IProps, IState> {
   }
 
   onForgetPassword = () => {
-    this.setState({
-      showForgotPassword: true
-    })
+    // this.setState({
+    //   showForgotPassword: true
+    // })
+    this.props.navigation.navigate('ForgotPasswordScreen', {});
+  }
+
+  onLoginWithOtp = () => {
+    this.props.navigation.navigate('ForgotPasswordScreen', {isForLogin: true});
   }
 
   onRegister = () => {
@@ -178,6 +183,10 @@ class LoginScreen extends React.Component<IProps, IState> {
             <View style={styles.row}>
               <TouchableOpacity onPress={this.onForgetPassword}>
                 <Text style={[styles.link]}>forgot password?</Text>
+              </TouchableOpacity>
+              <View style={styles.flex}/>
+              <TouchableOpacity onPress={this.onLoginWithOtp}>
+                <Text style={[styles.link]}>Login with OTP</Text>
               </TouchableOpacity>
             </View>
             <View style={[styles.bottomAction]}>
@@ -242,7 +251,7 @@ const styles = StyleSheet.create({
   heading: {
     ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
-    marginTop: 40
+    marginTop: 20
   },
   subHeadig: {
     ...typos.BIGTEXT,

@@ -48,3 +48,11 @@ export const updateUserInfo = (token: string, userData: IUser.IUserData) => {
   userData.phone = formatPhone(userData.phone)
   return HTTP.put('users', userData, { headers: { Authorization: `Bearer ${token}` } });
 };
+
+export const changePassword = (oldPassword?: string, password?: string, confirmPassword?: string) => {
+  return HTTP.post('auth/change-password', {
+    oldPassword,
+    password,
+    confirmPassword
+  });
+};

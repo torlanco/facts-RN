@@ -20,6 +20,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 interface ParamType {
+  isForLogin?: string;
   emailOrPhone?: string;
 }
 interface StateParams extends NavigationState {
@@ -85,7 +86,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
       this.setState({
         otpError: response.errText
       })
-    }     
+    }
   }
 
   requestOtp = async () => {
@@ -109,7 +110,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
   redirectToResetPassword = (token: string) => {
     this.props.navigation.replace('ResetPasswordScreen', {token});
   }
-  
+
   public render() {
     const { emailOrPhone } = this.props.navigation.state.params;
     return (
@@ -121,33 +122,33 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
             <Text style={styles.subHeadig}>code</Text>
             <Text style={styles.message}>We have sent a code to <Text style={{fontWeight: 'bold'}}>{emailOrPhone}</Text>
             </Text>
-                        
+
             <OTPInputView
               style={styles.otpContainer}
               pinCount={4}
               autoFocusOnLoad
               codeInputFieldStyle={styles.underlineStyleBase}
               codeInputHighlightStyle={styles.underlineStyleHighLighted}
-              code={this.state.otp} 
+              code={this.state.otp}
               onCodeChanged = {(code: any) => { this.setState({otp: code})}}/>
             { this.state.otpError ? <Text style={styles.error}>{this.state.otpError}</Text> : null }
-            
+
             <View style={styles.row}>
               <View>
                 <Text style={styles.linkText}>Didn't receive a code?</Text>
                 <TouchableOpacity onPress={this.requestOtp} disabled={this.state.disableResend}>
                   <Text style={[styles.linkText, styles.linkBoldLink]}>Resend Now</Text>
-                </TouchableOpacity>                
+                </TouchableOpacity>
               </View>
             </View>
-            
+
             <View style={styles.row}>
               <View style={styles.flex}>
               </View>
-              <View style={styles.flex}>                  
+              <View style={styles.flex}>
                 <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
               </View>
-            </View>    
+            </View>
           </View>
         </View>
         {this.props.loading && <LoadingScreen />}
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
   heading: {
     ...typos.BIGTEXT_BOLD,
     fontWeight: 'bold',
-    paddingTop: 5,
+    marginTop: 20
   },
   subHeadig: {
     ...typos.BIGTEXT,
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
   },
   error: {
     ...typos.CAPTION,
-    color: colors.ERROR, 
+    color: colors.ERROR,
     marginTop: 3,
   },
   linkText: {
@@ -253,13 +254,13 @@ const styles = StyleSheet.create({
   },
   linkBoldLink: {
     fontWeight: 'bold',
-    textDecorationLine: 'underline', 
+    textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   },
   otpContainer: {
-    width: '60%', height: 50, 
-    backgroundColor: colors.PRIMARY, 
-    marginVertical: 20, 
+    width: '60%', height: 50,
+    backgroundColor: colors.PRIMARY,
+    marginVertical: 20,
     paddingHorizontal: 30,
     paddingVertical: 20,
   }
