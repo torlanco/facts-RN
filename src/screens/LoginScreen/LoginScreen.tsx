@@ -18,7 +18,6 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { CheckBox, Divider } from 'react-native-elements';
 import { validate, CONSTANTS } from '@utils';
-import { ForgotPasswordComponent } from './ForgotPasswordComponent';
 
 // props
 interface ParamType {
@@ -207,7 +206,6 @@ class LoginScreen extends React.Component<IProps, IState> {
               </View>
             </View>
           </View>
-          { this.state.showForgotPassword && <ForgotPasswordComponent onBack={this.handleBackPress}/> }
         </View>
       { this.props.loading && <LoadingScreen />}
       </SafeAreaView>

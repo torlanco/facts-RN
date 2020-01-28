@@ -216,17 +216,19 @@ class ProfileScreen extends React.Component<IProps, IState> {
                   }}
                   error={this.state.phoneError}/>
 
-              <View style={styles.row}>
-                <Text style={[styles.label, styles.flex]}>Password</Text>
-                <TouchableOpacity onPress={this.redirectToChangePassword}>
-                  <Text style={[styles.label]}>Change Password</Text>
-                </TouchableOpacity>
-              </View>
-              <TextField
-                defaultValue="********"
-                nonEditable={true}
-                type={FieldType.PASSWORD}
-                hideVisibleToggler={true}/>
+              { !this.state.editable && <View>
+                  <View style={styles.row}>
+                    <Text style={[styles.label, styles.flex]}>Password</Text>
+                    { /* <TouchableOpacity onPress={this.redirectToChangePassword}>
+                      <Text style={[styles.label]}>Change Password</Text>
+                    </TouchableOpacity> */ }
+                  </View>
+                  <TextField
+                    defaultValue="********"
+                    nonEditable={true}
+                    type={FieldType.PASSWORD}
+                    hideVisibleToggler={true}/>
+                </View> }
 
               { this.state.editable && <View>
                   <View style={[styles.row, {marginTop: 40}]}>
