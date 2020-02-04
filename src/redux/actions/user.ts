@@ -93,7 +93,9 @@ const IUserAction: IUser.DispatchFromProps = {
         const response =  await register(userData);
         dispatch({
           type: Types.REGISTER_SUCCESS,
+          payload: response.data.data,
         });
+        AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
         return response.data;
       } catch(e) {
         dispatch({

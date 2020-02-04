@@ -16,6 +16,8 @@ import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
+import { ScrollView } from 'react-native-gesture-handler';
+import {Keyboard} from 'react-native';
 
 // props
 interface IOwnProps {
@@ -157,88 +159,90 @@ class ProfileScreen extends React.Component<IProps, IState> {
           <HeaderBar title="PROFILE" titleStyle={{textAlign: "left"}}
             rightIcon={this.state.editable ? '' : 'edit'} onRightIconClick={this.onEdit}
             rightText={this.state.editable ? 'Cancel' : ''} onRightTextClick={this.onCancel}></HeaderBar>
-            <View style={[styles.flex, styles.container]}>
-              <Text style={styles.label}>User name</Text>
-              <TextField
-                defaultValue={this.state.userName}
-                nonEditable={true}/>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+              <View style={[styles.flex, styles.container]}>
+                <Text style={styles.label}>User name</Text>
+                <TextField
+                  defaultValue={this.state.userName}
+                  nonEditable={true}/>
 
-              <Text style={styles.label}>Email</Text>
-              <TextField
-                defaultValue={this.state.email}
-                nonEditable={true}/>
+                <Text style={styles.label}>Email</Text>
+                <TextField
+                  defaultValue={this.state.email}
+                  nonEditable={true}/>
 
-              <Text style={styles.label}>First name</Text>
-              <TextField
-                defaultValue={this.state.firstName}
-                nonEditable={!this.state.editable}
-                onChangeText={(value: any) => {
-                  this.setState({
-                    firstName: value
-                  })
-                }}
-                onBlur={() => {
-                  this.setState({
-                    firstNameError: validate('required', this.state.firstName, 'First name')
-                  })
-                }}
-                error={this.state.firstNameError}/>
-
-              <Text style={styles.label}>Last name</Text>
-              <TextField
-                  defaultValue={this.state.lastName}
-                  nonEditable={!this.state.editable}
-                  onChangeText={(value: any) => {
-                  this.setState({
-                    lastName: value
-                  })
-                }}
-                onBlur={() => {
-                  this.setState({
-                    lastNameError: validate('required', this.state.lastName, 'Last name')
-                  })
-                }}
-                error={this.state.lastNameError}/>
-
-              <Text style={styles.label}>Phone</Text>
-              <TextField
-                  defaultValue={this.state.phone}
+                <Text style={styles.label}>First name</Text>
+                <TextField
+                  defaultValue={this.state.firstName}
                   nonEditable={!this.state.editable}
                   onChangeText={(value: any) => {
                     this.setState({
-                      phone: value
+                      firstName: value
                     })
                   }}
                   onBlur={() => {
                     this.setState({
-                      phoneError: validate('phone', this.state.phone)
+                      firstNameError: validate('required', this.state.firstName, 'First name')
                     })
                   }}
-                  error={this.state.phoneError}/>
+                  error={this.state.firstNameError}/>
 
-              { !this.state.editable && <View>
-                  <View style={styles.row}>
-                    <Text style={[styles.label, styles.flex]}>Password</Text>
-                    <TouchableOpacity onPress={this.redirectToChangePassword}>
-                      <Text style={[styles.label]}>Change Password</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <TextField
-                    defaultValue="********"
-                    nonEditable={true}
-                    type={FieldType.PASSWORD}
-                    hideVisibleToggler={true}/>
-                </View> }
+                <Text style={styles.label}>Last name</Text>
+                <TextField
+                    defaultValue={this.state.lastName}
+                    nonEditable={!this.state.editable}
+                    onChangeText={(value: any) => {
+                    this.setState({
+                      lastName: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      lastNameError: validate('required', this.state.lastName, 'Last name')
+                    })
+                  }}
+                  error={this.state.lastNameError}/>
 
-              { this.state.editable && <View>
-                  <View style={[styles.row, {marginTop: 40}]}>
-                    <View style={styles.flex}/>
-                    <View style={styles.flex}>
-                      <ActionButton title="Save" inverted={true} onPress={this.onSave} invertedStyle={styles.buttonStyle}/>
+                <Text style={styles.label}>Phone</Text>
+                <TextField
+                    defaultValue={this.state.phone}
+                    nonEditable={!this.state.editable}
+                    onChangeText={(value: any) => {
+                      this.setState({
+                        phone: value
+                      })
+                    }}
+                    onBlur={() => {
+                      this.setState({
+                        phoneError: validate('phone', this.state.phone)
+                      })
+                    }}
+                    error={this.state.phoneError}/>
+
+                { !this.state.editable && <View>
+                    <View style={styles.row}>
+                      <Text style={[styles.label, styles.flex]}>Password</Text>
+                      <TouchableOpacity onPress={this.redirectToChangePassword}>
+                        <Text style={[styles.label]}>Change Password</Text>
+                      </TouchableOpacity>
                     </View>
-                  </View>
-                </View> }
-            </View>
+                    <TextField
+                      defaultValue="********"
+                      nonEditable={true}
+                      type={FieldType.PASSWORD}
+                      hideVisibleToggler={true}/>
+                  </View> }
+
+                { this.state.editable && <View>
+                    <View style={[styles.row, {marginTop: 40}]}>
+                      <View style={styles.flex}/>
+                      <View style={styles.flex}>
+                        <ActionButton title="Save" inverted={true} onPress={this.onSave} invertedStyle={styles.buttonStyle}/>
+                      </View>
+                    </View>
+                  </View> }
+              </View>
+            </ScrollView>
         </View>
         {(this.props.loading) && <LoadingScreen />}
       </SafeAreaView>

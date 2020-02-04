@@ -8,6 +8,7 @@ import {
 import { IAdvertisement } from '@interfaces/advertisement';
 import { AdvertisementGridItem } from './AdvertisementGridItem';
 import { IOutlet } from '@interfaces/outlet';
+import { colors } from '@styles';
 
 interface IOwnProps {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
@@ -36,35 +37,40 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-      <FlatList
-        listKey={(props.listkey ? props.listkey : '') + '_section1'}
-        contentContainerStyle={styles.list}
-        data={sectionOneAdvertisement}
-        keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
-        renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
-        enableEmptySections={true}/>
-      <FlatList
-        listKey={(props.listkey ? props.listkey : '') + '_section2'}
-        contentContainerStyle={styles.list}
-        data={sectionTwoAdvertisement}
-        keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
-        renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
-        enableEmptySections={true}/>
+    <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
+        <FlatList
+          listKey={(props.listkey ? props.listkey : '') + '_section1'}
+          contentContainerStyle={styles.list}
+          data={sectionOneAdvertisement}
+          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
+          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+          enableEmptySections={true}/>
+        <FlatList
+          listKey={(props.listkey ? props.listkey : '') + '_section2'}
+          contentContainerStyle={styles.list}
+          data={sectionTwoAdvertisement}
+          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
+          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+          enableEmptySections={true}/>
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     paddingHorizontal: 15,
   },
   list: {
     flex: 1,
     flexDirection: 'column',
-    paddingVertical: 10, 
+    paddingVertical: 10,
   }
 });
 

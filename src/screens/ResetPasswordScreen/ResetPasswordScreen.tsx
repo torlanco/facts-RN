@@ -15,6 +15,8 @@ import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { CheckBox } from 'react-native-elements';
 import { IUser } from '@interfaces/user';
+import { ScrollView } from 'react-native-gesture-handler';
+import {Keyboard} from 'react-native';
 
 // props
 interface ParamType {
@@ -39,7 +41,7 @@ interface IState {
   token: string
   // Errors
   passwordError: string
-  confirmPasswordError: string  
+  confirmPasswordError: string
 }
 
 const mapStateToProps = function(state: any) {
@@ -61,7 +63,7 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
         token: '',
         // Errors
         passwordError: '',
-        confirmPasswordError: '',   
+        confirmPasswordError: '',
     };
   }
 
@@ -82,7 +84,7 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
     if (!(await this.validate())) {
       return;
     }
-    const response: any = await this.props.resetPassword(this.props.navigation.state.params.token, 
+    const response: any = await this.props.resetPassword(this.props.navigation.state.params.token,
       this.state.password, this.state.confirmPassword);
     if (response.success) {
       this.redirectToLogin();
@@ -103,55 +105,57 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title=""></HeaderBar>
-          <View style={[styles.flex, styles.container]}>
-            <Text style={styles.heading}>Reset password</Text>
-            <Text style={styles.subHeadig}>to continue</Text>
-            {
-              true || this.state.token ? 
-              <View>
-                <Text style={styles.label}>Password</Text>
-                <TextField
-                  onChangeText={(value: any) => {
-                    this.setState({
-                      password: value
-                    })
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      passwordError: validate('password', this.state.password)
-                    })
-                  }}
-                  secureTextEntry={!this.state.showPassword}
-                  error={this.state.passwordError}
-                  type={FieldType.PASSWORD}/>
-                
-                <Text style={styles.label}>Confirm Password</Text>
-                <TextField
-                  onChangeText={(value: any) => {
-                    this.setState({
-                      confirmPassword: value
-                    })
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      confirmPasswordError: validate('password', this.state.confirmPassword)
-                    })
-                  }}
-                  secureTextEntry={!this.state.showPassword}
-                  error={this.state.confirmPasswordError}
-                  type={FieldType.PASSWORD}/>
-                                
-              </View> : null
-            }    
+          <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+            <View style={[styles.flex, styles.container]}>
+              <Text style={styles.heading}>Reset password</Text>
+              <Text style={styles.subHeadig}>to continue</Text>
+              {
+                true || this.state.token ?
+                <View>
+                  <Text style={styles.label}>Password</Text>
+                  <TextField
+                    onChangeText={(value: any) => {
+                      this.setState({
+                        password: value
+                      })
+                    }}
+                    onBlur={() => {
+                      this.setState({
+                        passwordError: validate('password', this.state.password)
+                      })
+                    }}
+                    secureTextEntry={!this.state.showPassword}
+                    error={this.state.passwordError}
+                    type={FieldType.PASSWORD}/>
 
-            <View style={styles.row}>
-              <View style={styles.flex}></View>
-              <View style={styles.flex}>
-                <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} invertedStyle={styles.buttonStyle}/>
+                  <Text style={styles.label}>Confirm Password</Text>
+                  <TextField
+                    onChangeText={(value: any) => {
+                      this.setState({
+                        confirmPassword: value
+                      })
+                    }}
+                    onBlur={() => {
+                      this.setState({
+                        confirmPasswordError: validate('password', this.state.confirmPassword)
+                      })
+                    }}
+                    secureTextEntry={!this.state.showPassword}
+                    error={this.state.confirmPasswordError}
+                    type={FieldType.PASSWORD}/>
+
+                </View> : null
+              }
+
+              <View style={styles.row}>
+                <View style={styles.flex}></View>
+                <View style={styles.flex}>
+                  <ActionButton title="Submit" inverted={true} onPress={this.resetPassword} invertedStyle={styles.buttonStyle}/>
+                </View>
               </View>
-            </View>
 
-          </View>
+            </View>
+          </ScrollView>
         </View>
         {(this.props.loading)&& <LoadingScreen />}
       </SafeAreaView>

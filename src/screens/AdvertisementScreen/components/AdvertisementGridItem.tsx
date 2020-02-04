@@ -51,8 +51,6 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
     const { advertisement, outlet } = this.props;
     const {id, type, brand, sprice, rprice, sizeMeasure, opacity } = advertisement;
     const itemWidth = (Dimensions.get('window').width >> 1) - 25;
-    const marginTopofSize = brand && brand.length > 9 ? 0 : -12;
-
     const imageContainerHeight: any = {};
     if (!id) {
       imageContainerHeight.height = 140;
@@ -62,21 +60,21 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
         <View style={[styles.container, {width: itemWidth, opacity:  opacity ? opacity : 1}]}>
           <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
             { id ? this.state.featureImage == this.props.advertisement.image ?
-              <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
-              <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> : null }
+              <FullWidthImage style={[styles.image]} source={{ uri: this.state.featureImage }}/> :
+              <Image style={[styles.image, {height: 80}]} source={ this.state.featureImage } resizeMode="stretch"/> : null }
           </Card>
           <View style={styles.details}>
-            { id && <View>    
-              <View style={styles.row}>
-                <Text style={[styles.boldText, styles.flex]}>{brand}</Text>
-              </View>
-              <View style={[styles.row, {flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'flex-end'}]}>
-                  <Text style={[styles.sellprice]}>${sprice}</Text>
+            { id && <View>
+                <View style={styles.row}>
+                  <Text style={[styles.boldText, styles.flex]}>{brand}</Text>
+                </View>
+                <Text style={[styles.size, styles.flex]}>{sizeMeasure}</Text>
+                <Text style={[styles.type]}>{type}</Text>
+                <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
+                <View style={[styles.row, {justifyContent: 'flex-end', alignItems: 'flex-end'}]}>
                   <Text style={[styles.regularPrice]}>${rprice}</Text>
-              </View>
-              <Text style={[styles.size, styles.flex, { marginTop: marginTopofSize }]}>{sizeMeasure}</Text>
-              <Text style={[styles.type]}>{type}</Text>
-              <Text style={[styles.outlet]}>{outlet ? outlet.outlet : advertisement.outlet}</Text> 
+                  <Text style={[styles.sellprice]}>${sprice}</Text>
+                </View>
               </View> }
           </View>
         </View>
@@ -104,15 +102,16 @@ const styles = StyleSheet.create({
     marginHorizontal: '2.5%',
   },
   imageContainer: {
-    borderRadius: 0,
     // padding: 10,
     margin: 0,
     backgroundColor: colors.WHITE,
     borderWidth: 0,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
     shadowOpacity: 0,
     elevation: 0,
+    padding: 0,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    overflow: "hidden"
   },
   padding: {
     padding: 2,
@@ -135,8 +134,10 @@ const styles = StyleSheet.create({
     color: colors.TEXT_PRIMARY
   },
   sellprice: {
-    ...typos.TITLE,
-    color: colors.TEXT_PRIMARY
+    ...typos.SUBHEADLINE,
+    color: colors.ERROR,
+    paddingLeft: 5,
+    paddingBottom: 3,
   },
   regularPrice: {
     ...typos.SMALL,

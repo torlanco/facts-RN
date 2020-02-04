@@ -17,7 +17,9 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import OTPInputView from '@twotalltotems/react-native-otp-input'
+import OTPInputView from '@twotalltotems/react-native-otp-input';
+import { ScrollView } from 'react-native-gesture-handler';
+import {Keyboard} from 'react-native';
 
 interface ParamType {
   isForLogin?: string;
@@ -172,39 +174,41 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title=""></HeaderBar>
-          <View style={[styles.flex, styles.container]}>
-            <Text style={styles.heading}>Verify</Text>
-            <Text style={styles.subHeadig}>code</Text>
-            <Text style={styles.message}>We have sent a code to <Text style={{fontWeight: 'bold'}}>{emailOrPhone}</Text>
-            </Text>
+          <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+            <View style={[styles.flex, styles.container]}>
+              <Text style={styles.heading}>Verify</Text>
+              <Text style={styles.subHeadig}>code</Text>
+              <Text style={styles.message}>We have sent a code to <Text style={{fontWeight: 'bold'}}>{emailOrPhone}</Text>
+              </Text>
 
-            <OTPInputView
-              style={styles.otpContainer}
-              pinCount={4}
-              autoFocusOnLoad
-              codeInputFieldStyle={styles.underlineStyleBase}
-              codeInputHighlightStyle={styles.underlineStyleHighLighted}
-              code={this.state.otp}
-              onCodeChanged = {(code: any) => { this.setState({otp: code})}}/>
-            { this.state.otpError ? <Text style={styles.error}>{this.state.otpError}</Text> : null }
+              <OTPInputView
+                style={styles.otpContainer}
+                pinCount={4}
+                autoFocusOnLoad
+                codeInputFieldStyle={styles.underlineStyleBase}
+                codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                code={this.state.otp}
+                onCodeChanged = {(code: any) => { this.setState({otp: code})}}/>
+              { this.state.otpError ? <Text style={styles.error}>{this.state.otpError}</Text> : null }
 
-            <View style={styles.row}>
-              <View>
-                <Text style={styles.linkText}>Didn't receive a code?</Text>
-                <TouchableOpacity onPress={this.requestOtp} disabled={this.state.disableResend}>
-                  <Text style={[styles.linkText, styles.linkBoldLink]}>Resend Now</Text>
-                </TouchableOpacity>
+              <View style={styles.row}>
+                <View>
+                  <Text style={styles.linkText}>Didn't receive a code?</Text>
+                  <TouchableOpacity onPress={this.requestOtp} disabled={this.state.disableResend}>
+                    <Text style={[styles.linkText, styles.linkBoldLink]}>Resend Now</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <View style={styles.flex}>
+                </View>
+                <View style={styles.flex}>
+                  <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
+                </View>
               </View>
             </View>
-
-            <View style={styles.row}>
-              <View style={styles.flex}>
-              </View>
-              <View style={styles.flex}>
-                <ActionButton title="Submit" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
-              </View>
-            </View>
-          </View>
+          </ScrollView>
         </View>
         {this.props.loading && <LoadingScreen />}
       </SafeAreaView>

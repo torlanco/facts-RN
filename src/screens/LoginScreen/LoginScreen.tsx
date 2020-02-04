@@ -18,6 +18,8 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { CheckBox, Divider } from 'react-native-elements';
 import { validate, CONSTANTS } from '@utils';
+import { ScrollView } from 'react-native-gesture-handler';
+import {Keyboard} from 'react-native';
 
 // props
 interface ParamType {
@@ -145,68 +147,70 @@ class LoginScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
-          <View style={styles.container}>
-            <Text style={styles.heading}>Log in</Text>
-            <Text style={styles.subHeadig}>to continue</Text>
-            <Text style={styles.label}>Username</Text>
-            <TextField
-              keyboardType={'email-address'}
-              onChangeText={(value: any) => {
-                this.setState({
-                  userName: value
-                })
-              }}
-              onBlur={() => {
-                this.setState({
-                  userNameError: validate('required', this.state.userName, 'Username')
-                })
-              }}
-              error={this.state.userNameError}/>
+          <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+            <View style={styles.container}>
+              <Text style={styles.heading}>Log in</Text>
+              <Text style={styles.subHeadig}>to continue</Text>
+              <Text style={styles.label}>Username</Text>
+              <TextField
+                keyboardType={'email-address'}
+                onChangeText={(value: any) => {
+                  this.setState({
+                    userName: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    userNameError: validate('required', this.state.userName, 'Username')
+                  })
+                }}
+                error={this.state.userNameError}/>
 
-            <Text style={[styles.label]}>Password</Text>
-            <TextField
-              ref={input => { this._passwordField = input }}
-              onChangeText={(value: any) => {
-                this.setState({
-                  password: value
-                })
-              }}
-              onBlur={() => {
-                this.setState({
-                  passwordError: validate('password', this.state.password)
-                })
-              }}
-              error={this.state.passwordError}
-              type={FieldType.PASSWORD}/>
+              <Text style={[styles.label]}>Password</Text>
+              <TextField
+                ref={input => { this._passwordField = input }}
+                onChangeText={(value: any) => {
+                  this.setState({
+                    password: value
+                  })
+                }}
+                onBlur={() => {
+                  this.setState({
+                    passwordError: validate('password', this.state.password)
+                  })
+                }}
+                error={this.state.passwordError}
+                type={FieldType.PASSWORD}/>
 
-            <View style={styles.row}>
-              <TouchableOpacity onPress={this.onForgetPassword}>
-              <Text style={[styles.link]}>forgot password?</Text>
-              </TouchableOpacity>
-              <View style={styles.flex}/>
-              <TouchableOpacity onPress={this.onLoginWithOtp}>
-               <Text style={[styles.link]}>Login with OTP</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.bottomAction]}>
-              <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
               <View style={styles.row}>
-                <View style={[styles.flex, styles.row]}>
-                  <View style={[{paddingTop: 15}]}>
-                    <Text style={styles.bottomActionText}>Don't have an account?</Text>
-                    <TouchableOpacity onPress={this.onRegister}>
-                      <Text style={[styles.bottomActionText, styles.boldLink]}>Register Now</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.flex}></View>
+                <TouchableOpacity onPress={this.onForgetPassword}>
+                <Text style={[styles.link]}>forgot password?</Text>
+                </TouchableOpacity>
+                <View style={styles.flex}/>
+                <TouchableOpacity onPress={this.onLoginWithOtp}>
+                 <Text style={[styles.link]}>Login with OTP</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+          <View style={[styles.bottomAction]}>
+            <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
+            <View style={styles.row}>
+              <View style={[styles.flex, styles.row]}>
+                <View style={[{paddingTop: 15}]}>
+                  <Text style={styles.bottomActionText}>Don't have an account?</Text>
+                  <TouchableOpacity onPress={this.onRegister}>
+                    <Text style={[styles.bottomActionText, styles.boldLink]}>Register Now</Text>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.flex}>
-                  <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} invertedStyle={styles.buttonStyle}/>
-                </View>
+                <View style={styles.flex}></View>
+              </View>
+              <View style={styles.flex}>
+                <ActionButton title="Log in" inverted={true} onPress={this.onSignIn} invertedStyle={styles.buttonStyle}/>
               </View>
             </View>
           </View>
-        </View>
+       </View>
       { this.props.loading && <LoadingScreen />}
       </SafeAreaView>
     );

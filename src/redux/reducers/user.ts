@@ -88,6 +88,7 @@ export function user(
             ...state,
             error: false,
             loading: false,
+            token: action.payload.token,
         };
     case Types.REGISTER_FAILED:
         return {

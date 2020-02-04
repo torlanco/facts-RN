@@ -18,6 +18,7 @@ import { mapDispatchToProps } from '@actions/user';
 import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';
 import { Divider } from 'react-native-elements';
+import {Keyboard} from 'react-native';
 
 // props
 interface IOwnProps {
@@ -107,7 +108,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
     }
     const response: any = await this.props.register(userData);
     if (response.success) {
-      this.onLogin();
+      this.redirectToMain();
     }
   }
 
@@ -125,7 +126,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
           <KeyboardAvoidingView style={styles.flex} behavior="padding" enabled keyboardVerticalOffset={0}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
               <View style={[styles.flex, styles.container]}>
                 <Text style={styles.heading}>Sign up</Text>
                 <Text style={styles.subHeadig}>create an account</Text>

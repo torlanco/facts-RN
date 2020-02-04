@@ -16,7 +16,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { Text, Icon } from 'react-native-elements';
 import { colors, typos } from '@styles';
 import { TextInput } from 'react-native-gesture-handler';
-import { CONSTANTS } from '@utils';
+import { CONSTANTS, capitalize } from '@utils';
 
 interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
@@ -43,7 +43,6 @@ const mapStateToProps = function(state: any) {
 };
 
 class AutoSuggestComponent extends React.Component<IProps, IState> {
-  _textInput: any;
   _fetchBrandsHandler: any
 
   constructor(props: IProps) {
@@ -76,19 +75,28 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
     await this.props.fetchBrands(this.state.query);
     this.setState({
       hideResults: false,
-      data: this.props.brands ? this.props.brands.map((brand: any) => `${brand.brand} (${brand.total})`) : []
+      data: this.props.brands ? this.props.brands : []
     });
   }
 
   onItemSelect = (value: string) => {
     this.setState({
-      query: value.split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim(),
+      query: value.trim(),
       hideResults: true
     }, () => {
       if (this.props.onBrandSelect) {
         this.props.onBrandSelect(this.state.query);
       }
     });
+  }
+
+  getListItem = (item: any) => {
+     let index = item.brand.toLowerCase().indexOf(this.state.query.toLowerCase());
+     item.brand =  capitalize(item.brand);
+     return <Text style={styles.listItem}>
+        {item.brand.substring(0, index)}
+        <Text style={{...typos.PRIMARY}}>{item.brand.substring(index, index + this.state.query.length)}</Text>
+        {item.brand.substring(index + this.state.query.length)} (<Text style={{...typos.PRIMARY}}>{item.total}</Text>)</Text>
   }
 
   public render() {
@@ -110,8 +118,8 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
             </View>
           )}
           renderItem={({item, index}) => (
-            <TouchableOpacity onPress={() => this.onItemSelect(item)}>
-              <Text style={styles.listItem}>{item.trim()}</Text>
+            <TouchableOpacity onPress={() => this.onItemSelect(item.brand)}>
+              { this.getListItem(item) }
             </TouchableOpacity>
           )}
           keyExtractor={(_, index) => (_ + index)}
@@ -142,29 +150,29 @@ const styles = StyleSheet.create({
     backgroundColor: colors.LIGHT_GRAY
   },
   listContainerStyle: {
-    paddingHorizontal: 10,
+    elevation: 5,
+    zIndex: 5,
+    shadowOpacity: 0.4,
+    shadowOffset: {
+        width: 3,
+        height: 10
+    },
+    shadowColor: colors.MID_GRAY,
+    shadowRadius: 10,
   },
   listStyle: {
     margin: 0,
     marginTop: 10,
-    backgroundColor: colors.LIGHT_GRAY,
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: colors.WHITE,
     borderWidth: 0,
     borderRadius: 10,
-    elevation: 3,
-    zIndex: 3,
-    shadowOpacity: 0.1,
-    shadowOffset: {
-        width: 0,
-        height: 5
-    },
-    shadowColor: colors.LIGHT_BLUE,
-    shadowRadius: 10,
   },
   listItem: {
     ...typos.PRIMARY_LIGHT,
     fontWeight: 'normal',
     padding: 10,
-    textTransform: 'capitalize'
   },
   divider: {
     backgroundColor: colors.LIGHT_GRAY,

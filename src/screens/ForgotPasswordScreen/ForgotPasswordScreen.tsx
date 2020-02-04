@@ -16,6 +16,9 @@ import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { Icon } from 'react-native-elements';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+import { ScrollView } from 'react-native-gesture-handler';
+import {Keyboard} from 'react-native';
+
 
 interface ParamType {
   type?: string;
@@ -95,7 +98,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
     }
   }
 
-  redirectToVerifyOtp = (isForLogin) => {
+  redirectToVerifyOtp = (isForLogin?: boolean) => {
     this.props.navigation.navigate('VerifyOTPScreen', { emailOrPhone: this.state.emailOrPhone, isForLogin });
   }
 
@@ -131,47 +134,49 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={styles.flex}>
             <HeaderBar title=""></HeaderBar>
-            <View style={[styles.flex, styles.container]}>
-                <Text style={styles.heading}>Enter</Text>
-                <Text style={styles.subHeadig}>{this.getOtpModeText()}</Text>
-                <Text style={styles.message}>We will send an OTP on your registered {this.getOtpModeText()} to reset the password.</Text>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+              <View style={[styles.flex, styles.container]}>
+                  <Text style={styles.heading}>Enter</Text>
+                  <Text style={styles.subHeadig}>{this.getOtpModeText()}</Text>
+                  <Text style={styles.message}>We will send an OTP on your registered {this.getOtpModeText()} to reset the password.</Text>
 
-                <Text style={[styles.label, {textTransform: 'capitalize'}]}>{this.getOtpModeText()}</Text>
-                { isForLogin || type ?
-                <TextField
-                    onChangeText={(value: any) => {
-                        this.setState({
-                          emailOrPhone: value
-                        })
-                    }}
-                    onBlur={() => {
-                        this.setState({
-                          emailOrPhoneError: this.getEmailOrPhoneValidator()
-                        })
-                    }}
-                    error={this.state.emailOrPhoneError}/> :
-                <PhoneField
-                    onChangeText={(value: any) => {
-                        this.setState({
-                          emailOrPhone: value
-                        })
-                    }}
-                    onBlur={() => {
-                        this.setState({
-                          emailOrPhoneError: validate('phone',  this.state.emailOrPhone)
-                        })
-                    }}
-                    error={this.state.emailOrPhoneError}/>
-                }
+                  <Text style={[styles.label, {textTransform: 'capitalize'}]}>{this.getOtpModeText()}</Text>
+                  { isForLogin || type ?
+                  <TextField
+                      onChangeText={(value: any) => {
+                          this.setState({
+                            emailOrPhone: value
+                          })
+                      }}
+                      onBlur={() => {
+                          this.setState({
+                            emailOrPhoneError: this.getEmailOrPhoneValidator()
+                          })
+                      }}
+                      error={this.state.emailOrPhoneError}/> :
+                  <PhoneField
+                      onChangeText={(value: any) => {
+                          this.setState({
+                            emailOrPhone: value
+                          })
+                      }}
+                      onBlur={() => {
+                          this.setState({
+                            emailOrPhoneError: validate('phone',  this.state.emailOrPhone)
+                          })
+                      }}
+                      error={this.state.emailOrPhoneError}/>
+                  }
 
-                <View style={styles.row}>
-                    <View style={[styles.flex]}>
-                    </View>
-                    <View style={styles.flex}>
-                    <ActionButton title="Recover" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
-                    </View>
-                </View>
-            </View>
+                  <View style={styles.row}>
+                      <View style={[styles.flex]}>
+                      </View>
+                      <View style={styles.flex}>
+                      <ActionButton title="Recover" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
+                      </View>
+                  </View>
+              </View>
+            </ScrollView>
             { this.props.loading && <LoadingScreen /> }
         </SafeAreaView>
     );
