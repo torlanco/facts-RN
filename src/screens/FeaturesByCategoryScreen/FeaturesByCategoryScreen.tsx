@@ -85,6 +85,7 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
         data: list
       })
     }
+    console.log(featuresWithOutletList);
     return featuresWithOutletList;
   }
 
@@ -105,11 +106,15 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
     return this.state.initial ? this.getInitialView() : this.getFeaturesView();
   }
 
+  redirectToAdvertisementDetail = (advertisement: IAdvertisement.IAdvertisementData) => {
+    this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement });
+  }
+
   getFeaturesView() {
     return <SectionList
       sections={this.state.advertisementList}
       keyExtractor={(item, index) => item.key}
-      renderItem={({ item }) => <AdvertisementGridView listkey={item.key} advertisementList={item.features}/>}
+      renderItem={({ item }) => <View style={styles.flex}><AdvertisementGridView onItemPress={this.redirectToAdvertisementDetail} listkey={item.key} advertisementList={item.features}/></View>}
       renderSectionHeader={({ section: { outlet } }) => (
         <Text style={styles.outlet}>{outlet}</Text>
       )}

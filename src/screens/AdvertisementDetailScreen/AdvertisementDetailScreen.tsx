@@ -117,7 +117,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 <Divider style={styles.divider}/>
                 <View style={[styles.row]}>
                   <View style={{marginRight: 20}}>
-                    <Text style={styles.label}>Special Price</Text>
+                    <Text style={[styles.label, {width: 100}]}>Special Price</Text>
                   </View>
                   <View>
                     <Text style={styles.label}>Regular Price</Text>
@@ -126,7 +126,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 <Divider style={styles.divider}/>
                 <View style={[styles.row]}>
                   <View style={{marginRight: 20}}>
-                    <Text style={styles.prices}>${sprice}</Text>
+                    <Text style={[styles.prices, {width: 100}]}>${sprice}</Text>
                   </View>
                   <Divider style={styles.divider}/>
                   <View>

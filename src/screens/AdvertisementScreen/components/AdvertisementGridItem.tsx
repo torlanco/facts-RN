@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     ...typos.SUBHEADLINE,
     color: colors.ERROR,
     paddingLeft: 5,
-    paddingBottom: 3,
+    paddingBottom: 2,
   },
   regularPrice: {
     ...typos.SMALL,
