@@ -49,10 +49,23 @@ export const updateUserInfo = (token: string, userData: IUser.IUserData) => {
   return HTTP.put('users', userData, { headers: { Authorization: `Bearer ${token}` } });
 };
 
-export const changePassword = (oldPassword?: string, password?: string, confirmPassword?: string) => {
-  return HTTP.post('auth/change-password', {
-    oldPassword,
-    password,
-    confirmPassword
+export const changePassword = (token?: string, currentPassword?: string, newPassword?: string, confirmPassword?: string) => {
+  return HTTP.put('auth/update-password', {
+      currentPassword,
+	    newPassword,
+	    confirmPassword
+  }, { headers: { Authorization: `Bearer ${token}` }});
+};
+
+export const requestLoginOtp = (emailOrPhone?: string) => {
+  return HTTP.post('auth/send-signin-otp', {
+      phone: emailOrPhone
+  });
+};
+
+export const loginUsingOtp = (emailOrPhone?: string, otp?: string) => {
+  return HTTP.post('auth/signin-using-otp', {
+      phone: emailOrPhone,
+      otp
   });
 };

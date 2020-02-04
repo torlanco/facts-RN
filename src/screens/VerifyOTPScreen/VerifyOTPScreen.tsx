@@ -79,6 +79,30 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     if (!(await this.validate())) {
       return;
     }
+    this.verifyOtp();
+  }
+
+  verifyOtp = async () => {
+    const { isForLogin } = this.props.navigation.state.params;
+    if (isForLogin) {
+      this.verifyLoginOtp();
+    } else {
+      this.verifyResetPasswordOtp();
+    }
+  }
+
+  verifyLoginOtp = async () => {
+    const response: any = await this.props.loginUsingOtp(emailOrPhone, this.state.otp);
+    if (response.token) {
+      this.redirectToResetPassword(response.token);
+    } else {
+      this.setState({
+        otpError: response.errText
+      })
+    }
+  }
+
+  verifyResetPasswordOtp = async () => {
     const response: any = await this.props.verifyResetPasswordOtp(emailOrPhone, this.state.otp);
     if (response.token) {
       this.redirectToResetPassword(response.token);
@@ -90,6 +114,15 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
   }
 
   requestOtp = async () => {
+    const { isForLogin } = this.props.navigation.state.params;
+    if (isForLogin) {
+      this.requestLoginOtp();
+    } else {
+      this.requestResetPasswordOtp();
+    }
+  }
+
+  requestResetPasswordOtp = async () => {
     const { emailOrPhone } = this.props.navigation.state.params;
     const response: any = await this.props.requestResetPasswordOtp(emailOrPhone);
     if (response.success) {
@@ -105,6 +138,28 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
         }, 60);
       })
     }
+  }
+
+  requestLoginOtp = async () => {
+    const { emailOrPhone } = this.props.navigation.state.params;
+    const response: any = await this.props.requestLoginOtp(emailOrPhone);
+    if (response.token) {
+      this.setState({
+       disableResend: true
+      }, () => {
+        setTimeout(() => {
+          if (this.state.disableResend) {
+            this.setState({
+              disableResend: false
+            });
+          }
+        }, 60);
+      })
+    }
+  }
+
+  redirectToMain = (token: string) => {
+    this.props.navigation.navigate('Main');
   }
 
   redirectToResetPassword = (token: string) => {

@@ -65,7 +65,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     const { advertisement } = this.props.navigation.state.params;
     if (advertisement.image) {
       Image.getSize(advertisement.image, (width: number, height: number) => {
-          this.setState({ 
+          this.setState({
               featureImage: advertisement.image
           });
       }, err => {});
@@ -76,7 +76,6 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
   incrementFeatureViewCount = async () => {
     const { advertisement } = this.props.navigation.state.params;
     const response = await this.props.incrementFeaturesViewCount(advertisement.id || '');
-    console.log(response);
   }
 
   componentWillUnmount() {
@@ -98,10 +97,10 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
             <Card containerStyle={[styles.mainContainer]}>
               <Card containerStyle={[styles.imageContainer]}>
                 { this.state.featureImage == advertisement.image ?
-                  <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
-                  <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
+                  <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
+                  <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
               </Card>
-              <View style={styles.details}>    
+              <View style={styles.details}>
                 <Text style={[styles.brand, styles.flex, styles.horizontalPadding]}>{brand}</Text>
                 <View style={[styles.row, { alignSelf: 'flex-end' }]}>
                   <Text style={[styles.outlet, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
@@ -114,7 +113,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 </View>
                 <Text style={[styles.text, styles.flex, styles.horizontalPadding]}>{sizeMeasure}</Text>
                 <Text style={[styles.text, styles.horizontalPadding]}>{type}</Text>
-                
+
                 <Divider style={styles.divider}/>
                 <View style={[styles.row]}>
                   <View style={{marginRight: 20}}>
@@ -139,11 +138,11 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 <View style={styles.horizontalPadding}>
                   <Text style={[styles.label]}>Outlet</Text>
                   <Text style={[styles.text, styles.link]}>{outlet ? outlet.outlet : advertisement.outlet}</Text>
-                  { outlet &&  
+                  { outlet &&
                     <View>
                       <Text style={styles.label}>Validity</Text>
                       <Text style={[styles.text]}>Valid from <Text style={styles.bold}>{formatDate(outlet.earliestStartDate)} until</Text> {formatDate(outlet.latestEndDate)}</Text>
-                    </View> 
+                    </View>
                   }
                 </View>
               </View>
@@ -202,7 +201,7 @@ const styles = StyleSheet.create({
   },
   prices: {
     ...typos.HEADLINE,
-    color: colors.TEXT_PRIMARY  
+    color: colors.TEXT_PRIMARY
   },
   disabled: {
     color: colors.TEXT_SECONDARY
@@ -217,8 +216,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   details: {
-    backgroundColor: colors.LIGHTEST_GRAY, 
-    paddingVertical: 15, 
+    backgroundColor: colors.LIGHTEST_GRAY,
+    paddingVertical: 15,
   },
   label: {
     ...typos.PRIMARY,
@@ -234,14 +233,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   divider: {
-    marginTop: 10, 
+    marginTop: 10,
   },
   iconContainer: {
     width: responsive(30),
     marginRight: -5,
-  }, 
+  },
   link: {
-    textDecorationLine: 'underline', 
+    textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
   },
   outlet: {
@@ -252,7 +251,7 @@ const styles = StyleSheet.create({
   },
   brand: {
     ...typos.SUBHEADLINE,
-  }   
+  }
 });
 
 const AdvertisementDetailScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(AdvertisementDetailScreen);

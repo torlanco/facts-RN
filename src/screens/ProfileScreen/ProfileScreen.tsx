@@ -219,9 +219,9 @@ class ProfileScreen extends React.Component<IProps, IState> {
               { !this.state.editable && <View>
                   <View style={styles.row}>
                     <Text style={[styles.label, styles.flex]}>Password</Text>
-                    { /* <TouchableOpacity onPress={this.redirectToChangePassword}>
+                    <TouchableOpacity onPress={this.redirectToChangePassword}>
                       <Text style={[styles.label]}>Change Password</Text>
-                    </TouchableOpacity> */ }
+                    </TouchableOpacity>
                   </View>
                   <TextField
                     defaultValue="********"

@@ -1,7 +1,7 @@
 import { Types } from '@types';
 import { IUser } from '@interfaces/user';
 import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp,
-    verifyResetPasswordOtp, fetchUserInfo, updateUserInfo, changePassword } from '@services';
+    verifyResetPasswordOtp, fetchUserInfo, updateUserInfo, changePassword, requestLoginOtp, loginUsingOtp } from '@services';
 import { AsyncStorage } from 'react-native';
 import { CONSTANTS } from '@utils';
 
@@ -205,13 +205,13 @@ const IUserAction: IUser.DispatchFromProps = {
       }
     };
   },
-  changePassword: (oldPassword?: string, password?: string, confirmPassword?: string) => {
+  changePassword: (token?: string, currentPassword?: string, newPassword?: string, confirmPassword?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.CHANGE_PASSWORD,
       });
       try {
-        const response =  await changePassword(oldPassword, password, confirmPassword);
+        const response =  await changePassword(token, currentPassword, newPassword, confirmPassword);
         dispatch({
           type: Types.CHANGE_PASSWORD_SUCCESS,
         });
@@ -220,7 +220,50 @@ const IUserAction: IUser.DispatchFromProps = {
         dispatch({
           type: Types.CHANGE_PASSWORD_FAILED,
         });
-        return e.response.data.result;
+        return e.response.data;
+      }
+    };
+  },
+  requestLoginOtp: (emailOrPhone?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.REQUEST_LOGIN_OTP,
+      });
+      try {
+        const response =  await requestLoginOtp(emailOrPhone);
+        dispatch({
+          type: Types.REQUEST_LOGIN_OTP_SUCCESS,
+        });
+        console.log(response);
+        return response.data;
+      } catch(e) {
+        dispatch({
+          type: Types.REQUEST_LOGIN_OTP_FAILED,
+        });
+        console.log(e);
+        return e.response.data;
+      }
+    };
+  },
+  loginUsingOtp: (emailOrPhone?: string, otp?: string) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.LOGIN,
+      });
+      try {
+        const response =  await loginUsingOtp(emailOrPhone, otp);
+        dispatch({
+          type: Types.LOGIN_SUCCESS,
+          payload: response.data.data,
+        });
+        AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.LOGIN_FAILED,
+          payload: e.response.data,
+        });
+        return e.response.data;
       }
     };
   },

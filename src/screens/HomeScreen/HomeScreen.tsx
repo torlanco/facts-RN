@@ -56,7 +56,6 @@ class HomeScreen extends React.Component<IProps, IState> {
     }
 
     redirectToFeaturesByCategory = () => {
-        // console.log('Hello');
         this.props.navigation.navigate('FeaturesByCategoryScreen');
     }
 

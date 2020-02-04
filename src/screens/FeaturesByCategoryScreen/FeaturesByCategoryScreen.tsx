@@ -62,7 +62,6 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
   }
 
   async fetchAdvertisements() {
-    console.log('Hello');
     const response: any = await this.props.fetchFeaturesByBrand(this.state.brand);
     this.setState({
       advertisementList: this.createMultiListWithOutlet(response)

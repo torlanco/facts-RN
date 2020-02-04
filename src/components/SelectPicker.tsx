@@ -26,9 +26,6 @@ type IProps = IOwnProps;
 const SelectPicker: React.SFC<IProps> = (props: IProps) => {
 
     const handleValueChange = (value: any) => {
-      console.log(value);
-      console.log(props.placeholder);
-
       if (props.handleValueChange  && value) {
         props.handleValueChange(value);
       }

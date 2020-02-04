@@ -33,11 +33,11 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-  oldPassword: string;
+  currentPassword: string;
   password: string;
   confirmPassword: string;
   // Errors
-  oldPasswordError: string;
+  currentPasswordError: string;
   passwordError: string
   confirmPasswordError: string
 }
@@ -45,6 +45,7 @@ interface IState {
 const mapStateToProps = function(state: any) {
   return {
     loading: state.user.loading,
+    token: state.user.token
   }
 };
 
@@ -55,13 +56,13 @@ class ChangePasswordScreen extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-        oldPassword: '',
+        currentPassword: '',
         password: '',
         confirmPassword: '',
         showPassword: false,
         token: '',
         // Errors
-        oldPasswordError: '',
+        currentPasswordError: '',
         passwordError: '',
         confirmPasswordError: '',
     };
@@ -73,24 +74,24 @@ class ChangePasswordScreen extends React.Component<IProps, IState> {
 
   validate = async () => {
     await this.setAsyncState({
-      oldPasswordError: validate('password', this.state.oldPassword),
+      currentPasswordError: validate('password', this.state.currentPassword),
       passwordError: validate('password', this.state.password),
       confirmPasswordError: !this.state.confirmPassword || this.state.password != this.state.confirmPassword ? 'Password must be same.' : '',
     });
-    return !(this.state.oldPasswordError || this.state.passwordError || this.state.confirmPasswordError);
+    return !(this.state.currentPasswordError || this.state.passwordError || this.state.confirmPasswordError);
   }
 
   changePassword = async () => {
     if (!(await this.validate())) {
       return;
     }
-    const response: any = await this.props.changePassword(this.state.oldPassword,
+    const response: any = await this.props.changePassword(this.props.token, this.state.currentPassword,
       this.state.password, this.state.confirmPassword);
     if (response.success) {
       this.props.navigation.goBack();
     } else {
       this.setState({
-        oldPasswordError: response.errText
+        currentPasswordError: response.error
       });
     }
   }
@@ -103,22 +104,22 @@ class ChangePasswordScreen extends React.Component<IProps, IState> {
           <View style={[styles.flex, styles.container]}>
             <Text style={styles.heading}>Change password</Text>
             <View>
-              <Text style={styles.label}>Old Password</Text>
+              <Text style={styles.label}>Current Password</Text>
               <TextField
                 onChangeText={(value: any) => {
                   this.setState({
-                    oldPassword: value
+                    currentPassword: value
                   })
                 }}
                 onBlur={() => {
                   this.setState({
-                    oldPasswordError: validate('password', this.state.oldPassword)
+                    currentPasswordError: validate('password', this.state.currentPassword)
                   })
                 }}
-                error={this.state.oldPasswordError}
+                error={this.state.currentPasswordError}
                 type={FieldType.PASSWORD}/>
 
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>New Password</Text>
               <TextField
                 onChangeText={(value: any) => {
                   this.setState({
@@ -134,7 +135,7 @@ class ChangePasswordScreen extends React.Component<IProps, IState> {
                 error={this.state.passwordError}
                 type={FieldType.PASSWORD}/>
 
-              <Text style={styles.label}>Confirm Password</Text>
+              <Text style={styles.label}>Retype New Password</Text>
               <TextField
                 onChangeText={(value: any) => {
                   this.setState({

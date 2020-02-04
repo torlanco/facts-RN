@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { Icon } from 'react-native-elements';
-
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 interface ParamType {
   type?: string;
@@ -88,17 +88,32 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
     if (!(await this.validate())) {
       return;
     }
-    this.requestOtp();
+    if (isForLogin) {
+      this.requestLoginOtp();
+    } else {
+      this.requestForgotPasswordOtp();
+    }
   }
 
-  redirectToVerifyOtp = () => {
-    this.props.navigation.navigate('VerifyOTPScreen', { emailOrPhone: this.state.emailOrPhone });
+  redirectToVerifyOtp = (isForLogin) => {
+    this.props.navigation.navigate('VerifyOTPScreen', { emailOrPhone: this.state.emailOrPhone, isForLogin });
   }
 
-  requestOtp = async () => {
+  requestForgotPasswordOtp = async () => {
     const response: any = await this.props.requestResetPasswordOtp(this.state.emailOrPhone);
     if (response.success) {
       this.redirectToVerifyOtp();
+    } else if (response.errText) {
+      this.setState({
+        emailOrPhoneError: response.errText
+      })
+    }
+  }
+
+  requestLoginOtp = async () => {
+    const response: any = await this.props.requestLoginOtp(this.state.emailOrPhone);
+    if (response.success) {
+      this.redirectToVerifyOtp(true);
     } else if (response.errText) {
       this.setState({
         emailOrPhoneError: response.errText
@@ -112,7 +127,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { type } = this.props;
+    const { isForLogin, type } = this.props.navigation.state.params;
     return (
       <SafeAreaView style={styles.flex}>
             <HeaderBar title=""></HeaderBar>
@@ -122,7 +137,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
                 <Text style={styles.message}>We will send an OTP on your registered {this.getOtpModeText()} to reset the password.</Text>
 
                 <Text style={[styles.label, {textTransform: 'capitalize'}]}>{this.getOtpModeText()}</Text>
-                { type ?
+                { isForLogin || type ?
                 <TextField
                     onChangeText={(value: any) => {
                         this.setState({
@@ -157,6 +172,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
                     </View>
                 </View>
             </View>
+            { this.props.loading && <LoadingScreen /> }
         </SafeAreaView>
     );
   }

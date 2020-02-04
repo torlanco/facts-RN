@@ -220,6 +220,46 @@ export function user(
         loading: false,
       };
 
+    // Request Login OTP
+    case Types.REQUEST_LOGIN_OTP:
+      return {
+        ...state,
+        error: false,
+        loading: true
+      };
+    case Types.REQUEST_LOGIN_OTP_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
+    case Types.REQUEST_LOGIN_OTP_FAILED:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+      };
+
+    // // Login with OTP
+    // case Types.LOGIN_WITH_OTP:
+    //   return {
+    //     ...state,
+    //     error: false,
+    //     loading: true
+    //   };
+    // case Types.LOGIN_WITH_OTP_SUCCESS:
+    //   return {
+    //     ...state,
+    //     error: false,
+    //     loading: false,
+    //   };
+    // case Types.LOGIN_WITH_OTP_FAILED:
+    //   return {
+    //     ...state,
+    //     error: false,
+    //     loading: false,
+    //   };
+
     default:
         return state;
   }
