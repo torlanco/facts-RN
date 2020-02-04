@@ -51,8 +51,8 @@ export const validate = (type: string, value: any, field?: string, extraValue?: 
             break;
 
         case 'password':
-            if (!value || value.length < 8)
-                error = 'Password must be 8 characters long.'
+            if (!value)
+                error = 'Password must not be empty.'
             break;
 
         case 'cpassword':
