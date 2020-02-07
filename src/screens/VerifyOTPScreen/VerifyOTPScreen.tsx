@@ -81,19 +81,19 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     if (!(await this.validate())) {
       return;
     }
-    this.verifyOtp();
+    this.verifyOtp(emailOrPhone);
   }
 
-  verifyOtp = async () => {
+  verifyOtp = async (emailOrPhone: string) => {
     const { isForLogin } = this.props.navigation.state.params;
     if (isForLogin) {
-      this.verifyLoginOtp();
+      this.verifyLoginOtp(emailOrPhone);
     } else {
-      this.verifyResetPasswordOtp();
+      this.verifyResetPasswordOtp(emailOrPhone);
     }
   }
 
-  verifyLoginOtp = async () => {
+  verifyLoginOtp = async (emailOrPhone: string) => {
     const response: any = await this.props.loginUsingOtp(emailOrPhone, this.state.otp);
     if (response.token) {
       this.redirectToResetPassword(response.token);
@@ -104,7 +104,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     }
   }
 
-  verifyResetPasswordOtp = async () => {
+  verifyResetPasswordOtp = async (emailOrPhone: string) => {
     const response: any = await this.props.verifyResetPasswordOtp(emailOrPhone, this.state.otp);
     if (response.token) {
       this.redirectToResetPassword(response.token);
