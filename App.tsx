@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-import { View, NetInfo } from 'react-native';
+import { View, NetInfo, StatusBar, Platform } from 'react-native';
 import { AppNavigator } from '@router';
 
 // redux
@@ -104,12 +104,13 @@ export default class App extends React.Component<Props, State> {
       isReady && (
         <Provider store={store}>
           <PersistGate persistor={persistor}>
-            <View style={{ flex: 1 }}>
-              <ActionSheetProvider>
-                <AppNavigator />
-                {/*TODO: Set Overlay screen here*/}
-              </ActionSheetProvider>
-            </View>
+              <StatusBar barStyle={Platform.OS === "android" ? "light-content" : "dark-content"}/>
+              <View style={{ flex: 1 }}>
+                <ActionSheetProvider>
+                  <AppNavigator />
+                  {/*TODO: Set Overlay screen here*/}
+                </ActionSheetProvider>
+              </View>
           </PersistGate>
         </Provider>
       )

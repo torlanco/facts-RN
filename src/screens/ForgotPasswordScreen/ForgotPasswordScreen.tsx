@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Platform , StatusBar} from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -131,7 +131,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
   public render() {
     const { isForLogin, type } = this.props.navigation.state.params;
     return (
-      <SafeAreaView style={styles.flex}>
+      <SafeAreaView style={[styles.flex, styles.mainContainer]}>
             <HeaderBar title=""></HeaderBar>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[styles.flex, styles.container]}>
@@ -171,7 +171,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
                       <View style={[styles.flex]}>
                       </View>
                       <View style={styles.flex}>
-                      <ActionButton title="Recover" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
+                      <ActionButton title="Send OTP" inverted={true} onPress={this.onSubmit} invertedStyle={styles.buttonStyle}/>
                       </View>
                   </View>
               </View>
@@ -186,13 +186,13 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1
   },
+  mainContainer: {
+    marginTop: Platform.OS === "android" ? 0 : -5,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     padding: 20,
-    zIndex: 6,
-    elevation: 6,
     backgroundColor: colors.WHITE,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25
   },
   heading: {
     ...typos.BIGTEXT_BOLD,
