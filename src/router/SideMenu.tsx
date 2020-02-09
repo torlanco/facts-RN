@@ -21,11 +21,12 @@ import { DrawerItemsProps } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { mapDispatchToProps } from '@actions/user';
 import { ActionButton } from '@components';
+import FullWidthImage from 'react-native-fullwidth-image';
 
 interface IOwnProps {}
-type IProps = IOwnProps & 
+type IProps = IOwnProps &
   DrawerItemsProps &
-  IUser.StateToProps & 
+  IUser.StateToProps &
   IUser.DispatchFromProps;
 
 const data = [
@@ -41,6 +42,7 @@ const data = [
 const mapStateToProps = function(state: any) {
   return {
     token: state.user.token,
+    loggedInUser: state.user.loggedInUser,
   }
 };
 
@@ -74,7 +76,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
       </View>
     );
   };
-  
+
   const onLogin = () => {
     requestAnimationFrame(() => navigation.navigate('LoginScreen'));
   }
@@ -89,10 +91,16 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
 
   const renderFooter = () => {
     return (
-      <View style={styles.listItem}>
-        <ActionButton title={isLoggedIn() ? 'LOG OUT' : 'LOG IN'} 
+      <View>
+        {isLoggedIn() && <View>
+          {props.loggedInUser && props.loggedInUser.profileImage && <View style={styles.profileContainer}>
+              <FullWidthImage style={ styles.profileImage } source={{ uri: props.loggedInUser.profileImage }}/>
+          </View> }
+          {props.loggedInUser && <Text style={styles.caption}>{props.loggedInUser.email}</Text> }
+        </View> }
+        <ActionButton title={isLoggedIn() ? 'LOG OUT' : 'LOG IN'}
           onPress={isLoggedIn() ? onLogout : onLogin} inverted={true}
-          invertedStyle={styles.buttonContainerStyle} 
+          invertedStyle={styles.buttonContainerStyle}
           invertedButtonStyle={styles.buttonStyle} invertedTitleStyle={styles.buttonTextStyle}/>
       </View>
     );
@@ -113,8 +121,8 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle= {{flex: 1}}/>
-        { renderFooter() }  
-      </View>        
+        { renderFooter() }
+      </View>
     </SafeAreaView>
   );
 };
@@ -154,6 +162,7 @@ const styles = StyleSheet.create({
     borderColor: colors.WHITE,
     backgroundColor: colors.ERROR,
     borderWidth: 1,
+    marginHorizontal: 0,
   },
   buttonStyle: {
     borderWidth: 0,
@@ -173,6 +182,27 @@ const styles = StyleSheet.create({
     width: 90,
     height: 50,
   },
+  caption: {
+    ...typos.CAPTION,
+    paddingLeft: 2,
+    paddingVertical: 4,
+  },
+  profileContainer: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    backgroundColor: colors.LIGHTER_GRAY,
+    elevation: 1,
+    zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden'
+  },
+  profileImage: {
+    height: '100%',
+    width: '100%',
+  }
 });
 
 const SideMenuConnected = connect(mapStateToProps, mapDispatchToProps)(SideMenu);

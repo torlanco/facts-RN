@@ -2,16 +2,10 @@ import { responsive } from './helper';
 import {Platform} from 'react-native';
 
 export const typos = Platform.OS === "android" ? {
-  // LARGE_TITLE: { fontSize: responsive(34), fontFamily: 'Montserrat-Black' },
-  // TITLE: { fontSize: responsive(28), fontFamily: 'Montserrat-Black' },
   TITLE_REGULAR: { fontSize: responsive(28), fontFamily: 'Montserrat-Regular' },
-  // HEADLINE: { fontSize: responsive(17), fontFamily: 'Montserrat-Black' },
   BODY: { fontSize: responsive(17), fontFamily: 'Montserrat-Regular' },
   CALLOUT: { fontSize: responsive(16), fontFamily: 'Montserrat-Regular' },
   FOOTNOTE: { fontSize: responsive(13), fontFamily: 'Montserrat-Regular' },
-  // CAPTION: { fontSize: responsive(12), fontFamily: 'Montserrat-Regular' },
-  // SMALL: { fontSize: responsive(12), fontFamily: 'Montserrat-Regular' },
-  // TINY: { fontSize: responsive(12), fontFamily: 'Montserrat-Regular' },
   TITLE1: { fontSize: responsive(42), fontFamily: 'Montserrat-Medium' },
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Montserrat-Medium' },
   SECONDARY: { fontSize: responsive(14), fontFamily: 'Montserrat-Regular' },
@@ -35,16 +29,10 @@ export const typos = Platform.OS === "android" ? {
   SMALL: { fontSize: responsive(10), fontFamily: 'Montserrat-Light' },
   TINY: { fontSize: responsive(8), fontFamily: 'Montserrat-SemiBold' },
 } : {
-  // LARGE_TITLE: { fontSize: responsive(34), fontFamily: 'Montserrat-Black' },
-  // TITLE: { fontSize: responsive(28), fontFamily: 'Montserrat-Black' },
   TITLE_REGULAR: { fontSize: responsive(28), fontFamily: 'Montserrat-Regular' },
-  // HEADLINE: { fontSize: responsive(17), fontFamily: 'Montserrat-Black' },
   BODY: { fontSize: responsive(17), fontFamily: 'Montserrat-Regular' },
   CALLOUT: { fontSize: responsive(16), fontFamily: 'Montserrat-Regular' },
   FOOTNOTE: { fontSize: responsive(13), fontFamily: 'Montserrat-Regular' },
-  // CAPTION: { fontSize: responsive(12), fontFamily: 'Montserrat-Regular' },
-  // SMALL: { fontSize: responsive(12), fontFamily: 'Montserrat-Regular' },
-  // TINY: { fontSize: responsive(12), fontFamily: 'Montserrat-Regular' },
   TITLE1: { fontSize: responsive(42), fontFamily: 'Montserrat-Medium' },
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Montserrat-Medium' },
   SECONDARY: { fontSize: responsive(14), fontFamily: 'Montserrat-Regular' },

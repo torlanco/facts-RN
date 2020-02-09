@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         ...typos.PRIMARY,
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
     }
 });
 

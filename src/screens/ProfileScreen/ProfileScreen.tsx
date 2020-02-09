@@ -35,6 +35,7 @@ type IProps = IOwnProps &
   NavigationInjectedProps &
   IUser.StateToProps &
   IUser.DispatchFromProps &
+  IDoc.StateToProps &
   IDoc.DispatchFromProps;
 
 // state
@@ -55,7 +56,7 @@ interface IState {
 
 const mapStateToProps = function(state: any) {
   return {
-    loading: state.user.loading,
+    loading: state.user.loading || state.doc.loading,
     token: state.user.token,
     loggedInUser: state.user.loggedInUser,
   }
@@ -87,8 +88,6 @@ class ProfileScreen extends React.Component<IProps, IState> {
   componentDidMount() {
     if (this.props.loggedInUser) {
       this.updateStateWithGlobalState();
-    } else {
-      this.fetchUserInfo();
     }
     this._backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -404,7 +403,8 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     marginTop: 30,
     marginHorizontal: 0,
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
+    paddingVertical: 0
   },
   signin: {
     textAlign: 'center',
