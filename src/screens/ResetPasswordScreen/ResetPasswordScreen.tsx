@@ -16,7 +16,6 @@ import { validate } from '@utils';
 import { CheckBox } from 'react-native-elements';
 import { IUser } from '@interfaces/user';
 import { ScrollView } from 'react-native-gesture-handler';
-import {Keyboard} from 'react-native';
 
 // props
 interface ParamType {
@@ -105,7 +104,7 @@ class ResetPasswordScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title=""></HeaderBar>
-          <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={[styles.flex, styles.container]}>
               <Text style={styles.heading}>Reset password</Text>
               <Text style={styles.subHeadig}>to continue</Text>

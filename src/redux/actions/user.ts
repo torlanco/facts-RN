@@ -100,9 +100,9 @@ const IUserAction: IUser.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.REGISTER_FAILED,
-          payload: e.response.data,
+          payload: e.response.data.result,
         });
-        return e.response.data;
+        return e.response.data.result;
       }
     };
   },

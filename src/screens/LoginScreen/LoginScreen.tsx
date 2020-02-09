@@ -19,7 +19,6 @@ import { mapDispatchToProps } from '@actions/user';
 import { CheckBox, Divider } from 'react-native-elements';
 import { validate, CONSTANTS } from '@utils';
 import { ScrollView } from 'react-native-gesture-handler';
-import {Keyboard} from 'react-native';
 
 // props
 interface ParamType {
@@ -147,7 +146,7 @@ class LoginScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
-          <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
               <Text style={styles.heading}>Log in</Text>
               <Text style={styles.subHeadig}>to continue</Text>

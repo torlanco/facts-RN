@@ -16,14 +16,15 @@ export namespace IAdvertisement {
         measure?: string;
         capacity?: string;
         createdAt?: string;
-        keywords?: string;  
+        keywords?: string;
         outlet?: string;
         startDate?: string;
-        endDate?: string;    
-    
+        endDate?: string;
+        outletImage?: string;
+
         dummyId?: string;
-        opacity?: number;  
-    }   
+        opacity?: number;
+    }
 
     export interface StateToProps {
         error?: string | boolean;
@@ -37,7 +38,7 @@ export namespace IAdvertisement {
         trendingFeatures?: IAdvertisementData[] | undefined;
         homeCategories?: any[] | undefined;
     }
-    
+
     export interface DispatchFromProps {
         fetchAdvertisements(shopperId?: string): Function;
         fetchCategoriesForReview(): Function;
@@ -47,11 +48,10 @@ export namespace IAdvertisement {
         fetchFeaturesByBrand(brand?: string): Function;
         fetchTrendingFeatures(): Function;
         incrementFeaturesViewCount(id?: string): Function;
-        fetchHomeCategories(): Function;  
+        fetchHomeCategories(): Function;
 
         // clearing the store
         fetchFeaturesByBrand(brand?: string): Function;
-        clearFeaturesByBrand(): Function;        
+        clearFeaturesByBrand(): Function;
     }
 }
-  

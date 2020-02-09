@@ -9,7 +9,7 @@ interface IActionButtonProps {
     onChangeText?: Function;
     onBlur?: Function;
     nonEditable?: boolean;
-    defaultValue?: string; 
+    defaultValue?: string;
 }
 
 type IProps = IActionButtonProps;
@@ -20,7 +20,7 @@ type IState = {
 }
 
 class PhoneField extends React.Component<IProps, IState> {
-    
+
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -28,7 +28,7 @@ class PhoneField extends React.Component<IProps, IState> {
             focused: false
         }
     }
-    
+
     onChangeText = (value: any) => {
         this.setState({
             value: value
@@ -42,7 +42,7 @@ class PhoneField extends React.Component<IProps, IState> {
     onFocus = () => {
         this.setState({
             focused: true
-        });        
+        });
     }
 
     onBlur = () => {
@@ -53,7 +53,7 @@ class PhoneField extends React.Component<IProps, IState> {
             this.props.onBlur();
         }
     }
-    
+
     render() {
         const { error, nonEditable } = this.props;
         const focused: any = {};
@@ -68,15 +68,15 @@ class PhoneField extends React.Component<IProps, IState> {
                     <TextInput style={[styles.input]}
                         defaultValue={this.props.defaultValue ? this.props.defaultValue : ''}
                         editable={!nonEditable}
-                        onChangeText={this.onChangeText} 
+                        onChangeText={this.onChangeText}
                         onFocus={this.onFocus}
-                        onBlur={this.onBlur} 
+                        onBlur={this.onBlur}
                         keyboardType='number-pad'
                         autoCapitalize={'none'}/>
                 </View>
                 { error ? <Text style={styles.error}>{error}</Text> : null }
             </View>
-        )    
+        )
     }
 }
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     },
     error: {
         ...typos.CAPTION,
-        color: colors.ERROR, 
+        color: colors.ERROR,
         marginTop: 3,
     },
 });

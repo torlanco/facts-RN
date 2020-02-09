@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { responsive, typos, colors } from '@styles';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { Divider, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { formatDate } from '@utils';
 import { connect } from 'react-redux';
 import { IUser } from '@interfaces/user';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
@@ -17,18 +17,18 @@ interface IState {
 }
 
 class AdvertisementListItem extends React.Component<IProps, IState> {
-   
+
     constructor(props: IProps) {
         super(props);
         this.state = {
             featureImage: require('@assets/images/placeholder.png'),
         };
     }
-    
+
     componentDidMount() {
         if (this.props.advertisement.image) {
             Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
-                this.setState({ 
+                this.setState({
                     featureImage: {uri: this.props.advertisement.image},
                 });
             }, err => {});
@@ -36,12 +36,12 @@ class AdvertisementListItem extends React.Component<IProps, IState> {
     }
 
     onItemPress = () => {
-        if (this.props.onItemPress) 
+        if (this.props.onItemPress)
         this.props.onItemPress(this.props.advertisement);
     }
     public render() {
         const {id, type, brand, sprice, rprice, sizeMeasure } = this.props.advertisement;
-        
+
         return (
             <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
                 <View style={styles.mainContainer}>
@@ -49,7 +49,7 @@ class AdvertisementListItem extends React.Component<IProps, IState> {
                         <View style={styles.outletImageWrapper}>
                             <Card containerStyle={styles.outletImage}>
                             { this.state.featureImage == this.props.advertisement.image ?
-                                <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> : 
+                                <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
                                 <Image style={[styles.image, { height: 100 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
                             </Card>
                         </View>
@@ -59,7 +59,7 @@ class AdvertisementListItem extends React.Component<IProps, IState> {
                             <Text style={[styles.pieces, styles.padding]}>{sizeMeasure}</Text>
                             <View style={styles.priceContainer}>
                                 <Text style={[styles.price, styles.padding]}>${sprice}</Text>
-                                <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>  
+                                <Text style={[styles.originalPrice, styles.padding]}>${rprice}</Text>
                             </View>
                         </View>
                     </View>
@@ -143,11 +143,11 @@ const styles = StyleSheet.create({
     },
     price: {
         ...typos.PRIMARY_BOLD,
-        color: colors.TEXT_SECONDARY  
+        color: colors.TEXT_SECONDARY
     },
     originalPrice: {
         ...typos.SMALL,
-        color: colors.LIGHT_ORANGE  
+        color: colors.LIGHT_ORANGE
     }
 });
 

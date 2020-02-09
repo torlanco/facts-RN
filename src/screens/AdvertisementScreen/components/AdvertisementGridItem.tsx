@@ -22,23 +22,38 @@ type IProps = IOwnProps;
 
 interface IState {
   featureImage: any,
+  outletImage: any,
 }
 class AdvertisementGridItem extends React.Component<IProps, IState> {
+  outletImage: any;
 
   constructor(props: IProps) {
       super(props);
       this.state = {
-          featureImage: require('@assets/images/placeholder.png')
+          featureImage: require('@assets/images/placeholder.png'),
+          outletImage: require('@assets/images/placeholder.png'),
       };
   }
 
   componentDidMount() {
-    if (this.props.advertisement.image) {
-        Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
-            this.setState({
-                featureImage: this.props.advertisement.image
-            });
-        }, err => {});
+    if (this.props.advertisement.id) {
+      if (this.props.advertisement.image) {
+          Image.getSize(this.props.advertisement.image, (width: number, height: number) => {
+              this.setState({
+                  featureImage: this.props.advertisement.image
+              });
+          }, err => {});
+      }
+
+      this.outletImage =  this.props.outlet && this.props.outlet.outletImage
+         ? this.props.outlet.outletImage : this.props.advertisement.outletImage
+      if (this.outletImage) {
+          Image.getSize(this.outletImage, (width: number, height: number) => {
+              this.setState({
+                  outletImage: this.outletImage
+              });
+          }, err => {});
+      }
     }
   }
 
@@ -59,9 +74,17 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <View style={[styles.container, {width: itemWidth, opacity:  opacity ? opacity : 1}]}>
           <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
-            { id ? this.state.featureImage == this.props.advertisement.image ?
+            { id && <View>
+              <Card containerStyle={styles.outletImage}>
+               { this.state.outletImage == this.outletImage ?
+                  <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> :
+                  <Image style={[styles.image, { height: 40 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+              </Card>
+
+            { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={[styles.image]} source={{ uri: this.state.featureImage }}/> :
-              <Image style={[styles.image, {height: 80}]} source={ this.state.featureImage } resizeMode="stretch"/> : null }
+              <Image style={[styles.image, {height: 80}]} source={ this.state.featureImage } resizeMode="stretch"/> }
+            </View> }
           </Card>
           <View style={styles.details}>
             { id && <View>
@@ -163,7 +186,22 @@ const styles = StyleSheet.create({
   size: {
     ...typos.CAPTION,
     color: colors.TEXT_PRIMARY,
-  }
+  },
+  outletImage: {
+      height: 40,
+      width: 40,
+      borderRadius: 5,
+      shadowColor: colors.WHITE,
+      padding: 0,
+      margin: 0,
+      marginRight: 5,
+      justifyContent: 'center',
+      position: "absolute",
+      zIndex: 3,
+      elevation: 3,
+      right: 0,
+      top: 5,
+  },
 });
 
 export { AdvertisementGridItem };

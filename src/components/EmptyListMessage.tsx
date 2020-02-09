@@ -34,11 +34,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     message: {
-        ...typos.PRIMARY,
+        ...typos.PRIMARY_LIGHT,
         textAlign: 'center',
-        paddingHorizontal: 10,
-        paddingVertical: 30,
+        padding: 10,
     },
-   
+
 });
 export { EmptyListMessage };

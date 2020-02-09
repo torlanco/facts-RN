@@ -5,6 +5,7 @@ import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Component
+import { Icon } from 'react-native-elements';
 import { HeaderBar, EmptyListMessage } from '@components';
 import { StatusBar, Platform, SectionList } from "react-native";
 import { AdvertisementGridView } from '../AdvertisementScreen/components/AdvertisementGridView';
@@ -32,14 +33,14 @@ interface IState {
   advertisementList: [],
   dummyAdvertismentList:[],
   brand: string,
-  initial: boolean;
+  initial: boolean
 }
 
 const mapStateToProps = function(state: any){
   return {
     loading: state.outlet.loading ||
-      state.shopper.loading ||
-      state.advertisement.loading
+    state.shopper.loading ||
+    state.advertisement.loading
   }
 }
 
@@ -119,7 +120,13 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
         <Text style={styles.outlet}>{outlet}</Text>
       )}
       ListEmptyComponent={() => <View style={{marginTop: 40}}>
-        <EmptyListMessage message={`No features found for brand ${this.state.brand}`}/>
+        <Icon
+          name='x'
+          type='feather'
+          color={colors.ERROR}
+          size={40}
+          containerStyle={styles.iconContainer} />
+        <EmptyListMessage message="We couldn't find results"/>
       </View>}/>
   }
 
@@ -193,7 +200,10 @@ const styles = StyleSheet.create({
   text: {
     ...typos.PRIMARY_LIGHT,
     paddingHorizontal: 20,
-  }
+  },
+  iconContainer: {
+      padding: 10,
+  },
 });
 
 const FeaturesByCategoryScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(FeaturesByCategoryScreen);

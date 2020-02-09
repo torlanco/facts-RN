@@ -40,6 +40,7 @@ type IProps = IOwnProps &
 // state
 interface IState {
   featureImage: any,
+  outletImage: any,
 }
 
 const mapStateToProps = function(state: any){
@@ -52,23 +53,35 @@ const mapStateToProps = function(state: any){
 
 class AdvertisementDetailScreen extends React.Component<IProps, IState> {
   _isMounted = false;
+  outletImage: any;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      featureImage: require('@assets/images/placeholder.png')
+      featureImage: require('@assets/images/placeholder.png'),
+      outletImage: require('@assets/images/placeholder.png')
     };
   }
 
   componentDidMount() {
     this._isMounted = true;
-    const { advertisement } = this.props.navigation.state.params;
+    const { advertisement, outlet } = this.props.navigation.state.params;
     if (advertisement.image) {
       Image.getSize(advertisement.image, (width: number, height: number) => {
           this.setState({
               featureImage: advertisement.image
           });
       }, err => {});
+    }
+
+    this.outletImage =  outlet && outlet.outletImage
+       ? outlet.outletImage : advertisement.outletImage
+    if (this.outletImage) {
+        Image.getSize(this.outletImage, (width: number, height: number) => {
+            this.setState({
+                outletImage: this.outletImage
+            });
+        }, err => {});
     }
     this.incrementFeatureViewCount();
   }
@@ -96,6 +109,12 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Card containerStyle={[styles.mainContainer]}>
               <Card containerStyle={[styles.imageContainer]}>
+                <Card containerStyle={styles.outletImage}>
+                 { this.state.outletImage == this.outletImage ?
+                    <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> :
+                    <Image style={[styles.image, { height: 40 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+                </Card>
+
                 { this.state.featureImage == advertisement.image ?
                   <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
                   <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
@@ -251,7 +270,22 @@ const styles = StyleSheet.create({
   },
   brand: {
     ...typos.SUBHEADLINE,
-  }
+  },
+  outletImage: {
+      height: 40,
+      width: 40,
+      borderRadius: 5,
+      shadowColor: colors.WHITE,
+      padding: 0,
+      margin: 0,
+      marginRight: 5,
+      justifyContent: 'center',
+      position: "absolute",
+      zIndex: 3,
+      elevation: 3,
+      right: 0,
+      top: 5,
+  },
 });
 
 const AdvertisementDetailScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(AdvertisementDetailScreen);

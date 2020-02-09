@@ -17,7 +17,6 @@ import { validate } from '@utils';
 import { Icon } from 'react-native-elements';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { ScrollView } from 'react-native-gesture-handler';
-import {Keyboard} from 'react-native';
 
 
 interface ParamType {
@@ -134,7 +133,7 @@ class ForgotPasswordScreen extends React.Component<IProps, IState> {
     return (
       <SafeAreaView style={styles.flex}>
             <HeaderBar title=""></HeaderBar>
-            <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[styles.flex, styles.container]}>
                   <Text style={styles.heading}>Enter</Text>
                   <Text style={styles.subHeadig}>{this.getOtpModeText()}</Text>

@@ -18,7 +18,6 @@ import { mapDispatchToProps } from '@actions/user';
 import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';
 import { Divider } from 'react-native-elements';
-import {Keyboard} from 'react-native';
 
 // props
 interface IOwnProps {
@@ -45,6 +44,7 @@ interface IState {
   firstNameError: string,
   lastNameError: string,
   phoneError: string,
+  error: string,
 }
 
 const mapStateToProps = function(state: any) {
@@ -74,6 +74,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
       firstNameError: '',
       lastNameError: '',
       phoneError: '',
+      error: '',
     };
   }
 
@@ -95,6 +96,9 @@ class RegisterScreen extends React.Component<IProps, IState> {
   }
 
   onSignUp = async () => {
+    this.setState({
+      error: ''
+    });
     if (!(await this.validate())) {
       return;
     }
@@ -109,6 +113,11 @@ class RegisterScreen extends React.Component<IProps, IState> {
     const response: any = await this.props.register(userData);
     if (response.success) {
       this.redirectToMain();
+    } else {
+      console.log(response);
+      this.setState({
+        error: response.errText
+      });
     }
   }
 
@@ -126,7 +135,7 @@ class RegisterScreen extends React.Component<IProps, IState> {
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
           <KeyboardAvoidingView style={styles.flex} behavior="padding" enabled keyboardVerticalOffset={0}>
-            <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+            <ScrollView showsVerticalScrollIndicator={false} >
               <View style={[styles.flex, styles.container]}>
                 <Text style={styles.heading}>Sign up</Text>
                 <Text style={styles.subHeadig}>create an account</Text>
@@ -216,6 +225,9 @@ class RegisterScreen extends React.Component<IProps, IState> {
                   }}
                   error={this.state.cpasswordError}
                   type={FieldType.PASSWORD}/>
+
+                 {this.state.error ? <Text style={styles.error}>{this.state.error}</Text> :  null}
+
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
@@ -349,7 +361,12 @@ const styles = StyleSheet.create({
     ...typos.PRIMARY,
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid'
-  }
+  },
+  error: {
+      ...typos.CAPTION,
+      color: colors.ERROR,
+      marginTop: 3,
+  },
 });
 
 const RegisterScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

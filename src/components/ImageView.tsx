@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ImageView from 'react-native-image-view';
-import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions, BackHandler } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, BackHandler } from 'react-native';
 import { colors } from '@styles';
 import { Icon } from 'react-native-elements';
 
@@ -36,7 +36,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
         BackHandler.addEventListener('hardwareBackPress', this.close);
         if (this.props.image) {
             Image.getSize(this.props.image, (width: number, height: number) => {
-                this.setState({ 
+                this.setState({
                     image: {uri: this.props.image},
                     resizeMode: "center",
                 });
@@ -82,7 +82,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
         }];
 
         const imageHeight = this.props.height ? this.props.height : 100;
-            
+
         return (
             <TouchableOpacity onPress={this.showFullScreenImage} activeOpacity={0.9}>
                 <View style={styles.container}>
@@ -93,7 +93,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
                         controls={{close: null}}
                         renderFooter={(currentImage: any) => (this._renderFooter())}/>
 
-                    <Image style={[styles.image, { height: imageHeight }]} source={ this.state.image } 
+                    <Image style={[styles.image, { height: imageHeight }]} source={ this.state.image }
                         resizeMode={this.props.hasFullWidth ? undefined : this.state.resizeMode}/>
                 </View>
             </TouchableOpacity>
@@ -129,4 +129,3 @@ const styles = StyleSheet.create({
 });
 
 export { ImageViewWrapper as ImageView };
-

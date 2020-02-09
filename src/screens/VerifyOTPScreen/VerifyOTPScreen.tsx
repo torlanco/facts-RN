@@ -19,7 +19,6 @@ import { validate } from '@utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { ScrollView } from 'react-native-gesture-handler';
-import {Keyboard} from 'react-native';
 
 interface ParamType {
   isForLogin?: string;
@@ -84,7 +83,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     this.verifyOtp(emailOrPhone);
   }
 
-  verifyOtp = async (emailOrPhone: string) => {
+  verifyOtp = async (emailOrPhone?: string) => {
     const { isForLogin } = this.props.navigation.state.params;
     if (isForLogin) {
       this.verifyLoginOtp(emailOrPhone);
@@ -93,10 +92,10 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     }
   }
 
-  verifyLoginOtp = async (emailOrPhone: string) => {
+  verifyLoginOtp = async (emailOrPhone?: string) => {
     const response: any = await this.props.loginUsingOtp(emailOrPhone, this.state.otp);
     if (response.token) {
-      this.redirectToResetPassword(response.token);
+      this.redirectToMain();
     } else {
       this.setState({
         otpError: response.errText
@@ -104,7 +103,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     }
   }
 
-  verifyResetPasswordOtp = async (emailOrPhone: string) => {
+  verifyResetPasswordOtp = async (emailOrPhone?: string) => {
     const response: any = await this.props.verifyResetPasswordOtp(emailOrPhone, this.state.otp);
     if (response.token) {
       this.redirectToResetPassword(response.token);
@@ -160,7 +159,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
     }
   }
 
-  redirectToMain = (token: string) => {
+  redirectToMain = () => {
     this.props.navigation.navigate('Main');
   }
 
@@ -174,7 +173,7 @@ class VerifyOTPScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title=""></HeaderBar>
-          <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={[styles.flex, styles.container]}>
               <Text style={styles.heading}>Verify</Text>
               <Text style={styles.subHeadig}>code</Text>

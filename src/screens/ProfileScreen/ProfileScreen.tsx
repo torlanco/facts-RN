@@ -17,7 +17,7 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { ScrollView } from 'react-native-gesture-handler';
-import {Keyboard} from 'react-native';
+import FullWidthImage from 'react-native-fullwidth-image';
 
 // props
 interface IOwnProps {
@@ -159,16 +159,21 @@ class ProfileScreen extends React.Component<IProps, IState> {
           <HeaderBar title="PROFILE" titleStyle={{textAlign: "left"}}
             rightIcon={this.state.editable ? '' : 'edit'} onRightIconClick={this.onEdit}
             rightText={this.state.editable ? 'Cancel' : ''} onRightTextClick={this.onCancel}></HeaderBar>
-            <ScrollView showsVerticalScrollIndicator={false} onScroll={Keyboard.dismiss}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[styles.flex, styles.container]}>
+
+                <View style={[styles.row, styles.profileContainer]}>
+                    <FullWidthImage style={ styles.image } source={{ uri: this.props.profileImage }}/> :
+                </View>
+
                 <Text style={styles.label}>User name</Text>
                 <TextField
-                  defaultValue={this.state.userName}
+                  defaultValue={this.props.loggedInUser.username}
                   nonEditable={true}/>
 
                 <Text style={styles.label}>Email</Text>
                 <TextField
-                  defaultValue={this.state.email}
+                  defaultValue={this.props.loggedInUser.email}
                   nonEditable={true}/>
 
                 <Text style={styles.label}>First name</Text>
@@ -263,14 +268,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     paddingHorizontal: 20,
   },
-  imageContainer: {
-    marginVertical: 5,
-    justifyContent: 'center',
-  },
-  image: {
-    width: 102,
-    height: 54,
-  },
   heading: {
     ...typos.SUBHEADLINE,
     fontWeight: 'bold',
@@ -338,6 +335,15 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "center",
+  },
+  profileContainer: {
+    height: 100,
+    width: 100,
+    borderRadius: 50
+  },
+  image: {
+    height: '100%',
+    width: '100%',
   }
 });
 

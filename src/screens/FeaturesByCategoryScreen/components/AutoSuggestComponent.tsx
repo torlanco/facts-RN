@@ -34,6 +34,7 @@ interface IState {
   query: string,
   hideResults: boolean,
   timeoutInProgress: boolean,
+  noResults: boolean
 }
 
 const mapStateToProps = function(state: any) {
@@ -43,7 +44,8 @@ const mapStateToProps = function(state: any) {
 };
 
 class AutoSuggestComponent extends React.Component<IProps, IState> {
-  _fetchBrandsHandler: any
+  _fetchBrandsHandler: any;
+  _callOnBlur: any = true;
 
   constructor(props: IProps) {
     super(props);
@@ -51,12 +53,14 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
       data: [],
       query: '',
       timeoutInProgress: false,
-      hideResults: false
+      hideResults: false,
+      noResults: false
     }
   }
 
   onChangeText = async (value: any) => {
     this.setState({
+      noResults: false,
       query: value,
       hideResults: value.length < 2,
     });
@@ -80,12 +84,14 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   }
 
   onItemSelect = (value: string) => {
+    this._callOnBlur = false;
     this.setState({
       query: value.trim(),
       hideResults: true
     }, () => {
       if (this.props.onBrandSelect) {
         this.props.onBrandSelect(this.state.query);
+        this._callOnBlur = true;
       }
     });
   }
@@ -99,7 +105,24 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
         {item.brand.substring(index + this.state.query.length)} (<Text style={{...typos.PRIMARY}}>{item.total}</Text>)</Text>
   }
 
+  onBlur = () => {
+      if (this._callOnBlur) {
+        this.setState({
+          hideResults: true,
+          noResults: true
+        });
+        this.props.onBrandSelect(this.state.query);
+      }
+  }
+
   public render() {
+    const textInputColor: any = {};
+    if (this.state.noResults) {
+      textInputColor.color = colors.ERROR;
+    } else {
+      textInputColor.color = colors.TEXT_PRIMARY;
+    }
+
     return (
       <View style={styles.searchbar}>
         <Autocomplete
@@ -110,10 +133,10 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
                 name='search'
                 type='feather'
                 size={12}
-                color={this.state.query ? colors.PRIMARY : colors.BLACK}
+                color={this.state.noResults ? colors.ERROR : this.state.query ? colors.PRIMARY : colors.BLACK}
                 containerStyle={styles.searchIconContainer} />
               { this.props.disabled ? <Text style={[styles.text]}>search specials by brand</Text>
-                : <TextInput autoFocus={true} style={[styles.textInput]}
+                : <TextInput autoFocus={true} style={[styles.textInput, textInputColor]} value={this.state.query} onBlur={this.onBlur}
                 onChangeText={this.onChangeText} editable={!this.props.disabled} placeholder='search specials by brand'/> }
             </View>
           )}
