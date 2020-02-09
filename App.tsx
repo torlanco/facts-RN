@@ -12,6 +12,7 @@ import { store, persistor } from './src/redux/store';
 import { Creators as OnlineActions } from '@actions/online';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 
 // interfaces
 interface Props {}
@@ -104,8 +105,10 @@ export default class App extends React.Component<Props, State> {
         <Provider store={store}>
           <PersistGate persistor={persistor}>
             <View style={{ flex: 1 }}>
-              <AppNavigator />
-              {/*TODO: Set Overlay screen here*/}
+              <ActionSheetProvider>
+                <AppNavigator />
+                {/*TODO: Set Overlay screen here*/}
+              </ActionSheetProvider>
             </View>
           </PersistGate>
         </Provider>

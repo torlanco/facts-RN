@@ -148,7 +148,8 @@ const DocsNavigator = createStackNavigator(
 const ProfileNavigator = createStackNavigator(
     {
         ProfileScreen: {screen: ProfileScreen},
-        ChangePasswordScreen: {screen: ChangePasswordScreen}
+        ChangePasswordScreen: {screen: ChangePasswordScreen},
+        FullImageScreen: {screen: FullImageScreen},
     },
     {
         initialRouteName: 'ProfileScreen',

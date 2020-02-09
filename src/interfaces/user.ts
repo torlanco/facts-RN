@@ -9,6 +9,7 @@ export namespace IUser {
         password?: string;
         phone?: string;
         cpassword?: string;
+        profileImage?: string;
     }
 
     export interface StateToProps {

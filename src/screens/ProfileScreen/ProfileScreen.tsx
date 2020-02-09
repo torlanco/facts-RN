@@ -6,18 +6,24 @@ import { typos, colors } from '@styles';
 
 // Interfaces
 import { IUser } from '@interfaces/user';
+import { IDoc } from '@interfaces/doc';
 
 // Component
+import { Icon } from 'react-native-elements';
 import { ActionButton, HeaderBar, TextField, FieldType, PhoneField } from '@components';
 import { StatusBar, Platform } from "react-native";
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
-import { mapDispatchToProps } from '@actions/user';
+import { mapDispatchToProps as userAction } from '@actions/user';
+import { mapDispatchToProps as docAction } from '@actions/doc';
 import { validate } from '@utils';
 import { ScrollView } from 'react-native-gesture-handler';
 import FullWidthImage from 'react-native-fullwidth-image';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import { connectActionSheet } from '@expo/react-native-action-sheet'
 
 // props
 interface IOwnProps {
@@ -28,10 +34,12 @@ interface IOwnProps {
 type IProps = IOwnProps &
   NavigationInjectedProps &
   IUser.StateToProps &
-  IUser.DispatchFromProps;
+  IUser.DispatchFromProps &
+  IDoc.DispatchFromProps;
 
 // state
 interface IState {
+  profileImage: string,
   userName: string,
   email: string;
   firstName: string,
@@ -61,6 +69,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
+      profileImage: '',
       userName: '',
       email: '',
       firstName: '',
@@ -71,7 +80,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
       lastNameError: '',
       phoneError: '',
       // Others
-      editable: false
+      editable: false,
     };
   }
 
@@ -117,6 +126,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
   updateStateWithGlobalState = () => {
     if (this.props.loggedInUser) {
       this.setState({
+        profileImage: this.props.loggedInUser.profileImage,
         userName: this.props.loggedInUser.username,
         email: this.props.loggedInUser.email,
         firstName: this.props.loggedInUser.firstName,
@@ -152,6 +162,82 @@ class ProfileScreen extends React.Component<IProps, IState> {
     this.props.navigation.navigate('ChangePasswordScreen');
   }
 
+  selectProfileImage = async () => {
+    const options = ['Pick from Gallery', 'Capture Image', 'Cancel'];
+    if (this.state.profileImage) {
+      options.splice(0, 0, 'View Profile');
+    }
+    const destructiveButtonIndex = -1;
+    const cancelButtonIndex = this.state.profileImage ? 3 : 2;
+
+    this.props.showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+      },
+      buttonIndex => {
+        if (this.state.profileImage) {
+          if (buttonIndex == 0) {
+            this.props.navigation.navigate('FullImageScreen', { image: this.state.profileImage});
+          } else if (buttonIndex == 1) {
+            this.selectImageFromGallery();
+          } else if (buttonIndex == 2) {
+            this.captureImage();
+          }
+        } else {
+          if (buttonIndex == 0) {
+            this.selectImageFromGallery();
+          } else if (buttonIndex == 1) {
+            this.captureImage();
+          }
+        }
+      },
+    );
+  }
+
+  selectImageFromGallery = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status == 'granted') {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1,1],
+        quality: 1
+      });
+      if (!result.cancelled) {
+        this.setState({ profileImage: result.uri });
+      }
+    }
+  }
+
+  captureImage = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    if (status == 'granted') {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1,1],
+        quality: 1
+      });
+      if (!result.cancelled) {
+        this.setState({ profileImage: result.uri });
+      }
+    }
+  }
+
+  uploadProfileImage = async () => {
+    if (this.state.profileImage != this.props.loggedInUser.profileImage) {
+      let response: any = await this.props.uploadDoc(this.props.token, this.state.profileImage);
+      console.log(response);
+      if (response && response.path) {
+        const userData = this.props.loggedInUser;
+        userData.profileImage = response.path;
+        response = await this.props.updateUserInfo(this.props.token, userData);
+      }
+    }
+  }
+
   public render() {
     return (
       <SafeAreaView style={styles.flex}>
@@ -162,8 +248,19 @@ class ProfileScreen extends React.Component<IProps, IState> {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={[styles.flex, styles.container]}>
 
-                <View style={[styles.row, styles.profileContainer]}>
-                    <FullWidthImage style={ styles.image } source={{ uri: this.props.profileImage }}/> :
+                <View style={[styles.row, {marginTop: 25}]}>
+                    <TouchableOpacity activeOpacity={0.85} onPress={this.selectProfileImage}>
+                      <View style={styles.profileContainer}>
+                        {this.state.profileImage ? <FullWidthImage style={ styles.image } source={{ uri: this.state.profileImage }}/> :
+                          <Icon
+                            name='camera'
+                            type='feather'
+                            color={colors.WHITE}/> }
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.85} onPress={this.uploadProfileImage}        >
+                      <Text style={[styles.label, {...typos.PRIMARY_MEDIUM}]}>Upload Profile Image</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <Text style={styles.label}>User name</Text>
@@ -339,7 +436,14 @@ const styles = StyleSheet.create({
   profileContainer: {
     height: 100,
     width: 100,
-    borderRadius: 50
+    borderRadius: 50,
+    backgroundColor: colors.LIGHTER_GRAY,
+    elevation: 3,
+    zIndex: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden'
   },
   image: {
     height: '100%',
@@ -347,5 +451,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const ProfileScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+
+const ProfileScreenWrapper = connectActionSheet(connect(mapStateToProps, {...userAction, ...docAction})(ProfileScreen));
 export { ProfileScreenWrapper as ProfileScreen }
