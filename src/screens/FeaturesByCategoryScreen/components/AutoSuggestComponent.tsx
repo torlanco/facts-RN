@@ -64,6 +64,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
       query: value,
       hideResults: value.length < 2,
     });
+    this._callOnBlur = true;
     if (value.length >= 2) {
       if (this._fetchBrandsHandler) {
         clearTimeout(this._fetchBrandsHandler);
@@ -91,7 +92,6 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
     }, () => {
       if (this.props.onBrandSelect) {
         this.props.onBrandSelect(this.state.query);
-        this._callOnBlur = true;
       }
     });
   }

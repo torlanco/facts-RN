@@ -128,9 +128,9 @@ class ProfileScreen extends React.Component<IProps, IState> {
         profileImage: this.props.loggedInUser.profileImage,
         userName: this.props.loggedInUser.username,
         email: this.props.loggedInUser.email,
-        firstName: this.props.loggedInUser.firstName,
-        lastName: this.props.loggedInUser.lastName,
-        phone: this.props.loggedInUser.phone,
+        firstName: this.props.loggedInUser.firstName ? this.props.loggedInUser.firstName   : '',
+        lastName: this.props.loggedInUser.lastName ? this.props.loggedInUser.lastName : '',
+        phone: this.props.loggedInUser.phone ? this.props.loggedInUser.phone : '',
       })
     }
   }
@@ -202,10 +202,10 @@ class ProfileScreen extends React.Component<IProps, IState> {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1,1],
-        quality: 1
+        quality: 0.8
       });
       if (!result.cancelled) {
-        this.setState({ profileImage: result.uri });
+        this.setProfileImage(result.uri, true);
       }
     }
   }
@@ -217,22 +217,34 @@ class ProfileScreen extends React.Component<IProps, IState> {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1,1],
-        quality: 1
+        quality: 0.8
       });
       if (!result.cancelled) {
-        this.setState({ profileImage: result.uri });
+        this.setProfileImage(result.uri, true);
       }
     }
   }
 
+  setProfileImage = (profileImage: any, callUpdate?: boolean) => {
+    this.setState({ profileImage }, () => {
+       if (callUpdate) {
+         this.uploadProfileImage();
+       }
+    });
+  }
+
   uploadProfileImage = async () => {
-    if (this.state.profileImage != this.props.loggedInUser.profileImage) {
+    if (this.props.loggedInUser && this.state.profileImage != this.props.loggedInUser.profileImage) {
       let response: any = await this.props.uploadDoc(this.props.token, this.state.profileImage);
-      console.log(response);
       if (response && response.path) {
-        const userData = this.props.loggedInUser;
+        const userData: any = {
+          firstName: this.props.loggedInUser.firstName,
+          lastName: this.props.loggedInUser.lastName,
+        };
         userData.profileImage = response.path;
-        response = await this.props.updateUserInfo(this.props.token, userData);
+        await this.props.updateUserInfo(this.props.token, userData);
+        await this.props.fetchUserInfo(this.props.token, true);
+        this.setProfileImage(response.path);
       }
     }
   }
@@ -250,26 +262,26 @@ class ProfileScreen extends React.Component<IProps, IState> {
                 <View style={[styles.row, {marginTop: 25}]}>
                     <TouchableOpacity activeOpacity={0.85} onPress={this.selectProfileImage}>
                       <View style={styles.profileContainer}>
-                        {this.state.profileImage ? <FullWidthImage style={ styles.image } source={{ uri: this.state.profileImage }}/> :
+                        {this.state.profileImage ? <Image style={ styles.image } source={{ uri: this.state.profileImage }}/> :
                           <Icon
                             name='camera'
                             type='feather'
                             color={colors.WHITE}/> }
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.85} onPress={this.uploadProfileImage}        >
+                    { /* <TouchableOpacity activeOpacity={0.85} onPress={this.uploadProfileImage}        >
                       <Text style={[styles.label, {...typos.PRIMARY_MEDIUM}]}>Upload Profile Image</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */ }
                 </View>
 
                 <Text style={styles.label}>User name</Text>
                 <TextField
-                  defaultValue={this.props.loggedInUser.username}
+                  defaultValue={this.props.loggedInUser ? this.props.loggedInUser.username : ''}
                   nonEditable={true}/>
 
                 <Text style={styles.label}>Email</Text>
                 <TextField
-                  defaultValue={this.props.loggedInUser.email}
+                  defaultValue={this.props.loggedInUser ? this.props.loggedInUser.email : ''}
                   nonEditable={true}/>
 
                 <Text style={styles.label}>First name</Text>
@@ -446,8 +458,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   image: {
-    height: '100%',
-    width: '100%',
+    height: 100,
+    width: 100,
   }
 });
 

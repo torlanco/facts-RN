@@ -24,8 +24,9 @@ export const uploadFile = (token: string, uri: any) => {
     body.append('file', {
         uri: uri,
         name: 'file.png',
-        type: 'image/png' 
+        type: 'image/png'
     });
+    body.append('type', 'receipt');
     return fetch(
         'https://facts-cloud.herokuapp.com/' + 'files/upload',
         {

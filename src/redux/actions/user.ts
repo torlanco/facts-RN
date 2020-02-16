@@ -195,9 +195,9 @@ const IUserAction: IUser.DispatchFromProps = {
         const response =  await updateUserInfo(token, userData);
         dispatch({
           type: Types.UPDATE_USER_PROFILE_SUCCESS,
-          payload: response.data.data,
+          payload: response.data,
         });
-        return response.data.data;
+        return response.data;
       } catch(e) {
         dispatch({
           type: Types.UPDATE_USER_PROFILE_FAILED,

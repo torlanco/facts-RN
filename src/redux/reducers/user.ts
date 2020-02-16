@@ -109,7 +109,8 @@ export function user(
         ...state,
         error: false,
         loading: false,
-        token: undefined
+        token: undefined,
+        userData: undefined
       };
     case Types.LOGOUT_FAILED:
       return {
@@ -137,7 +138,6 @@ export function user(
         ...state,
         error: false,
         loading: false,
-        loggedInUser: undefined
       };
 
     // UPDATE USER INFO

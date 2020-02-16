@@ -75,11 +75,11 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
         <View style={[styles.container, {width: itemWidth, opacity:  opacity ? opacity : 1}]}>
           <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
             { id && <View>
-              <Card containerStyle={styles.outletImage}>
+              { this.outletImage && <Card containerStyle={styles.outletImage}>
                { this.state.outletImage == this.outletImage ?
                   <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> :
                   <Image style={[styles.image, { height: 40 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
-              </Card>
+              </Card> }
 
             { this.state.featureImage == this.props.advertisement.image ?
               <FullWidthImage style={[styles.image]} source={{ uri: this.state.featureImage }}/> :
