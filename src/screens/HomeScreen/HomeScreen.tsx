@@ -17,6 +17,8 @@ import { OutletScreen } from '../OutletScreen/OutletScreen';
 import { typos, colors } from '@styles';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { PopularSpecials } from './components/PopularSpecials';
+import { Categories } from './components/Categories';
+import { Promotions } from './components/Promotions';
 import { AutoSuggestComponent } from '../FeaturesByCategoryScreen/components/AutoSuggestComponent';
 
 interface IOwnProps {}
@@ -74,9 +76,19 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 </View>
                             </TouchableOpacity>
 
+                            {/* CATEGORIES */}
+                            <View style={[styles.componentWrapper, {marginBottom: 10}]}>
+                                <View style={styles.row}>
+                                    <View style={styles.flex}>
+                                        <Text style={styles.highlight}>CATEGORIES</Text>
+                                        <Text style={styles.note}>Find what is popular among categories</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <Categories/>
 
                             {/* OUTLETS */}
-                            <View style={[styles.componentWrapper]}>
+                            <View style={[styles.componentWrapper, {marginTop: 30}]}>
                                 <View style={styles.row}>
                                     <View style={[styles.flex, {marginBottom: 20}]}>
                                         <Text style={styles.highlight}>OUTLETS</Text>
@@ -91,21 +103,21 @@ class HomeScreen extends React.Component<IProps, IState> {
                                     }
                                 </View>
                             </View>
-
                             <View style={{ flex: 1 }}>
                                 <OutletScreen onlyOutlets={true}/>
                             </View>
 
-                            {/* POPULAR SPECIALS */}
+                            {/* PROMOTIONS */}
                             <View style={[styles.componentWrapper, {marginTop: 30}]}>
-                                <View style={styles.row}>
+                                <View style={[styles.row, {marginBottom: 20}]}>
                                     <View style={styles.flex}>
-                                        <Text style={styles.highlight}>POPULAR SPECIALS</Text>
-                                        <Text style={styles.note}>People have found these specials interesting</Text>
+                                        <Text style={styles.highlight}>PROMOTIONS</Text>
+                                        <Text style={styles.note}>Find what is popular among promotions</Text>
                                     </View>
                                 </View>
                             </View>
-                            <PopularSpecials/>
+                            <Promotions/>
+
                         </View>
                     </ScrollView>
                 </View>

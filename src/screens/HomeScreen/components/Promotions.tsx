@@ -9,7 +9,7 @@ import { IAdvertisement } from '@interfaces/advertisement';
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
-import { colors } from '@styles';
+import { typos, colors } from '@styles';
 import { SkypeIndicator } from 'react-native-indicators';
 
 interface IOwnProps {
@@ -25,34 +25,39 @@ interface IState {
 
 const mapStateToProps = function (state: any) {
     return {
-        categories: state.advertisement.topCategories,
+        promotions: state.advertisement.promotions,
     }
 }
 
-class Categories extends React.Component<IProps, IState> {
+class Promotions extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
             loading: true,
         };
 
-        this.fetchCategories();
+        this.fetchPromotions();
     }
 
-    async fetchCategories() {
-        await this.props.fetchTopCategories();
+    async fetchPromotions() {
+        await this.props.fetchPromotions();
         this.setState({
             loading: false
         })
     }
 
     _renderItem(item: any) {
-      return <View style={styles.itemContainer}>
+      const backgroundColors = [colors.DARK_RED, colors.DARK_GREEN];
+      const backgroundColor = backgroundColors[Math.ceil(Math.random() * 1234) % 2];
+      return <View style={[styles.itemContainer, {backgroundColor: backgroundColor}]}>
         {
-          item.image ? <Image style={[styles.image]} source={{ uri: item.image }} /> :
+          item.image && false ? <Image style={[styles.image]} source={{ uri: item.image }} /> :
           <Image style={[styles.image]} source={ require('@assets/images/placeholder.png') } resizeMode="stretch"/>
         }
-        <Text style={styles.text}>{item.name}</Text>
+        <View style={{marginHorizontal: 10, flex: 1}}>
+          <Text style={[styles.text, {paddingBottom: 4}]}>{item.title || "Dummy Title"}</Text>
+          <Text style={[styles.text, styles.textBold]}>EARN 25% CASHBACK ON COSMETICS</Text>
+        </View>
       </View>
     }
 
@@ -62,7 +67,7 @@ class Categories extends React.Component<IProps, IState> {
                 <View>
                     { this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
                     <FlatList
-                        data={this.props.categories || []}
+                        data={this.props.promotions || []}
                         renderItem={({ item }) => this._renderItem(item)}
                         keyExtractor={(item, index) => index.toString()}
                         horizontal={true}
@@ -76,29 +81,31 @@ class Categories extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        width: 150,
-        height: 100,
-        borderRadius: 10,
-        backgroundColor: colors.LIGHTER_GRAY,
-        marginRight: 10,
-        marginTop: 5,
+      width: 250,
+      height: 100,
+      borderRadius: 10,
+      backgroundColor: colors.LIGHTER_GRAY,
+      marginRight: 10,
+      marginTop: 5,
+      marginBottom: 20,
+      padding: 10,
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     text: {
-      position: "absolute",
-      bottom: 10,
-      left: 10,
-      width: 80,
-      zIndex: 3,
-      elevation: 3,
       color: colors.WHITE,
-      overflow: 'hidden',
+      ...typos.PRIMARY
+    },
+    textBold: {
+      ...typos.PRIMARY_BOLD
     },
     image: {
-      width: '100%',
-      height: '100%',
+      width: 50,
+      height: 50,
       borderRadius: 10,
     }
 });
 
-const CategoriesWrapper = connect(mapStateToProps, mapDispatchToProps)(Categories);
-export { CategoriesWrapper as Categories }
+const PromotionsWrapper = connect(mapStateToProps, mapDispatchToProps)(Promotions);
+export { PromotionsWrapper as Promotions }

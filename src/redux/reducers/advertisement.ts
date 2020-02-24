@@ -13,7 +13,8 @@ const initialState: IAdvertisement.StateToProps = {
   brands: undefined,
   featuresByBrands: undefined,
   trendingFeatures: undefined,
-  homeCategories: undefined,
+  topCategories: undefined,
+  promotions: undefined,
 };
 
 export function advertisement(
@@ -45,7 +46,7 @@ export function advertisement(
         categories: [],
       };
 
-    // FETCH CATEGORIES PENDING FOR REVIEW 
+    // FETCH CATEGORIES PENDING FOR REVIEW
     case Types.FETCH_CATEGORIES_FOR_REVIEW:
       return {
         ...state,
@@ -67,7 +68,7 @@ export function advertisement(
         categoriesForReview: [],
       };
 
-    // FETCH ADVERTISEMENTS PENDING FOR REVIEW 
+    // FETCH ADVERTISEMENTS PENDING FOR REVIEW
     case Types.FETCH_ADVERTISEMENTS_FOR_REVIEW:
       return {
         ...state,
@@ -89,7 +90,7 @@ export function advertisement(
         advertisementsForReview: [],
       };
 
-    // UPDATE ADVERTISEMENT PENDING FOR REVIEW 
+    // UPDATE ADVERTISEMENT PENDING FOR REVIEW
     case Types.UPDATE_ADVERTISEMENT_FOR_REVIEW:
       return {
         ...state
@@ -102,9 +103,9 @@ export function advertisement(
       return {
         ...state,
         error: action.payload.message || true
-      };  
-      
-    // FETCH BRANDS 
+      };
+
+    // FETCH BRANDS
     case Types.FETCH_BRANDS:
       return {
         ...state,
@@ -124,8 +125,8 @@ export function advertisement(
         brands: [],
         loading: false,
         error: action.payload.message || true,
-      };  
-      
+      };
+
     // FETCH ADVERTISEMENTS BY BRANDS
     case Types.FETCH_ADVERTISEMENTS_BY_BRANDS:
       return {
@@ -146,14 +147,14 @@ export function advertisement(
         ...state,
         loading: false,
         error: action.payload.message || true,
-      };    
+      };
 
     // CLEAR ADVERTISEMENTS BY BRANDS
       case Types.CLEAR_ADVERTISEMENTS_BY_BRANDS:
         return {
           ...state,
           featuresByBrands: undefined
-        };  
+        };
 
     // FETCH TRENDING FEATURES
     case Types.FETCH_TRENDING_FEATURES:
@@ -175,7 +176,7 @@ export function advertisement(
         trendingFeatures: [],
         loading: false,
         error: false,
-      };    
+      };
 
     // INCREMENT FEATURE VIEW COUNT
     case Types.FEATURE_INCREMENT_VIEW_COUNT:
@@ -195,30 +196,51 @@ export function advertisement(
         ...state,
         loading: false,
         error: false,
-      };    
-   
-    // FETCH CATEGORIES FOR HOME
-    case Types.FETCH_CATEGORIES_FOR_HOME:
+      };
+
+    // FETCH TOP CATEGORIES
+    case Types.FETCH_TOP_CATEGORIES:
       return {
         ...state,
         loading: true,
         error: false,
       };
-    case Types.FETCH_CATEGORIES_FOR_HOME_SUCCESS:
+    case Types.FETCH_TOP_CATEGORIES_SUCCESS:
       return {
         ...state,
         loading: false,
         error: false,
-        homeCategories: action.payload.categories.map((item: any) => item.category) 
+        topCategories: action.payload.topCategories
       };
-    case Types.FETCH_CATEGORIES_FOR_HOME_FAILED:
+    case Types.FETCH_TOP_CATEGORIES_FAILED:
       return {
         ...state,
         loading: false,
         error: false,
-        homeCategories: [],
-      };    
-     
+        topCategories: [],
+      };
+
+    // FETCH PROMOTIONS
+    case Types.FETCH_PROMOTIONS:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FETCH_PROMOTIONS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        promotions: action.payload.promotions
+      };
+    case Types.FETCH_PROMOTIONS_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        promotions: [],
+      };
     default:
       return state;
   }

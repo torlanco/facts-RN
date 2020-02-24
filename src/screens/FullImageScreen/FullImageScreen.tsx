@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { colors } from '@styles';
 
 // Component
@@ -9,8 +9,8 @@ import { StatusBar, Platform } from "react-native";
 
 // Props Action
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
-import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { Icon } from 'react-native-elements';
+import ImageView from 'react-native-image-view';
 
 // props
 interface ParamType {
@@ -63,42 +63,37 @@ class FullImageScreen extends React.Component<IProps, IState> {
     this.props.navigation.goBack();
   }
 
+  _renderFooter = () => {
+      return  <TouchableOpacity style={styles.closeIconTouchable} onPress={this.close}>
+                  <Icon
+                      name='x'
+                      type='feather'
+                      color={colors.WHITE}
+                      containerStyle={styles.iconContainer}/>
+              </TouchableOpacity>
+  }
+
   public render() {
     const { image } = this.props.navigation.state.params;
+    const images = [];
+    if (image) {
+      images.push({
+          source: { uri: image},
+      });
+    }
     return (
-      <SafeAreaView style={{flex: 1}}>
-          <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center', justifyContent: 'center',}}>
-            <Image style={{width: this.state.width, height: this.state.height}} source={{ uri: image }} />
-          </ScrollView>
-          <TouchableOpacity style={styles.closeIconTouchable}
-            onPress={this.close} >
-            <Icon
-                name='x'
-                type='feather'
-                color={colors.WHITE}
-                containerStyle={styles.iconContainer}/>
-          </TouchableOpacity>
-          {this.props.loading && <LoadingScreen />}
-      </SafeAreaView>
+          <ImageView
+              images={images}
+              imageIndex={0}
+              isVisible={true}
+              controls={{close: null}}
+              isPinchZoomEnabled={true}
+              renderFooter={(currentImage: any) => (this._renderFooter())}/>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-  },
-  footer: {
-    position: "absolute",
-    flexDirection: 'row',
-    justifyContent: 'center',
-    bottom: 10,
-    left: 0,
-    right: 0
-  },
   closeIconTouchable: {
     position: "absolute",
     bottom: 80,

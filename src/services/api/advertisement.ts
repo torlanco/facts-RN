@@ -33,6 +33,10 @@ export const incrementFeatureViewCount = (id?: string) => {
     return HTTP.put(`features/${id}/viewed`);
 };
 
-export const fetchCategoriesForHome = () => {
-    return HTTP.get('categories');
+export const fetchTopCategories = () => {
+    return HTTP.get('topCategories');
+};
+
+export const fetchPromotions = () => {
+    return HTTP.get('promotions');
 };

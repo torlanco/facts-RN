@@ -36,7 +36,8 @@ export namespace IAdvertisement {
         brands?: string[] | undefined;
         featuresByBrands?: any[] | undefined;
         trendingFeatures?: IAdvertisementData[] | undefined;
-        homeCategories?: any[] | undefined;
+        topCategories: any[] | undefined;
+        promotions: any[] | undefined;
     }
 
     export interface DispatchFromProps {
@@ -48,7 +49,8 @@ export namespace IAdvertisement {
         fetchFeaturesByBrand(brand?: string): Function;
         fetchTrendingFeatures(): Function;
         incrementFeaturesViewCount(id?: string): Function;
-        fetchHomeCategories(): Function;
+        fetchTopCategories(): Function;
+        fetchPromotions(): Function;
 
         // clearing the store
         fetchFeaturesByBrand(brand?: string): Function;

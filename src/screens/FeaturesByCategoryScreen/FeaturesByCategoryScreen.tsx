@@ -66,7 +66,7 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
     const response: any = await this.props.fetchFeaturesByBrand(this.state.brand);
     this.setState({
       advertisementList: this.createMultiListWithOutlet(response)
-    })
+    });
   }
 
   createMultiListWithOutlet(advertisements: IAdvertisement.IAdvertisementData[]) {
@@ -86,7 +86,6 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
         data: list
       })
     }
-    console.log(featuresWithOutletList);
     return featuresWithOutletList;
   }
 

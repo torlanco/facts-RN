@@ -91,6 +91,7 @@ class ImageViewWrapper extends React.Component<IProps, IState> {
                         imageIndex={0}
                         isVisible={this.state.isVisible}
                         controls={{close: null}}
+                        isPinchZoomEnabled={true}
                         renderFooter={(currentImage: any) => (this._renderFooter())}/>
 
                     <Image style={[styles.image, { height: imageHeight }]} source={ this.state.image }

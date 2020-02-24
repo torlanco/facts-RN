@@ -1,8 +1,8 @@
 import { Types } from '@types';
 import { IAdvertisement } from '@interfaces/advertisement';
-import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview, 
-  updateAdvertisementsForReview, fetchBrands, fetchFeaturesByBrand, 
-  fetchTrendingFeatures, incrementFeatureViewCount, fetchCategoriesForHome } from '@services';
+import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview,
+  updateAdvertisementsForReview, fetchBrands, fetchFeaturesByBrand,
+  fetchTrendingFeatures, incrementFeatureViewCount, fetchCategoriesForHome, fetchTopCategories, fetchPromotions } from '@services';
 
 const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
   fetchAdvertisements: (shopperId?: string) => {
@@ -54,7 +54,7 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
   fetchAdvertisementsForReview: (category: string, page: number, limit?: number, isBackground?: boolean) => {
     return async function (dispatch: any) {
       dispatch({
-        type: Types.FETCH_ADVERTISEMENTS_FOR_REVIEW, 
+        type: Types.FETCH_ADVERTISEMENTS_FOR_REVIEW,
         payload: {
           isBackground: isBackground,
         }
@@ -106,7 +106,7 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
         const response = await fetchBrands(value);
         dispatch({
           type: Types.FETCH_BRANDS_SUCCESS,
-          payload: { 
+          payload: {
             brands: response.data.data,
           }
         });
@@ -184,26 +184,6 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       }
     };
   },
-  fetchHomeCategories: () => {
-    return async function (dispatch: any) {
-      dispatch({
-        type: Types.FETCH_CATEGORIES_FOR_HOME,
-      });
-      try {
-        const response = await fetchCategoriesForHome();
-        dispatch({
-          type: Types.FETCH_CATEGORIES_FOR_HOME_SUCCESS,
-          payload: response.data.data
-        });
-        return response.data.data.categories;
-      } catch(e) {
-        dispatch({
-          type: Types.FETCH_CATEGORIES_FOR_HOME_FAILED,
-        });
-        return e.response.data;
-      }
-    };
-  },
 
   clearFeaturesByBrand: () => {
     return function (dispatch: any) {
@@ -211,7 +191,48 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
         type: Types.CLEAR_ADVERTISEMENTS_BY_BRANDS,
       });
     };
-  }
+  },
+
+  fetchTopCategories: () => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_TOP_CATEGORIES,
+      });
+      try {
+        const response = await fetchTopCategories();
+        dispatch({
+          type: Types.FETCH_TOP_CATEGORIES_SUCCESS,
+          payload: { topCategories: response.data.data }
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_TOP_CATEGORIES_FAILED,
+        });
+        return e.response.data;
+      }
+    };
+  },
+  fetchPromotions: () => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_PROMOTIONS,
+      });
+      try {
+        const response = await fetchPromotions();
+        dispatch({
+          type: Types.FETCH_PROMOTIONS_SUCCESS,
+          payload: { promotions: response.data.data }
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.FETCH_PROMOTIONS_FAILED,
+        });
+        return e.response.data;
+      }
+    };
+  },
 };
 
 export { IAdvertisementAction as mapDispatchToProps}

@@ -20,18 +20,18 @@ interface IState {
 }
 
 class DocGridItem extends React.Component<IProps, IState> {
- 
+
   constructor(props: IProps) {
     super(props);
     this.state = {
       featureImage: require('@assets/images/placeholder.png')
     };
   }
-  
+
   componentDidMount() {
     if (this.props.doc.item.path) {
       Image.getSize(this.props.doc.item.path, (width: number, height: number) => {
-        this.setState({ 
+        this.setState({
           featureImage: this.props.doc.item.path
         });
       }, err => { });
@@ -39,18 +39,18 @@ class DocGridItem extends React.Component<IProps, IState> {
   }
 
   onItemPress = () => {
-    if (this.props.onItemPress) 
+    if (this.props.onItemPress)
       this.props.onItemPress(this.props.doc.item.path);
   }
 
   public render() {
-    const itemWidth = (Dimensions.get('window').width >> 1) - 35; 
+    const itemWidth = (Dimensions.get('window').width >> 1) - 35;
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <View style={[styles.container, {width: itemWidth}]}>
           { this.state.featureImage == this.props.doc.item.path ?
-            <Image style={[styles.image, { height: 200 }]} source={{ uri: this.state.featureImage }} /> : 
-            <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }  
+            <Image style={[styles.image, { height: 200 }]} source={{ uri: this.state.featureImage }} /> :
+            <Image style={[styles.image, { height: 80 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
         </View>
       </TouchableOpacity>
     );
@@ -104,12 +104,12 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   price: {
-    ...typos.PRIMARY_BOLD,
-    color: colors.TEXT_SECONDARY  
+    ...typos.TITLE,
+    color: colors.TEXT_SECONDARY
   },
   originalPrice: {
     ...typos.SMALL,
-    color: colors.LIGHT_ORANGE  
+    color: colors.LIGHT_ORANGE
   },
 });
 

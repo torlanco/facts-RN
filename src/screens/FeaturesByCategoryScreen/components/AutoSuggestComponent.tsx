@@ -22,6 +22,7 @@ interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
   disabled?: boolean;
   onBrandSelect?: any;
+  noResults?: any
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -30,16 +31,17 @@ type IProps = IOwnProps &
 
 // state
 interface IState {
-  data: string[],
+  data:   [],
   query: string,
   hideResults: boolean,
   timeoutInProgress: boolean,
-  noResults: boolean
+  textChange: boolean
 }
 
 const mapStateToProps = function(state: any) {
   return {
     brands: state.advertisement.brands,
+    noResults: state.advertisement.featuresByBrands && !state.advertisement.featuresByBrands.length
   }
 };
 
@@ -54,13 +56,13 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
       query: '',
       timeoutInProgress: false,
       hideResults: false,
-      noResults: false
+      textChange: false
     }
   }
 
   onChangeText = async (value: any) => {
     this.setState({
-      noResults: false,
+      textChange: true,
       query: value,
       hideResults: value.length < 2,
     });
@@ -80,14 +82,15 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
     await this.props.fetchBrands(this.state.query);
     this.setState({
       hideResults: false,
-      data: this.props.brands ? this.props.brands : []
+      data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: "No Results Found"}]
     });
   }
 
   onItemSelect = (value: string) => {
     this._callOnBlur = false;
     this.setState({
-      query: value.trim(),
+      textChange: false,
+      query: value !== "No Results Found" ? value.trim() : this.state.query,
       hideResults: true
     }, () => {
       if (this.props.onBrandSelect) {
@@ -97,19 +100,23 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   }
 
   getListItem = (item: any) => {
-     let index = item.brand.toLowerCase().indexOf(this.state.query.toLowerCase());
-     item.brand =  capitalize(item.brand);
-     return <Text style={styles.listItem}>
-        {item.brand.substring(0, index)}
-        <Text style={{...typos.PRIMARY}}>{item.brand.substring(index, index + this.state.query.length)}</Text>
-        {item.brand.substring(index + this.state.query.length)} (<Text style={{...typos.PRIMARY}}>{item.total}</Text>)</Text>
+     if (item.brand !== "No Results Found") {
+       let index = item.brand.toLowerCase().indexOf(this.state.query.toLowerCase());
+       item.brand =  capitalize(item.brand);
+       return <Text style={styles.listItem}>
+          {item.brand.substring(0, index)}
+          <Text style={{...typos.PRIMARY}}>{item.brand.substring(index, index + this.state.query.length)}</Text>
+          {item.brand.substring(index + this.state.query.length)} (<Text style={{...typos.PRIMARY}}>{item.total}</Text>)</Text>
+     } else {
+        return <Text style={[styles.listItem, {textAlign: 'center'}]}>{item.brand}</Text>
+     }
   }
 
   onBlur = () => {
       if (this._callOnBlur) {
         this.setState({
+          textChange: false,
           hideResults: true,
-          noResults: true
         });
         this.props.onBrandSelect(this.state.query);
       }
@@ -117,7 +124,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
 
   public render() {
     const textInputColor: any = {};
-    if (this.state.noResults) {
+    if (this.props.noResults && !this.state.textChange) {
       textInputColor.color = colors.ERROR;
     } else {
       textInputColor.color = colors.TEXT_PRIMARY;
@@ -133,7 +140,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
                 name='search'
                 type='feather'
                 size={12}
-                color={this.state.noResults ? colors.ERROR : this.state.query ? colors.PRIMARY : colors.BLACK}
+                color={this.props.noResults && !this.state.textChange ? colors.ERROR : this.state.query ? colors.PRIMARY : colors.BLACK}
                 containerStyle={styles.searchIconContainer} />
               { this.props.disabled ? <Text style={[styles.text]}>search specials by brand</Text>
                 : <TextInput autoFocus={true} style={[styles.textInput, textInputColor]} value={this.state.query} onBlur={this.onBlur}

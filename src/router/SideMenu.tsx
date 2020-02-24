@@ -22,6 +22,7 @@ import { Icon } from 'react-native-elements';
 import { mapDispatchToProps } from '@actions/user';
 import { ActionButton } from '@components';
 import FullWidthImage from 'react-native-fullwidth-image';
+import Logo from "../../assets/images/logo.svg";
 
 interface IOwnProps {}
 type IProps = IOwnProps &
@@ -114,7 +115,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
     <SafeAreaView forceInset={{ top: 'always' }}>
       <View style={{height: '100%', padding: 20}}>
         <View style={[styles.row, styles.imageContainer]}>
-            <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
+          <Logo width={100} />
         </View>
         <FlatList
           data={data.filter(item => isLoggedIn() || !item.hideTillLogin)}
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageContainer: {
-    marginBottom: 30,
+    marginBottom: 0,
   },
   image: {
     width: 90,

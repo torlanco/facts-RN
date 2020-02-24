@@ -16,6 +16,7 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
+import Logo from "../../../assets/images/logo.svg";
 
 // props
 interface ParamType {
@@ -86,7 +87,7 @@ class WelcomeScreen extends React.Component<IProps, IState> {
   onLogIn = async () => {
     this.props.navigation.navigate('LoginScreen');
   }
- 
+
   redirectToMain = () => {
     this.props.navigation.navigate('Main');
   }
@@ -95,33 +96,33 @@ class WelcomeScreen extends React.Component<IProps, IState> {
     const { isSignUpSelected } = this.state;
     return (
       <SafeAreaView style={styles.flex}>
-      { this.state.showPage ? 
+      { this.state.showPage ?
         <View style={[styles.flex, styles.mainContainer]}>
-          <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain} 
+          <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}
             style={{backgroundColor: colors.PRIMARY}} noDivider={true} noLeftIcon={true}></HeaderBar>
           <View style={styles.container}>
             <View style={[styles.row, styles.imageContainer]}>
-                <Image style={styles.image} source={require('@assets/images/logo.png')}></Image>
+                <Logo width={150} />
             </View>
             <Text style={styles.heading}>Get the Best Price</Text>
             <Text style={styles.subHeadig}>for products in Supermarkets</Text>
-            
+
             <View style={[styles.row, styles.bottomAction]}>
               <View style={styles.flex}>
-                <ActionButton title="Sign up" inverted={isSignUpSelected} onPress={this.onSignUp} 
+                <ActionButton title="Sign up" inverted={isSignUpSelected} onPress={this.onSignUp}
                   style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle}
                   titleStyle={styles.buttonTextStyle} invertedTitleStyle={styles.invertedButtonTextStyle}
-                  invertedStyle={styles.invertedButtonContainerStyle} invertedButtonStyle={styles.invertedButtonStyle}/>          
+                  invertedStyle={styles.invertedButtonContainerStyle} invertedButtonStyle={styles.invertedButtonStyle}/>
               </View>
               <View style={{width: 30}}></View>
               <View style={styles.flex}>
-                <ActionButton title="Log in" inverted={!isSignUpSelected} onPress={this.onLogIn} 
-                  style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle} 
+                <ActionButton title="Log in" inverted={!isSignUpSelected} onPress={this.onLogIn}
+                  style={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle}
                   titleStyle={styles.buttonTextStyle} invertedTitleStyle={styles.invertedButtonTextStyle}
-                  invertedStyle={styles.invertedButtonContainerStyle} invertedButtonStyle={styles.invertedButtonStyle}/>          
+                  invertedStyle={styles.invertedButtonContainerStyle} invertedButtonStyle={styles.invertedButtonStyle}/>
               </View>
-            </View>    
-          </View> 
+            </View>
+          </View>
         </View> : null }
       {(this.props.loading || !this.state.showPage)&& <LoadingScreen />}
       </SafeAreaView>
@@ -239,10 +240,10 @@ const styles = StyleSheet.create({
   },
   bottomAction: {
     position: "absolute",
-    bottom: 20, 
+    bottom: 20,
     right: 22,
-  }, 
+  },
 });
 
 const WelcomeScreenWrapper = connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
-export { WelcomeScreenWrapper as WelcomeScreen } 
+export { WelcomeScreenWrapper as WelcomeScreen }

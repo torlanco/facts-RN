@@ -9,7 +9,6 @@ export const typos = Platform.OS === "android" ? {
   TITLE1: { fontSize: responsive(42), fontFamily: 'Montserrat-Medium' },
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Montserrat-Medium' },
   SECONDARY: { fontSize: responsive(14), fontFamily: 'Montserrat-Regular' },
-  PRIMARY_BOLD: { fontSize: responsive(16), fontFamily: 'Montserrat-Medium' },
 
   BIGTEXT_BOLD: { fontSize: responsive(32), fontFamily: 'Montserrat-SemiBold' },
   BIGTEXT: { fontSize: responsive(32), fontFamily: 'Montserrat-Light' },
@@ -20,6 +19,7 @@ export const typos = Platform.OS === "android" ? {
   TITLE_SEMIBOLD: { fontSize: responsive(16), fontFamily: 'Montserrat-SemiBold' },
   TITLE_MEDIUM: { fontSize: responsive(16), fontFamily: 'Montserrat-Medium' },
   TITLE_LIGHT: { fontSize: responsive(16), fontFamily: 'Montserrat-Light' },
+  PRIMARY_BOLD: { fontSize: responsive(14), fontFamily: 'Montserrat-ExtraBold' },
   PRIMARY: { fontSize: responsive(14), fontFamily: 'Montserrat-ExtraBold' },
   PRIMARY_MEDIUM: { fontSize: responsive(14), fontFamily: 'Montserrat-SemiBold' },
   PRIMARY_LIGHT: { fontSize: responsive(14), fontFamily: 'Montserrat-Light' },
@@ -36,7 +36,6 @@ export const typos = Platform.OS === "android" ? {
   TITLE1: { fontSize: responsive(42), fontFamily: 'Montserrat-Medium' },
   HEADLINE1: { fontSize: responsive(26), fontFamily: 'Montserrat-Medium' },
   SECONDARY: { fontSize: responsive(14), fontFamily: 'Montserrat-Regular' },
-  PRIMARY_BOLD: { fontSize: responsive(16), fontFamily: 'Montserrat-Medium' },
 
   BIGTEXT_BOLD: { fontSize: responsive(28), fontFamily: 'Montserrat-SemiBold' },
   BIGTEXT: { fontSize: responsive(28), fontFamily: 'Montserrat-Light' },
@@ -46,6 +45,7 @@ export const typos = Platform.OS === "android" ? {
   TITLE: { fontSize: responsive(14), fontFamily: 'Montserrat-ExtraBold' },
   TITLE_SEMIBOLD: { fontSize: responsive(14), fontFamily: 'Montserrat-SemiBold' },
   TITLE_LIGHT: { fontSize: responsive(14), fontFamily: 'Montserrat-Light' },
+  PRIMARY_BOLD: { fontSize: responsive(12), fontFamily: 'Montserrat-ExtraBold' },
   PRIMARY: { fontSize: responsive(12), fontFamily: 'Montserrat-ExtraBold' },
   PRIMARY_MEDIUM: { fontSize: responsive(12), fontFamily: 'Montserrat-SemiBold' },
   PRIMARY_LIGHT: { fontSize: responsive(12), fontFamily: 'Montserrat-Light' },

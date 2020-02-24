@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     price: {
-        ...typos.PRIMARY_BOLD,
+        ...typos.TITLE,
         color: colors.TEXT_SECONDARY
     },
     originalPrice: {
