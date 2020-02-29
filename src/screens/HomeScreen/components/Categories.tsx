@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 import { colors } from '@styles';
 import { SkypeIndicator } from 'react-native-indicators';
+import { Card } from 'react-native-elements';
 
 interface IOwnProps {
 
@@ -47,13 +48,13 @@ class Categories extends React.Component<IProps, IState> {
     }
 
     _renderItem(item: any) {
-      return <View style={styles.itemContainer}>
+      return <Card containerStyle={styles.itemContainer}>
         {
           item.image ? <Image style={[styles.image]} source={{ uri: item.image }} /> :
           <Image style={[styles.image]} source={ require('@assets/images/placeholder.png') } resizeMode="stretch"/>
         }
         <Text style={styles.text}>{item.name}</Text>
-      </View>
+      </Card>
     }
 
     public render() {
@@ -79,9 +80,19 @@ const styles = StyleSheet.create({
         width: 150,
         height: 100,
         borderRadius: 10,
-        backgroundColor: colors.LIGHTER_GRAY,
+        borderWidth: 0,
+        backgroundColor: colors.LIGHT_GRAY,
+        marginLeft: 0,
         marginRight: 10,
         marginTop: 5,
+        shadowOpacity: 0.1,
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowColor: colors.LIGHT_BLUE,
+        shadowRadius: 3,
+        elevation: 3,
     },
     text: {
       position: "absolute",

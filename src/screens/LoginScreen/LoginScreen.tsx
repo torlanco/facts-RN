@@ -112,11 +112,21 @@ class LoginScreen extends React.Component<IProps, IState> {
     }
     const response: any = await this.props.login(this.state.userName, this.state.password);
     if (response.success) {
-      this.redirectToMain();
-    } else if (response.status == CONSTANTS.FAILURE && response.result.errText == CONSTANTS.INVALID_LOGIN_CREDENTIALS) {
+      const token: any = await this.props.isLoggedIn();
+      if (token) {
+        await this.props.fetchUserInfo(token);
+        this.redirectToMain();
+      } else {
+        const logout = await this.props.logout();
+        if (logout) {
+          requestAnimationFrame(() => this.props.navigation.navigate('LoginScreen'));
+        }
+      }
+    } else {
+      console.log(response);
       this.setState({
         password: '',
-        passwordError: CONSTANTS.INVALID_LOGIN_CREDENTIALS
+        passwordError: response.errText
       });
       this._passwordField.clear();
     }
@@ -150,7 +160,7 @@ class LoginScreen extends React.Component<IProps, IState> {
             <View style={styles.container}>
               <Text style={styles.heading}>Log in</Text>
               <Text style={styles.subHeadig}>to continue</Text>
-              <Text style={styles.label}>Username</Text>
+              <Text style={styles.label}>Email</Text>
               <TextField
                 keyboardType={'email-address'}
                 onChangeText={(value: any) => {
@@ -160,7 +170,7 @@ class LoginScreen extends React.Component<IProps, IState> {
                 }}
                 onBlur={() => {
                   this.setState({
-                    userNameError: validate('required', this.state.userName, 'Username')
+                    userNameError: validate('email', this.state.userName)
                   })
                 }}
                 error={this.state.userNameError}/>

@@ -109,21 +109,18 @@ export function advertisement(
     case Types.FETCH_BRANDS:
       return {
         ...state,
-        loading: true,
         error: false,
       };
     case Types.FETCH_BRANDS_SUCCESS:
       return {
         ...state,
         brands: action.payload.brands,
-        loading: false,
         error: false,
       };
     case Types.FETCH_BRANDS_FAILED:
       return {
         ...state,
         brands: [],
-        loading: false,
         error: action.payload.message || true,
       };
 

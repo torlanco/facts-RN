@@ -110,7 +110,7 @@ export function user(
         error: false,
         loading: false,
         token: undefined,
-        userData: undefined
+        loggedInUser: undefined
       };
     case Types.LOGOUT_FAILED:
       return {

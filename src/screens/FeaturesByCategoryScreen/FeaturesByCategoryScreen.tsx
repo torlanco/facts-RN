@@ -117,8 +117,8 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
       renderItem={({ item }) => <View style={styles.flex}><AdvertisementGridView onItemPress={this.redirectToAdvertisementDetail} listkey={item.key} advertisementList={item.features}/></View>}
       renderSectionHeader={({ section: { outlet } }) => (
         <Text style={styles.outlet}>{outlet}</Text>
-      )}
-      ListEmptyComponent={() => <View style={{marginTop: 40}}>
+      )} />
+      { /* ListEmptyComponent={() => <View style={{marginTop: 40}}>
         <Icon
           name='x'
           type='feather'
@@ -126,7 +126,7 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
           size={40}
           containerStyle={styles.iconContainer} />
         <EmptyListMessage message="We couldn't find results"/>
-      </View>}/>
+      </View>} */ }
   }
 
   getInitialView() {

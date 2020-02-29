@@ -22,7 +22,6 @@ interface IOwnProps {
   navigation: NavigationScreenProp<NavigationState>;
   disabled?: boolean;
   onBrandSelect?: any;
-  noResults?: any
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -35,19 +34,19 @@ interface IState {
   query: string,
   hideResults: boolean,
   timeoutInProgress: boolean,
-  textChange: boolean
+  textChange: boolean,
 }
 
 const mapStateToProps = function(state: any) {
   return {
     brands: state.advertisement.brands,
-    noResults: state.advertisement.featuresByBrands && !state.advertisement.featuresByBrands.length
   }
 };
 
 class AutoSuggestComponent extends React.Component<IProps, IState> {
   _fetchBrandsHandler: any;
   _callOnBlur: any = true;
+  _lastQuery: any = '';
 
   constructor(props: IProps) {
     super(props);
@@ -56,7 +55,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
       query: '',
       timeoutInProgress: false,
       hideResults: false,
-      textChange: false
+      textChange: true,
     }
   }
 
@@ -79,8 +78,12 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
 
   fetchBrands = async () => {
     this._fetchBrandsHandler = null;
+    this.setState({
+      data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: "Searching..."}]
+    });
     await this.props.fetchBrands(this.state.query);
     this.setState({
+      textChange: false,
       hideResults: false,
       data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: "No Results Found"}]
     });
@@ -89,42 +92,44 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   onItemSelect = (value: string) => {
     this._callOnBlur = false;
     this.setState({
-      textChange: false,
-      query: value !== "No Results Found" ? value.trim() : this.state.query,
+      query: value !== "No Results Found" && value !== "Searching..." ? value.trim() : this.state.query,
       hideResults: true
     }, () => {
-      if (this.props.onBrandSelect) {
+      if (this.props.onBrandSelect && this.state.query !== this._lastQuery) {
+        this._lastQuery = this.state.query;
         this.props.onBrandSelect(this.state.query);
       }
     });
   }
 
   getListItem = (item: any) => {
-     if (item.brand !== "No Results Found") {
+     if (item.brand === "No Results Found") {
+       return <Text style={[styles.listItem, {textAlign: 'center'}]}>{item.brand}</Text>
+     } else if (item.brand === "Searching...") {
+       return <Text style={[styles.listItem, {textAlign: 'center', ...typos.PRIMARY_MEDIUM}]}>{item.brand}</Text>
+     } else {
        let index = item.brand.toLowerCase().indexOf(this.state.query.toLowerCase());
        item.brand =  capitalize(item.brand);
        return <Text style={styles.listItem}>
           {item.brand.substring(0, index)}
           <Text style={{...typos.PRIMARY}}>{item.brand.substring(index, index + this.state.query.length)}</Text>
           {item.brand.substring(index + this.state.query.length)} (<Text style={{...typos.PRIMARY}}>{item.total}</Text>)</Text>
-     } else {
-        return <Text style={[styles.listItem, {textAlign: 'center'}]}>{item.brand}</Text>
      }
   }
 
   onBlur = () => {
-      if (this._callOnBlur) {
-        this.setState({
-          textChange: false,
-          hideResults: true,
-        });
-        this.props.onBrandSelect(this.state.query);
-      }
+      // if (this._callOnBlur) {
+      //   this.setState({
+      //     textChange: false,
+      //     hideResults: true,
+      //   });
+      //   this.props.onBrandSelect(this.state.query);
+      // }
   }
 
   public render() {
     const textInputColor: any = {};
-    if (this.props.noResults && !this.state.textChange) {
+    if (!(this.props.brands && this.props.brands.length > 0) && !this.state.textChange) {
       textInputColor.color = colors.ERROR;
     } else {
       textInputColor.color = colors.TEXT_PRIMARY;
@@ -140,7 +145,9 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
                 name='search'
                 type='feather'
                 size={12}
-                color={this.props.noResults && !this.state.textChange ? colors.ERROR : this.state.query ? colors.PRIMARY : colors.BLACK}
+                color={this.props.disabled ? colors.BLACK :
+                  ((!this.props.brands || !this.props.brands.length) && !this.state.textChange ? colors.ERROR :
+                    (this.state.query ? colors.PRIMARY : colors.BLACK))}
                 containerStyle={styles.searchIconContainer} />
               { this.props.disabled ? <Text style={[styles.text]}>search specials by brand</Text>
                 : <TextInput autoFocus={true} style={[styles.textInput, textInputColor]} value={this.state.query} onBlur={this.onBlur}

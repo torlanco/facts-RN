@@ -112,7 +112,16 @@ class RegisterScreen extends React.Component<IProps, IState> {
     }
     const response: any = await this.props.register(userData);
     if (response.success) {
-      this.redirectToMain();
+      const token: any = await this.props.isLoggedIn();
+      if (token) {
+        await this.props.fetchUserInfo(token);
+        this.redirectToMain();
+      } else {
+        const logout = await this.props.logout();
+        if (logout) {
+          requestAnimationFrame(() => this.props.navigation.navigate('LoginScreen'));
+        }
+      }
     } else {
       console.log(response);
       this.setState({
