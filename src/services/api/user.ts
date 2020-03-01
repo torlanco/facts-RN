@@ -1,6 +1,6 @@
 import HTTP from '../http';
 import { IUser } from '@interfaces/user';
-import { formatPhone } from '@utils';
+import { formatPhone, CONSTANTS } from '@utils';
 
 export const login = (username?: string, password?: string) => {
   return HTTP.post('auth/signin', {
@@ -45,8 +45,12 @@ export const fetchUserInfo = (token: string) => {
 };
 
 export const updateUserInfo = (token: string, userData: IUser.IUserData) => {
-  userData.phone = formatPhone(userData.phone)
-  return HTTP.put('users', userData, { headers: { Authorization: `Bearer ${token}` } });
+  if (userData.phone && userData.phone != CONSTANTS.COUNTRY_CODE) {
+    userData.phone = formatPhone(userData.phone)
+  } else {
+    delete userData.phone;
+  }
+  return HTTP.put('users', userData, { headers: { Authorization: `Bearer ${token}` }});
 };
 
 export const changePassword = (token?: string, currentPassword?: string, newPassword?: string, confirmPassword?: string) => {

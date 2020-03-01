@@ -131,7 +131,7 @@ export function user(
         ...state,
         error: false,
         loading: false,
-        loggedInUser: action.payload
+        loggedInUser: Object.assign(action.payload)
       };
     case Types.FETCH_USER_PROFILE_FAILED:
       return {

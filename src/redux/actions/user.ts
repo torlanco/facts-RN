@@ -197,8 +197,10 @@ const IUserAction: IUser.DispatchFromProps = {
           type: Types.UPDATE_USER_PROFILE_SUCCESS,
           payload: response.data,
         });
+        console.log(response);
         return response.data;
       } catch(e) {
+        console.log(e.response.data)
         dispatch({
           type: Types.UPDATE_USER_PROFILE_FAILED,
           payload: e.response.data.result,

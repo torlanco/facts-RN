@@ -24,6 +24,7 @@ import FullWidthImage from 'react-native-fullwidth-image';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { connectActionSheet } from '@expo/react-native-action-sheet'
+import { CONSTANTS } from '@utils';
 
 // props
 interface IOwnProps {
@@ -125,8 +126,8 @@ class ProfileScreen extends React.Component<IProps, IState> {
   updateStateWithGlobalState = () => {
     if (this.props.loggedInUser) {
       this.setState({
-        profileImage: this.props.loggedInUser.profileImage,
-        userName: this.props.loggedInUser.username,
+        profileImage: this.props.loggedInUser.profileImage ? this.props.loggedInUser.profileImage   : '',
+        // userName: this.props.loggedInUser.username,
         email: this.props.loggedInUser.email,
         firstName: this.props.loggedInUser.firstName ? this.props.loggedInUser.firstName   : '',
         lastName: this.props.loggedInUser.lastName ? this.props.loggedInUser.lastName : '',
@@ -202,7 +203,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1,1],
-        quality: 0.8
+        quality: 0.6
       });
       if (!result.cancelled) {
         this.setProfileImage(result.uri, true);
@@ -217,7 +218,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1,1],
-        quality: 0.8
+        quality: 0.6
       });
       if (!result.cancelled) {
         this.setProfileImage(result.uri, true);
@@ -235,16 +236,16 @@ class ProfileScreen extends React.Component<IProps, IState> {
 
   uploadProfileImage = async () => {
     if (this.props.loggedInUser && this.state.profileImage != this.props.loggedInUser.profileImage) {
-      let response: any = await this.props.uploadDoc(this.props.token, this.state.profileImage);
+      let response: any = await this.props.uploadDoc(this.props.token, this.state.profileImage, CONSTANTS.UPLOAD_PROFILE_IMAGE_TYPE);
       if (response && response.path) {
         const userData: any = {
           firstName: this.props.loggedInUser.firstName,
           lastName: this.props.loggedInUser.lastName,
+          profileImage: response.path
         };
-        userData.profileImage = response.path;
         await this.props.updateUserInfo(this.props.token, userData);
         await this.props.fetchUserInfo(this.props.token, true);
-        this.setProfileImage(response.path);
+        console.log(this.props.loggedInUser);
       }
     }
   }
@@ -274,10 +275,10 @@ class ProfileScreen extends React.Component<IProps, IState> {
                     </TouchableOpacity> */ }
                 </View>
 
-                <Text style={styles.label}>User name</Text>
+                { /* <Text style={styles.label}>User name</Text>
                 <TextField
                   defaultValue={this.props.loggedInUser ? this.props.loggedInUser.username : ''}
-                  nonEditable={true}/>
+                  nonEditable={true}/> */ }
 
                 <Text style={styles.label}>Email</Text>
                 <TextField

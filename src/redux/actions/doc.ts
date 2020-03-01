@@ -3,13 +3,13 @@ import { IDoc } from '@interfaces/doc';
 import { fetchReceipts, saveReceipts, uploadFile } from '@services';
 
 const IDocAction: IDoc.DispatchFromProps = {
-  uploadDoc: (token: string, uri: any) => {
+  uploadDoc: (token: string, uri: any, filteType?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.UPLOAD_FILE,
       });
       try {
-        let response: any = await uploadFile(token, uri);
+        let response: any = await uploadFile(token, uri, filteType);
         dispatch({
           type: Types.UPLOAD_FILE_SUCCESS,
         });
