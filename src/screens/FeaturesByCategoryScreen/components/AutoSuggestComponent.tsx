@@ -92,10 +92,11 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   onItemSelect = (value: string) => {
     this._callOnBlur = false;
     this.setState({
-      query: value !== "No Results Found" && value !== "Searching..." ? value.trim() : this.state.query,
-      hideResults: true
+      query: value !== "No Results Found" && value !== "Searching..." ? value.trim() : this._lastQuery,
+      hideResults: true,
+      textChange: value === "No Results Found" || value === "Searching..."
     }, () => {
-      if (this.props.onBrandSelect && this.state.query !== this._lastQuery) {
+      if (this.props.onBrandSelect && this.state.query && this.state.query !== this._lastQuery) {
         this._lastQuery = this.state.query;
         this.props.onBrandSelect(this.state.query);
       }
@@ -122,6 +123,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
         this.setState({
           query: this._lastQuery || '',
           hideResults: true,
+          textChange: true
         });
       }
   }
@@ -145,7 +147,7 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
                 type='feather'
                 size={12}
                 color={this.props.disabled ? colors.BLACK :
-                  ((!this.props.brands || !this.props.brands.length) && !this.state.textChange ? colors.ERROR :
+                  ((!this.props.brands || !this.props.brands.length) && !this.state.textChange && this.state.query ? colors.ERROR :
                     (this.state.query ? colors.PRIMARY : colors.BLACK))}
                 containerStyle={styles.searchIconContainer} />
               { this.props.disabled ? <Text style={[styles.text]}>search specials by brand</Text>
