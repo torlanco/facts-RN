@@ -24,7 +24,8 @@ import {
   VerifyOTPScreen,
   HomeScreen,
   ChangePasswordScreen,
-  ForgotPasswordScreen
+  ForgotPasswordScreen,
+  WebViewScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -38,7 +39,8 @@ const HomeNavigator = createStackNavigator(
         AdvertisementScreen: {screen: AdvertisementScreen},
         AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
         FeaturesByCategoryScreen: {screen: FeaturesByCategoryScreen},
-        FullImageScreen: {screen: FullImageScreen}
+        FullImageScreen: {screen: FullImageScreen},
+        WebViewScreen: {screen: WebViewScreen}
     },
     {
         initialRouteName: 'HomeScreen',

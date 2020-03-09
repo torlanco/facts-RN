@@ -19,3 +19,4 @@ export * from './WelcomeScreen/WelcomeScreen';
 export * from './HomeScreen/HomeScreen';
 export * from './ChangePasswordScreen/ChangePasswordScreen';
 export * from './ForgotPasswordScreen/ForgotPasswordScreen';
+export * from './WebViewScreen/WebViewScreen';

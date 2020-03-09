@@ -9,7 +9,7 @@ import { IAdvertisement } from '@interfaces/advertisement';
 // Props Action
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
-import { colors } from '@styles';
+import { colors, typos } from '@styles';
 import { SkypeIndicator } from 'react-native-indicators';
 import { Card } from 'react-native-elements';
 
@@ -91,18 +91,21 @@ const styles = StyleSheet.create({
           height: 2
         },
         shadowColor: colors.LIGHT_BLUE,
+        marginBottom: 5,
+        padding: 10,
+        elevation: 1,
         shadowRadius: 3,
-        elevation: 3,
     },
     text: {
       position: "absolute",
-      bottom: 10,
-      left: 10,
+      bottom: 5,
+      left: 5,
       width: 80,
       zIndex: 3,
       elevation: 3,
       color: colors.WHITE,
       overflow: 'hidden',
+      ...typos.PRIMARY
     },
     image: {
       width: '100%',
