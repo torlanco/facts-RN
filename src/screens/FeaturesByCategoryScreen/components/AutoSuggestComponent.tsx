@@ -118,13 +118,12 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   }
 
   onBlur = () => {
-      // if (this._callOnBlur) {
-      //   this.setState({
-      //     textChange: false,
-      //     hideResults: true,
-      //   });
-      //   this.props.onBrandSelect(this.state.query);
-      // }
+      if (this._callOnBlur) {
+        this.setState({
+          query: this._lastQuery || '',
+          hideResults: true,
+        });
+      }
   }
 
   public render() {

@@ -1,16 +1,18 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, Modal, View } from 'react-native';
 import { colors } from '@styles';
 
 // Component
 import { StatusBar, Platform } from "react-native";
 
 // Props Action
-import { NavigationInjectedProps, NavigationScreenProp, NavigationState, ScrollView } from "react-navigation";
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
 import { Icon } from 'react-native-elements';
-import ImageView from 'react-native-image-view';
+// import ImageView from 'react-native-image-view';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { SkypeIndicator } from 'react-native-indicators';
 
 // props
 interface ParamType {
@@ -64,13 +66,13 @@ class FullImageScreen extends React.Component<IProps, IState> {
   }
 
   _renderFooter = () => {
-      return  <TouchableOpacity style={styles.closeIconTouchable} onPress={this.close}>
-                  <Icon
-                      name='x'
-                      type='feather'
-                      color={colors.WHITE}
-                      containerStyle={styles.iconContainer}/>
-              </TouchableOpacity>
+      return <TouchableOpacity style={styles.closeIconTouchable} onPress={this.close}>
+                <Icon
+                    name='x'
+                    type='feather'
+                    color={colors.WHITE}
+                    containerStyle={styles.iconContainer}/>
+            </TouchableOpacity>
   }
 
   public render() {
@@ -78,17 +80,17 @@ class FullImageScreen extends React.Component<IProps, IState> {
     const images = [];
     if (image) {
       images.push({
-          source: { uri: image},
+          // source: { uri: image},
+          url: image,
       });
     }
     return (
-          <ImageView
-              images={images}
-              imageIndex={0}
-              isVisible={true}
-              controls={{close: null}}
-              isPinchZoomEnabled={true}
-              renderFooter={(currentImage: any) => (this._renderFooter())}/>
+       <Modal visible={true} transparent={true}>
+            <ImageViewer imageUrls={images}
+               loadingRender={() => <SkypeIndicator color={colors.PRIMARY} />}
+               renderIndicator={() => null}/>
+           { this._renderFooter() }
+        </Modal>
     );
   }
 }

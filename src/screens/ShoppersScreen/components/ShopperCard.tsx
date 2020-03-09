@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { colors, typos, responsive } from '@styles';
 import { Card, Icon } from 'react-native-elements';
 import { IShopper } from '@interfaces/shopper';
@@ -52,51 +52,53 @@ class ShopperCard extends React.Component<IProps, IState> {
     }
 
     onItemPress = () => {
-        if (this.props.onItemPress)
-            this.props.onItemPress(this.props.shopper);
+      if (this.props.onItemPress && !this._fullScreenCall) {
+        this.props.onItemPress(this.props.shopper);
+      }
     }
 
     openFullScreenImage = () => {
-        if (this.props.shopper.pathThumb) {
-            this.props.navigation.navigate('FullImageScreen', { image: this.props.shopper.pathThumb});
-        }
+      if (this.props.shopper.pathThumb) {
+          this.props.navigation.navigate('FullImageScreen', { image: this.props.shopper.pathThumb});
+      }
     }
 
     public render() {
         const { id, outlet, startDate, endDate, count } = this.props.shopper;
-        const width = Dimensions.get('window').width * 0.87;
 
         return (
-            <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
-                <View style={styles.mainContainer}>
-                    <Card containerStyle={styles.outletImage}>
-                    { this.state.shopperImage == this.props.shopper.pathThumb ?
-                        <FullWidthImage style={ styles.image } source={{ uri: this.state.shopperImage }}/> :
-                        <Image style={[styles.image, { height: 200 }]} source={ this.state.shopperImage } resizeMode="stretch"/> }
-                        <View style={[styles.row, styles.details]}>
-                            { this.state.shopperImage == this.props.shopper.pathThumb &&
-                                <TouchableOpacity onPress={this.openFullScreenImage} style={styles.iconContainerWrapper}>
-                                    <Icon
-                                    name='maximize'
-                                    type='feather'
-                                    size={24}
-                                    color={colors.BLACK}
-                                    containerStyle={[styles.iconContainer]} />
-                                </TouchableOpacity> }
-                            <View style={styles.thumbimageContainer}>
-                                { this.state.outletImage == this.props.outlet.outletImage ?
-                                    <FullWidthImage style={ styles.thumbimage } source={{ uri: this.state.outletImage }}/> :
-                                    <Image style={[styles.thumbimage, { height: 60 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
-                            </View>
-                            <View>
-                                <Text style={[styles.highlight]}>{outlet}</Text>
-                                <Text style={[styles.date]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
-                                <Text style={[styles.text]}><Text style={styles.highlight}>{count} </Text> PAGES</Text>
-                            </View>
-                        </View>
-                    </Card>
-                </View>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
+                  <View style={styles.mainContainer}>
+                      <Card containerStyle={styles.outletImage}>
+                      { this.state.shopperImage == this.props.shopper.pathThumb ?
+                          <FullWidthImage style={ styles.image } source={{ uri: this.state.shopperImage }}/> :
+                          <Image style={[styles.image, { height: 200 }]} source={ this.state.shopperImage } resizeMode="stretch"/> }
+                          <View style={[styles.row, styles.details]}>
+                              <View style={styles.thumbimageContainer}>
+                                  { this.state.outletImage == this.props.outlet.outletImage ?
+                                      <FullWidthImage style={ styles.thumbimage } source={{ uri: this.state.outletImage }}/> :
+                                      <Image style={[styles.thumbimage, { height: 60 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
+                              </View>
+                              <View>
+                                  <Text style={[styles.highlight]}>{outlet}</Text>
+                                  <Text style={[styles.date]}>{formatDate(startDate)} - {formatDate(endDate)}</Text>
+                                  <Text style={[styles.text]}><Text style={styles.highlight}>{count} </Text> PAGES</Text>
+                              </View>
+                          </View>
+                      </Card>
+                  </View>
+              </TouchableOpacity>
+              { this.state.shopperImage == this.props.shopper.pathThumb &&
+                  <TouchableOpacity onPress={this.openFullScreenImage} style={styles.iconContainerWrapper}>
+                      <Icon
+                      name='maximize'
+                      type='feather'
+                      size={24}
+                      color={colors.BLACK}
+                      containerStyle={[styles.iconContainer]} />
+                  </TouchableOpacity> }
+            </View>
         );
     }
 }
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     },
     iconContainerWrapper: {
         position: "absolute",
-        bottom: 100, right: 20,
+        bottom: 120, right: 30,
         zIndex: 5,
         elevation: 3
     },
