@@ -79,22 +79,22 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   fetchBrands = async () => {
     this._fetchBrandsHandler = null;
     this.setState({
-      data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: "Searching..."}]
+      data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: CONSTANTS.SEARCHING}]
     });
     await this.props.fetchBrands(this.state.query);
     this.setState({
       textChange: false,
       hideResults: false,
-      data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: "No Results Found"}]
+      data: this.props.brands && this.props.brands.length > 0 ? this.props.brands : [{brand: CONSTANTS.NO_RESULT_FOUND}]
     });
   }
 
   onItemSelect = (value: string) => {
     this._callOnBlur = false;
     this.setState({
-      query: value !== "No Results Found" && value !== "Searching..." ? value.trim() : this._lastQuery,
+      query: value !== CONSTANTS.NO_RESULT_FOUND && value !== CONSTANTS.SEARCHING ? value.trim() : this._lastQuery,
       hideResults: true,
-      textChange: value === "No Results Found" || value === "Searching..."
+      textChange: value === CONSTANTS.NO_RESULT_FOUND || value === CONSTANTS.SEARCHING
     }, () => {
       if (this.props.onBrandSelect && this.state.query && this.state.query !== this._lastQuery) {
         this._lastQuery = this.state.query;
@@ -104,9 +104,9 @@ class AutoSuggestComponent extends React.Component<IProps, IState> {
   }
 
   getListItem = (item: any) => {
-     if (item.brand === "No Results Found") {
+     if (item.brand === CONSTANTS.NO_RESULT_FOUND) {
        return <Text style={[styles.listItem, {textAlign: 'center'}]}>{item.brand}</Text>
-     } else if (item.brand === "Searching...") {
+     } else if (item.brand === CONSTANTS.SEARCHING) {
        return <Text style={[styles.listItem, {textAlign: 'center', ...typos.PRIMARY_MEDIUM}]}>{item.brand}</Text>
      } else {
        let index = item.brand.toLowerCase().indexOf(this.state.query.toLowerCase());

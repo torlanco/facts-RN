@@ -13,4 +13,6 @@ export const CONSTANTS = {
     COUNTRY_CODE: '+1',
     UPLOAD_RECEIPT_TYPE: 'receipt',
     UPLOAD_PROFILE_IMAGE_TYPE: 'profileImage',
+    NO_RESULT_FOUND: 'No Results Found',
+    SEARCHING: 'Searching...'
 };
