@@ -131,9 +131,6 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { outlet } = this.props.navigation.state.params;
-    const dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
-
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
           <View style={styles.container}>

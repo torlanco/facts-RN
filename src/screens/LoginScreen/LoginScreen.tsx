@@ -123,7 +123,6 @@ class LoginScreen extends React.Component<IProps, IState> {
         }
       }
     } else {
-      console.log(response);
       this.setState({
         password: '',
         passwordError: response.errText

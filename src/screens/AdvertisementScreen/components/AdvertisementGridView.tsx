@@ -3,7 +3,8 @@ import {
     StyleSheet,
     View,
     ScrollView,
-    FlatList
+    FlatList,
+    Dimensions
 } from 'react-native';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { AdvertisementGridItem } from './AdvertisementGridItem';
@@ -16,6 +17,7 @@ interface IOwnProps {
   outlet?: IOutlet.IOutletData;
   listkey?: string;
   onItemToggleFavourite?: Function;
+  onScrollEndReached?: Function;
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
@@ -43,8 +45,17 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
     }
   }
 
+  const onScrollEndReached = (event: any) => {
+    let windowHeight = Dimensions.get('window').height,
+        height = event.nativeEvent.contentSize.height,
+        offset = event.nativeEvent.contentOffset.y;
+    if( windowHeight + offset >= height && props.onScrollEndReached) {
+      props.onScrollEndReached();
+    }
+  }
+
   return (
-    <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.flex} showsVerticalScrollIndicator={false} onMomentumScrollEnd={onScrollEndReached}>
       <View style={styles.container}>
         <FlatList
           listKey={(props.listkey ? props.listkey : '') + '_section1'}

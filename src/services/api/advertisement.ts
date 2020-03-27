@@ -43,7 +43,6 @@ export const fetchPromotions = () => {
 };
 
 export const fetchFavoriteFeatures = (page: number) => {
-    console.log(page);
     return HTTP.get(`favorite/features?page=${page}&limit=${CONSTANTS.PAGE_LIMIT}`);
 };
 

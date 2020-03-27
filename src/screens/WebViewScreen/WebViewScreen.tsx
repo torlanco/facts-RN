@@ -35,8 +35,6 @@ class WebViewScreen extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const { url } = this.props.navigation.state.params;
-    console.log(url);
   }
 
   onClose = () => {

@@ -254,7 +254,7 @@ export function advertisement(
         ...state,
         loading: false,
         error: false,
-        favoriteFeatures: state.favoriteFeatures.concat(action.payload.favorites),
+        favoriteFeatures: action.payload.initialFetch ? action.payload.favorites : state.favoriteFeatures.concat(action.payload.favorites),
         totalFavorites: action.payload.total
       };
     case Types.FETCH_FAVORITE_FEATURES_FAILED:

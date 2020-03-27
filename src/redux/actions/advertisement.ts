@@ -232,15 +232,15 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       }
     };
   },
-  fetchFavoriteFeatures: (page: number) => {
+  fetchFavoriteFeatures: (page: number, initialFetch?: boolean) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.FETCH_FAVORITE_FEATURES,
       });
       try {
-        console.log('Hello');
         const response = await fetchFavoriteFeatures(page);
         const payload = {
+          initialFetch,
           total: response.data.data.total,
           favorites: response.data.data.favorites.map((favourite: any) => favourite.feature)
         }

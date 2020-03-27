@@ -16,7 +16,7 @@ import { IAdvertisement } from '@interfaces/advertisement';
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 
-import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState, NavigationEvents } from "react-navigation";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 // props
@@ -53,15 +53,19 @@ class FavoritesScreen extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this._isMounted = true;
-    if (this._isMounted) {
-      this.fetchAdvertisements();
-    }
   }
 
-  async fetchAdvertisements() {
-    if (this.props.totalFavorites == -1 || !this.props.favoriteFeatures
-        || this.props.totalFavorites > this.props.favoriteFeatures.length) {
-      await this.props.fetchFavoriteFeatures(this.state.page);
+  onScreenFocus = () => {
+    this.setState({
+      page: 0
+    }, () => {
+      this.fetchAdvertisements(true);
+    });
+  }
+
+  async fetchAdvertisements(initialFetch?: boolean) {
+    if ((initialFetch || this.props.totalFavorites < 0 || this.props.totalFavorites > this.props.favoriteFeatures.length) && !this.props.loading) {
+      await this.props.fetchFavoriteFeatures(this.state.page, initialFetch);
       this.setState({
         page: this.state.page + 1
       });
@@ -79,9 +83,11 @@ class FavoritesScreen extends React.Component<IProps, IState> {
   public render() {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
+      <NavigationEvents onDidFocus={this.onScreenFocus}/>
           <View style={styles.container}>
             <HeaderBar title={'FAVOURITES'}></HeaderBar>
-            <AdvertisementGridView advertisementList={this.props.favoriteFeatures || []} onItemPress={this.onItemPress}></AdvertisementGridView>
+            <AdvertisementGridView advertisementList={this.props.favoriteFeatures || []}
+                onItemPress={this.onItemPress} onScrollEndReached={() => this.fetchAdvertisements(false)}/>
           </View>
           {this.props.loading && <LoadingScreen />}
       </SafeAreaView>

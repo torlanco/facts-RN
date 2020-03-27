@@ -123,7 +123,6 @@ class RegisterScreen extends React.Component<IProps, IState> {
         }
       }
     } else {
-      console.log(response);
       this.setState({
         error: response.errText
       });

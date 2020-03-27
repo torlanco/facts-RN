@@ -245,7 +245,6 @@ class ProfileScreen extends React.Component<IProps, IState> {
         };
         await this.props.updateUserInfo(userData);
         await this.props.fetchUserInfo(true);
-        console.log(this.props.loggedInUser);
       }
     }
   }

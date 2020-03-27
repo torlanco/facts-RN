@@ -54,7 +54,7 @@ export namespace IAdvertisement {
         incrementFeaturesViewCount(id?: string): Function;
         fetchTopCategories(): Function;
         fetchPromotions(): Function;
-        fetchFavoriteFeatures(page: number): Function;
+        fetchFavoriteFeatures(page: number, initialFetch?: boolean): Function;
         toggleFavoriteFeature(featureId?: any): Function;
 
         // clearing the store
