@@ -21,6 +21,7 @@ export namespace IAdvertisement {
         startDate?: string;
         endDate?: string;
         outletImage?: string;
+        isFavorite?: boolean;
 
         dummyId?: string;
         opacity?: number;
@@ -38,6 +39,8 @@ export namespace IAdvertisement {
         trendingFeatures?: IAdvertisementData[] | undefined;
         topCategories: any[] | undefined;
         promotions: any[] | undefined;
+        favoriteFeatures: IAdvertisementData[];
+        totalFavorites: number;
     }
 
     export interface DispatchFromProps {
@@ -51,6 +54,8 @@ export namespace IAdvertisement {
         incrementFeaturesViewCount(id?: string): Function;
         fetchTopCategories(): Function;
         fetchPromotions(): Function;
+        fetchFavoriteFeatures(page: number): Function;
+        toggleFavoriteFeature(featureId?: any): Function;
 
         // clearing the store
         fetchFeaturesByBrand(brand?: string): Function;

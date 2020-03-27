@@ -12,18 +12,35 @@ import { Card } from 'react-native-elements';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { IOutlet } from '@interfaces/outlet';
+import { Icon } from 'react-native-elements';
+import { mapDispatchToProps } from '@actions/advertisement';
+import { connect } from 'react-redux';
+import { SkypeIndicator } from 'react-native-indicators';
 
 interface IOwnProps {
   advertisement: IAdvertisement.IAdvertisementData,
   onItemPress?: Function,
   outlet?: IOutlet.IOutletData;
+  isLoggedIn?: boolean;
+  onToggleFavourite?: Function;
 }
-type IProps = IOwnProps;
+type IProps = IOwnProps &
+  IAdvertisement.StateToProps &
+  IAdvertisement.DispatchFromProps;
 
 interface IState {
   featureImage: any,
   outletImage: any,
+  isFavorite: boolean | undefined,
+  loading: boolean
 }
+
+const mapStateToProps = function(state: any) {
+  return {
+    isLoggedIn: !!state.user.loggedInUser,
+  }
+};
+
 class AdvertisementGridItem extends React.Component<IProps, IState> {
   outletImage: any;
 
@@ -32,6 +49,8 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
       this.state = {
           featureImage: require('@assets/images/placeholder.png'),
           outletImage: require('@assets/images/placeholder.png'),
+          isFavorite: props.advertisement.isFavorite,
+          loading: false
       };
   }
 
@@ -62,6 +81,27 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
       this.props.onItemPress(this.props.advertisement);
   }
 
+  toggleFavourite = async () => {
+      if (this.props.isLoggedIn) {
+        this.setState({
+          loading: true
+        });
+        const response : any = await this.props.toggleFavoriteFeature(this.props.advertisement.id);
+        if (response.isFavorite != undefined) {
+          this.setState({
+              isFavorite: response.isFavorite,
+              loading: false
+          });
+          if (this.props.onToggleFavourite) {
+            this.props.onToggleFavourite({
+              id: this.props.advertisement.id,
+              isFavorite: response.isFavorite
+            });
+          }
+        }
+      }
+  }
+
   public render() {
     const { advertisement, outlet } = this.props;
     const {id, type, brand, sprice, rprice, sizeMeasure, opacity } = advertisement;
@@ -73,7 +113,8 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <View style={[styles.container, {width: itemWidth, opacity:  opacity ? opacity : 1}]}>
-          <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
+        { this.state.loading && <View style={styles.loaderContainer}><SkypeIndicator color={colors.PRIMARY} /></View>}
+        <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
             { id && <View>
               { this.outletImage && <Card containerStyle={styles.outletImage}>
                { this.state.outletImage == this.outletImage ?
@@ -85,6 +126,15 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
               <FullWidthImage style={[styles.image]} source={{ uri: this.state.featureImage }}/> :
               <Image style={[styles.image, {height: 80}]} source={ this.state.featureImage } resizeMode="stretch"/> }
             </View> }
+
+            { this.props.isLoggedIn ? <TouchableOpacity onPress={this.toggleFavourite} style={styles.favouriteContainer}>
+              <Icon
+                  name={'heart'}
+                  type={this.state.isFavorite ? 'font-awesome' : 'feather'}
+                  color={colors.BLACK}
+                  size={16}
+                  containerStyle={styles.iconContainer} />
+            </TouchableOpacity> : null }
           </Card>
           <View style={styles.details}>
             { id && <View>
@@ -188,20 +238,45 @@ const styles = StyleSheet.create({
     color: colors.TEXT_PRIMARY,
   },
   outletImage: {
-      height: 40,
-      width: 40,
-      borderRadius: 5,
-      shadowColor: colors.WHITE,
-      padding: 0,
-      margin: 0,
-      marginRight: 5,
-      justifyContent: 'center',
-      position: "absolute",
-      zIndex: 3,
-      elevation: 3,
-      right: 0,
-      top: 5,
+    height: 40,
+    width: 40,
+    borderRadius: 5,
+    shadowColor: colors.WHITE,
+    padding: 0,
+    margin: 0,
+    marginRight: 5,
+    justifyContent: 'center',
+    position: "absolute",
+    zIndex: 3,
+    elevation: 3,
+    right: 0,
+    top: 5,
   },
-});
+  favouriteContainer: {
+    position: "absolute",
+    right: 5,
+    bottom: 5,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(235, 235, 235, 0.9)'
+  },
+  iconContainer: {
 
-export { AdvertisementGridItem };
+  },
+  loaderContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    position: "absolute",
+    elevation: 3,
+    zIndex: 3,
+    backgroundColor: 'rgba(0,0,0,0.1)'
+  }
+});
+const AdvertisementGridItemWrapper = connect(mapStateToProps, mapDispatchToProps)(AdvertisementGridItem);
+export { AdvertisementGridItemWrapper as AdvertisementGridItem };

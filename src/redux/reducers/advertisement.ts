@@ -15,6 +15,8 @@ const initialState: IAdvertisement.StateToProps = {
   trendingFeatures: undefined,
   topCategories: undefined,
   promotions: undefined,
+  favoriteFeatures: [],
+  totalFavorites: -1
 };
 
 export function advertisement(
@@ -238,6 +240,45 @@ export function advertisement(
         error: false,
         promotions: [],
       };
+
+    // FETCH FAVORITES
+    case Types.FETCH_FAVORITE_FEATURES:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case Types.FETCH_FAVORITE_FEATURES_SUCCESS:
+      state.favoriteFeatures.concat(action.payload.favorites)
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        favoriteFeatures: state.favoriteFeatures.concat(action.payload.favorites),
+        totalFavorites: action.payload.total
+      };
+    case Types.FETCH_FAVORITE_FEATURES_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        favoriteFeatures: [],
+        totalFavorites: -1
+      };
+
+    // TOGGLE FAVORITE
+    case Types.TOGGLE_FAVORITE_FEATURE_SUCCESS:
+      if (action.payload.isFavorite === false) {
+          const index = state.favoriteFeatures.findIndex((feature) => feature.id === action.payload.featureId);
+          if (index !== -1) {
+            state.favoriteFeatures.splice(index, 1);
+            state.totalFavorites--;
+          }
+      }
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }

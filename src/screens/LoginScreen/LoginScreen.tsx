@@ -114,7 +114,7 @@ class LoginScreen extends React.Component<IProps, IState> {
     if (response.success) {
       const token: any = await this.props.isLoggedIn();
       if (token) {
-        await this.props.fetchUserInfo(token);
+        await this.props.fetchUserInfo();
         this.redirectToMain();
       } else {
         const logout = await this.props.logout();

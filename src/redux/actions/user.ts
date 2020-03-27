@@ -2,15 +2,16 @@ import { Types } from '@types';
 import { IUser } from '@interfaces/user';
 import { login, register, forgotPassword, resetPassword, requestResetPasswordOtp,
     verifyResetPasswordOtp, fetchUserInfo, updateUserInfo, changePassword, requestLoginOtp, loginUsingOtp } from '@services';
-import { AsyncStorage } from 'react-native';
-import { CONSTANTS } from '@utils';
+import { LocalStorageService } from '@services';
+
+const localstorageService = LocalStorageService.getService();
 
 const IUserAction: IUser.DispatchFromProps = {
   isLoggedIn: () => {
     return async function (dispatch: any) {
       let token = undefined;
       try {
-        let asyncToken = await AsyncStorage.getItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
+        let asyncToken = await localstorageService.getAccessToken();
         if (asyncToken)
           token = asyncToken;
         dispatch({
@@ -34,7 +35,7 @@ const IUserAction: IUser.DispatchFromProps = {
           type: Types.LOGIN_SUCCESS,
           payload: response.data.data,
         });
-        AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
+        await localstorageService.setAccessToken(response.data.data.token);
         return response.data;
       } catch(e) {
         dispatch({
@@ -65,13 +66,13 @@ const IUserAction: IUser.DispatchFromProps = {
       }
     };
   },
-  resetPassword: (token?: string, password?: string, confirmPassword?: string) => {
+  resetPassword: (password?: string, confirmPassword?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.RESET_PASSWORD,
       });
       try {
-        const response =  await resetPassword(token, password, confirmPassword);
+        const response =  await resetPassword(password, confirmPassword);
         dispatch({
           type: Types.RESET_PASSWORD_SUCCESS,
         });
@@ -95,7 +96,7 @@ const IUserAction: IUser.DispatchFromProps = {
           type: Types.REGISTER_SUCCESS,
           payload: response.data.data,
         });
-        AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
+        await localstorageService.setAccessToken(response.data.data.token);
         return response.data;
       } catch(e) {
         dispatch({
@@ -150,7 +151,7 @@ const IUserAction: IUser.DispatchFromProps = {
         type: Types.LOGOUT,
       });
       try {
-        await AsyncStorage.removeItem(CONSTANTS.FACTS_RN_AUTH_TOKEN);
+        await localstorageService.clearAccessToken();
         dispatch({
           type: Types.LOGOUT_SUCCESS,
         });
@@ -164,7 +165,7 @@ const IUserAction: IUser.DispatchFromProps = {
       }
     };
   },
-  fetchUserInfo: (token: string, doInBackground?: boolean) => {
+  fetchUserInfo: (doInBackground?: boolean) => {
     return async function (dispatch: any) {
       if (!doInBackground) {
         dispatch({
@@ -172,7 +173,7 @@ const IUserAction: IUser.DispatchFromProps = {
         });
       }
       try {
-        const response =  await fetchUserInfo(token);
+        const response =  await fetchUserInfo();
         dispatch({
           type: Types.FETCH_USER_PROFILE_SUCCESS,
           payload: response.data.data,
@@ -186,13 +187,13 @@ const IUserAction: IUser.DispatchFromProps = {
       }
     };
   },
-  updateUserInfo: (token: string, userData: IUser.IUserData) => {
+  updateUserInfo: (userData: IUser.IUserData) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.UPDATE_USER_PROFILE,
       });
       try {
-        const response =  await updateUserInfo(token, userData);
+        const response =  await updateUserInfo(userData);
         dispatch({
           type: Types.UPDATE_USER_PROFILE_SUCCESS,
           payload: response.data,
@@ -209,13 +210,13 @@ const IUserAction: IUser.DispatchFromProps = {
       }
     };
   },
-  changePassword: (token?: string, currentPassword?: string, newPassword?: string, confirmPassword?: string) => {
+  changePassword: (currentPassword?: string, newPassword?: string, confirmPassword?: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.CHANGE_PASSWORD,
       });
       try {
-        const response =  await changePassword(token, currentPassword, newPassword, confirmPassword);
+        const response =  await changePassword(currentPassword, newPassword, confirmPassword);
         dispatch({
           type: Types.CHANGE_PASSWORD_SUCCESS,
         });
@@ -260,7 +261,7 @@ const IUserAction: IUser.DispatchFromProps = {
           type: Types.LOGIN_SUCCESS,
           payload: response.data.data,
         });
-        AsyncStorage.setItem(CONSTANTS.FACTS_RN_AUTH_TOKEN, response.data.data.token);
+        await localstorageService.setAccessToken(response.data.data.token);
         return response.data.data;
       } catch(e) {
         dispatch({

@@ -51,9 +51,9 @@ class PopularSpecials extends React.Component<IProps, IState> {
     }
 
     onPopularSpecialsItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
-        this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement });    
+        this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement });
     }
- 
+
     public render() {
         return (
             <SafeAreaView style={{flex: 1}}>

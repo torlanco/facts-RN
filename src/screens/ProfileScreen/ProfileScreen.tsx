@@ -104,7 +104,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
   }
 
   fetchUserInfo = async (doInBackground?: boolean) => {
-    const response: any = await this.props.fetchUserInfo(this.props.token, doInBackground);
+    const response: any = await this.props.fetchUserInfo(doInBackground);
     if (!response.errText && !doInBackground) {
       this.updateStateWithGlobalState();
     }
@@ -138,7 +138,7 @@ class ProfileScreen extends React.Component<IProps, IState> {
 
   onSave = async () => {
     const userData = { firstName: this.state.firstName, lastName: this.state.lastName, phone: this.state.phone };
-    const response: any = await this.props.updateUserInfo(this.props.token, userData);
+    const response: any = await this.props.updateUserInfo(userData);
     if (!response.errText) {
       this.setState({
         editable: false
@@ -243,8 +243,8 @@ class ProfileScreen extends React.Component<IProps, IState> {
           lastName: this.props.loggedInUser.lastName,
           profileImage: response.path
         };
-        await this.props.updateUserInfo(this.props.token, userData);
-        await this.props.fetchUserInfo(this.props.token, true);
+        await this.props.updateUserInfo(userData);
+        await this.props.fetchUserInfo(true);
         console.log(this.props.loggedInUser);
       }
     }

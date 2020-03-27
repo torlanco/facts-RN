@@ -25,7 +25,8 @@ import {
   HomeScreen,
   ChangePasswordScreen,
   ForgotPasswordScreen,
-  WebViewScreen
+  WebViewScreen,
+  FavoritesScreen
 } from '@screens';
 import { colors } from '@styles';
 import { createDrawerNavigator } from 'react-navigation';
@@ -147,6 +148,27 @@ const DocsNavigator = createStackNavigator(
     }
 )
 
+const FavoritesNavigator = createStackNavigator(
+    {
+        FavoritesScreen: {screen: FavoritesScreen },
+        AdvertisementDetailScreen: {screen: AdvertisementDetailScreen},
+    },
+    {
+        initialRouteName: 'FavoritesScreen',
+        defaultNavigationOptions: {
+            headerLeft: null,
+            headerBackTitle: null,
+            headerTransparent: true,
+            headerStyle: {
+                borderBottomWidth: 0, // remove the bottom line
+                height: 0,
+                elevation: 0
+            },
+            headerTintColor: colors.WHITE
+        }
+    }
+)
+
 const ProfileNavigator = createStackNavigator(
     {
         ProfileScreen: {screen: ProfileScreen},
@@ -176,6 +198,7 @@ const MainNavigator = createDrawerNavigator(
       // Work: { screen: WorkNavigator },
       // Features: {screen: FeaturesNavigator},
       // Docs: { screen: DocsNavigator },
+      Favorites: { screen: FavoritesNavigator },
       Profile: { screen: ProfileNavigator }
     },
     {

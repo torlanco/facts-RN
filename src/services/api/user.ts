@@ -40,25 +40,25 @@ export const verifyResetPasswordOtp = (phone?: string, otp?: string) => {
   });
 }
 
-export const fetchUserInfo = (token: string) => {
-  return HTTP.get('me', { headers: { Authorization: `Bearer ${token}` } });
+export const fetchUserInfo = () => {
+  return HTTP.get('me');
 };
 
-export const updateUserInfo = (token: string, userData: IUser.IUserData) => {
+export const updateUserInfo = (userData: IUser.IUserData) => {
   if (userData.phone && userData.phone != CONSTANTS.COUNTRY_CODE) {
     userData.phone = formatPhone(userData.phone)
   } else {
     delete userData.phone;
   }
-  return HTTP.put('users', userData, { headers: { Authorization: `Bearer ${token}` }});
+  return HTTP.put('users', userData);
 };
 
-export const changePassword = (token?: string, currentPassword?: string, newPassword?: string, confirmPassword?: string) => {
+export const changePassword = (currentPassword?: string, newPassword?: string, confirmPassword?: string) => {
   return HTTP.put('auth/update-password', {
       currentPassword,
 	    newPassword,
 	    confirmPassword
-  }, { headers: { Authorization: `Bearer ${token}` }});
+  });
 };
 
 export const requestLoginOtp = (emailOrPhone?: string) => {

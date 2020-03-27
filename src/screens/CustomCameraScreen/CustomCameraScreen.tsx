@@ -22,7 +22,7 @@ interface IOwnProps {
   token: string,
   loading: boolean
 }
-type IProps = IOwnProps & 
+type IProps = IOwnProps &
   NavigationInjectedProps &
   IDoc.DispatchFromProps;
 
@@ -43,7 +43,7 @@ const mapStateToProps = function(state: any){
 class CustomCameraScreen extends React.Component<IProps, IState> {
   camera: any;
   arr: any[] = [];
-  
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -61,13 +61,13 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
         extraData: !this.state.extraData
       }, () => {
         this.props.navigation.state.params.images = [];
-        this.scrollToImageIndex(this.state.images.length - 1);          
-      });  
+        this.scrollToImageIndex(this.state.images.length - 1);
+      });
     } else {
       this.openCamera();
     }
   }
-  
+
   onBack = () => {
     const images = this.state.images;
     if (images.length > 0) {
@@ -79,7 +79,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
     if (!images.length) {
       this.openCamera();
     }
-  } 
+  }
 
   openCamera = () => {
     this.props.navigation.replace('CameraScreen', {images: this.state.images});
@@ -91,12 +91,12 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
       snapshotContentContainer: true
     }).then(async (uri: any) => {
       // uri = Platform.OS === "android" ? uri : uri.replace("file:/", "")
-      let response: any = await this.props.uploadDoc(this.props.token, uri); 
+      let response: any = await this.props.uploadDoc(this.props.token, uri);
       if (response && response.path) {
-        response = await this.props.saveReceipt(this.props.token, response.path);
+        response = await this.props.saveReceipt(response.path);
         this.props.navigation.goBack();
       }
-      this.setLoading(false);        
+      this.setLoading(false);
     }).catch((err: any) => {
       this.setLoading(false);
       console.log(err);
@@ -125,7 +125,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <View style={styles.container}>   
+      <View style={styles.container}>
         <View style={styles.rightOptions}>
           <View style={[styles.option, styles.alignRight]}>
             <TouchableOpacity onPress={this.onClose}>
@@ -133,14 +133,14 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
                 name='x'
                 type='feather'
                 color={colors.WHITE}
-                containerStyle={styles.icon}/>    
-            </TouchableOpacity>  
+                containerStyle={styles.icon}/>
+            </TouchableOpacity>
           </View>
         </View>
         <ScrollView collapsable={false} ref="scrollView" pagingEnabled showsVerticalScrollIndicator={false}>
           <ViewShot ref="viewShot">
-          { 
-            !this.state.image && this.state.images.map((item, index) => 
+          {
+            !this.state.image && this.state.images.map((item, index) =>
               <View key={item.uri}
                 onLayout={event => {
                   const layout = event.nativeEvent.layout;
@@ -168,7 +168,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
               type='material'
               size={30}
               color={colors.WHITE}
-              containerStyle={[styles.icon, styles.blueBackground]}/>  
+              containerStyle={[styles.icon, styles.blueBackground]}/>
             </TouchableOpacity>
           </View>
           <View style={[styles.flex, styles.option, styles.alignRight]}>
@@ -177,8 +177,8 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
                 name='check'
                 type='feather'
                 color={colors.WHITE}
-                containerStyle={styles.icon}/>    
-            </TouchableOpacity>  
+                containerStyle={styles.icon}/>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.thumbnails}>
@@ -189,7 +189,7 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
               </TouchableOpacity> }
             keyExtractor={(item: any) => item.uri}
             showsVerticalScrollIndicator={false}
-            extraData={this.state.extraData} />  
+            extraData={this.state.extraData} />
         </View>
         {this.state.loading || this.props.loading ? <LoadingScreen /> : null}
       </View>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "android" ? 0 : -5,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     flex: 1,
-    backgroundColor: colors.BLACK 
+    backgroundColor: colors.BLACK
   },
   icon: {
     paddingVertical: 8,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   rightOptions: {
     position: "absolute",
     top: 10, right: 0,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     paddingVertical: 20,
     elevation: 2,
     zIndex: 5,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     left: 0,
     right: 0,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     paddingVertical: 20,
     elevation: 2
   },

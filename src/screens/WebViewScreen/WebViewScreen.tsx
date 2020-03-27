@@ -17,10 +17,17 @@ interface StateParams extends NavigationState {
 }
 interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
+  token: any
 }
 
 type IProps = IOwnProps &
   NavigationInjectedProps;
+
+const mapStateToProps = function(state: any) {
+  return {
+    token: state.user.token,
+  }
+};
 
 interface IState {}
 
@@ -38,10 +45,17 @@ class WebViewScreen extends React.Component<IProps, IState> {
 
   render() {
     const { url } = this.props.navigation.state.params;
+    const source: any = {
+      uri: url
+    }
+    if (this.props.token) {
+      source.headers = { Authorization: 'Bearer '.concat(this.props.token) }
+    }
+    console.log(source);
     return <SafeAreaView style={styles.container}>
         <View style={styles.flex}>
           <WebView
-            source={{uri: url}} style={[styles.flex, styles.webview]}
+            source={source} style={[styles.flex, styles.webview]}
             startInLoadingState={true}
             renderLoading={() => <SkypeIndicator color={colors.PRIMARY} />}/>
           <TouchableOpacity onPress={this.onClose} style={styles.iconContainer}>
@@ -79,5 +93,5 @@ const styles = StyleSheet.create({
   }
 });
 
-const WebViewScreenWrapper = connect(null, null)(WebViewScreen);
+const WebViewScreenWrapper = connect(mapStateToProps, null)(WebViewScreen);
 export { WebViewScreenWrapper as WebViewScreen }

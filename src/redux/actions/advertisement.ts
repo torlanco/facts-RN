@@ -2,7 +2,8 @@ import { Types } from '@types';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { fetchAdvertisements, fetchCategoriesForReview, fetchAdvertisementsForReview,
   updateAdvertisementsForReview, fetchBrands, fetchFeaturesByBrand,
-  fetchTrendingFeatures, incrementFeatureViewCount, fetchCategoriesForHome, fetchTopCategories, fetchPromotions } from '@services';
+  fetchTrendingFeatures, incrementFeatureViewCount, fetchTopCategories, fetchPromotions,
+  fetchFavoriteFeatures, toggleFavoriteFeature } from '@services';
 
 const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
   fetchAdvertisements: (shopperId?: string) => {
@@ -184,7 +185,6 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       }
     };
   },
-
   clearFeaturesByBrand: () => {
     return function (dispatch: any) {
       dispatch({
@@ -192,7 +192,6 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       });
     };
   },
-
   fetchTopCategories: () => {
     return async function (dispatch: any) {
       dispatch({
@@ -228,6 +227,52 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       } catch(e) {
         dispatch({
           type: Types.FETCH_PROMOTIONS_FAILED,
+        });
+        return e.response.data;
+      }
+    };
+  },
+  fetchFavoriteFeatures: (page: number) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.FETCH_FAVORITE_FEATURES,
+      });
+      try {
+        console.log('Hello');
+        const response = await fetchFavoriteFeatures(page);
+        const payload = {
+          total: response.data.data.total,
+          favorites: response.data.data.favorites.map((favourite: any) => favourite.feature)
+        }
+        dispatch({
+          type: Types.FETCH_FAVORITE_FEATURES_SUCCESS,
+          payload: payload
+        });
+        return response.data.data;
+      } catch(e) {
+        console.log(e.response.data);
+        dispatch({
+          type: Types.FETCH_FAVORITE_FEATURES_FAILED,
+        });
+        return e.response.data;
+      }
+    };
+  },
+  toggleFavoriteFeature: (featureId?: any) => {
+    return async function (dispatch: any) {
+      dispatch({
+        type: Types.TOGGLE_FAVORITE_FEATURE,
+      });
+      try {
+        const response: any = await toggleFavoriteFeature(featureId);
+        dispatch({
+          type: Types.TOGGLE_FAVORITE_FEATURE_SUCCESS,
+          payload: { featureId, isFavorite: response.data.data.isFavorite }
+        });
+        return response.data.data;
+      } catch(e) {
+        dispatch({
+          type: Types.TOGGLE_FAVORITE_FEATURE_FAILED,
         });
         return e.response.data;
       }

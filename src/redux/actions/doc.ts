@@ -24,13 +24,13 @@ const IDocAction: IDoc.DispatchFromProps = {
       }
     };
   },
-  saveReceipt: (token: string, path: string) => {
+  saveReceipt: (path: string) => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.SAVE_RECEIPTS,
       });
       try {
-        const response: any = await saveReceipts(token, path);
+        const response: any = await saveReceipts(path);
         dispatch({
           type: Types.SAVE_RECEIPTS_SUCCESS,
         });
@@ -43,13 +43,13 @@ const IDocAction: IDoc.DispatchFromProps = {
       }
     };
   },
-  fetchReceipts: (token: string) => {
+  fetchReceipts: () => {
     return async function (dispatch: any) {
       dispatch({
         type: Types.FETCH_RECEIPTS,
       });
       try {
-        const response: any = await fetchReceipts(token);
+        const response: any = await fetchReceipts();
         dispatch({
           type: Types.FETCH_RECEIPTS_SUCCESS,
           payload: response.data.data.receipts,

@@ -107,10 +107,21 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 <OutletScreen onlyOutlets={true}/>
                             </View>
 
-                            {/* PROMOTIONS */}
+                            {/* POPULAR SPECIALS */}
                             <View style={[styles.componentWrapper, {marginTop: 30}]}>
-                                <View style={[styles.row, {marginBottom: 20}]}>
-                                    <View style={styles.flex}>
+                                <View style={styles.row}>
+                                    <View style={[styles.flex, {marginBottom: 5}]}>
+                                        <Text style={styles.highlight}>POPULAR SPECIALS</Text>
+                                        <Text style={styles.note}>People have found these specials interesting</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <PopularSpecials/>
+
+                            {/* PROMOTIONS */}
+                            <View style={[styles.componentWrapper, {marginTop: 20}]}>
+                                <View style={styles.row}>
+                                    <View style={[styles.flex, {marginBottom: 20}]}>
                                         <Text style={styles.highlight}>PROMOTIONS</Text>
                                         <Text style={styles.note}>Find what is popular among promotions</Text>
                                     </View>

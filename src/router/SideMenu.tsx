@@ -36,8 +36,8 @@ const data = [
   // { iconName: 'briefcase', title: 'Work', routeName: 'Work', requiredAuth: true },
   // { iconName: 'book', title: 'Features', routeName: 'Features' },
   // { iconName: 'file', title: 'Docs', routeName: 'Docs' },
+  { iconName: 'heart', title: 'Favorites', routeName: 'Favorites', requiredAuth: true, hideTillLogin: true },
   { iconName: 'user', title: 'Profile', routeName: 'Profile', requiredAuth: true, hideTillLogin: true },
-
 ];
 
 const mapStateToProps = function(state: any) {
@@ -67,7 +67,7 @@ const SideMenu: React.SFC<IProps> = (props: IProps) => {
           <View style={styles.wrapper}>
             <Icon
               name={item.iconName}
-              type='feather'
+              type='font-awesome'
               color={colors.TEXT_PRIMARY}
               containerStyle={styles.iconContainer} />
             <Text style={styles.title}>{item.title}</Text>
@@ -148,8 +148,9 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: responsive(15),
-    ...typos.LARGE_TITLE,
-    color: colors.TEXT_PRIMARY
+    ...typos.TITLE,
+    color: colors.TEXT_PRIMARY,
+    textTransform: 'uppercase'
   },
   iconContainer: {
     width: responsive(40),

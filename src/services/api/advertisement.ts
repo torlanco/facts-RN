@@ -1,5 +1,6 @@
 import HTTP from '../http';
 import { IAdvertisement } from '@interfaces/advertisement';
+import { CONSTANTS } from '@utils';
 
 export const fetchAdvertisements = (shopperId?: string) => {
     return HTTP.get('features?shopperId=' + shopperId);
@@ -39,4 +40,15 @@ export const fetchTopCategories = () => {
 
 export const fetchPromotions = () => {
     return HTTP.get('promotions');
+};
+
+export const fetchFavoriteFeatures = (page: number) => {
+    console.log(page);
+    return HTTP.get(`favorite/features?page=${page}&limit=${CONSTANTS.PAGE_LIMIT}`);
+};
+
+export const toggleFavoriteFeature = (featureId?: any) => {
+    return HTTP.post('favorite/features/toggle', {
+        featureId
+    });
 };

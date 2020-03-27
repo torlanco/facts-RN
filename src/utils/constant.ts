@@ -14,5 +14,6 @@ export const CONSTANTS = {
     UPLOAD_RECEIPT_TYPE: 'receipt',
     UPLOAD_PROFILE_IMAGE_TYPE: 'profileImage',
     NO_RESULT_FOUND: 'No Results Found',
-    SEARCHING: 'Searching...'
+    SEARCHING: 'Searching...',
+    PAGE_LIMIT: 10
 };

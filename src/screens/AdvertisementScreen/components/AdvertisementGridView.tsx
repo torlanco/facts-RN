@@ -15,6 +15,7 @@ interface IOwnProps {
   onItemPress?: Function
   outlet?: IOutlet.IOutletData;
   listkey?: string;
+  onItemToggleFavourite?: Function;
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
@@ -36,6 +37,12 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
         props.onItemPress(advertisement);
   }
 
+  const onToggleFavourite = (data: any) => {
+    if (props.onItemToggleFavourite) {
+      props.onItemToggleFavourite(data);
+    }
+  }
+
   return (
     <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -44,14 +51,14 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
           contentContainerStyle={styles.list}
           data={sectionOneAdvertisement}
           keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
-          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet} onToggleFavourite={onToggleFavourite}/>}
           enableEmptySections={true}/>
         <FlatList
           listKey={(props.listkey ? props.listkey : '') + '_section2'}
           contentContainerStyle={styles.list}
           data={sectionTwoAdvertisement}
           keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
-          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet}/>}
+          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet} onToggleFavourite={onToggleFavourite}/>}
           enableEmptySections={true}/>
       </View>
     </ScrollView>

@@ -27,7 +27,7 @@ interface IOwnProps {
   token: string;
 }
 type IProps = IOwnProps &
-  NavigationInjectedProps & 
+  NavigationInjectedProps &
   IDoc.DispatchFromProps;
 
 // state
@@ -56,11 +56,11 @@ class DocsScreen extends React.Component<IProps, IState> {
   }
 
   fetchReceipts = async () => {
-    const docs = await this.props.fetchReceipts(this.props.token);
+    const docs = await this.props.fetchReceipts();
     if (docs && docs instanceof Array) {
       this.setState({
         docsList: docs
-      });  
+      });
     }
   }
 
@@ -85,8 +85,8 @@ class DocsScreen extends React.Component<IProps, IState> {
           </View>
           <View style={styles.container}>
           {
-            this.state.docsList.length ? 
-            <DocsGridView docsList={this.state.docsList} onItemPress={this.onItemPress}></DocsGridView> 
+            this.state.docsList.length ?
+            <DocsGridView docsList={this.state.docsList} onItemPress={this.onItemPress}></DocsGridView>
             : <View style={[styles.container, styles.textContainer]}>
               <Text style={styles.text}>No Documents at this moment. Click upload to add one!.</Text>
             </View>

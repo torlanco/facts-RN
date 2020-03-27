@@ -2,21 +2,13 @@ import HTTP from '../http';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import { CONSTANTS } from '@utils';
 
-export const fetchReceipts = (token: string) => {
-    return HTTP.get('receipts', {
-        headers: {
-            Authorization: 'Bearer '.concat(token)
-        }
-    });
+export const fetchReceipts = () => {
+    return HTTP.get('receipts');
 };
 
-export const saveReceipts = (token: string, path: String) => {
+export const saveReceipts = (path: String) => {
     return HTTP.post('receipts', {
         path
-    }, {
-        headers: {
-            Authorization: 'Bearer '.concat(token)
-        }
     });
 };
 

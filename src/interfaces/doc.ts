@@ -13,8 +13,8 @@ export namespace IDoc {
 
     export interface DispatchFromProps {
         uploadDoc(token: string, uri: any, filteType?: string): Function;
-        saveReceipt(token: string, path: string): Function;
-        fetchReceipts(token: string): Function;
+        saveReceipt(path: string): Function;
+        fetchReceipts(): Function;
     }
 
 }

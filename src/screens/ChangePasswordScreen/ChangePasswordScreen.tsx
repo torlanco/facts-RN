@@ -17,9 +17,7 @@ import { CheckBox } from 'react-native-elements';
 import { IUser } from '@interfaces/user';
 
 // props
-interface ParamType {
-  token?: string;
-}
+interface ParamType {}
 interface StateParams extends NavigationState {
   params: ParamType;
 }
@@ -45,7 +43,6 @@ interface IState {
 const mapStateToProps = function(state: any) {
   return {
     loading: state.user.loading,
-    token: state.user.token
   }
 };
 
@@ -59,8 +56,6 @@ class ChangePasswordScreen extends React.Component<IProps, IState> {
         currentPassword: '',
         password: '',
         confirmPassword: '',
-        showPassword: false,
-        token: '',
         // Errors
         currentPasswordError: '',
         passwordError: '',
@@ -85,8 +80,7 @@ class ChangePasswordScreen extends React.Component<IProps, IState> {
     if (!(await this.validate())) {
       return;
     }
-    const response: any = await this.props.changePassword(this.props.token, this.state.currentPassword,
-      this.state.password, this.state.confirmPassword);
+    const response: any = await this.props.changePassword(this.state.currentPassword, this.state.password, this.state.confirmPassword);
     if (response.success) {
       this.props.navigation.goBack();
     } else {
