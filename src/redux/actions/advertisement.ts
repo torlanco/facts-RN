@@ -242,7 +242,7 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
         const payload = {
           initialFetch,
           total: response.data.data.total,
-          favorites: response.data.data.favorites.map((favourite: any) => favourite.feature)
+          favorites: response.data.data.favorites
         }
         dispatch({
           type: Types.FETCH_FAVORITE_FEATURES_SUCCESS,
