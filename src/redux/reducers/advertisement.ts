@@ -6,7 +6,7 @@ import { CONSTANTS } from '@utils';
 const initialState: IAdvertisement.StateToProps = {
   error: false,
   loading: false,
-  advertisements: undefined,
+  advertisements: [],
   categories: undefined,
   advertisementsForReview: undefined,
   categoriesForReview: undefined,
@@ -24,7 +24,7 @@ export function advertisement(
   action: AnyAction
 ) {
   switch (action.type) {
-    // FETCH OUTLETS
+    // FETCH Advertisement
     case Types.FETCH_ADVERTISEMENTS:
       return {
         ...state,
@@ -36,7 +36,7 @@ export function advertisement(
         ...state,
         error: false,
         loading: false,
-        advertisements: action.payload.advertisements,
+        advertisements:  action.payload.advertisements,
         categories: fetchCategories(action.payload.advertisements)
       };
     case Types.FETCH_ADVERTISEMENTS_FAILED:
@@ -274,6 +274,30 @@ export function advertisement(
             state.favoriteFeatures.splice(index, 1);
             state.totalFavorites--;
           }
+      }
+      if (state.advertisements) {
+        state.advertisements.map((feature) => {
+            if (feature.id === action.payload.featureId) {
+              feature.isFavorite = action.payload.isFavorite
+            }
+            return feature;
+        });
+      }
+      if (state.featuresByBrands) {
+        state.featuresByBrands.map((feature) => {
+            if (feature.id === action.payload.featureId) {
+              feature.isFavorite = action.payload.isFavorite
+            }
+            return feature;
+        });
+      }
+      if (state.trendingFeatures) {
+        state.trendingFeatures.map((feature) => {
+            if (feature.id === action.payload.featureId) {
+              feature.isFavorite = action.payload.isFavorite
+            }
+            return feature;
+        });
       }
       return {
         ...state,

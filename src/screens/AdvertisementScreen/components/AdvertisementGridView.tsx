@@ -18,6 +18,7 @@ interface IOwnProps {
   listkey?: string;
   onItemToggleFavourite?: Function;
   onScrollEndReached?: Function;
+  listRefreshToggler?: boolean;
 }
 type IProps = IOwnProps;
 const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
@@ -63,14 +64,16 @@ const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
           data={sectionOneAdvertisement}
           keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
           renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet} onToggleFavourite={onToggleFavourite}/>}
-          enableEmptySections={true}/>
+          enableEmptySections={true}
+          extraData={props.listRefreshToggler}/>
         <FlatList
           listKey={(props.listkey ? props.listkey : '') + '_section2'}
           contentContainerStyle={styles.list}
           data={sectionTwoAdvertisement}
           keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
           renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet} onToggleFavourite={onToggleFavourite}/>}
-          enableEmptySections={true}/>
+          enableEmptySections={true}
+          extraData={props.listRefreshToggler}/>
       </View>
     </ScrollView>
   );

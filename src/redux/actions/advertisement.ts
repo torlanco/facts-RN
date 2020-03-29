@@ -240,7 +240,7 @@ const IAdvertisementAction: IAdvertisement.DispatchFromProps = {
       try {
         const response = await fetchFavoriteFeatures(page);
         const payload = {
-          initialFetch,
+          initialFetch: initialFetch || page == 0,
           total: response.data.data.total,
           favorites: response.data.data.favorites
         }

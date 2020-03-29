@@ -5,7 +5,7 @@ import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 // Interfaces
 import { IAdvertisement } from '@interfaces/advertisement';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation, NavigationEvents } from 'react-navigation';
 
 // Props Action
 import { connect } from "react-redux";
@@ -22,6 +22,7 @@ type IProps = IOwnProps &
 
 interface IState {
     loading: boolean;
+    listRefreshToggler: boolean;
 }
 
 const mapStateToProps = function(state: any){
@@ -39,6 +40,7 @@ class PopularSpecials extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             loading: true,
+            listRefreshToggler: false
         };
         this.fetchPopularSpecials();
     }
@@ -54,14 +56,23 @@ class PopularSpecials extends React.Component<IProps, IState> {
         this.props.navigation.navigate('AdvertisementDetailScreen', { advertisement: advertisement });
     }
 
+    onScreenFocus = () => {
+      this.setState({
+        listRefreshToggler: !this.state.listRefreshToggler
+      });
+      this.fetchPopularSpecials();
+    }
+
     public render() {
         return (
             <SafeAreaView style={{flex: 1}}>
+                <NavigationEvents onDidFocus={this.onScreenFocus}/>
                 <View>
                     { this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
                     {
                         this.props.trendingFeatures && this.props.trendingFeatures.length > 0 && !this.state.loading &&
-                        <AdvertisementGridView advertisementList={this.props.trendingFeatures} onItemPress={this.onPopularSpecialsItemPress}/>
+                        <AdvertisementGridView advertisementList={this.props.trendingFeatures}
+                          onItemPress={this.onPopularSpecialsItemPress} listRefreshToggler={this.state.listRefreshToggler}/>
                     }
                 </View>
             </SafeAreaView>

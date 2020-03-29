@@ -21,7 +21,7 @@ import { ViewType } from './enums/ViewType';
 import { connect } from "react-redux";
 import { mapDispatchToProps } from '@actions/advertisement';
 
-import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "react-navigation";
+import { NavigationInjectedProps, NavigationScreenProp, NavigationState, NavigationEvents } from "react-navigation";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { CONSTANTS } from '@utils';
 
@@ -46,6 +46,7 @@ interface IState {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
   viewType: ViewType,
   category: string,
+  listRefreshToggler: boolean
 }
 
 const mapStateToProps = function(state: any){
@@ -66,10 +67,9 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     this.state = {
       advertisementList: [],
       viewType: ViewType.Grid,
-      category: ''
+      category: '',
+      listRefreshToggler: false
     };
-
-    this.fetchAdvertisements();
   }
 
   async fetchAdvertisements() {
@@ -123,16 +123,26 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
     this.props.navigation.navigate('AdvertisementDetailScreen', { outlet: outlet, shopper: shopper, advertisement: advertisement });
   };
 
+  onScreenFocus = () => {
+    if (this._isMounted) {
+      this.setState({
+        listRefreshToggler: !this.state.listRefreshToggler
+      });
+      this.fetchAdvertisements();      
+    }
+  }
+
   getView() {
     const { outlet } = this.props.navigation.state.params;
     return this.state.viewType === ViewType.Grid
-      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress} outlet={outlet}></AdvertisementGridView>
+      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress} outlet={outlet} listRefreshToggler={this.state.listRefreshToggler}></AdvertisementGridView>
       : <AdvertisementListView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress}></AdvertisementListView>
   }
 
   public render() {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY}}>
+          <NavigationEvents onDidFocus={this.onScreenFocus}/>
           <View style={styles.container}>
             <HeaderBar title={'FEATURES'}></HeaderBar>
             <View style={{paddingHorizontal: 5}}>

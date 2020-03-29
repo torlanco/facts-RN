@@ -31,7 +31,6 @@ type IProps = IOwnProps &
 interface IState {
   featureImage: any,
   outletImage: any,
-  isFavorite: boolean | undefined,
   loading: boolean
 }
 
@@ -49,7 +48,6 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
       this.state = {
           featureImage: require('@assets/images/placeholder.png'),
           outletImage: require('@assets/images/placeholder.png'),
-          isFavorite: props.advertisement.isFavorite,
           loading: false
       };
   }
@@ -77,8 +75,10 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
   }
 
   onItemPress = () => {
-    if (this.props.onItemPress)
-      this.props.onItemPress(this.props.advertisement);
+    if (this.props.advertisement.id && this.props.onItemPress && !this.state.loading) {
+      const advertisement: IAdvertisement.IAdvertisementData = this.props.advertisement;
+      this.props.onItemPress(advertisement);
+    }
   }
 
   toggleFavourite = async () => {
@@ -89,7 +89,6 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
         const response : any = await this.props.toggleFavoriteFeature(this.props.advertisement.id);
         if (response.isFavorite != undefined) {
           this.setState({
-              isFavorite: response.isFavorite,
               loading: false
           });
           if (this.props.onToggleFavourite) {
@@ -110,31 +109,37 @@ class AdvertisementGridItem extends React.Component<IProps, IState> {
     if (!id) {
       imageContainerHeight.height = 140;
     }
+    const favouriteContainer: any = {};
+    if (this.props.advertisement.isFavorite) {
+      favouriteContainer.backgroundColor = colors.PRIMARY;
+    } else {
+      favouriteContainer.backgroundColor = 'rgba(235, 235, 235, 0.9)';
+    }
     return (
       <TouchableOpacity onPress={this.onItemPress} activeOpacity={.9}>
         <View style={[styles.container, {width: itemWidth, opacity:  opacity ? opacity : 1}]}>
         { this.state.loading && <View style={styles.loaderContainer}><SkypeIndicator color={colors.PRIMARY} /></View>}
         <Card containerStyle={[styles.imageContainer, imageContainerHeight]}>
-            { id && <View>
+            { id && <View style={[styles.imageContainer, imageContainerHeight]}>
               { this.outletImage && <Card containerStyle={styles.outletImage}>
                { this.state.outletImage == this.outletImage ?
                   <FullWidthImage style={ styles.image } source={{ uri: this.state.outletImage }}/> :
                   <Image style={[styles.image, { height: 40 }]} source={ this.state.outletImage } resizeMode="stretch"/> }
               </Card> }
 
-            { this.state.featureImage == this.props.advertisement.image ?
-              <FullWidthImage style={[styles.image]} source={{ uri: this.state.featureImage }}/> :
-              <Image style={[styles.image, {height: 80}]} source={ this.state.featureImage } resizeMode="stretch"/> }
-            </View> }
+              { this.state.featureImage == this.props.advertisement.image ?
+                <FullWidthImage style={[styles.image, styles.featureImage]} source={{ uri: this.state.featureImage }}/> :
+                <Image style={[styles.image, {height: 80}]} source={ this.state.featureImage } resizeMode="stretch"/> }
 
-            { this.props.isLoggedIn ? <TouchableOpacity onPress={this.toggleFavourite} style={styles.favouriteContainer}>
-              <Icon
-                  name={'heart'}
-                  type={this.state.isFavorite ? 'font-awesome' : 'feather'}
-                  color={colors.BLACK}
-                  size={16}
-                  containerStyle={styles.iconContainer} />
-            </TouchableOpacity> : null }
+              { this.props.isLoggedIn ? <TouchableOpacity onPress={this.toggleFavourite} style={[styles.favouriteContainer, favouriteContainer]}>
+                <Icon
+                    name={'heart'}
+                    type={this.props.advertisement.isFavorite ? 'font-awesome' : 'feather'}
+                    color={colors.BLACK}
+                    size={16}
+                    containerStyle={styles.iconContainer} />
+              </TouchableOpacity> : null }
+            </View> }
           </Card>
           <View style={styles.details}>
             { id && <View>
@@ -184,7 +189,9 @@ const styles = StyleSheet.create({
     padding: 0,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    overflow: "hidden"
+    overflow: "hidden",
+    width: '100%',
+    minHeight: 100
   },
   padding: {
     padding: 2,
@@ -192,6 +199,9 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
+  },
+  featureImage: {
+    minHeight: 100,
   },
   boldText: {
     ...typos.TITLE,
@@ -254,13 +264,16 @@ const styles = StyleSheet.create({
   },
   favouriteContainer: {
     position: "absolute",
-    right: 5,
-    bottom: 5,
     width: 30,
     height: 30,
     borderRadius: 15,
     justifyContent: 'center',
-    backgroundColor: 'rgba(235, 235, 235, 0.9)'
+    alignItems: 'center',
+    elevation: 5,
+    zIndex: 5,
+    alignSelf: 'flex-end',
+    bottom: 5,
+    right: 5,
   },
   iconContainer: {
 

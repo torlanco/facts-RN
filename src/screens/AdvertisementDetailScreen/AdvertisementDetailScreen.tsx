@@ -1,11 +1,11 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
 import { typos, colors, responsive } from '@styles';
 
 // Component
-import { HeaderBar, DateRange } from '@components';
+import { HeaderBar } from '@components';
 import { StatusBar, Platform } from "react-native";
 
 // Models
@@ -19,6 +19,7 @@ import FullWidthImage from 'react-native-fullwidth-image';
 import { formatDate } from '@utils';
 import { mapDispatchToProps } from '@actions/advertisement';
 import { connect } from "react-redux";
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 
 // props
 interface ParamType {
@@ -31,6 +32,7 @@ interface StateParams extends NavigationState {
 }
 interface IOwnProps {
   navigation: NavigationScreenProp<StateParams>;
+  isLoggedIn?: boolean;
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -41,10 +43,13 @@ type IProps = IOwnProps &
 interface IState {
   featureImage: any,
   outletImage: any,
+  isFavorite: boolean | undefined,
+  loading: boolean
 }
 
 const mapStateToProps = function(state: any){
   return {
+    isLoggedIn: !!state.user.loggedInUser,
     loading: state.outlet.loading ||
       state.shopper.loading ||
       state.advertisement.loading
@@ -59,7 +64,9 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       featureImage: require('@assets/images/placeholder.png'),
-      outletImage: require('@assets/images/placeholder.png')
+      outletImage: require('@assets/images/placeholder.png'),
+      isFavorite: props.navigation.state.params.advertisement.isFavorite,
+      loading: false
     };
   }
 
@@ -95,13 +102,33 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
     this._isMounted = false;
   }
 
+  toggleFavourite = async () => {
+      const { advertisement } = this.props.navigation.state.params;
+      if (this.props.isLoggedIn) {
+        this.setState({
+          loading: true
+        });
+        const response : any = await this.props.toggleFavoriteFeature(advertisement.id);
+        if (response.isFavorite != undefined) {
+          this.setState({
+              isFavorite: response.isFavorite,
+              loading: false
+          });
+        }
+      }
+  }
+
   public render() {
     const { outlet, advertisement } = this.props.navigation.state.params;
     const { type, brand, sprice, rprice, sizeMeasure } = advertisement;
-    let dateRange = undefined;
-    if (outlet) {
-      dateRange = new DateRange(outlet.earliestStartDate, outlet.latestEndDate);
+
+    const favouriteContainer: any = {};
+    if (this.state.isFavorite) {
+      favouriteContainer.backgroundColor = colors.PRIMARY;
+    } else {
+      favouriteContainer.backgroundColor = 'rgba(235, 235, 235, 0.9)';
     }
+
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: colors.LIGHTEST_GRAY }}>
         <View style={styles.container}>
@@ -116,8 +143,16 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
                 </Card>
 
                 { this.state.featureImage == advertisement.image ?
-                  <FullWidthImage style={ styles.image } source={{ uri: this.state.featureImage }}/> :
-                  <Image style={[styles.image, { height: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
+                  <FullWidthImage style={[styles.image, styles.featureImage]} source={{ uri: this.state.featureImage }}/> :
+                  <Image style={[styles.image, { minHeight: 200 }]} source={ this.state.featureImage } resizeMode="stretch"/> }
+
+                { this.props.isLoggedIn ? <TouchableOpacity onPress={this.toggleFavourite} style={[styles.favouriteContainer, favouriteContainer]}>
+                  <Icon
+                      name={'heart'}
+                      type={this.state.isFavorite ? 'font-awesome' : 'feather'}
+                      color={colors.BLACK}
+                      size={16}/>
+                  </TouchableOpacity> : null }
               </Card>
               <View style={styles.details}>
                 <Text style={[styles.brand, styles.flex, styles.horizontalPadding]}>{brand}</Text>
@@ -168,6 +203,7 @@ class AdvertisementDetailScreen extends React.Component<IProps, IState> {
             </Card>
           </ScrollView>
         </View>
+        { this.state.loading && <LoadingScreen/> }
       </SafeAreaView>
     );
   }
@@ -194,6 +230,8 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   imageContainer: {
+    position: "relative",
+    flexDirection: "column",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     padding: 15,
@@ -202,6 +240,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     shadowOpacity: 0,
     elevation: 0,
+    minHeight: 200,
   },
   padding: {
     paddingVertical: 2,
@@ -209,6 +248,9 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 'auto',
+  },
+  featureImage: {
+    minHeight: 200,
   },
   boldText: {
     ...typos.HEADLINE,
@@ -285,6 +327,16 @@ const styles = StyleSheet.create({
       elevation: 3,
       right: 0,
       top: 5,
+  },
+  favouriteContainer: {
+    position: "absolute",
+    right: 5,
+    bottom: 5,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });
 
