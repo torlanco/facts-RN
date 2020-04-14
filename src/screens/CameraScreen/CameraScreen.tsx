@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StatusBar, StyleSheet, BackHandler } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, StyleSheet, BackHandler, FlatList } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import { Platform } from '@unimodules/core';
@@ -7,7 +7,6 @@ import { colors } from '@styles';
 import { Icon } from 'react-native-elements';
 import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from 'react-navigation';
 import { connect } from "react-redux";
-import { FlatList } from 'react-native-gesture-handler';
 import FullWidthImage from 'react-native-fullwidth-image';
 import { NavigationEvents } from 'react-navigation';
 
@@ -177,7 +176,6 @@ class CameraScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     flex: 1
   },
   icon: {

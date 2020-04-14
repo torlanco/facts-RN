@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, TextInput, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TextInput, Image, ScrollView } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Component
@@ -15,7 +15,6 @@ import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { CheckBox } from 'react-native-elements';
 import { IUser } from '@interfaces/user';
-import { ScrollView } from 'react-native-gesture-handler';
 
 // props
 interface ParamType {
@@ -168,8 +167,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+    },
   container: {
     marginLeft: 5,
     marginRight: 5,

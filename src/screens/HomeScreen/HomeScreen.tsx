@@ -140,7 +140,6 @@ class HomeScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         marginTop: Platform.OS === "android" ? 0 : -5,
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         flex: 1,
     },
     mainContainer: {

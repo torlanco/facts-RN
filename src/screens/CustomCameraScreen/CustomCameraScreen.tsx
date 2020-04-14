@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Text, StyleSheet, StatusBar, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, FlatList, Text, StyleSheet, StatusBar, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
 import { connect } from "react-redux";
 import { Platform } from '@unimodules/core';
 import { colors } from '@styles';
@@ -9,7 +9,6 @@ import ViewShot from "react-native-view-shot";
 import { IDoc } from '@interfaces/doc';
 import { mapDispatchToProps } from '@actions/doc';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
-import { ScrollView } from 'react-native-gesture-handler';
 
 interface ParamType {
   images: any[];
@@ -200,7 +199,6 @@ class CustomCameraScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     flex: 1,
     backgroundColor: colors.BLACK
   },
@@ -249,7 +247,6 @@ const styles = StyleSheet.create({
   },
   thumbnails: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     position: "absolute",
     top: 20,
     left: 20,

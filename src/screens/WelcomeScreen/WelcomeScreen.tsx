@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     backgroundColor: colors.PRIMARY
   },
   container: {

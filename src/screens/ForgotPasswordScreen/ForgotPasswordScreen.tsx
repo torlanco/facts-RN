@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, Platform , StatusBar} from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Platform , StatusBar, ScrollView } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -16,7 +16,6 @@ import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
 import { Icon } from 'react-native-elements';
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
-import { ScrollView } from 'react-native-gesture-handler';
 
 
 interface ParamType {
@@ -188,8 +187,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+    },
   container: {
     padding: 20,
     backgroundColor: colors.WHITE,

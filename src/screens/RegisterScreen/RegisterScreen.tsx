@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, KeyboardAvoidingView, Keyboard, ScrollView } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -15,7 +15,6 @@ import { NavigationInjectedProps, NavigationScreenProp, NavigationState } from "
 import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
-import { ScrollView } from 'react-native-gesture-handler';
 import { validate } from '@utils';
 import { Divider } from 'react-native-elements';
 
@@ -142,103 +141,101 @@ class RegisterScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
-          <KeyboardAvoidingView style={styles.flex} behavior="padding" enabled keyboardVerticalOffset={0}>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={[styles.flex, styles.container]}>
-                  <Text style={styles.heading}>Sign up</Text>
-                  <Text style={styles.subHeadig}>create an account</Text>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.flex}>
+            <View style={[styles.flex, styles.container]}>
+                <Text style={styles.heading}>Sign up</Text>
+                <Text style={styles.subHeadig}>create an account</Text>
 
-                  <Text style={styles.label}>Email</Text>
-                  <TextField
-                    onChangeText={(value: any) => {
-                      this.setState({
-                        email: value
-                      })
-                    }}
-                    onBlur={() => {
-                      this.setState({
-                        emailError: validate('email', this.state.email)
-                      })
-                    }}
-                    error={this.state.emailError}/>
+                <Text style={styles.label}>Email</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      email: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      emailError: validate('email', this.state.email)
+                    })
+                  }}
+                  error={this.state.emailError}/>
 
-                  <Text style={styles.label}>First name</Text>
-                  <TextField
-                    onChangeText={(value: any) => {
-                      this.setState({
-                        firstName: value
-                      })
-                    }}
-                    onBlur={() => {
-                      this.setState({
-                        firstNameError: validate('optional', this.state.firstName, 'First name')
-                      })
-                    }}
-                    error={this.state.firstNameError}/>
+                <Text style={styles.label}>First name</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      firstName: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      firstNameError: validate('optional', this.state.firstName, 'First name')
+                    })
+                  }}
+                  error={this.state.firstNameError}/>
 
-                  <Text style={styles.label}>Last name</Text>
-                  <TextField
-                    onChangeText={(value: any) => {
-                      this.setState({
-                        lastName: value
-                      })
-                    }}
-                    onBlur={() => {
-                      this.setState({
-                        lastNameError: validate('optional', this.state.lastName, 'Last name')
-                      })
-                    }}
-                    error={this.state.lastNameError}/>
+                <Text style={styles.label}>Last name</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      lastName: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      lastNameError: validate('optional', this.state.lastName, 'Last name')
+                    })
+                  }}
+                  error={this.state.lastNameError}/>
 
-                  <Text style={styles.label}>Phone</Text>
-                  <PhoneField
-                    onChangeText={(value: any) => {
-                      this.setState({
-                        phone: value
-                      })
-                    }}
-                    onBlur={() => {
-                      this.setState({
-                        phoneError: validate('phone', this.state.phone)
-                      })
-                    }}
-                    error={this.state.phoneError}/>
+                <Text style={styles.label}>Phone</Text>
+                <PhoneField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      phone: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      phoneError: validate('phone', this.state.phone)
+                    })
+                  }}
+                  error={this.state.phoneError}/>
 
-                  <Text style={styles.label}>Password</Text>
-                  <TextField
-                    onChangeText={(value: any) => {
-                      this.setState({
-                        password: value
-                      })
-                    }}
-                    onBlur={() => {
-                      this.setState({
-                        passwordError: validate('password', this.state.password)
-                      })
-                    }}
-                    error={this.state.passwordError}
-                    type={FieldType.PASSWORD}/>
+                <Text style={styles.label}>Password</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      password: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      passwordError: validate('password', this.state.password)
+                    })
+                  }}
+                  error={this.state.passwordError}
+                  type={FieldType.PASSWORD}/>
 
-                  <Text style={styles.label}>Confirm Password</Text>
-                  <TextField
-                    onChangeText={(value: any) => {
-                      this.setState({
-                        cpassword: value
-                      })
-                    }}
-                    onBlur={() => {
-                      this.setState({
-                        cpasswordError: validate('cpassword', this.state.cpassword, undefined, this.state.password)
-                      })
-                    }}
-                    error={this.state.cpasswordError}
-                    type={FieldType.PASSWORD}/>
+                <Text style={styles.label}>Confirm Password</Text>
+                <TextField
+                  onChangeText={(value: any) => {
+                    this.setState({
+                      cpassword: value
+                    })
+                  }}
+                  onBlur={() => {
+                    this.setState({
+                      cpasswordError: validate('cpassword', this.state.cpassword, undefined, this.state.password)
+                    })
+                  }}
+                  error={this.state.cpasswordError}
+                  type={FieldType.PASSWORD}/>
 
-                   {this.state.error ? <Text style={styles.error}>{this.state.error}</Text> :  null}
+                  {this.state.error ? <Text style={styles.error}>{this.state.error}</Text> :  null}
 
-                </View>
-              </ScrollView>
-          </KeyboardAvoidingView>
+             </View>
+          </ScrollView>
           <View style={[styles.bottomAction]}>
             <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
             <View style={styles.row}>
@@ -269,13 +266,11 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+    },
   container: {
     marginLeft: 5,
     marginRight: 5,
     paddingHorizontal: 15,
-    paddingBottom: 100
   },
   imageContainer: {
     marginVertical: 5,
@@ -350,12 +345,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   bottomAction: {
-    position: "absolute",
-    bottom: 0,
-    left: 22,
-    right: 22,
-    zIndex: 1,
-    paddingBottom: 20,
+    padding: 20,
     backgroundColor: colors.WHITE
   },
   bottomActionText: {

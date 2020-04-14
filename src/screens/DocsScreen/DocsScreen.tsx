@@ -101,8 +101,7 @@ class DocsScreen extends React.Component<IProps, IState> {
 const styles = StyleSheet.create({
   header: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+    },
   container: {
     flex: 1,
     marginLeft: 5,

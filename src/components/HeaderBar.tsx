@@ -112,7 +112,7 @@ class HeaderBar extends React.Component<IProps, IState> {
                             color={colors.BLACK}
                             onPress={this.onRightIconClick}
                             containerStyle={[styles.iconContainer, styles.rightIconContainer]} /> : <Text style={styles.iconContainer}></Text> }
-                    { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange.startDate)} - {formatDate(this.props.dateRange.endDate)}</Text> : null }
+                    { this.state.isDateRangeValid ? <Text style={styles.dateRange}>{formatDate(this.props.dateRange?.startDate)} - {formatDate(this.props.dateRange?.endDate)}</Text> : null }
                     { this.props.rightText ? <Text style={[styles.rightText]} onPress={this.onRightTextClick}>{this.props.rightText}</Text> : null }
                 </View>
             </View>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 5,
-        height: 60
+        height: 60,
     },
     title: {
         ...typos.LARGE_TITLE,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, Image, TouchableOpacity, BackHandler } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Image, TouchableOpacity, BackHandler, ScrollView } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -19,7 +19,6 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps as userAction } from '@actions/user';
 import { mapDispatchToProps as docAction } from '@actions/doc';
 import { validate } from '@utils';
-import { ScrollView } from 'react-native-gesture-handler';
 import FullWidthImage from 'react-native-fullwidth-image';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -369,7 +368,6 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     marginLeft: 5,

@@ -1,7 +1,6 @@
 import { colors, typos, responsive } from '@styles';
 import * as React from 'react';
-import { StyleSheet, Text, View, KeyboardTypeOptions } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, KeyboardTypeOptions, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 export enum FieldType {

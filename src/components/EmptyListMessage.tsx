@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
         ...typos.PRIMARY_LIGHT,
         textAlign: 'center',
         padding: 10,
+        margin: 20,
     },
 
 });

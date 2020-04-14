@@ -4,7 +4,8 @@ import * as React from 'react';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-import { View, NetInfo, StatusBar, Platform } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 import { AppNavigator } from '@router';
 
 // redux
@@ -13,6 +14,7 @@ import { Creators as OnlineActions } from '@actions/online';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
+import { colors } from '@styles';
 
 // interfaces
 interface Props {}
@@ -20,17 +22,25 @@ interface Props {}
 interface State {
   isReady: boolean;
   // timer: NodeJS.Timeout | undefined;
+  type: any;
+  isConnected: boolean;
 }
 
 export default class App extends React.Component<Props, State> {
+  netInfoSubscribe: any;
+
   state = {
-    isReady: false //timer: undefined
+    isReady: false, //timer: undefined
+    type: null,
+    isConnected: false
   };
 
   async componentDidMount() {
     // add event listener to catch connectivity changes
-    NetInfo.addEventListener('connectionChange', this.handleConnectivityChange);
-
+    this.netInfoSubscribe = NetInfo.addEventListener(netinfostate => {
+        this.handleConnectivityChange();
+    });    
+    
     await Font.loadAsync({
       'Montserrat-Black': require('./assets/fonts/Montserrat-Black.otf'),
       'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.otf'),
@@ -52,10 +62,9 @@ export default class App extends React.Component<Props, State> {
     // if (this.state.timer) {
     // clearInterval(this.state.timer);
     // }
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this.handleConnectivityChange
-    );
+
+    // Unsubscribe Net Info Listener
+    this.netInfoSubscribe();
   }
 
   // tick = () => {
@@ -63,11 +72,11 @@ export default class App extends React.Component<Props, State> {
   // };
 
   // handle connectivity changes and fire action to update store
-  handleConnectivityChange(reach) {
-    if (reach.type === 'none') {
-      store.dispatch(OnlineActions.offline());
-    } else {
+  handleConnectivityChange() {
+    if (this.state.isConnected) {
       store.dispatch(OnlineActions.online());
+    } else {
+      store.dispatch(OnlineActions.offline());
     }
   }
 
@@ -105,10 +114,9 @@ export default class App extends React.Component<Props, State> {
         <Provider store={store}>
           <PersistGate persistor={persistor}>
               <StatusBar barStyle={Platform.OS === "android" ? "light-content" : "dark-content"}/>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1}}>
                 <ActionSheetProvider>
                   <AppNavigator />
-                  {/*TODO: Set Overlay screen here*/}
                 </ActionSheetProvider>
               </View>
           </PersistGate>

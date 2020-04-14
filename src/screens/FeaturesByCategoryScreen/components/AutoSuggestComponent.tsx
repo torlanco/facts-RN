@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 
 // Interfaces
 import { IAdvertisement } from '@interfaces/advertisement';
@@ -15,7 +15,6 @@ import { mapDispatchToProps } from '@actions/advertisement';
 import Autocomplete from 'react-native-autocomplete-input';
 import { Text, Icon } from 'react-native-elements';
 import { colors, typos } from '@styles';
-import { TextInput } from 'react-native-gesture-handler';
 import { CONSTANTS, capitalize } from '@utils';
 
 interface IOwnProps {

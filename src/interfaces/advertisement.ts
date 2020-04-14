@@ -58,7 +58,6 @@ export namespace IAdvertisement {
         toggleFavoriteFeature(featureId?: any): Function;
 
         // clearing the store
-        fetchFeaturesByBrand(brand?: string): Function;
         clearFeaturesByBrand(): Function;
     }
 }

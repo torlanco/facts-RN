@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, BackHandler } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity, BackHandler, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -18,7 +18,6 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { CheckBox, Divider } from 'react-native-elements';
 import { validate, CONSTANTS } from '@utils';
-import { ScrollView } from 'react-native-gesture-handler';
 
 // props
 interface ParamType {
@@ -155,7 +154,7 @@ class LoginScreen extends React.Component<IProps, IState> {
       <SafeAreaView style={styles.flex}>
         <View style={[styles.flex, styles.mainContainer]}>
           <HeaderBar title="" rightText='Skip' onRightTextClick={this.redirectToMain}></HeaderBar>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.flex}>
             <View style={styles.container}>
               <Text style={styles.heading}>Log in</Text>
               <Text style={styles.subHeadig}>to continue</Text>
@@ -196,13 +195,13 @@ class LoginScreen extends React.Component<IProps, IState> {
                 </TouchableOpacity>
                 <View style={styles.flex}/>
                 <TouchableOpacity onPress={this.onLoginWithOtp}>
-                 <Text style={[styles.link]}>Login with OTP</Text>
+                <Text style={[styles.link]}>Login with OTP</Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+          </ScrollView>            
           <View style={[styles.bottomAction]}>
-            <Divider style={{marginVertical: 10, backgroundColor: colors.BLACK}}/>
+            <Divider style={{margin: 10, backgroundColor: colors.BLACK}}/>
             <View style={styles.row}>
               <View style={[styles.flex, styles.row]}>
                 <View style={[{paddingTop: 15}]}>
@@ -231,8 +230,7 @@ const styles = StyleSheet.create({
    },
    mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-   },
+    },
    container: {
     flex: 1,
     marginLeft: 5,
@@ -314,11 +312,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0
   },
   bottomAction: {
-    position: "absolute",
-    bottom: 20,
-    left: 22,
-    right: 22,
-    zIndex: 1,
+    // position: "absolute",
+    // bottom: 20,
+    // left: 22,
+    // right: 22,
+    // zIndex: 1,
+    padding: 20,
     backgroundColor: colors.WHITE
   },
   bottomActionText: {

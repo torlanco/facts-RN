@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Interfaces
@@ -16,9 +16,7 @@ import { connect } from "react-redux";
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { mapDispatchToProps } from '@actions/user';
 import { validate } from '@utils';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { ScrollView } from 'react-native-gesture-handler';
 
 interface ParamType {
   isForLogin?: string;
@@ -221,8 +219,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+    },
   container: {
     marginLeft: 5,
     marginRight: 5,

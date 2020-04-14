@@ -112,12 +112,13 @@ class FeaturesByCategoryScreen extends React.Component<IProps, IState> {
 
   getFeaturesView() {
     return <SectionList
-      sections={this.state.advertisementList}
-      keyExtractor={(item, index) => item.key}
-      renderItem={({ item }) => <View style={styles.flex}><AdvertisementGridView onItemPress={this.redirectToAdvertisementDetail} listkey={item.key} advertisementList={item.features}/></View>}
-      renderSectionHeader={({ section: { outlet } }) => (
-        <Text style={styles.outlet}>{outlet}</Text>
-      )} />
+        sections={this.state.advertisementList}
+        keyExtractor={(item, index) => item.key}
+        renderItem={({ item }) => <View style={styles.flex}><AdvertisementGridView onItemPress={this.redirectToAdvertisementDetail} listkey={item.key} advertisementList={item.features}/></View>}
+        renderSectionHeader={({ section: { outlet } }) => (
+          <Text style={styles.outlet}>{outlet}</Text>
+        )} 
+        ListEmptyComponent={() => <EmptyListMessage message={"No Result Found"}/>}/>
       { /* ListEmptyComponent={() => <View style={{marginTop: 40}}>
         <Icon
           name='x'
@@ -175,8 +176,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Platform.OS === "android" ? 0 : -5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+    },
   mainContainer: {
     flex: 1,
   },
