@@ -4,7 +4,8 @@ import {
     View,
     ScrollView,
     FlatList,
-    Dimensions
+    Dimensions,
+    RefreshControl
 } from 'react-native';
 import { IAdvertisement } from '@interfaces/advertisement';
 import { AdvertisementGridItem } from './AdvertisementGridItem';
@@ -18,65 +19,88 @@ interface IOwnProps {
   listkey?: string;
   onItemToggleFavourite?: Function;
   onScrollEndReached?: Function;
-  listRefreshToggler?: boolean;
+  refreshing: boolean;
+  onRefresh?: Function;
 }
 type IProps = IOwnProps;
-const AdvertisementGridView: React.SFC<IProps> = (props: IProps) => {
 
-  const sectionOneAdvertisement = props.advertisementList ? props.advertisementList.filter((item, index) => {
+interface IState {}
+class AdvertisementGridView extends React.Component<IProps, IState> {
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {}
+  }
+
+  sectionOneAdvertisement = () => this.props.advertisementList ? this.props.advertisementList.filter((item, index) => {
     if (!(index & 1)) {
       return item;
     }
   }) : [];
 
-  const sectionTwoAdvertisement = props.advertisementList ? props.advertisementList.filter((item, index) => {
+  sectionTwoAdvertisement = () => this.props.advertisementList ? this.props.advertisementList.filter((item, index) => {
     if (index & 1) {
       return item;
     }
   }) : [];
 
-  const onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
-    if (props.onItemPress)
-        props.onItemPress(advertisement);
+  onItemPress = (advertisement: IAdvertisement.IAdvertisementData) => {
+    if (this.props.onItemPress)
+        this.props.onItemPress(advertisement);
   }
 
-  const onToggleFavourite = (data: any) => {
-    if (props.onItemToggleFavourite) {
-      props.onItemToggleFavourite(data);
+  onToggleFavourite = (data: any) => {
+    if (this.props.onItemToggleFavourite) {
+      this.props.onItemToggleFavourite(data);
     }
   }
 
-  const onScrollEndReached = (event: any) => {
+  onScrollEndReached = (event: any) => {
     let windowHeight = Dimensions.get('window').height,
         height = event.nativeEvent.contentSize.height,
         offset = event.nativeEvent.contentOffset.y;
-    if( windowHeight + offset >= height && props.onScrollEndReached) {
-      props.onScrollEndReached();
+    if( windowHeight + offset >= height && this.props.onScrollEndReached) {
+      this.props.onScrollEndReached();
     }
   }
 
-  return (
-    <ScrollView style={styles.flex} showsVerticalScrollIndicator={false} onMomentumScrollEnd={onScrollEndReached}>
-      <View style={styles.container}>
-        <FlatList
-          listKey={(props.listkey ? props.listkey : '') + '_section1'}
-          contentContainerStyle={styles.list}
-          data={sectionOneAdvertisement}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString() }
-          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet} onToggleFavourite={onToggleFavourite}/>}
-          enableEmptySections={true}
-          extraData={props.listRefreshToggler}/>
-        <FlatList
-          listKey={(props.listkey ? props.listkey : '') + '_section2'}
-          contentContainerStyle={styles.list}
-          data={sectionTwoAdvertisement}
-          keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() : item.dummyId?.toString()}
-          renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={onItemPress} outlet={props.outlet} onToggleFavourite={onToggleFavourite}/>}
-          enableEmptySections={true}
-          extraData={props.listRefreshToggler}/>
-      </View>
-    </ScrollView>
-  );
+  onRefresh = () => {
+    if (this.props.onRefresh) {
+      this.props.onRefresh();
+    }
+  }
+
+  render() {
+    return (
+      <ScrollView style={styles.flex} showsVerticalScrollIndicator={false} onMomentumScrollEnd={this.onScrollEndReached}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.refreshing}
+            onRefresh={this.onRefresh}
+            tintColor="rgba(0,0,0,0.5)"
+          />
+        }>
+        <View style={styles.container}>
+          <FlatList
+            listKey={(this.props.listkey ? this.props.listkey : '') + '_section1'}
+            contentContainerStyle={styles.list}
+            data={this.sectionOneAdvertisement()}
+            keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() + item.isFavorite : item.dummyId?.toString() }
+            renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={this.onItemPress}
+              outlet={this.props.outlet} onToggleFavourite={this.onToggleFavourite}/>}
+            enableEmptySections={true}/>
+          <FlatList
+            listKey={(this.props.listkey ? this.props.listkey : '') + '_section2'}
+            contentContainerStyle={styles.list}
+            data={this.sectionTwoAdvertisement()}
+            keyExtractor={(item: IAdvertisement.IAdvertisementData) => item.id ? item.id.toString() + item.isFavorite : item.dummyId?.toString()}
+            renderItem={({item}) => <AdvertisementGridItem advertisement={item} onItemPress={this.onItemPress}
+              outlet={this.props.outlet} onToggleFavourite={this.onToggleFavourite}/>}
+            enableEmptySections={true}/>
+        </View>
+      </ScrollView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { StyleSheet, SafeAreaView, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, ScrollView, RefreshControl } from 'react-native';
 import { typos, colors } from '@styles';
 
 // Component
@@ -36,7 +36,8 @@ type IProps = IOwnProps &
 // state
 interface IState {
   outlet: string,
-  shoppersList: Array<IShopper.IShopperData>
+  shoppersList: Array<IShopper.IShopperData>,
+  refreshing: boolean
 }
 
 const mapStateToProps = function(state: any){
@@ -58,16 +59,18 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     this.state = {
       outlet: outlet.outlet || '',
       shoppersList: [],
+      refreshing: false
     };
 
     this.fetchShoppers();
   }
 
-  async fetchShoppers() {
+  async fetchShoppers(onRefresh?: boolean) {
       const { outlet } = this.props.navigation.state.params;
       const shoppers: any = await this.props.fetchShoppers(outlet.earliestStartDate, outlet.latestEndDate, this.state.outlet);
       this.setState({
-        shoppersList: shoppers
+        shoppersList: shoppers,
+        refreshing: onRefresh ? false : this.state.refreshing
       });
   }
 
@@ -81,6 +84,13 @@ class ShoppersScreen extends React.Component<IProps, IState> {
     const { outlet } = this.props.navigation.state.params;
     this.props.navigation.navigate('AdvertisementScreen', { outlet: outlet, shopper: shopper });
   };
+
+  onRefresh = () => {
+    if (!this.state.refreshing) {
+      this.setState({refreshing: true});
+      this.fetchShoppers(true);
+    }
+  }
 
   public render() {
     const { outlet } = this.props.navigation.state.params;
@@ -96,13 +106,21 @@ class ShoppersScreen extends React.Component<IProps, IState> {
               </SelectPicker>
               <Text style={styles.text}><Text style={styles.textBold}>{this.state.shoppersList.length} </Text>SHOPPERS</Text>
             </View>
-            <FlatList
-              data={this.state.shoppersList}
-              keyExtractor={(item: IShopper.IShopperData) => item.id}
-              renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress} outlet={outlet}></ShopperCard>}
-              showsVerticalScrollIndicator={false}/>
+            <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.onRefresh}
+                  tintColor="rgba(0,0,0,0.5)"/>
+              }>
+                <FlatList
+                  data={this.state.shoppersList}
+                  keyExtractor={(item: IShopper.IShopperData) => item.id}
+                  renderItem={({item}) => <ShopperCard shopper={item} onItemPress={this.onItemPress} outlet={outlet}></ShopperCard>}
+                  showsVerticalScrollIndicator={false}/>
+            </ScrollView>     
           </View>
-          {this.props.loading && <LoadingScreen />}
+          {this.props.loading && !this.state.refreshing && <LoadingScreen />}
         </SafeAreaView>
     );
   }
@@ -119,6 +137,9 @@ const styles = StyleSheet.create({
   text: {
     ...typos.PRIMARY,
     padding: 10,
+  },
+  flex: {
+    flex: 1
   },
   textBold: {
     ...typos.PRIMARY,

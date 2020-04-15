@@ -46,7 +46,7 @@ interface IState {
   advertisementList: Array<IAdvertisement.IAdvertisementData>,
   viewType: ViewType,
   category: string,
-  listRefreshToggler: boolean
+  refreshing: boolean;
 }
 
 const mapStateToProps = function(state: any){
@@ -68,17 +68,18 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
       advertisementList: [],
       viewType: ViewType.Grid,
       category: '',
-      listRefreshToggler: false
+      refreshing: false
     };
   }
 
-  async fetchAdvertisements() {
+  async fetchAdvertisements(onRefresh?: boolean) {
     const { shopper } = this.props.navigation.state.params;
     await this.props.fetchAdvertisements(shopper.id);
     const category = this.props.categories ? this.props.categories[0].split(CONSTANTS.PICKER_STRING_SEPARATOR)[0].trim() : '';
     this.setState({
       category: category,
       advertisementList: this.filterAdvertisements(category),
+      refreshing: onRefresh ? false : this.state.refreshing
     });
   }
 
@@ -99,6 +100,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this._isMounted = true;
+    this.fetchAdvertisements();
   }
 
   componentWillUnmount() {
@@ -126,16 +128,23 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
   onScreenFocus = () => {
     if (this._isMounted) {
       this.setState({
-        listRefreshToggler: !this.state.listRefreshToggler
+        advertisementList: this.filterAdvertisements(this.state.category),
       });
-      this.fetchAdvertisements();      
+    }
+  }
+
+  onRefresh = () => {
+    if (this._isMounted && !this.state.refreshing) {
+      this.setState({refreshing: true});
+      this.fetchAdvertisements(true);
     }
   }
 
   getView() {
     const { outlet } = this.props.navigation.state.params;
     return this.state.viewType === ViewType.Grid
-      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress} outlet={outlet} listRefreshToggler={this.state.listRefreshToggler}></AdvertisementGridView>
+      ? <AdvertisementGridView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress} outlet={outlet}
+          refreshing={this.state.refreshing} onRefresh={this.onRefresh}/>
       : <AdvertisementListView advertisementList={this.state.advertisementList} onItemPress={this.onItemPress}></AdvertisementListView>
   }
 
@@ -153,7 +162,7 @@ class AdvertisementScreen extends React.Component<IProps, IState> {
             </View>
             { this.getView() }
           </View>
-          {this.props.loading && <LoadingScreen />}
+          {this.props.loading && !this.state.refreshing && <LoadingScreen />}
       </SafeAreaView>
     );
   }

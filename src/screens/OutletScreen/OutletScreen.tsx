@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // UI
-import { FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, RefreshControl } from 'react-native';
 
 // Components
 import { ActionButton, HeaderBar } from '@components';
@@ -32,7 +32,8 @@ interface IState {
     channels: string[],
     sectionOneOutlet: Array<IOutlet.IOutletData>,
     sectionTwoOutlet: Array<IOutlet.IOutletData>,
-    loading: boolean
+    loading: boolean,
+    refreshing: boolean
 }
 
 const mapStateToProps = function (state: any) {
@@ -54,18 +55,20 @@ class OutletScreen extends React.Component<IProps, IState> {
             channels: [],
             sectionOneOutlet: [],
             sectionTwoOutlet: [],
-            loading: true
+            loading: true,
+            refreshing: false
         };
 
         this.fetchOutlets();
     }
 
-    async fetchOutlets() {
+    async fetchOutlets(onRefresh?: boolean) {
         await this.props.fetchOutlets();
         this.setState({
             channels: (this.props.channels ? this.props.channels : []),
             selectedTab: (this.props.channels ? this.props.channels[0] : ''),
             loading: false,
+            refreshing: onRefresh ? false : this.state.refreshing
         });
         this.filterOutlets(this.props.channels ? this.props.channels[0] : '')
     }
@@ -116,6 +119,13 @@ class OutletScreen extends React.Component<IProps, IState> {
         this.filterOutlets(buttonText);
     }
 
+    onRefresh = () => {
+        if (!this.state.refreshing) {
+          this.setState({refreshing: true});
+          this.fetchOutlets(true);
+        }
+    }
+
     public render() {
         const { onlyOutlets, loading } = this.props;
         const containerStyle: any = {};
@@ -144,24 +154,32 @@ class OutletScreen extends React.Component<IProps, IState> {
                                 </Text> : null}
                         </View>}
                         <View style={styles.wrapper}>
-                            <ScrollView contentContainerStyle={styles.row} showsVerticalScrollIndicator={false}>
+                            <ScrollView contentContainerStyle={styles.row} showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                    <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this.onRefresh}
+                                    tintColor="rgba(0,0,0,0.5)"/>
+                                }>
                                 <FlatList
                                     contentContainerStyle={styles.list}
                                     data={this.state.sectionOneOutlet}
                                     keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
                                     renderItem={({ item }) => <OutletCard outlet={item} onItemPress={this.onItemPress} />}
-                                    enableEmptySections={true} />
+                                    enableEmptySections={true} 
+                                    extraData={this.state.sectionOneOutlet.toString()}/>
                                 <FlatList
                                     contentContainerStyle={styles.list}
                                     data={this.state.sectionTwoOutlet}
                                     keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
                                     renderItem={({ item }) => <OutletCard outlet={item} onItemPress={this.onItemPress} />}
-                                    enableEmptySections={true} />
+                                    enableEmptySections={true} 
+                                    extraData={this.state.sectionOneOutlet.toString()}/>
                             </ScrollView>
                         </View>
                     </View>
                 </View>
-                {loading && !onlyOutlets && <LoadingScreen />}
+                {loading && !onlyOutlets && !this.state.refreshing && <LoadingScreen />}
             </SafeAreaView>
         )
     }
