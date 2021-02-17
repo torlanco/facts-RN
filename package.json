@@ -13,7 +13,8 @@
     "@types/react-redux": "^7.1.0",
     "axios": "^0.18.0",
     "events": "^3.0.0",
-    "expo": "^36.0.0",
+    "expo": "^40.0.0",
+    "expo-app-loading": "^1.0.1",
     "expo-asset": "~8.0.0",
     "expo-camera": "~8.0.0",
     "expo-font": "~8.0.0",
@@ -35,6 +36,7 @@
     "react-native-modal-selector": "^1.0.3",
     "react-native-picker-select": "^6.3.3",
     "react-native-screens": "^2.11.0",
+    "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-view-overflow": "0.0.4",
     "react-native-view-shot": "3.0.2",
@@ -47,7 +49,7 @@
     "rn-viewpager": "^1.2.9"
   },
   "devDependencies": {
-    "@types/expo": "^32.0.0",
+    "@types/expo": "^33.0.0",
     "@types/node": "^10.12.24",
     "@types/react": "^16.9.0",
     "@types/react-native": "^0.60.15",

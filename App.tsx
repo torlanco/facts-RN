@@ -3,7 +3,7 @@ import * as React from 'react';
 // ui
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { View, StatusBar, Platform } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { AppNavigator } from '@router';
