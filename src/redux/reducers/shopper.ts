@@ -17,6 +17,7 @@ export function shopper(
     case Types.FETCH_SHOPPERS:
       return {
         ...state,
+        shoppers: [],
         error: false,
         loading: true
       };

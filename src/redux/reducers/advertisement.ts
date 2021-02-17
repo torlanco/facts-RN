@@ -28,6 +28,7 @@ export function advertisement(
     case Types.FETCH_ADVERTISEMENTS:
       return {
         ...state,
+        advertisements: [],
         error: false,
         loading: true
       };
