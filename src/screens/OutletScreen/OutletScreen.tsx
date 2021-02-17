@@ -40,9 +40,7 @@ const mapStateToProps = function (state: any) {
     return {
         outlets: state.outlet.outlets,
         channels: state.outlet.channels,
-        loading: state.outlet.loading ||
-            state.shopper.loading ||
-            state.advertisement.loading
+        loading: state.outlet.loading,
     }
 }
 
