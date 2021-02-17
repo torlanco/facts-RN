@@ -188,19 +188,19 @@ class RegisterScreen extends React.Component<IProps, IState> {
                   }}
                   error={this.state.lastNameError}/>
 
-                <Text style={styles.label}>Phone</Text>
-                <PhoneField
-                  onChangeText={(value: any) => {
-                    this.setState({
-                      phone: value
-                    })
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      phoneError: validate('phone', this.state.phone)
-                    })
-                  }}
-                  error={this.state.phoneError}/>
+                {/*<Text style={styles.label}>Phone</Text>*/}
+                {/*<PhoneField*/}
+                {/*  onChangeText={(value: any) => {*/}
+                {/*    this.setState({*/}
+                {/*      phone: value*/}
+                {/*    })*/}
+                {/*  }}*/}
+                {/*  onBlur={() => {*/}
+                {/*    this.setState({*/}
+                {/*      phoneError: validate('phone', this.state.phone)*/}
+                {/*    })*/}
+                {/*  }}*/}
+                {/*  error={this.state.phoneError}/>*/}
 
                 <Text style={styles.label}>Password</Text>
                 <TextField
