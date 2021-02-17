@@ -75,16 +75,6 @@ class HomeScreen extends React.Component<IProps, IState> {
                                    <AutoSuggestComponent disabled={true}/>
                                 </View>
                             </TouchableOpacity>
-
-                            {/* CATEGORIES */}
-                            <View style={[styles.componentWrapper, {marginBottom: 10}]}>
-                                <View style={styles.row}>
-                                    <View style={styles.flex}>
-                                        <Text style={styles.highlight}>CATEGORIES</Text>
-                                        <Text style={styles.note}>Find what is popular among categories</Text>
-                                    </View>
-                                </View>
-                            </View>
                             <Categories/>
 
                             {/* OUTLETS */}
@@ -119,14 +109,6 @@ class HomeScreen extends React.Component<IProps, IState> {
                             <PopularSpecials/>
 
                             {/* PROMOTIONS */}
-                            <View style={[styles.componentWrapper, {marginTop: 20}]}>
-                                <View style={styles.row}>
-                                    <View style={[styles.flex, {marginBottom: 20}]}>
-                                        <Text style={styles.highlight}>PROMOTIONS</Text>
-                                        <Text style={styles.note}>Find what is popular among promotions</Text>
-                                    </View>
-                                </View>
-                            </View>
                             <Promotions/>
 
                         </View>

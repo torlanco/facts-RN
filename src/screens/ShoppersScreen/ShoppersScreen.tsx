@@ -43,9 +43,7 @@ interface IState {
 const mapStateToProps = function(state: any){
   return {
     outlets: state.outlet.outletNames,
-    loading: state.outlet.loading ||
-      state.shopper.loading ||
-      state.advertisement.loading
+    loading: state.shopper.loading,
   }
 };
 

@@ -57,21 +57,41 @@ class Categories extends React.Component<IProps, IState> {
       </Card>
     }
 
-    public render() {
+    emptyView () {
+        return <View></View>;
+    }
+
+    renderCategoryList() {
         return (
-            <SafeAreaView style={{paddingLeft: 5, paddingTop: 10}}>
-                <View>
-                    { this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
-                    <FlatList
-                        data={this.props.categories || []}
-                        renderItem={({ item }) => this._renderItem(item)}
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        style={{paddingLeft: Platform.OS === "android" ? 15 : 20}}/>
+            <View>
+                <View style={[styles.componentWrapper, {marginBottom: 10}]}>
+                    <View style={styles.row}>
+                        <View style={styles.flex}>
+                            <Text style={styles.highlight}>CATEGORIES</Text>
+                            <Text style={styles.note}>Find what is popular among categories</Text>
+                        </View>
+                    </View>
                 </View>
-            </SafeAreaView>
+                <SafeAreaView style={{paddingLeft: 5, paddingTop: 10}}>
+                    <View>
+                        { this.state.loading && <SkypeIndicator color={colors.PRIMARY} /> }
+                        <FlatList
+                            data={this.props.categories || []}
+                            renderItem={({ item }) => this._renderItem(item)}
+                            keyExtractor={(item, index) => index.toString()}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            style={{paddingLeft: Platform.OS === "android" ? 15 : 20}}/>
+                    </View>
+                </SafeAreaView>
+            </View>
         )
+    }
+
+    public render () {
+        return (
+            this.props.categories?.length ? this.renderCategoryList() : this.emptyView()
+        );
     }
 }
 
@@ -111,7 +131,29 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '100%',
       borderRadius: 10,
-    }
+    },
+    componentWrapper: {
+        paddingHorizontal: 20,
+        marginTop: 10,
+    },
+    flex: {
+        flex: 1
+    },
+    row: {
+        flexDirection: 'row',
+    },
+    list: {
+        flex: 1,
+        flexDirection: 'column',
+        paddingVertical: 10,
+    },
+    highlight: {
+        ...typos.LARGE_TITLE,
+        margin: 0,
+    },
+    note: {
+        ...typos.CAPTION,
+    },
 });
 
 const CategoriesWrapper = connect(mapStateToProps, mapDispatchToProps)(Categories);

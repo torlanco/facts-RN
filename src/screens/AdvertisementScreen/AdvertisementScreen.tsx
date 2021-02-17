@@ -53,9 +53,7 @@ const mapStateToProps = function(state: any){
   return {
     advertisements: state.advertisement.advertisements,
     categories: state.advertisement.categories,
-    loading: state.outlet.loading ||
-      state.shopper.loading ||
-      state.advertisement.loading
+    loading: state.advertisement.loading
   }
 }
 
