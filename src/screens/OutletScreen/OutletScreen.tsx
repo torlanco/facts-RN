@@ -83,18 +83,17 @@ class OutletScreen extends React.Component<IProps, IState> {
 
   scrollToOutLet(channel: string) {
     let outletIndex = 0;
-    console.log('length', this.state.outletList.length, channel)
+    let outletFound =  false;
     this.state.outletList.map((outlet, i) => {
-      console.log(outlet.channelName, i)
-      if (outlet.channelName === channel) {
+      if (outlet.channelName === channel && !outletFound) {
         outletIndex = i;
+        outletFound = true;
+        return;
       }
-      return;
     })
     this.outletListRef?.current?.scrollToIndex({
       index: outletIndex
     });
-    console.log(outletIndex);
     // let outletList: Array<IOutlet.IOutletData>;
     // if (!this.props.outlets) {
     //     outletList = [];
