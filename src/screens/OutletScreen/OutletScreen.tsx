@@ -9,7 +9,7 @@ import { OutletCard } from './components/OutletCard';
 
 // Interfaces
 import { IOutlet } from '@interfaces/outlet';
-import { NavigationInjectedProps, ScrollView, withNavigation } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 
 // Props Action
 import { connect } from "react-redux";
@@ -18,8 +18,12 @@ import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
 import { typos, colors } from '@styles';
 import { SkypeIndicator } from 'react-native-indicators';
 
+// Misc
+import _ from 'lodash'
+
 interface IOwnProps {
   onlyOutlets?: boolean;
+  forHomeScreen?: boolean;
 }
 type IProps = IOwnProps &
   NavigationInjectedProps &
@@ -70,6 +74,8 @@ class OutletScreen extends React.Component<IProps, IState> {
     this.outletListRef = React.createRef();
   }
 
+  getGroupedOutlets = (outlets: IOutlet.IOutletData[]) => _.sortBy(outlets, ['channelName']);
+  
   async fetchOutlets(onRefresh?: boolean) {
     await this.props.fetchOutlets();
     this.setState({
@@ -77,9 +83,37 @@ class OutletScreen extends React.Component<IProps, IState> {
       selectedTab: (this.props.channels ? this.props.channels[0] : ''),
       loading: false,
       refreshing: onRefresh ? false : this.state.refreshing,
-      outletList: this.props.outlets || [],
+      outletList: this.props.outlets ? this.getGroupedOutlets(this.props.outlets) : [],
     });
+    if (this.props.forHomeScreen) {
+      this.setOutletsForHomeScreen();
+    }
   }
+
+  setOutletsForHomeScreen = () => {
+    let outletList: Array<IOutlet.IOutletData>;
+    if (!this.props.outlets) {
+        outletList = [];
+    } else {
+      outletList = this.props.outlets ? 
+          (this.props.outlets.length > 10 ? this.props.outlets.slice(0, 10) : this.props.outlets) : [];
+    }
+    let sectionOneOutlet: IOutlet.IOutletData[] = outletList.filter((item, index) => {
+      if (!(index & 1)) {
+        return item;
+      }
+    })
+
+    let sectionTwoOutlet: IOutlet.IOutletData[] = outletList.filter((item, index) => {
+      if (index & 1) {
+        return item;
+      }
+    })
+    this.setState({
+      sectionOneOutlet,
+      sectionTwoOutlet
+    })
+  };
 
   scrollToOutLet(channel: string) {
     let outletIndex = 0;
@@ -94,22 +128,6 @@ class OutletScreen extends React.Component<IProps, IState> {
     this.outletListRef?.current?.scrollToIndex({
       index: outletIndex
     });
-    // let outletList: Array<IOutlet.IOutletData>;
-    // if (!this.props.outlets) {
-    //     outletList = [];
-    // } else {
-    // //     outletList = this.props.outlets;
-    // // } else {
-    //     outletList = this.props.outlets.filter((outlet) => {
-    //         return outlet.channelName == channel;
-    //     });
-    // }
-    // if (this.props.onlyOutlets) {
-    //     outletList = this.props.outlets ? 
-    //         (this.props.outlets.length > 10 ? this.props.outlets.slice(0, 10) : this.props.outlets) : [];
-    // }
-    // this.setState({ outletList })
-
   }
 
   onItemPress = (outlet: IOutlet.IOutletData) => {
@@ -153,6 +171,50 @@ class OutletScreen extends React.Component<IProps, IState> {
     this.scrollToChannel(this.getSelectedChannel(viewableItems));
   }
 
+  getListLayout = () => {
+    if (this.props.forHomeScreen) {
+      return (
+        <View style={styles.row}>
+          <FlatList
+            contentContainerStyle={styles.list}
+            data={this.state.sectionOneOutlet}
+            keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
+            renderItem={({ item }) => <OutletCard outlet={item} onItemPress={this.onItemPress} />}
+            enableEmptySections={true}
+            extraData={this.state.sectionOneOutlet.toString()} />
+          <FlatList
+            contentContainerStyle={styles.list}
+            data={this.state.sectionTwoOutlet}
+            keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
+            renderItem={({ item }) => <OutletCard outlet={item} onItemPress={this.onItemPress} />}
+            enableEmptySections={true}
+            extraData={this.state.sectionOneOutlet.toString()} />
+        </View>
+      )
+    } else {
+      return (
+        <FlatList
+          ref={this.outletListRef}
+          contentContainerStyle={styles.list}
+          data={this.state.outletList}
+          keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
+          renderItem={({ item }) => <OutletCard outlet={item} onItemPress={this.onItemPress} />}
+          enableEmptySections={true}
+          viewabilityConfig={this.viewabilityConfig}
+          onViewableItemsChanged={this.onViewableItemsChanged}
+          extraData={this.state.outletList.toString()}
+          onRefresh={this.onRefresh}
+          refreshing={this.state.refreshing}
+          refreshControl={(
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+              tintColor="rgba(0,0,0,0.5)" />
+          )}
+        />
+      )
+    }
+  };
 
   public render() {
     const { onlyOutlets, loading } = this.props;
@@ -194,31 +256,7 @@ class OutletScreen extends React.Component<IProps, IState> {
                 </Text> : null}
             </View>}
             <View style={styles.wrapper}>
-              {/* <ScrollView
-                contentContainerStyle={styles.row}
-                showsVerticalScrollIndicator={false}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.onRefresh}
-                    tintColor="rgba(0,0,0,0.5)"
-                  />
-                }
-              > */}
-                {/* <View style={{ width: '100%' }}> */}
-                  <FlatList
-                    ref={this.outletListRef}
-                    contentContainerStyle={styles.list}
-                    data={this.state.outletList}
-                    keyExtractor={(item: IOutlet.IOutletData) => item.outlet}
-                    renderItem={({ item }) => <OutletCard outlet={item} onItemPress={this.onItemPress} />}
-                    enableEmptySections={true}
-                    viewabilityConfig={this.viewabilityConfig}
-                    onViewableItemsChanged={this.onViewableItemsChanged}
-                    extraData={this.state.outletList.toString()}
-                  />
-                {/* </View> */}
-              {/* </ScrollView> */}
+                {this.getListLayout()}
             </View>
           </View>
         </View>
