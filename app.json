@@ -3,7 +3,6 @@
     "name": "Facts Shopper",
     "slug": "facts-mobile-app",
     "privacy": "unlisted",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android"
@@ -29,7 +28,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.factscloud.factsapp"
     },
-    "description": "",
+    "description": "Facts Shopper es una herramienta móvil para descubrir especiales en todo Puerto Rico.",
     "packagerOpts": {
       "config": "metro.config.js",
       "sourceExts": [

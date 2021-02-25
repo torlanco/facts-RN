@@ -40,7 +40,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
             data={props.options}
             keyExtractor= {(item: string) => item}
             labelExtractor= {(item: string) => item}
-            initValue={props.value}
+            initValue={ '' + props.value}
             onChange={props.handleValueChange}
             optionTextStyle={{textTransform: 'capitalize'}}>
 
@@ -76,7 +76,7 @@ const SelectPicker: React.SFC<IProps> = (props: IProps) => {
                 type='feather'
                 color={colors.BLACK}
                 containerStyle={styles.icon}/> }}
-              value={props.value}
+              value={ '' + props.value}
               textInputProps={{style: [styles.pickerTextInputProps]}}
           />
         </View>
