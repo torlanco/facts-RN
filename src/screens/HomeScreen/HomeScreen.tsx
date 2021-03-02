@@ -94,7 +94,10 @@ class HomeScreen extends React.Component<IProps, IState> {
                                 </View>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <OutletScreen onlyOutlets={true}/>
+                                <OutletScreen 
+                                  onlyOutlets={true}
+                                  forHomeScreen={true}
+                                />
                             </View>
 
                             {/* POPULAR SPECIALS */}
