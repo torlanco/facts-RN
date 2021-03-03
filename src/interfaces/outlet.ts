@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 export namespace IOutlet {
 
   export interface IOutletData {
@@ -10,6 +12,13 @@ export namespace IOutlet {
     latestEndDate?: string,
   }
 
+  export interface IChannelProps {
+    listRef: RefObject<any>;
+    channels: string[];
+    selectedTab: string;
+    onChannelSelect: (buttonText: string) => void;
+  }
+  
   export interface StateToProps {
     error?: string | boolean;
     loading?: boolean;

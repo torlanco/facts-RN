@@ -6,6 +6,7 @@ import { FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, Re
 // Components
 import { ActionButton, HeaderBar } from '@components';
 import { OutletCard } from './components/OutletCard';
+import Channels from './components/Channels';
 
 // Interfaces
 import { IOutlet } from '@interfaces/outlet';
@@ -230,29 +231,19 @@ class OutletScreen extends React.Component<IProps, IState> {
           {onlyOutlets && this.state.loading && <SkypeIndicator color={colors.PRIMARY} />}
           <View style={styles.mainContainer}>
             {!onlyOutlets && <View style={{ marginTop: 10, marginBottom: 10 }}>
-              <FlatList
-                ref={this.channelListRef}
-                data={this.state.channels}
-                renderItem={({ item }) => (
-                  <ActionButton
-                    title={item}
-                    inverted={this.state.selectedTab == item}
-                    onPress={this.onActionButtonPress}
-                  />
-                )}
-                extraData={this.state.selectedTab}
-                keyExtractor={(item, index) => index.toString()}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
+              <Channels
+                listRef={this.channelListRef}
+                channels={this.state.channels}
+                selectedTab={this.state.selectedTab}
+                onChannelSelect={this.onActionButtonPress}
               />
               {this.state.outletList.length ?
                 <Text style={styles.itemCountContainer}>
                   <Text
                     style={styles.itemCount}
                   >
-                    {this.state.outletList.length}
+                    {`${this.state.outletList.length} ITEM${this.state.outletList.length > 1 ? 'S' : ''}`}
                   </Text>
-                  ITEM
                 </Text> : null}
             </View>}
             <View style={styles.wrapper}>
