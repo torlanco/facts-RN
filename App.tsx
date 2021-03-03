@@ -41,20 +41,20 @@ export default class App extends React.Component<Props, State> {
         this.handleConnectivityChange();
     });    
     
-    await Font.loadAsync({
-      'Montserrat-Black': require('./assets/fonts/Montserrat-Black.otf'),
-      'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.otf'),
-      'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.otf'),
-      'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.otf'),
-      'Montserrat-Medium': require('./assets/fonts/Montserrat-Medium.otf'),
-      'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.otf'),
-      'Montserrat-Light': require('./assets/fonts/Montserrat-Light.otf'),
-    });
+    // await Font.loadAsync({
+    //   'Montserrat-Black': require('./assets/fonts/Montserrat-Black.otf'),
+    //   'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.otf'),
+    //   'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.otf'),
+    //   'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.otf'),
+    //   'Montserrat-Medium': require('./assets/fonts/Montserrat-Medium.otf'),
+    //   'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.otf'),
+    //   'Montserrat-Light': require('./assets/fonts/Montserrat-Light.otf'),
+    // });
 
-    // const timer = setInterval(this.tick, 1000);
-    this.setState({
-      isReady: true //timer
-    });
+    // // const timer = setInterval(this.tick, 1000);
+    // this.setState({
+    //   isReady: true //timer
+    // });
   }
 
   // remove connectivity event listener when unmounting
@@ -87,7 +87,7 @@ export default class App extends React.Component<Props, State> {
       require('./assets/images/placeholder.png')
     ]);
 
-    return Font.loadAsync({
+    await Font.loadAsync({
       'Montserrat-Black': require('./assets/fonts/Montserrat-Black.otf'),
       'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.otf'),
       'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.otf'),
